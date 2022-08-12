@@ -8,7 +8,7 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="比赛标题" prop="title"
                 :rules="[
                   {required: true, message:'比赛标题不能为空', trigger:'blur'}
@@ -16,7 +16,7 @@
               <el-input v-model="inputForm.title" placeholder="请填写比赛标题"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="比赛类别" prop="type"
                 :rules="[
                   {required: true, message:'比赛类别不能为空', trigger:'blur'}
@@ -111,7 +111,7 @@
                   </el-upload>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="比赛描述" prop="describe0"
                 :rules="[
                  ]">

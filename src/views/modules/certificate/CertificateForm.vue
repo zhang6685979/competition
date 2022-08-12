@@ -8,7 +8,7 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="证书名称" prop="title"
                 :rules="[
                   {required: true, message:'证书名称不能为空', trigger:'blur'}
@@ -56,7 +56,7 @@
                   </el-upload>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="学员姓名" prop="name"
                 :rules="[
                   {required: true, message:'学员姓名不能为空', trigger:'blur'}
@@ -64,7 +64,7 @@
               <el-input v-model="inputForm.name" placeholder="请填写学员姓名"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="身份证号" prop="idcardno"
                 :rules="[
                   {required: true, message:'身份证号不能为空', trigger:'blur'}
@@ -72,7 +72,7 @@
               <el-input v-model="inputForm.idcardno" placeholder="请填写身份证号"  maxlength="18"    ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="证书描述" prop="describe0"
                 :rules="[
                  ]">

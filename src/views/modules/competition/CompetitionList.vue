@@ -1,121 +1,74 @@
 <template>
-    <div class="page">
-      <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
-            <!-- 搜索框-->
-         <el-form-item prop="title">
-                <el-input size="small" v-model="searchForm.title" placeholder="比赛标题" clearable></el-input>
-         </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
-            <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
-          </el-form-item>
-      </el-form>
+  <div class="page">
+    <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm"
+      @keyup.enter.native="refreshList()" @submit.native.prevent>
+      <!-- 搜索框-->
+      <el-form-item prop="title">
+        <el-input size="small" v-model="searchForm.title" placeholder="比赛标题" clearable></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
+        <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
+      </el-form-item>
+    </el-form>
 
-     <div class="bg-white top">
-        <vxe-toolbar :refresh="{query: refreshList}">
-          <template #buttons>
-            <el-button v-if="hasPermission('competition:competition:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-            <el-button v-if="hasPermission('competition:competition:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.competitionTable && $refs.competitionTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-            <el-button v-if="hasPermission('competition:competition:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.competitionTable && $refs.competitionTable.getCheckboxRecords().length === 0" plain>删除</el-button>
-          </template>
-        </vxe-toolbar>
-        <div style="height: calc(100% - 80px);">
-        <vxe-table
-            border="inner"
-            auto-resize
-            resizable
-            height="auto"
-            :loading="loading"
-            size="small"
-            ref="competitionTable"
-            show-header-overflow
-            show-overflow
-            highlight-hover-row
-            :menu-config="{}"
-            :print-config="{}"
-            :import-config="{}"
-            :export-config="{}"
-            @sort-change="sortChangeHandle"
-            :sort-config="{remote:true}"
-            :data="dataList"
-            :checkbox-config="{}">
-            <vxe-column type="seq" width="40"></vxe-column>
-            <vxe-column type="checkbox"  width="40px"></vxe-column>
-    <vxe-column
-        field="title"
-        sortable
-        title="比赛标题">
-      </vxe-column>
-    <vxe-column
-        field="type"
-        sortable
-        title="比赛类别">
-        <template slot-scope="scope">
-              {{ $dictUtils.getDictLabel("jab_competition_type", scope.row.type, '-') }}
-        </template>
-      </vxe-column>
-    <vxe-column
-        field="iamge"
+    <div class="bg-white top" style="padding:0px">
+      <div class="el-scrollbar__wrap" style="padding:10px;height:calc(100% - 70px)">
+        <div class="el-scrollbar__view">
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+              <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
+                <div class="jp-card jp-card-bordered">
+                  <div class="add-border">
+                    <a @click="add()">
+                      <i class="el-icon-plus"></i>
+                      <p>新建赛事</p>
+                    </a>
+                  </div>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(item, index) in dataList" :key="index">
+              <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
+                <img :src="item.iamge" class="image">
+                <h3 class="jp-card-label">
+                  <el-row>
+                    <el-col :span="24">
+                      <div class="top">
+                        <el-tag class="label">{{ $dictUtils.getDictLabel("jab_competition_type", item.type, '-') }}
+                        </el-tag>
+                        {{item.title}}
+                      </div>
+                      <p class="desc">{{item.describe0}}</p>
+                    </el-col>
+                  </el-row>
+                </h3>
 
-        sortable
-        title="比赛图片">
-        <template slot-scope="scope" v-if="scope.row.iamge">
-          <el-image
-            style="height: 50px;width:50px;margin-right:10px;"
-            :src="src" v-for="(src, index) in scope.row.iamge.split('|')" :key="index"
-            :preview-src-list="scope.row.iamge.split('|')">
-          </el-image>
-        </template>
-      </vxe-column>
-    <vxe-column
-        field="banner"
-
-        sortable
-        title="banner图片">
-        <template slot-scope="scope" v-if="scope.row.banner">
-          <el-image
-            style="height: 50px;width:50px;margin-right:10px;"
-            :src="src" v-for="(src, index) in scope.row.banner.split('|')" :key="index"
-            :preview-src-list="scope.row.banner.split('|')">
-          </el-image>
-        </template>
-      </vxe-column>
-    <vxe-column
-        field="describe0"
-        sortable
-        title="比赛描述">
-      </vxe-column>
-    <vxe-column
-        field="createDate"
-        sortable
-        title="发布时间">
-      </vxe-column>
-      <vxe-column
-        fixed="right"
-        align="center"
-        width="200"
-        title="操作">
-        <template  slot-scope="scope">
-          <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">比赛详情</el-button>
-          <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-          <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
-        </template>
-      </vxe-column>
-    </vxe-table>
-    <vxe-pager
-      background
-      size="small"
-      :current-page="tablePage.currentPage"
-      :page-size="tablePage.pageSize"
-      :total="tablePage.total"
-      :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-      @page-change="currentChangeHandle">
-    </vxe-pager>
+                <ul class="jp-card-actions">
+                  <li style="width: 33.333%">
+                    <el-link :underline="false" @click="edit(item.id)"><i class="el-icon-edit-outline"></i> 编辑
+                    </el-link>
+                  </li>
+                  <li style="width: 33.333%">
+                    <el-link :underline="false" @click="del(item.id)"><i class="el-icon-delete"></i> 删除</el-link>
+                  </li>
+                  <li style="width: 33.333%">
+                    <el-link :underline="false" @click="view(item.id)"><i class="el-icon-view"></i> 比赛详情</el-link>
+                  </li>
+                </ul>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>`
+      </div>
+      <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
+        :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+        :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+        @page-change="currentChangeHandle">
+      </vxe-pager>
+      <!-- 弹窗, 新增 / 修改 -->
+      <CompetitionForm ref="competitionForm" @refreshDataList="refreshList"></CompetitionForm>
     </div>
-    </div>
-        <!-- 弹窗, 新增 / 修改 -->
-    <CompetitionForm  ref="competitionForm" @refreshDataList="refreshList"></CompetitionForm>
   </div>
 </template>
 
@@ -123,7 +76,7 @@
   import CompetitionForm from './CompetitionForm'
   import CompetitionService from '@/api/competition/CompetitionService'
   export default {
-    data () {
+    data() {
       return {
         searchForm: {
           title: ''
@@ -142,58 +95,66 @@
       CompetitionForm
     },
     competitionService: null,
-    created () {
+    created() {
       this.competitionService = new CompetitionService()
     },
-    activated () {
+    activated() {
       this.refreshList()
     },
     methods: {
       // 获取数据列表
-      refreshList () {
+      refreshList() {
         this.loading = true
         this.competitionService.list({
           'current': this.tablePage.currentPage,
           'size': this.tablePage.pageSize,
           'orders': this.tablePage.orders,
           ...this.searchForm
-        }).then(({data}) => {
+        }).then(({
+          data
+        }) => {
           this.dataList = data.records
           this.tablePage.total = data.total
           this.loading = false
         })
       },
       // 当前页
-      currentChangeHandle ({ currentPage, pageSize }) {
+      currentChangeHandle({
+        currentPage,
+        pageSize
+      }) {
         this.tablePage.currentPage = currentPage
         this.tablePage.pageSize = pageSize
         this.refreshList()
       },
       // 排序
-      sortChangeHandle (column) {
+      sortChangeHandle(column) {
         this.tablePage.orders = []
         if (column.order != null) {
-          this.tablePage.orders.push({column: this.$utils.toLine(column.property), asc: column.order === 'asc'})
+          this.tablePage.orders.push({
+            column: this.$utils.toLine(column.property),
+            asc: column.order === 'asc'
+          })
         }
         this.refreshList()
       },
       // 新增
-      add () {
+      add() {
         this.$refs.competitionForm.init('add', '')
       },
       // 修改
-      edit (id) {
+      edit(id) {
         id = id || this.$refs.competitionTable.getCheckboxRecords().map(item => {
           return item.id
         })[0]
         this.$refs.competitionForm.init('edit', id)
       },
       // 查看
-      view (id) {
+      view(id) {
         this.$router.push('/competition/competitionInfo?cid=' + id)
       },
       // 删除
-      del (id) {
+      del(id) {
         let ids = id || this.$refs.competitionTable.getCheckboxRecords().map(item => {
           return item.id
         }).join(',')
@@ -203,18 +164,89 @@
           type: 'warning'
         }).then(() => {
           this.loading = true
-          this.competitionService.delete(ids).then(({data}) => {
+          this.competitionService.delete(ids).then(({
+            data
+          }) => {
             this.$message.success(data)
             this.refreshList()
             this.loading = false
           })
         })
       },
-      resetSearch () {
+      resetSearch() {
         this.$refs.searchForm.resetFields()
         this.refreshList()
       }
     }
   }
 </script>
+<style lang="less" scoped>
+  .image {
+    width: 100%;
+    height: 156px;
+    overflow: hidden;
+  }
 
+  .bottom {
+    background-color: #f5f7fa;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .jp-card {
+    height: 278px;
+  }
+
+  .jp-card-label {
+
+    font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
+
+    .top {
+      line-height: 36px;
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #1890FF;
+      white-space: nowrap;
+      font-size: 12px;
+
+      .label {
+        margin-right: 10px;
+        height: 24px;
+        line-height: 24px;
+      }
+    }
+
+    .desc {
+      margin: 0 auto 10px;
+      font-weight: normal;
+      color: #303133;
+      height: 32px;
+      width: 100%;
+      word-break: break-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .right {
+      line-height: 38px;
+      justify-content: center;
+      text-decoration: none;
+      float: right;
+    }
+  }
+</style>

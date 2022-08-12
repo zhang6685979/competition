@@ -8,7 +8,7 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="平台名称" prop="title"
                 :rules="[
                   {required: true, message:'平台名称不能为空', trigger:'blur'}
@@ -47,16 +47,16 @@
                       return $confirm(`确定移除 ${file.name}？`)
                     }"
                     multiple
-                    :limit="5"
+                    :limit="1"
                     :on-exceed="(files, fileList) =>{
-                      $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                      $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }"
                     :file-list="imageArra">
                     <i class="el-icon-plus"></i>
                   </el-upload>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="链接地址" prop="url"
                 :rules="[
                   {required: true, message:'链接地址不能为空', trigger:'blur'}
@@ -64,7 +64,7 @@
               <el-input v-model="inputForm.url" placeholder="请填写链接地址"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="平台描述" prop="describe0"
                 :rules="[
                  ]">
@@ -155,5 +155,3 @@
     }
   }
 </script>
-
-  
