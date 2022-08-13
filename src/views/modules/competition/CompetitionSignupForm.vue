@@ -36,7 +36,7 @@
             <el-form-item label="报名说明" prop="describe0"
                 :rules="[
                  ]">
-              <el-input v-model="inputForm.describe0" placeholder="请填写报名说明"     ></el-input>
+          <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写报名说明"></el-input>
            </el-form-item>
         </el-col>
         </el-row>

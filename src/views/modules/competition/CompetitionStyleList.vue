@@ -38,6 +38,8 @@
           </vxe-column>
           <vxe-column field="describe0" sortable title="风采描述">
           </vxe-column>
+          <vxe-column field="createDate" sortable title="上传时间">
+          </vxe-column>
           <vxe-column fixed="right" align="center" width="200" title="操作">
             <template slot-scope="scope">
               <el-button v-if="hasPermission('competition:competitionStyle:view')" type="text" icon="el-icon-view"

@@ -3,7 +3,7 @@ import request from '@/utils/httpRequest'
 export default class CompetitionAnnouncementService {
   save (inputForm) {
     return request({
-      url: '/competition/competitionAnnouncement/save',
+      url: '/announcement/announcement/save',
       method: 'post',
       data: inputForm
     })
@@ -11,7 +11,7 @@ export default class CompetitionAnnouncementService {
 
   delete (ids) {
     return request({
-      url: '/competition/competitionAnnouncement/delete',
+      url: '/announcement/announcement/delete',
       method: 'delete',
       params: {ids: ids}
     })
@@ -19,7 +19,7 @@ export default class CompetitionAnnouncementService {
 
   queryById (id) {
     return request({
-      url: '/competition/competitionAnnouncement/queryById',
+      url: '/announcement/announcement/queryById',
       method: 'get',
       params: {id: id}
     })
@@ -27,7 +27,7 @@ export default class CompetitionAnnouncementService {
 
   list (params) {
     return request({
-      url: '/competition/competitionAnnouncement/list',
+      url: '/announcement/announcement/list',
       method: 'get',
       params: params
     })
