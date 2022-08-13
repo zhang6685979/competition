@@ -8,7 +8,7 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="风采标题" prop="title"
                 :rules="[
                   {required: true, message:'风采标题不能为空', trigger:'blur'}
@@ -47,20 +47,20 @@
                       return $confirm(`确定移除 ${file.name}？`)
                     }"
                     multiple
-                    :limit="5"
+                    :limit="1"
                     :on-exceed="(files, fileList) =>{
-                      $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                      $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }"
                     :file-list="iamgeArra">
                     <i class="el-icon-plus"></i>
                   </el-upload>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="风采描述" prop="describe0"
                 :rules="[
                  ]">
-          <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写风采描述"  maxlength="250"    ></el-input>
+          <el-input type="textarea" v-model="inputForm.content" placeholder="请填写风采描述"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
         </el-row>
@@ -76,6 +76,9 @@
 <script>
   import CompetitionStyleService from '@/api/competition/CompetitionStyleService'
   export default {
+    props:{
+      id:String
+    },
     data () {
       return {
         title: '',
@@ -85,6 +88,7 @@
         iamgeArra: [],
         inputForm: {
           id: '',
+          cid: this.id,
           title: '',
           iamge: '',
           describe0: ''
@@ -146,5 +150,3 @@
     }
   }
 </script>
-
-  

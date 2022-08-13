@@ -58,7 +58,7 @@
       </div>
     </div>
     <!-- 弹窗, 新增 / 修改 -->
-    <CompetitionLiveForm ref="competitionLiveForm" @refreshDataList="refreshList"></CompetitionLiveForm>
+    <CompetitionLiveForm ref="competitionLiveForm" :id="id" @refreshDataList="refreshList"></CompetitionLiveForm>
   </div>
 </template>
 

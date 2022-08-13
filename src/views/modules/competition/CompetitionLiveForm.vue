@@ -8,7 +8,7 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="直播标题" prop="title"
                 :rules="[
                   {required: true, message:'直播标题不能为空', trigger:'blur'}
@@ -47,16 +47,16 @@
                       return $confirm(`确定移除 ${file.name}？`)
                     }"
                     multiple
-                    :limit="5"
+                    :limit="1"
                     :on-exceed="(files, fileList) =>{
-                      $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                      $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }"
                     :file-list="iamgeArra">
                     <i class="el-icon-plus"></i>
                   </el-upload>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="直播地址" prop="url"
                 :rules="[
                   {required: true, message:'直播地址不能为空', trigger:'blur'}
@@ -64,14 +64,14 @@
               <el-input v-model="inputForm.url" placeholder="请填写直播地址"     ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="直播描述" prop="describe0"
                 :rules="[
                  ]">
           <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写直播描述"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="开始时间" prop="starttime"
                 :rules="[
                   {required: true, message:'开始时间不能为空', trigger:'blur'}
@@ -98,6 +98,7 @@
 <script>
   import CompetitionLiveService from '@/api/competition/CompetitionLiveService'
   export default {
+    props:{id:String},
     data () {
       return {
         title: '',
@@ -111,7 +112,8 @@
           iamge: '',
           url: '',
           describe0: '',
-          starttime: ''
+          starttime: '',
+          cid:this.id
         }
       }
     },
@@ -170,5 +172,3 @@
     }
   }
 </script>
-
-  

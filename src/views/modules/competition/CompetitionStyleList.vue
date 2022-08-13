@@ -36,16 +36,13 @@
               </el-image>
             </template>
           </vxe-column>
-          <vxe-column field="describe0" sortable title="风采描述">
+          <vxe-column field="content" sortable title="风采描述">
           </vxe-column>
           <vxe-column fixed="right" align="center" width="200" title="操作">
             <template slot-scope="scope">
-              <el-button v-if="hasPermission('competition:competitionStyle:view')" type="text" icon="el-icon-view"
-                size="small" @click="view(scope.row.id)">查看</el-button>
-              <el-button v-if="hasPermission('competition:competitionStyle:edit')" type="text" icon="el-icon-edit"
-                size="small" @click="edit(scope.row.id)">修改</el-button>
-              <el-button v-if="hasPermission('competition:competitionStyle:del')" type="text" icon="el-icon-delete"
-                size="small" @click="del(scope.row.id)">删除</el-button>
+              <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
+              <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
+              <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
           </vxe-column>
         </vxe-table>
@@ -57,7 +54,7 @@
       </div>
     </div>
     <!-- 弹窗, 新增 / 修改 -->
-    <CompetitionStyleForm ref="competitionStyleForm" @refreshDataList="refreshList"></CompetitionStyleForm>
+    <CompetitionStyleForm ref="competitionStyleForm" :id="id" @refreshDataList="refreshList"></CompetitionStyleForm>
   </div>
 </template>
 
