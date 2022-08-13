@@ -4,7 +4,9 @@
       <el-page-header @back="goBack" content="比赛详情" class="page-header"></el-page-header>
       <el-divider></el-divider>
       <el-tabs v-model="activeName">
-        <el-tab-pane label="报名管理" name="1">报名管理</el-tab-pane>
+        <el-tab-pane label="报名管理" name="1">
+          <CompetitionSignupList :id="$route.query.cid"></CompetitionSignupList>
+        </el-tab-pane>
         <el-tab-pane label="比赛轮次" name="2">
           <CompetitionRoundsList :id="$route.query.cid"></CompetitionRoundsList>
         </el-tab-pane>
@@ -39,6 +41,7 @@
   import CompetitionNewsList from './CompetitionNewsList'
   import CompetitionRoundsList from './CompetitionRoundsList'
   import CompetitionStyleList from './CompetitionStyleList'
+  import CompetitionSignupList from './CompetitionSignupList'
 
   export default {
     data() {
@@ -53,7 +56,8 @@
       CompetitionLiveList,
       CompetitionNewsList,
       CompetitionRoundsList,
-      CompetitionStyleList
+      CompetitionStyleList,
+      CompetitionSignupList
     },
     mounted() {
 

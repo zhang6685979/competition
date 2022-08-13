@@ -3,7 +3,7 @@ import request from '@/utils/httpRequest'
 export default class CompetitionNewsService {
   save (inputForm) {
     return request({
-      url: '/competition/competitionNews/save',
+      url: '/news/news/save',
       method: 'post',
       data: inputForm
     })
@@ -11,7 +11,7 @@ export default class CompetitionNewsService {
 
   delete (ids) {
     return request({
-      url: '/competition/competitionNews/delete',
+      url: '/news/news/delete',
       method: 'delete',
       params: {ids: ids}
     })
@@ -19,7 +19,7 @@ export default class CompetitionNewsService {
 
   queryById (id) {
     return request({
-      url: '/competition/competitionNews/queryById',
+      url: '/news/news/queryById',
       method: 'get',
       params: {id: id}
     })
@@ -27,7 +27,7 @@ export default class CompetitionNewsService {
 
   list (params) {
     return request({
-      url: '/competition/competitionNews/list',
+      url: '/news/news/list',
       method: 'get',
       params: params
     })

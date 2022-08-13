@@ -82,6 +82,17 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否首页" prop="index0" :rules="[
+                  {required: true, message:'是否首页不能为空', trigger:'blur'}
+                 ]">
+              <el-select v-model="inputForm.index0" placeholder="请选择" style="width: 100%;">
+                <el-option v-for="item in $dictUtils.getDictList('yes_no')" :key="item.value" :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="新闻描述" prop="describe0" :rules="[
                  ]">
@@ -120,6 +131,7 @@
           content: '',
           latest: '',
           top: '',
+          index0: '',
           describe0: ''
         }
       }

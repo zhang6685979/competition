@@ -29,13 +29,6 @@
               <span v-else>{{scope.row.title}}</span>
             </template>
           </vxe-column>
-          <vxe-column field="file" sortable title="文件上传">
-            <template slot-scope="scope" v-if="scope.row.file">
-              <a :href="item" target="_blank" :key="index" v-for="(item, index) in scope.row.file.split('|')">
-                {{decodeURIComponent(item.substring(item.lastIndexOf("/")+1))}}
-              </a>
-            </template>
-          </vxe-column>
           <vxe-column field="describe0" sortable title="备注">
           </vxe-column>
           <vxe-column field="type" sortable title="文件类型">

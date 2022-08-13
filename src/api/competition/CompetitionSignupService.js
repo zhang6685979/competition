@@ -1,9 +1,9 @@
 import request from '@/utils/httpRequest'
 
-export default class CompetitionAnnouncementService {
+export default class CompetitionSignupService {
   save (inputForm) {
     return request({
-      url: '/announcement/announcement/save',
+      url: '/competition/competitionSignup/save',
       method: 'post',
       data: inputForm
     })
@@ -11,7 +11,7 @@ export default class CompetitionAnnouncementService {
 
   delete (ids) {
     return request({
-      url: '/announcement/announcement/delete',
+      url: '/competition/competitionSignup/delete',
       method: 'delete',
       params: {ids: ids}
     })
@@ -19,7 +19,7 @@ export default class CompetitionAnnouncementService {
 
   queryById (id) {
     return request({
-      url: '/announcement/announcement/queryById',
+      url: '/competition/competitionSignup/queryById',
       method: 'get',
       params: {id: id}
     })
@@ -27,7 +27,7 @@ export default class CompetitionAnnouncementService {
 
   list (params) {
     return request({
-      url: '/announcement/announcement/list',
+      url: '/competition/competitionSignup/list',
       method: 'get',
       params: params
     })

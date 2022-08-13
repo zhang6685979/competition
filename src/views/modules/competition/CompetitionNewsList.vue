@@ -41,11 +41,6 @@
               </el-image>
             </template>
           </vxe-column>
-          <vxe-column field="content" sortable title="新闻内容">
-            <template slot-scope="scope">
-              <p v-html="$utils.unescapeHTML(scope.row.content)"></p>
-            </template>
-          </vxe-column>
           <vxe-column field="latest" sortable title="是否最新">
             <template slot-scope="scope">
               {{ $dictUtils.getDictLabel("yes_no", scope.row.latest, '-') }}
@@ -55,8 +50,6 @@
             <template slot-scope="scope">
               {{ $dictUtils.getDictLabel("yes_no", scope.row.top, '-') }}
             </template>
-          </vxe-column>
-          <vxe-column field="describe0" sortable title="新闻描述">
           </vxe-column>
           <vxe-column field="createDate" sortable title="发布时间">
           </vxe-column>
