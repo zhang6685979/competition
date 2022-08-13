@@ -1,19 +1,12 @@
 <template>
     <div class="page">
-      <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
-            <!-- 搜索框-->
-          <el-form-item>
-            <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
-            <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
-          </el-form-item>
-      </el-form>
 
      <div class="bg-white top">
-        <vxe-toolbar :refresh="{query: refreshList}" export print custom>
+        <vxe-toolbar :refresh="{query: refreshList}">
           <template #buttons>
-            <el-button v-if="hasPermission('competition:competitionSignup:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-            <el-button v-if="hasPermission('competition:competitionSignup:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.competitionSignupTable && $refs.competitionSignupTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-            <el-button v-if="hasPermission('competition:competitionSignup:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.competitionSignupTable && $refs.competitionSignupTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+            <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
+            <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.competitionSignupTable && $refs.competitionSignupTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+            <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.competitionSignupTable && $refs.competitionSignupTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>
         </vxe-toolbar>
         <div style="height: calc(100% - 80px);">
@@ -42,11 +35,6 @@
         field="name"
         sortable
         title="名称">
-            <template slot-scope="scope">
-              <el-link  type="primary" :underline="false" v-if="hasPermission('competition:competitionSignup:edit')" @click="edit(scope.row.id)">{{scope.row.name}}</el-link>
-              <el-link  type="primary" :underline="false" v-else-if="hasPermission('competition:competitionSignup:view')"  @click="view(scope.row.id)">{{scope.row.name}}</el-link>
-              <span v-else>{{scope.row.name}}</span>
-            </template>
       </vxe-column>
     <vxe-column
         field="starttime"
@@ -69,9 +57,9 @@
         width="200"
         title="操作">
         <template  slot-scope="scope">
-          <el-button v-if="hasPermission('competition:competitionSignup:view')" type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
-          <el-button v-if="hasPermission('competition:competitionSignup:edit')" type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-          <el-button v-if="hasPermission('competition:competitionSignup:del')" type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
+          <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
+          <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
+          <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
       </vxe-column>
     </vxe-table>
@@ -88,7 +76,7 @@
     </div>
     </div>
         <!-- 弹窗, 新增 / 修改 -->
-    <CompetitionSignupForm  ref="competitionSignupForm" @refreshDataList="refreshList"></CompetitionSignupForm>
+    <CompetitionSignupForm  ref="competitionSignupForm" :id="id" @refreshDataList="refreshList"></CompetitionSignupForm>
   </div>
 </template>
 
@@ -96,6 +84,7 @@
   import CompetitionSignupForm from './CompetitionSignupForm'
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
   export default {
+    props:{id:String},
     data () {
       return {
         searchForm: {
@@ -128,6 +117,7 @@
           'current': this.tablePage.currentPage,
           'size': this.tablePage.pageSize,
           'orders': this.tablePage.orders,
+          'cid': this.id,
           ...this.searchForm
         }).then(({data}) => {
           this.dataList = data.records
@@ -189,4 +179,3 @@
     }
   }
 </script>
-

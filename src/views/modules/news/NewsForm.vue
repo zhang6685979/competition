@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <el-drawer :title="title" :visible.sync="visible" :wrapperClosable="false" size="50%">
+    <el-drawer :title="title" :visible.sync="visible" :wrapperClosable="false" size="70%">
 
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
         :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
@@ -25,10 +25,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="新闻图片" prop="iamge" :rules="[
+            <el-form-item label="新闻图片" prop="image" :rules="[
                   {required: true, message:'新闻图片不能为空', trigger:'blur'}
                  ]">
-              <el-upload ref="iamge" v-if="visible" list-type="picture-card"
+              <el-upload ref="image" v-if="visible" list-type="picture-card"
                 :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/news/news`"
                 :headers="{token: $cookie.get('token')}" :on-preview="(file, fileList) => {
                         $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
@@ -38,17 +38,17 @@
                           customClass: 'showPic'
                         });
                     }" :on-success="(response, file, fileList) => {
-                       inputForm.iamge = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                       inputForm.image = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
                     }" :on-remove="(file, fileList) => {
                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
                         $message.success(data)
                       })
-                      inputForm.iamge = fileList.map(item => item.url).join('|')
+                      inputForm.image = fileList.map(item => item.url).join('|')
                     }" :before-remove="(file, fileList) => {
                       return $confirm(`确定移除 ${file.name}？`)
                     }" multiple :limit="1" :on-exceed="(files, fileList) =>{
                       $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-                    }" :file-list="iamgeArra">
+                    }" :file-list="imageArra">
                 <i class="el-icon-plus"></i>
               </el-upload>
             </el-form-item>
@@ -82,17 +82,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="是否首页" prop="index0" :rules="[
-                  {required: true, message:'是否首页不能为空', trigger:'blur'}
-                 ]">
-              <el-select v-model="inputForm.index0" placeholder="请选择" style="width: 100%;">
-                <el-option v-for="item in $dictUtils.getDictList('yes_no')" :key="item.value" :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
           <el-col :span="24">
             <el-form-item label="新闻描述" prop="describe0" :rules="[
                  ]">
@@ -116,23 +105,24 @@
   import WangEditor from '@/components/editor/WangEditor'
   import NewsService from '@/api/news/NewsService'
   export default {
+    props:{id:String},
     data() {
       return {
         title: '',
         method: '',
         visible: false,
         loading: false,
-        iamgeArra: [],
+        imageArra: [],
         inputForm: {
           id: '',
           title: '',
           type: '',
-          iamge: '',
+          image: '',
           content: '',
           latest: '',
           top: '',
-          index0: '',
-          describe0: ''
+          describe0: '',
+          cid: this.id
         }
       }
     },
@@ -154,7 +144,7 @@
         } else if (method === 'view') {
           this.title = '查看新闻'
         }
-        this.iamgeArra = []
+        this.imageArra = []
         this.visible = true
         this.loading = false
         this.$nextTick(() => {
@@ -167,9 +157,9 @@
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
               this.$refs.contentEditor.init(this.inputForm.content)
-              this.inputForm.iamge.split('|').forEach((item) => {
+              this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
-                  this.iamgeArra.push({
+                  this.imageArra.push({
                     name: decodeURIComponent(item.substring(item
                       .lastIndexOf('/') + 1)),
                     url: item

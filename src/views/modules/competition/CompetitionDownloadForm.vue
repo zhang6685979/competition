@@ -8,14 +8,6 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
-            <el-form-item label="文件名" prop="title"
-                :rules="[
-                  {required: true, message:'文件名不能为空', trigger:'blur'}
-                 ]">
-              <el-input v-model="inputForm.title" placeholder="请填写文件名"  maxlength="250"    ></el-input>
-           </el-form-item>
-        </el-col>
         <el-col :span="24">
             <el-form-item label="文件上传" prop="file"
                 :rules="[
@@ -27,7 +19,10 @@
                     :headers="{token: $cookie.get('token')}"
                     :on-preview="(file, fileList) => {$window.location.href = (file.response && file.response.url) || file.url}"
                     :on-success="(response, file, fileList) => {
-                       inputForm.file = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                      inputForm.size = file.size;
+                      inputForm.title = file.name&&file.name.split('.')[0];
+                      inputForm.type = file.name&&file.name.split('.')[1];
+                      inputForm.file = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
                     }"
                     :on-remove="(file, fileList) => {
                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
@@ -39,9 +34,9 @@
                       return $confirm(`确定移除 ${file.name}？`)
                     }"
                     multiple
-                    :limit="5"
+                    :limit="1"
                     :on-exceed="(files, fileList) =>{
-                      $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                      $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }"
                     :file-list="fileArra">
                     <el-button size="small" type="primary">点击上传</el-button>
@@ -49,7 +44,7 @@
                   </el-upload>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="备注" prop="describe0"
                 :rules="[
                  ]">
@@ -69,6 +64,7 @@
 <script>
   import CompetitionDownloadService from '@/api/competition/CompetitionDownloadService'
   export default {
+    props:{id:String},
     data () {
       return {
         title: '',
@@ -80,7 +76,10 @@
           id: '',
           title: '',
           file: '',
-          describe0: ''
+          describe0: '',
+          cid:this.id,
+          size: '',
+          type: ''
         }
       }
     },
@@ -139,5 +138,3 @@
     }
   }
 </script>
-
-  

@@ -14,7 +14,7 @@
           <CompetitionStyleList :id="$route.query.cid"></CompetitionStyleList>
         </el-tab-pane>
         <el-tab-pane label="赛事新闻" name="4">
-          <CompetitionNewsList :id="$route.query.cid"></CompetitionNewsList>
+          <NewsList :id="$route.query.cid"></NewsList>
         </el-tab-pane>
         <el-tab-pane label="赛事直播" name="5">
           <CompetitionLiveList :id="$route.query.cid"></CompetitionLiveList>
@@ -23,7 +23,7 @@
           <CompetitionEquipmentList :id="$route.query.cid"></CompetitionEquipmentList>
         </el-tab-pane>
         <el-tab-pane label="通知公告" name="7">
-          <CompetitionAnnouncementList :id="$route.query.cid"></CompetitionAnnouncementList>
+          <AnnouncementList :id="$route.query.cid"></AnnouncementList>
         </el-tab-pane>
         <el-tab-pane label="资源下载" name="8">
           <CompetitionDownloadList :id="$route.query.cid"></CompetitionDownloadList>
@@ -34,11 +34,11 @@
 </template>
 
 <script>
-  import CompetitionAnnouncementList from './CompetitionAnnouncementList'
+  import AnnouncementList from '../announcement/AnnouncementList'
   import CompetitionDownloadList from './CompetitionDownloadList'
   import CompetitionEquipmentList from './CompetitionEquipmentList'
   import CompetitionLiveList from './CompetitionLiveList'
-  import CompetitionNewsList from './CompetitionNewsList'
+  import NewsList from '../news/NewsList'
   import CompetitionRoundsList from './CompetitionRoundsList'
   import CompetitionStyleList from './CompetitionStyleList'
   import CompetitionSignupList from './CompetitionSignupList'
@@ -50,11 +50,11 @@
       }
     },
     components: {
-      CompetitionAnnouncementList,
+      AnnouncementList,
       CompetitionDownloadList,
       CompetitionEquipmentList,
       CompetitionLiveList,
-      CompetitionNewsList,
+      NewsList,
       CompetitionRoundsList,
       CompetitionStyleList,
       CompetitionSignupList

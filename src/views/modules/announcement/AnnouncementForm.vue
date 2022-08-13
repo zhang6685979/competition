@@ -58,6 +58,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
+         
             <el-form-item label="">
               <el-button size="small" type="primary" v-if="method != 'view'" @click="doSubmit()" v-noMoreClick>确定
               </el-button>
@@ -74,6 +75,7 @@
   import WangEditor from '@/components/editor/WangEditor'
   import AnnouncementService from '@/api/announcement/AnnouncementService'
   export default {
+    props:{id:String},
     data() {
       return {
         title: '',
@@ -87,7 +89,8 @@
           latest: '',
           top: '',
           index0: '',
-          describe0: ''
+          describe0: '',
+          cid: this.id
         }
       }
     },

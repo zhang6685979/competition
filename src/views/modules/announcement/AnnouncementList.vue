@@ -71,7 +71,7 @@
       </div>
     </div>
     <!-- 弹窗, 新增 / 修改 -->
-    <AnnouncementForm ref="announcementForm" @refreshDataList="refreshList"></AnnouncementForm>
+    <AnnouncementForm ref="announcementForm" :id="id" @refreshDataList="refreshList"></AnnouncementForm>
   </div>
 </template>
 
@@ -79,6 +79,7 @@
   import AnnouncementForm from './AnnouncementForm'
   import AnnouncementService from '@/api/announcement/AnnouncementService'
   export default {
+    props:{id:{type:String,default:''}},
     data() {
       return {
         searchForm: {
@@ -112,6 +113,7 @@
           'current': this.tablePage.currentPage,
           'size': this.tablePage.pageSize,
           'orders': this.tablePage.orders,
+          'cid': this.id,
           ...this.searchForm
         }).then(({
           data

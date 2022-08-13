@@ -17,11 +17,11 @@
            </el-form-item>
         </el-col>
         <el-col :span="24">
-            <el-form-item label="风采图片" prop="iamge"
+            <el-form-item label="风采图片" prop="image"
                 :rules="[
                   {required: true, message:'风采图片不能为空', trigger:'blur'}
                  ]">
-              <el-upload ref="iamge"
+              <el-upload ref="image"
               v-if="visible"
               list-type="picture-card"
                     :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/competition/competitionStyle`"
@@ -35,13 +35,13 @@
                         });
                     }"
                     :on-success="(response, file, fileList) => {
-                       inputForm.iamge = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                       inputForm.image = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
                     }"
                     :on-remove="(file, fileList) => {
                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
                         $message.success(data)
                       })
-                      inputForm.iamge = fileList.map(item => item.url).join('|')
+                      inputForm.image = fileList.map(item => item.url).join('|')
                     }"
                     :before-remove="(file, fileList) => {
                       return $confirm(`确定移除 ${file.name}？`)
@@ -51,7 +51,7 @@
                     :on-exceed="(files, fileList) =>{
                       $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }"
-                    :file-list="iamgeArra">
+                    :file-list="imageArra">
                     <i class="el-icon-plus"></i>
                   </el-upload>
            </el-form-item>
@@ -60,7 +60,7 @@
             <el-form-item label="风采描述" prop="describe0"
                 :rules="[
                  ]">
-          <el-input type="textarea" v-model="inputForm.content" placeholder="请填写风采描述"  maxlength="250"    ></el-input>
+          <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写风采描述"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
         </el-row>
@@ -85,12 +85,12 @@
         method: '',
         visible: false,
         loading: false,
-        iamgeArra: [],
+        imageArra: [],
         inputForm: {
           id: '',
           cid: this.id,
           title: '',
-          iamge: '',
+          image: '',
           describe0: ''
         }
       }
@@ -112,7 +112,7 @@
         } else if (method === 'view') {
           this.title = '查看赛事风采'
         }
-        this.iamgeArra = []
+        this.imageArra = []
         this.visible = true
         this.loading = false
         this.$nextTick(() => {
@@ -121,9 +121,9 @@
             this.loading = true
             this.competitionStyleService.queryById(this.inputForm.id).then(({data}) => {
               this.inputForm = this.recover(this.inputForm, data)
-              this.inputForm.iamge.split('|').forEach((item) => {
+              this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
-                  this.iamgeArra.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
+                  this.imageArra.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
                 }
               })
               this.loading = false

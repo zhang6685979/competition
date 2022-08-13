@@ -8,7 +8,7 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="轮次标题" prop="title"
                 :rules="[
                   {required: true, message:'轮次标题不能为空', trigger:'blur'}
@@ -16,7 +16,7 @@
               <el-input v-model="inputForm.title" placeholder="请填写轮次标题"     ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="开始时间" prop="starttime"
                 :rules="[
                   {required: true, message:'开始时间不能为空', trigger:'blur'}
@@ -30,7 +30,7 @@
                     </el-date-picker>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="轮次描述" prop="describe0"
                 :rules="[
                  ]">
@@ -50,6 +50,7 @@
 <script>
   import CompetitionRoundsService from '@/api/competition/CompetitionRoundsService'
   export default {
+    props:{id:String},
     data () {
       return {
         title: '',
@@ -60,7 +61,8 @@
           id: '',
           title: '',
           starttime: '',
-          describe0: ''
+          describe0: '',
+          cid: this.id
         }
       }
     },
@@ -113,5 +115,3 @@
     }
   }
 </script>
-
-  

@@ -8,7 +8,7 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="名称" prop="name"
                 :rules="[
                   {required: true, message:'名称不能为空', trigger:'blur'}
@@ -32,7 +32,7 @@
               <el-input v-model="inputForm.endtime" placeholder="请填写结束时间"     ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="报名说明" prop="describe0"
                 :rules="[
                  ]">
@@ -52,6 +52,7 @@
 <script>
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
   export default {
+    props:{id:String},
     data () {
       return {
         title: '',
@@ -116,5 +117,3 @@
     }
   }
 </script>
-
-  

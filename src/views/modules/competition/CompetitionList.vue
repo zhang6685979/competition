@@ -30,7 +30,7 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(item, index) in dataList" :key="index">
               <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
-                <img :src="item.iamge" class="image">
+                <img :src="item.image" class="image">
                 <h3 class="jp-card-label">
                   <el-row>
                     <el-col :span="24">
@@ -240,6 +240,7 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+      font-size:13px;
     }
 
     .right {

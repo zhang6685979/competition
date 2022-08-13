@@ -20,14 +20,6 @@
           <vxe-column type="seq" width="40"></vxe-column>
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column field="title" sortable title="文件名">
-            <template slot-scope="scope">
-              <el-link type="primary" :underline="false" v-if="hasPermission('competition:competitionDownload:edit')"
-                @click="edit(scope.row.id)">{{scope.row.title}}</el-link>
-              <el-link type="primary" :underline="false"
-                v-else-if="hasPermission('competition:competitionDownload:view')" @click="view(scope.row.id)">
-                {{scope.row.title}}</el-link>
-              <span v-else>{{scope.row.title}}</span>
-            </template>
           </vxe-column>
           <vxe-column field="describe0" sortable title="备注">
           </vxe-column>
@@ -36,6 +28,9 @@
           <vxe-column field="size" sortable title="文件大小">
           </vxe-column>
           <vxe-column field="times" sortable title="下载次数">
+            <template slot-scope="scope">
+              <span>{{scope.row.times||0}}</span>
+            </template>
           </vxe-column>
           <vxe-column field="createDate" sortable title="上传时间">
           </vxe-column>
@@ -55,7 +50,7 @@
       </div>
     </div>
     <!-- 弹窗, 新增 / 修改 -->
-    <CompetitionDownloadForm ref="competitionDownloadForm" @refreshDataList="refreshList"></CompetitionDownloadForm>
+    <CompetitionDownloadForm ref="competitionDownloadForm" :id="id" @refreshDataList="refreshList"></CompetitionDownloadForm>
   </div>
 </template>
 
