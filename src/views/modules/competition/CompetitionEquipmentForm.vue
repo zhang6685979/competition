@@ -12,10 +12,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="设备图片" prop="iamge" :rules="[
+            <el-form-item label="设备图片" prop="image" :rules="[
                   {required: true, message:'设备图片不能为空', trigger:'blur'}
                  ]">
-              <el-upload ref="iamge" v-if="visible" list-type="picture-card"
+              <el-upload ref="image" v-if="visible" list-type="picture-card"
                 :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/competition/competitionEquipment`"
                 :headers="{token: $cookie.get('token')}" :on-preview="(file, fileList) => {
                         $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
@@ -25,17 +25,17 @@
                           customClass: 'showPic'
                         });
                     }" :on-success="(response, file, fileList) => {
-                       inputForm.iamge = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                       inputForm.image = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
                     }" :on-remove="(file, fileList) => {
                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
                         $message.success(data)
                       })
-                      inputForm.iamge = fileList.map(item => item.url).join('|')
+                      inputForm.image = fileList.map(item => item.url).join('|')
                     }" :before-remove="(file, fileList) => {
                       return $confirm(`确定移除 ${file.name}？`)
                     }" multiple :limit="1" :on-exceed="(files, fileList) =>{
                       $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-                    }" :file-list="iamgeArra">
+                    }" :file-list="imageArra">
                 <i class="el-icon-plus"></i>
               </el-upload>
             </el-form-item>
@@ -72,11 +72,11 @@
         method: '',
         visible: false,
         loading: false,
-        iamgeArra: [],
+        imageArra: [],
         inputForm: {
           id: '',
           title: '',
-          iamge: '',
+          image: '',
           describe0: '',
           cid: this.id
         }
@@ -100,7 +100,7 @@
         } else if (method === 'view') {
           this.title = '查看大赛设备'
         }
-        this.iamgeArra = []
+        this.imageArra = []
         this.visible = true
         this.loading = false
         this.$nextTick(() => {
@@ -113,9 +113,9 @@
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
               this.$refs.contentEditor.init(this.inputForm.describe0)
-              this.inputForm.iamge.split('|').forEach((item) => {
+              this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
-                  this.iamgeArra.push({
+                  this.imageArra.push({
                     name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
                     url: item
                   })

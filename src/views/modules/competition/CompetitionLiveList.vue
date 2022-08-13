@@ -28,11 +28,11 @@
               <span v-else>{{scope.row.title}}</span>
             </template>
           </vxe-column>
-          <vxe-column field="iamge" sortable title="直播图片">
-            <template slot-scope="scope" v-if="scope.row.iamge">
+          <vxe-column field="image" sortable title="直播图片">
+            <template slot-scope="scope" v-if="scope.row.image">
               <el-image style="height: 50px;width:50px;margin-right:10px;" :src="src"
-                v-for="(src, index) in scope.row.iamge.split('|')" :key="index"
-                :preview-src-list="scope.row.iamge.split('|')">
+                v-for="(src, index) in scope.row.image.split('|')" :key="index"
+                :preview-src-list="scope.row.image.split('|')">
               </el-image>
             </template>
           </vxe-column>

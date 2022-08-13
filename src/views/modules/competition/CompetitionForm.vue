@@ -32,11 +32,11 @@
            </el-form-item>
         </el-col>
         <el-col :span="24">
-            <el-form-item label="比赛图片" prop="iamge"
+            <el-form-item label="比赛图片" prop="image"
                 :rules="[
                   {required: true, message:'比赛图片不能为空', trigger:'blur'}
                  ]">
-              <el-upload ref="iamge"
+              <el-upload ref="image"
               v-if="visible"
               list-type="picture-card"
                     :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/competition/competition`"
@@ -50,13 +50,13 @@
                         });
                     }"
                     :on-success="(response, file, fileList) => {
-                       inputForm.iamge = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                       inputForm.image = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
                     }"
                     :on-remove="(file, fileList) => {
                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
                         $message.success(data)
                       })
-                      inputForm.iamge = fileList.map(item => item.url).join('|')
+                      inputForm.image = fileList.map(item => item.url).join('|')
                     }"
                     :before-remove="(file, fileList) => {
                       return $confirm(`确定移除 ${file.name}？`)
@@ -66,7 +66,7 @@
                     :on-exceed="(files, fileList) =>{
                       $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }"
-                    :file-list="iamgeArra">
+                    :file-list="imageArra">
                     <i class="el-icon-plus"></i>
                   </el-upload>
            </el-form-item>
@@ -137,13 +137,13 @@
         method: '',
         visible: false,
         loading: false,
-        iamgeArra: [],
+        imageArra: [],
         bannerArra: [],
         inputForm: {
           id: '',
           title: '',
           type: '',
-          iamge: '',
+          image: '',
           banner: '',
           describe0: ''
         }
@@ -166,7 +166,7 @@
         } else if (method === 'view') {
           this.title = '查看比赛'
         }
-        this.iamgeArra = []
+        this.imageArra = []
         this.bannerArra = []
         this.visible = true
         this.loading = false
@@ -176,9 +176,9 @@
             this.loading = true
             this.competitionService.queryById(this.inputForm.id).then(({data}) => {
               this.inputForm = this.recover(this.inputForm, data)
-              this.inputForm.iamge.split('|').forEach((item) => {
+              this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
-                  this.iamgeArra.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
+                  this.imageArra.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
                 }
               })
               this.inputForm.banner.split('|').forEach((item) => {
