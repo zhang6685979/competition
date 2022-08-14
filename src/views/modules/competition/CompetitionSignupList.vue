@@ -57,7 +57,7 @@
         width="200"
         title="操作">
         <template  slot-scope="scope">
-          <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
+          <el-button type="text" icon="el-icon-edit" size="small" @click="design(scope.row.id)">表单设计</el-button>
           <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
           <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
@@ -77,12 +77,14 @@
     </div>
         <!-- 弹窗, 新增 / 修改 -->
     <CompetitionSignupForm  ref="competitionSignupForm" :id="id" @refreshDataList="refreshList"></CompetitionSignupForm>
+    <MakeForm  ref="makeForm" @refreshDataList="refreshList"></MakeForm>
   </div>
 </template>
 
 <script>
   import CompetitionSignupForm from './CompetitionSignupForm'
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
+  import MakeForm from './MakeForm'
   export default {
     props:{id:String},
     data () {
@@ -100,7 +102,8 @@
       }
     },
     components: {
-      CompetitionSignupForm
+      CompetitionSignupForm,
+      MakeForm
     },
     competitionSignupService: null,
     created () {
@@ -175,6 +178,13 @@
       resetSearch () {
         this.$refs.searchForm.resetFields()
         this.refreshList()
+      },
+      // 设计
+      design (id) {
+        id = id || this.$refs.makeFormTable.getCheckboxRecords().map(item => {
+          return item.id
+        })[0]
+        this.$refs.makeForm.init('edit', id)
       }
     }
   }

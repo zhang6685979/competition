@@ -23,8 +23,6 @@ import JeeplusGencode from 'jeeplus-gencode'
 import JeeplusFlow from 'jeeplus-flowable'
 import 'jeeplus-flowable/lib/jeeplus-flowable.css'
 import './directive'
-import FormMaking from 'jeeplus-form/dist/JpFormMaking.common'
-import 'jeeplus-form/dist/JpFormMaking.css'
 import VueEditor from 'vue2-editor'
 import Print from 'vue-print-nb'
 import XEUtils from 'xe-utils'
@@ -123,7 +121,18 @@ Vue.use(Header)
 
 Vue.use(Print)
 Vue.use(VueEditor)
-Vue.use(FormMaking)
+
+import FormMaking from '@/components/FormMake/index'
+import playerSignup from '@/components/SignupForm/playerSignup'
+import instructorSignup from '@/components/SignupForm/instructorSignup'
+import refereeSignup from '@/components/SignupForm/refereeSignup'
+Vue.use(FormMaking, {
+  components: [{
+    name: 'player-signup',
+    component: playerSignup
+  }]
+})
+
 
 Vue.use(JeeplusGencode)
 Vue.use(JeeplusFlow)

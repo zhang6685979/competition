@@ -57,14 +57,14 @@
               <el-input v-model="inputForm.jobtitle" placeholder="请填写您的职务"     ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="单位地址" prop="address"
                 :rules="[
                  ]">
               <el-input v-model="inputForm.address" placeholder="请填写单位地址"     ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <!-- <el-col :span="12">
             <el-form-item label="审核" prop="audited"
                 :rules="[
                   {required: true, message:'审核不能为空', trigger:'blur'}
@@ -78,7 +78,7 @@
                           </el-option>
                       </el-select>
            </el-form-item>
-        </el-col>
+        </el-col> -->
         </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
