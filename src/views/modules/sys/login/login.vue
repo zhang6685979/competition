@@ -1,31 +1,12 @@
 <template>
-
   <div class="login-container">
- 
-
     <div class="login-weaper animated bounceInDown" style="z-index:100">
-      <div class="login-left">
-                <div class="login-time">
-          {{time}}
-        </div>
-        <p class="title">{{productName}}</p>
-
-        <el-image src="/static/img/login.png">
-    </el-image>
-
-        
-      </div>
+      <el-image :src="require('@/assets/img/logo.png')" class="logo"></el-image>
+      <p class="title">{{productName}}</p>
       <div class="login-border">
         <div class="login-main">
-              
-          <h4 class="login-title">
-           登录
-          </h4>
-          <h3 class="login-sub-title">
-            请使用账号密码登录
-          </h3> 
             <el-form size="small" ref="inputForm" :model="inputForm" :rules="rules" class="login-form"  @keyup.enter.native="login()" @submit.native.prevent>
-       
+
               <el-form-item  prop="username">
                 <el-input type="text" placeholder="请输入账号" v-model="inputForm.username">
                    <i slot="prefix" class="el-input__icon el-icon-user-solid"></i>
@@ -38,40 +19,23 @@
               </el-form-item>
               <el-form-item>
                  <el-row :gutter="10">
-                   <el-col :span="8"><el-image @click="getCaptcha" :src="captchaImg" style="height:34px"></el-image></el-col>
                    <el-col :span="16">
                       <el-form-item prop="code">
                       <el-input placeholder="请输入验证码" v-model="inputForm.code"></el-input>
                       </el-form-item>
                   </el-col>
+                  <el-col :span="8"><el-image @click="getCaptcha" :src="captchaImg" style="height:34px"></el-image></el-col>
                  </el-row>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" :loading="loading" class="login-submit" @click="login">登录</el-button>
               </el-form-item>
-              <el-form-item>
-              <div class="block">
-               
-                <el-image class="mobile" src="/static/img/mobile.png"></el-image>
-                  <span class="demonstration">H5</span>
-              </div>
-                  <div class="block">
-               
-                <el-image class="mobile" src="/static/img/mobile.png"></el-image>
-                  <span class="demonstration">Android</span>
-              </div>
-                  <div class="block">
-               
-                <el-image class="mobile" src="/static/img/mobile.png"></el-image>
-                 <span class="demonstration">IOS</span>
-              </div>
-              </el-form-item>
+
             </el-form>
         </div>
-         <el-image class="right" src="/static/img/right.png"></el-image>
 
- 
       </div>
+      <p class="footer">© 2022 Copyright All Rights Reserved 捷安高科 版权所有 豫ICP备14008106号-2</p>
     </div>
   </div>
 </template>
@@ -83,7 +47,6 @@
   export default {
     data () {
       return {
-        time: '',
         logo: '',
         productName: '',
         loading: false,
@@ -115,10 +78,6 @@
       this.configService = new ConfigService()
       this.loginService = new LoginService()
       this.userService = new UserService()
-      this.getTime()
-      setInterval(() => {
-        this.getTime()
-      }, 1000)
     },
     mounted () {
       this.configService.getConfig().then(({data}) => {
@@ -154,9 +113,6 @@
             })
           }
         })
-      },
-      getTime () {
-        this.time = this.moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
       },
       // 获取验证码
       getCaptcha () {
