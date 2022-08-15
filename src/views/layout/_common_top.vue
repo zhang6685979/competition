@@ -17,7 +17,7 @@
       </h1>
     </div>
     <div class="jp-navbar__body clearfix" style="overflow:hidden">
-      
+
       <el-menu
         class="jp-navbar__menu"
         mode="horizontal">
@@ -25,7 +25,7 @@
              <i  :class="sidebarFold ? 'fa fa-indent':'fa fa-outdent'"></i>
         </el-menu-item>
       </el-menu>
-    
+
       <el-menu class="jp-navbar__menu " :default-active="topMenuActiveIndex" ref="topMenu"  mode="horizontal">
         <el-menu-item  class="el_menu_item" v-for="menu in topMenuList"
           :index="menu.id"
@@ -50,7 +50,7 @@
           </el-menu-item>
         </el-submenu>
         </el-menu>
-      
+
       <el-menu
         class="jp-navbar__menu jp-navbar__menu--right"
         mode="horizontal">
@@ -59,14 +59,14 @@
                 <color-picker></color-picker>
           </template>
         </el-menu-item>
-        <el-menu-item class="hide-sm">
+        <!-- <el-menu-item class="hide-sm">
           <template slot="title">
                 <notice-icon
                     class="action notice"
                     :tabs="noticeTabs" >
               </notice-icon>
           </template>
-        </el-menu-item>
+        </el-menu-item> -->
         <el-menu-item class="jp-navbar__avatar">
           <el-dropdown :show-timeout="0" placement="bottom">
             <span class="el-dropdown-link">
@@ -78,11 +78,11 @@
             </el-dropdown-menu>
           </el-dropdown>
         </el-menu-item>
-        <el-menu-item class="hide-sm"  @click="showRight">
+        <!-- <el-menu-item class="hide-sm"  @click="showRight">
           <template slot="title">
                <i class="el-icon-more rotate-90" @click="showRight"></i>
           </template>
-        </el-menu-item>
+        </el-menu-item> -->
       </el-menu>
     </div>
     <!-- 弹窗, 修改密码 -->
@@ -93,7 +93,7 @@
 <script>
   import UpdatePassword from './UpdatePassword'
   import {clearLoginInfo} from '@/utils'
-  import NoticeIcon from '@/components/NoticeIcon'
+  //import NoticeIcon from '@/components/NoticeIcon'
   import ColorPicker from '@/components/colors/ColorPicker'
   import NotifyService from '@/api/notify/NotifyService'
   import MailBoxService from '@/api/mail/MailBoxService'
@@ -130,7 +130,7 @@
     components: {
       UpdatePassword,
       ColorPicker,
-      NoticeIcon
+      //NoticeIcon
     },
     notifyService: null,
     mailBoxService: null,
@@ -213,20 +213,20 @@
           }
         })
       })
-      this.mailBoxService.list({readStatus: 0, current: 1, size: 10}).then(({data}) => {
-        this.noticeTabs[1].count = data.total
-        this.noticeTabs[1].url = '/mailbox/index'
-        this.noticeTabs[1].list = data.records.map((item) => {
-          return {
-            id: item.id,
-            avatar: item.sender.photo,
-            title: item.mailDTO.title,
-            description: item.mailDTO.content,
-            datetime: item.sendtime,
-            type: '站内信'
-          }
-        })
-      })
+      // this.mailBoxService.list({readStatus: 0, current: 1, size: 10}).then(({data}) => {
+      //   this.noticeTabs[1].count = data.total
+      //   this.noticeTabs[1].url = '/mailbox/index'
+      //   this.noticeTabs[1].list = data.records.map((item) => {
+      //     return {
+      //       id: item.id,
+      //       avatar: item.sender.photo,
+      //       title: item.mailDTO.title,
+      //       description: item.mailDTO.content,
+      //       datetime: item.sendtime,
+      //       type: '站内信'
+      //     }
+      //   })
+      // })
     },
     mounted () {
       if (this.defaultLayout === 'top') {

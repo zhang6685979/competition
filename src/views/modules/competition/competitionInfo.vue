@@ -5,7 +5,7 @@
       <el-divider></el-divider>
       <el-tabs v-model="activeName">
         <el-tab-pane label="报名管理" name="1">
-          <CompetitionSignupList :id="$route.query.cid"></CompetitionSignupList>
+          <CompetitionSignupList :id.sync="$route.query.cid"></CompetitionSignupList>
         </el-tab-pane>
         <el-tab-pane label="比赛轮次" name="2">
           <CompetitionRoundsList :id="$route.query.cid"></CompetitionRoundsList>

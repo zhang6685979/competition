@@ -4,27 +4,23 @@ html, body{
     padding: 0;
 }
 .login-container {
-  display: flex;
-  align-items: center;
   width: 100%;
-  height: 100%;
   margin: 0 auto;
-  background-color: #5d94f8;
-  position: relative;
-  background-size: cover;
+  background: url("~@/assets/img/login-bg.png") no-repeat;
+  background-size: 100%;
   height: 100vh;
-  background-position: center center;
+  background-position: top center;
+  overflow: hidden;
 }
 .login-weaper {
   margin: 0 auto;
-  width: 80%;
+  width: 740px;
   // box-shadow: -4px 5px 10px rgba(0, 0, 0, 0.4);
   .el-input-group__append {
     border: none;
   }
 }
 
-.login-left,
 .login-border {
   position: relative;
   // min-height: 500px;
@@ -32,82 +28,36 @@ html, body{
   align-items: center;
   display: flex;
 }
-.login-left {
-  // border-top-left-radius: 5px;
-  // border-bottom-left-radius: 5px;
-  display: flex;
-  border-radius: 20px;
-  align-items: center;
-  width: 100%;
-  // height: 100%;
-  margin: 0 auto;
-  float: left;
-  width: 66%;
-  -webkit-box-shadow: 4px 5px 20px rgba(0, 0, 0, 0.4);
-  box-shadow: 4px 5px 20px rgba(0, 0, 0, 0.4);
-  // box-shadow:25px 25px 5px #888 ;
-  position: relative;
-}
+
 .login-border {
   border-left: none;
   border-radius: 20px;
   color: #fff;
-  background-color: #fff;
-  width: 29%;
-  float: right;
+  background: url('~@/assets/img/login-warp.png') no-repeat;
+  width: 100%;
+  height:357px;
+  margin: 0 auto;
   box-sizing: border-box;
 }
-.login-border .right img {
-  border-radius:20px;
-  width: auto;  
-  height: auto;  
-  max-width: 100%;  
-  max-height: 100%; 
-  min-height: 342px;
-}
-.login-left img {
-  border-radius:20px;
 
-  width: auto;  
-  height: auto;  
-  max-width: 100%;  
-  max-height: 100%; 
-  min-height: 342px;
-}
-.login-time {
-  position: absolute;
-  z-index: 2000;
-  left: 50px;
-  top: 25px;
+.logo{position: absolute;top: 18px;left:0;}
+.title {
   width: 100%;
   color: #fff;
-  font-weight: 200;
-  opacity: 0.9;
-  font-size: 18px;
-  overflow: hidden;
-  font-weight: 500;
-}
-.login-left .title {
-  position: absolute;
-  z-index: 2000;
-  left: 50px;
-  top: 40px;
-  width: 100%;
-  color: #fff;
-  font-weight: 200;
-  opacity: 0.9;
   font-size: 28px;
-  overflow: hidden;
   font-weight: 500;
+  text-align: center;
+  margin-top: 70px;
 }
 
 
 .login-main {
   position: absolute;
-  padding: 20px;
+  padding: 70px 20px;
   height: 100%;
-  width: 100%;
   z-index: 2000;
+  width: 45%;
+  right: 10px;
   box-sizing: border-box;
 }
 .login-main > h3 {
@@ -115,25 +65,6 @@ html, body{
 }
 .login-main > p {
   color: #76838f;
-}
-.login-title {
-  color: #4b62ea;
-  font-weight: 500;
-  font-size: 40px;
-  margin-top: 40px;
-  margin-bottom: 10px;
-  // text-align: center;
-  letter-spacing: 4px;
-}
-
-.login-sub-title {
-  color: #9289a6;
-  margin-bottom: 40px;
-  // font-weight: 500;
-  font-size: 15px;
-  margin-top: 0px;
-  // text-align: center;
-  letter-spacing: 4px;
 }
 
 
@@ -163,6 +94,8 @@ html, body{
   transition: 0.25s;
 }
 
+.footer{text-align: center;margin-top: 80px;}
+
 .mobile img{
   height: 25%;
   width: 25%;
@@ -184,91 +117,3 @@ top:10%
   box-sizing: border-box;
   vertical-align: top;
 }
-@media screen and (max-width:767px ) {
-  .mobile img{
-    height: 20%;
-    width: 20%;
-  }
-  
-  .login-form{
-    margin-top:0
-  }
-  .login-left{
-    display: none;
-  }
-  .login-border{
-    width: 100%;
-  }
-  .login-title {
-    text-align: center;
-  }
-  
-  .login-sub-title {
-    display:none;
-  }
-  .login-form .block{
-    display: none !important;
-  }
-  .login-left img {
-    min-height: 142px;
-  }
-
-  .login-border .right img {
-    border-radius:20px;
-    width: 60%;
-    min-height: 142px;
-  }
-
- }
-
-
- @media (min-width: 768px){
-  .login-form .block{
-    display: none !important;
-  }
-  .login-form{
-    margin-top:0
-  }
-  }
-  
-  @media (min-width: 992px) {
-    .login-form .block{
-      display: none !important;
-    }
-    .login-form{
-      margin-top:10
-    }
-  } 
-  @media (min-width: 1200px) {
-    .login-form .block{
-      display: inline-block !important;
-    }
-    .mobile img{
-      height: 60px;
-      width: 60px;
-    }
-    
-    .login-form{
-      margin-top:20px;
-    }
-  } 
-  @media (min-width: 1350px) {
-    .mobile img{
-      height: 80px;
-      width: 80px;
-    }
-    
-    .login-form{
-      margin-top:30px;
-    }
-  } 
-  @media (min-width: 1600px) {
-    .mobile img{
-      height: 100px;
-      width: 100px;
-    }
-    
-    .login-form{
-      margin-top:60px;
-    }
-  } 

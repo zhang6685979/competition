@@ -9,7 +9,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;
+  font-size:14px;
 }
 *,
 *:before,
@@ -187,7 +188,7 @@ img {
           color: #515a6e;
         }
       }
-      
+
     }
   }
   &__header {
@@ -499,7 +500,7 @@ img {
   .el-icon-star-on{
     color:#67c23a !important;
   }
-} 
+}
 .operation-container {
 .cell {
   padding: 10px !important;
@@ -1507,5 +1508,5 @@ span{
   color: rgb(153, 153, 153) !important;
 }
 .customClass{
-  
+
 }

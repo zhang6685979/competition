@@ -20,13 +20,6 @@
           <vxe-column type="seq" width="40"></vxe-column>
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column field="title" sortable title="直播标题">
-            <template slot-scope="scope">
-              <el-link type="primary" :underline="false" v-if="hasPermission('competition:competitionLive:edit')"
-                @click="edit(scope.row.id)">{{scope.row.title}}</el-link>
-              <el-link type="primary" :underline="false" v-else-if="hasPermission('competition:competitionLive:view')"
-                @click="view(scope.row.id)">{{scope.row.title}}</el-link>
-              <span v-else>{{scope.row.title}}</span>
-            </template>
           </vxe-column>
           <vxe-column field="image" sortable title="直播图片">
             <template slot-scope="scope" v-if="scope.row.image">
@@ -37,6 +30,9 @@
             </template>
           </vxe-column>
           <vxe-column field="url" sortable title="直播地址">
+            <template slot-scope="scope">
+              <el-link @click="showVideo(scope.row)" type="primary" :underline="false">{{scope.row.url}}</el-link>
+            </template>
           </vxe-column>
           <vxe-column field="describe0" sortable title="直播描述">
           </vxe-column>
@@ -59,6 +55,14 @@
     </div>
     <!-- 弹窗, 新增 / 修改 -->
     <CompetitionLiveForm ref="competitionLiveForm" :id="id" @refreshDataList="refreshList"></CompetitionLiveForm>
+    <el-dialog
+      :title="currItem.title||''"
+      :close-on-click-modal="false"
+       v-dialogDrag
+       width="60%"
+      :visible.sync="videoVisible">
+      <iframe :src="currItem.url||''" width="100%" height="400" frameborder="0" scrolling="yes"></iframe>
+    </el-dialog>
   </div>
 </template>
 
@@ -78,7 +82,9 @@
           pageSize: 10,
           orders: []
         },
-        loading: false
+        loading: false,
+        videoVisible:false,
+        currItem:{}
       }
     },
     components: {
@@ -166,6 +172,10 @@
       resetSearch() {
         this.$refs.searchForm.resetFields()
         this.refreshList()
+      },
+      showVideo(item){
+        this.currItem = item;
+        this.videoVisible = true;
       }
     }
   }
