@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import E from 'wangeditor'
+import E from './wangEditor'
 export default {
   name: 'WangEditor',
   data () {

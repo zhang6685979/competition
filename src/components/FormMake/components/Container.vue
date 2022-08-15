@@ -262,7 +262,7 @@
       },
       advanceFields: {
         type: Array,
-        default: () => ['fileupload', 'imgupload', 'editor', 'table','player-signup']
+        default: () => ['fileupload', 'imgupload', 'editor', 'table','instructor-signup','referee-signup','player-signup']
       },
       layoutFields: {
         type: Array,

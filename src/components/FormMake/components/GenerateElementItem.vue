@@ -243,7 +243,7 @@
       <span v-html="dataModel"></span>
     </template>
 
-    <template v-if="widget.type == 'table' || widget.type == 'player-signup'" >
+    <template v-if="widget.type == 'table' || widget.type.indexOf('signup')!=-1" >
       <fm-form-table
         :value="dataModel"
         :columns="widget.tableColumns"
