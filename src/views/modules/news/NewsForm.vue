@@ -57,7 +57,9 @@
             <el-form-item label="新闻内容" prop="content" :rules="[
                   {required: true, message:'新闻内容不能为空', trigger:'blur'}
                  ]">
-              <WangEditor ref="contentEditor" v-model="inputForm.content" />
+              <!-- <WangEditor ref="contentEditor" v-model="inputForm.content" /> -->
+              {{inputForm.content}}
+              <tiny-mce v-model="inputForm.content"></tiny-mce>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -103,6 +105,7 @@
 
 <script>
   import WangEditor from '@/components/editor/WangEditor'
+  import TinyMce from '@/components/editor/TinyMce'
   import NewsService from '@/api/news/NewsService'
   export default {
     props:{id:String},
@@ -127,7 +130,8 @@
       }
     },
     components: {
-      WangEditor
+      WangEditor,
+      TinyMce
     },
     newsService: null,
     created() {
@@ -149,14 +153,14 @@
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
-          this.$refs.contentEditor.init('')
+          //this.$refs.contentEditor.init('')
           if (method === 'edit' || method === 'view') { // 修改或者查看
             this.loading = true
             this.newsService.queryById(this.inputForm.id).then(({
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
-              this.$refs.contentEditor.init(this.inputForm.content)
+              //this.$refs.contentEditor.init(this.inputForm.content)
               this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
                   this.imageArra.push({

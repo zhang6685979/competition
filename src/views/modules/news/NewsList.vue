@@ -34,11 +34,7 @@
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column field="title" sortable title="新闻标题">
             <template slot-scope="scope">
-              <el-link type="primary" :underline="false" v-if="hasPermission('news:news:edit')"
-                @click="edit(scope.row.id)">{{scope.row.title}}</el-link>
-              <el-link type="primary" :underline="false" v-else-if="hasPermission('news:news:view')"
-                @click="view(scope.row.id)">{{scope.row.title}}</el-link>
-              <span v-else>{{scope.row.title}}</span>
+              <span>{{scope.row.title}}</span> <el-tag size="mini" v-if="scope.row.top==1">置顶</el-tag>
             </template>
           </vxe-column>
           <vxe-column field="type" sortable title="新闻类别">
