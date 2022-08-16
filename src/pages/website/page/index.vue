@@ -1,6 +1,7 @@
 <template>
   <div class="index-warp">
     <el-backtop :bottom="60"></el-backtop>
+    {{carouselList}}
     <el-carousel :interval="5000" height="560px">
       <el-carousel-item v-for="item in 4" :key="item">
         <img class="image" :src="require('../assets/images/img2.jpg')"/>
@@ -141,12 +142,32 @@
   export default {
     data() {
       return {
-        activeIndex: 0
+        activeIndex: 0,
+        newsList:[],
+        carouselList:[]
       }
     },
+    created(){
+      //this.getNewsList();
+      this.getCarouselList();
+    },
     methods: {
-      handleClick() {
-
+      getCarouselList(){
+        this.$http({
+          url: '/carousel/carousel/public/list',
+          method: 'get'
+        }).then(({data})=>{
+          this.carouselList = data;
+        })
+      },
+      getNewsList() {
+         this.$http({
+           url: '/news/news/list',
+           method: 'get'
+         }).then(({data})=>{
+           console.log(data);
+           this.newsList = data;
+         })
       }
     }
   }

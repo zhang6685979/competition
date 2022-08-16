@@ -44,7 +44,7 @@
             <el-form-item label="设备描述" prop="describe0" :rules="[
                   {required: true, message:'设备描述不能为空', trigger:'blur'}
                  ]">
-              <WangEditor ref="contentEditor" v-model="inputForm.describe0" />
+              <tiny-mce v-model="inputForm.describe0" v-if="visible"></tiny-mce>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  import WangEditor from '@/components/editor/WangEditor'
+  import TinyMce from '@/components/editor/TinyMce'
   import CompetitionEquipmentService from '@/api/competition/CompetitionEquipmentService'
   export default {
     props: {
@@ -83,7 +83,7 @@
       }
     },
     components: {
-      WangEditor
+      TinyMce
     },
     competitionEquipmentService: null,
     created() {
@@ -105,14 +105,12 @@
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
-          this.$refs.contentEditor.init('')
           if (method === 'edit' || method === 'view') { // 修改或者查看
             this.loading = true
             this.competitionEquipmentService.queryById(this.inputForm.id).then(({
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
-              this.$refs.contentEditor.init(this.inputForm.describe0)
               this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
                   this.imageArra.push({

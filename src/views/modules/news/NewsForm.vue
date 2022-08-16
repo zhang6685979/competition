@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <el-drawer :title="title" :visible.sync="visible" :wrapperClosable="false" size="70%">
+    <el-drawer :title="title" :visible.sync="visible" :wrapperClosable="false" size="70%" >
 
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
         :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
@@ -57,9 +57,7 @@
             <el-form-item label="新闻内容" prop="content" :rules="[
                   {required: true, message:'新闻内容不能为空', trigger:'blur'}
                  ]">
-              <!-- <WangEditor ref="contentEditor" v-model="inputForm.content" /> -->
-              {{inputForm.content}}
-              <tiny-mce v-model="inputForm.content"></tiny-mce>
+              <tiny-mce v-model="inputForm.content" v-if="visible"></tiny-mce>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -153,14 +151,12 @@
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
-          //this.$refs.contentEditor.init('')
           if (method === 'edit' || method === 'view') { // 修改或者查看
             this.loading = true
             this.newsService.queryById(this.inputForm.id).then(({
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
-              //this.$refs.contentEditor.init(this.inputForm.content)
               this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
                   this.imageArra.push({

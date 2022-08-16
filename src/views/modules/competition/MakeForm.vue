@@ -41,7 +41,8 @@
           "starttime": "",
           "endtime": "",
           "describe0": "",
-          "cid": ""
+          "cid": "",
+          "content":""
         }
       }
     },

@@ -39,7 +39,7 @@ export default {
         return {
           width: 1000,
           height: 600,
-          menubar: true,
+          menubar: false,
           language: 'zh_CN'
         }
       }
@@ -50,8 +50,12 @@ export default {
       apiKey,
       content: '',
       initConfig: {
-        plugins,
-        toolbar,
+        toolbar: "undo redo | fullscreen | formatselect alignleft aligncenter alignright alignjustify | link unlink | numlist bullist | image media table | fontselect fontsizeselect forecolor backcolor | bold italic underline strikethrough | indent outdent | superscript subscript | removeformat |",
+        toolbar_drawer: "sliding",
+        quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
+        plugins: "link image media table lists fullscreen quickbars",
+       // plugins,
+        //toolbar,
         width: Object.assign(defaultConfig, this.config).width,
         height: Object.assign(defaultConfig, this.config).height,
         menubar: Object.assign(defaultConfig, this.config).menubar,
@@ -92,9 +96,7 @@ export default {
   watch: {
     value: {
       handler (newValue) {
-        if (newValue !== '') {
           this.content = newValue
-        }
       },
       immediate: true
     },

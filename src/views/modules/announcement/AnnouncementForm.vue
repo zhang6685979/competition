@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer :title="title" :visible.sync="visible" :wrapperClosable="false" size="50%">
+    <el-drawer :title="title" :visible.sync="visible" :wrapperClosable="false" size="70%">
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
         :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
         <el-row :gutter="15">
@@ -15,7 +15,7 @@
             <el-form-item label="公告内容" prop="content" :rules="[
                   {required: true, message:'公告内容不能为空', trigger:'blur'}
                  ]">
-              <WangEditor ref="contentEditor" v-model="inputForm.content" />
+              <tiny-mce v-model="inputForm.content" v-if="visible"></tiny-mce>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -58,7 +58,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-         
+
             <el-form-item label="">
               <el-button size="small" type="primary" v-if="method != 'view'" @click="doSubmit()" v-noMoreClick>确定
               </el-button>
@@ -72,8 +72,8 @@
 </template>
 
 <script>
-  import WangEditor from '@/components/editor/WangEditor'
   import AnnouncementService from '@/api/announcement/AnnouncementService'
+   import TinyMce from '@/components/editor/TinyMce'
   export default {
     props:{id:String},
     data() {
@@ -95,7 +95,7 @@
       }
     },
     components: {
-      WangEditor
+      TinyMce
     },
     announcementService: null,
     created() {
@@ -116,14 +116,12 @@
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
-          this.$refs.contentEditor.init('')
           if (method === 'edit' || method === 'view') { // 修改或者查看
             this.loading = true
             this.announcementService.queryById(this.inputForm.id).then(({
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
-              this.$refs.contentEditor.init(this.inputForm.content)
               this.loading = false
             })
           }
