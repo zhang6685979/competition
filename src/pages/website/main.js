@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import './assets/css/variables.scss'
 import './assets/css/style.css'
 import httpRequest from '@/utils/httpRequest'
 Vue.prototype.$http = httpRequest // ajax请求方法

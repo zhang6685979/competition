@@ -1,9 +1,9 @@
 <template>
   <el-card class="box-card">
     <el-row :gutter="20">
-      <el-col :span="6" v-for="(item,index) in dataList" :key="index">
+      <el-col :span="12" v-for="(item,index) in dataList" :key="index">
         <el-card :body-style="{ padding: '0px' }" class="item" shadow="never">
-          <a :href="item.url" target="_blank"><img :src="item.image" class="certificate-image"></a>
+          <img :src="item.image" class="certificate-image">
           <div class="other-info">
             <h5 :title="item.title">{{ item.title }}</h5>
             <p :title="item.describe0">{{item.describe0}}</p>
@@ -41,7 +41,7 @@
       getList(currentPage) {
         this.tablePage.currentPage = currentPage || 1;
         this.$http({
-          url: '/platform/platform/public/list',
+          url: '/certificate/certificate/public/list',
           method: 'get',
           params: {
             'current': this.tablePage.currentPage,
@@ -65,11 +65,11 @@
 
     .item{
       border: none!important;
-      img{width:100%;height:170px;}
+      img{width:100%;height:112px;}
       .other-info{
         h5{
           color: #303133;
-          font-size: 16px;
+          font-size: 18px;
           margin: 10px 0;
           font-weight: 400;
           white-space: nowrap;
@@ -77,7 +77,7 @@
           text-overflow: ellipsis;
         }
         p{
-          font-size: 14px;
+          font-size: 16px;
           color: #707070;
           line-height: 25px;
           height:80px;

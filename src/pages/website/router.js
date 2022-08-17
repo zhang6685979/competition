@@ -14,15 +14,20 @@ export default new Router({
 			name: 'news',
 			component: () => import('./page/news.vue')
 		},
+    {
+    	path: '/news/:id',
+    	name: 'newsInfo',
+    	component: () => import('./page/newsInfo.vue')
+    },
 		{
 			path: '/competitions',
 			name: 'competitions',
 			component: () => import('./page/competitions.vue')
 		},
 		{
-			path: '/credentials',
-			name: 'credentials',
-			component: () => import('./page/credentials.vue')
+			path: '/certificate',
+			name: 'certificate',
+			component: () => import('./page/certificate.vue')
 		},
 		{
 			path: '/examination',

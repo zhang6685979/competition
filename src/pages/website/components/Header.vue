@@ -4,9 +4,9 @@
         <div class="nav-warp">
            <ul class="nav">
              <li :class="$route.path=='/'?'active':''"><a @click="goto('/')">首页</a></li>
-             <li :class="$route.path=='/news'?'active':''"><a @click="goto('/news')">新闻资讯</a></li>
+             <li :class="$route.path.indexOf('/news')!=-1?'active':''"><a @click="goto('/news')">新闻资讯</a></li>
              <li :class="$route.path=='/competitions'?'active':''"><a @click="goto('/competitions')" >大赛专区</a></li>
-             <li :class="$route.path=='/credentials'?'active':''"><a @click="goto('/credentials')">技能认证</a></li>
+             <li :class="$route.path=='/certificate'?'active':''"><a @click="goto('/certificate')">技能认证</a></li>
              <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a></li>
              <li :class="$route.path=='/suggestion'?'active':''"><a @click="goto('/suggestion')">沟通与建议</a></li>
            </ul>

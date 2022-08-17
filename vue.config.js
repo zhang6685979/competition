@@ -11,40 +11,32 @@ module.exports = {
     config.resolve.alias.set('@/', resolve('src'))
     // config.plugins.delete('prefetch')
   },
-  assetsDir:"static",
+  assetsDir: "static",
   css: {
     loaderOptions: {
       less: {
-        modifyVars: {
-        },
+        modifyVars: {},
         javascriptEnabled: true,
       }
     }
   },
 
-    // 入口设置
-    pages: {
-      datav: {
-        entry: 'src/pages/datav/main.js',
-        template: 'src/pages/datav/index.html',
-        title: 'datav',
-        filename: 'datav.html',
-        chunks: ['chunk-vendors', 'chunk-common',  'datav']
-      },
-      index: {
-        entry: 'src/main.js',
-        template: 'public/index.html',
-        title: 'index.html',
-        filename: 'index.html'
-      },
-	  website:{
-		  entry: 'src/pages/website/main.js',
-		  template: 'src/pages/website/index.html',
-		  title: 'website',
-		  filename: 'website.html',
-		  chunks: ['chunk-vendors', 'chunk-common',  'website']
-	  }
+  // 入口设置
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      template: 'public/index.html',
+      title: '技能竞赛管理平台',
+      filename: 'index.html'
     },
+    website: {
+      entry: 'src/pages/website/main.js',
+      template: 'src/pages/website/index.html',
+      title: '技能竞赛与认证服务平台',
+      filename: 'website.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'website']
+    }
+  },
   devServer: {
     index: '/index.html', // 运行时，默认打开index页面
     port: 3000,

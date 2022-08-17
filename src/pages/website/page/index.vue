@@ -3,7 +3,7 @@
     <el-backtop :bottom="60"></el-backtop>
     <el-carousel :interval="5000" height="560px">
       <el-carousel-item v-for="(item,index) in carouselList" :key="index">
-        <a :href="item.url" target="_blank"><img :src="item.image" class="image"/></a>
+        <a :href="item.url" target="_blank"><img :src="item.image" class="image" /></a>
       </el-carousel-item>
     </el-carousel>
     <div class="cont-warp">
@@ -11,7 +11,7 @@
         <el-col :span="12">
           <el-carousel height="250px">
             <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
-              <a :href="item.url" target="_blank"><img :src="item.image" class="image"/></a>
+              <router-link  :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
               <p class="carousel-title">{{item.title}}</p>
             </el-carousel-item>
           </el-carousel>
@@ -23,13 +23,13 @@
               <li :class="{active:activeIndex==1}" @click="activeIndex=1">通知公告</li>
             </ul>
             <div class="border" :style="{left:activeIndex==0?'25px':'110px'}"></div>
-            <button class="more">更多+</button>
+            <button class="more" @click="$router.push(activeIndex==0?'/news':'')">更多+</button>
           </div>
           <div class="tab-content">
             <div class="news-list" v-show="activeIndex==0">
               <div class="news-item" v-for="(item,index) in newsList.slice(0,5)">
                 <div class="news-title">
-                  <a href=""><span class="circle"></span>{{item.title}}</a>
+                  <router-link  :to="{path:'/news/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
                 </div>
                 <div class="news-status">
                   <span type="danger" v-if="item.latest=='1'">new</span>
@@ -56,8 +56,9 @@
       <div class="competition">
         <div class="clearfix">
           <ul>
-            <li v-for="item in $dictUtils.getDictList('jab_new_type')" :class="{active:item.value==type}" :key="item.value" :label="item.label" @click="getCompetitionList(item.value)">{{item.label}}</li>
-            <li>更多.....</li>
+            <li v-for="item in $dictUtils.getDictList('jab_new_type')" :class="{active:item.value==type}"
+              :key="item.value" :label="item.label" @click="getCompetitionList(item.value)">{{item.label}}</li>
+            <li @click="$router.push('/competitions')">更多.....</li>
           </ul>
         </div>
         <el-row :gutter="15" class="mt-20">
@@ -75,7 +76,7 @@
       <div class="clearfix competition">
         <ul>
           <li>车辆维修与保养证书</li>
-          <li>更多.....</li>
+          <li @click="$router.push('/certificate')">更多.....</li>
         </ul>
       </div>
       <el-row :gutter="10" class="competition">
@@ -90,13 +91,13 @@
         <ul>
           <li>理论考核平台</li>
           <li>实训竞赛平台</li>
-          <li>更多.....</li>
+          <li @click="$router.push('/examination')">更多.....</li>
         </ul>
       </div>
       <el-row :gutter="10" class="competition">
         <el-col :span="8" v-for="(item, index) in platformList.slice(0,3)" :key="index">
           <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img :src="item.image" class="platform-image">
+            <a :href="item.url" target="_blank"><img :src="item.image" class="platform-image"></a>
           </el-card>
         </el-col>
       </el-row>
@@ -109,71 +110,85 @@
     data() {
       return {
         activeIndex: 0,
-        newsList:[],
-        carouselList:[],
-        announcementList:[],
-        competitionList:[],
-        certificateList:[],
-        platformList:[],
-        type:''//比赛分类
+        newsList: [],
+        carouselList: [],
+        announcementList: [],
+        competitionList: [],
+        certificateList: [],
+        platformList: [],
+        type: '' //比赛分类
       }
     },
-    created(){
-      this.getNewsList();//新闻列表
-      this.getCarouselList();//轮播图列表
-      this.getAnnouncementList();//公告列表
+    created() {
+      this.getNewsList(); //新闻列表
+      this.getCarouselList(); //轮播图列表
+      this.getAnnouncementList(); //公告列表
       this.getCompetitionList();
       this.getCertificateList();
       this.getPlatformList();
     },
     methods: {
-      getCarouselList(){
+      getCarouselList() {
         this.$http({
           url: '/carousel/carousel/public/list',
           method: 'get'
-        }).then(({data})=>{
+        }).then(({
+          data
+        }) => {
           this.carouselList = data.records;
         })
       },
       getNewsList() {
-         this.$http({
-           url: '/news/news/public/list',
-           method: 'get'
-         }).then(({data})=>{
-           this.newsList = data.records;
-         })
+        this.$http({
+          url: '/news/news/public/list',
+          method: 'get'
+        }).then(({
+          data
+        }) => {
+          this.newsList = data.records;
+        })
       },
       getAnnouncementList() {
-         this.$http({
-           url: '/announcement/announcement/public/list',
-           method: 'get'
-         }).then(({data})=>{
-           this.announcementList = data.records;
-         })
+        this.$http({
+          url: '/announcement/announcement/public/list',
+          method: 'get'
+        }).then(({
+          data
+        }) => {
+          this.announcementList = data.records;
+        })
       },
-      getCompetitionList(type){
+      getCompetitionList(type) {
         this.type = type;
         this.$http({
           url: '/competition/competition/public/list',
           method: 'get',
-          params:{type: type}
-        }).then(({data})=>{
+          params: {
+            type: type
+          }
+        }).then(({
+          data
+        }) => {
           this.competitionList = data.records;
         })
       },
-      getCertificateList(){
+      getCertificateList() {
         this.$http({
           url: '/certificate/certificate/public/list',
           method: 'get'
-        }).then(({data})=>{
+        }).then(({
+          data
+        }) => {
           this.certificateList = data.records;
         })
       },
-      getPlatformList(){
+      getPlatformList() {
         this.$http({
           url: '/platform/platform/public/list',
           method: 'get'
-        }).then(({data})=>{
+        }).then(({
+          data
+        }) => {
           this.platformList = data.records;
         })
       }
@@ -183,20 +198,22 @@
 
 <style lang="scss">
   .index-warp {
-    margin-top: -90px;
+    margin-top: -110px;
+    background-color: #fff;
   }
 
   .cont-warp {
     max-width: 1200px;
     margin: 0 auto;
-    .carousel-title{
+
+    .carousel-title {
       position: absolute;
       width: 100%;
       height: 24px;
       padding-left: 15px;
       font-size: 14px;
       bottom: 0;
-      background:rgb(26 19 17 / 50%);
+      background: rgb(26 19 17 / 50%);
       color: #ffffff;
     }
   }
@@ -217,8 +234,11 @@
   }
 
   .competition {
-    margin-bottom: 20px;
     padding: 0 15px;
+    margin-bottom: 20px;
+    &:last-child{
+      margin-bottom:0;
+    }
   }
 
   .competition ul li {
@@ -227,8 +247,11 @@
     padding: 0 10px;
     border-right: 1px solid #1A1718;
     cursor: pointer;
-    font-size:12px;
-    &.active{color:#E50006}
+    font-size: 12px;
+
+    &.active {
+      color: #E50006
+    }
   }
 
   .competition ul li:first-child {
@@ -241,9 +264,13 @@
 
   .image {
     width: 100%;
-    height:100%;
+    height: 100%;
   }
-  .competition-image{width:100%;height:156px;}
+
+  .competition-image {
+    width: 100%;
+    height: 156px;
+  }
 
   .desc {
     padding: 14px;
@@ -274,7 +301,17 @@
     border-bottom: 1px solid #E50006;
     height: 30px;
   }
-  .mytabs .more{border:none;background: #DC000C;border-radius: 5px;padding:3px 7px;color: #fff;float: right;font-size: 12px;}
+
+  .mytabs .more {
+    border: none;
+    background: #DC000C;
+    border-radius: 5px;
+    padding: 3px 7px;
+    color: #fff;
+    float: right;
+    font-size: 12px;
+    cursor: pointer;
+  }
 
   .mytabs li {
     display: block;
@@ -323,7 +360,7 @@
 
   .news-list .news-item {
     margin: 10px 0;
-    height:30px;
+    height: 30px;
   }
 
   .news-list .news-item .news-title {
@@ -334,7 +371,15 @@
     line-height: 24px;
   }
 
-  .news-list .news-item .news-title .circle{width:8px;height: 8px;background-color:#DC000C;border-radius: 50%;vertical-align: middle;padding: 0;margin-right: 10px;}
+  .news-list .news-item .news-title .circle {
+    width: 8px;
+    height: 8px;
+    background-color: #DC000C;
+    border-radius: 50%;
+    vertical-align: middle;
+    padding: 0;
+    margin-right: 10px;
+  }
 
   .news-list .news-item .news-status {
     width: 75px;
@@ -366,9 +411,18 @@
     padding: 0 5px;
     text-align: center;
   }
-  .certificate-image{width: 100%;height:112px;}
-  .platform-image{width:100%;height:170px;}
-  .el-backtop{color: #E50006;}
 
+  .certificate-image {
+    width: 100%;
+    height: 112px;
+  }
 
+  .platform-image {
+    width: 100%;
+    height: 170px;
+  }
+
+  .el-backtop {
+    color: #E50006;
+  }
 </style>
