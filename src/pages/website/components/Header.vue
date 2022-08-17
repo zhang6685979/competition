@@ -12,8 +12,8 @@
            </ul>
         </div>
         <div class="siteNav">
-          <a href="/user-login.html">登录</a>
-          <a href="/form/2">账号申请</a>
+          <a @click="goto('/login')">登录</a>
+          <a @click="goto('/register')">账号申请</a>
         </div>
   </div>
 </template>

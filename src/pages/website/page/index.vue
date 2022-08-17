@@ -1,18 +1,18 @@
 <template>
   <div class="index-warp">
     <el-backtop :bottom="60"></el-backtop>
-    {{carouselList}}
     <el-carousel :interval="5000" height="560px">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <img class="image" :src="require('../assets/images/img2.jpg')"/>
+      <el-carousel-item v-for="(item,index) in carouselList" :key="index">
+        <a :href="item.url" target="_blank"><img :src="item.image" class="image"/></a>
       </el-carousel-item>
     </el-carousel>
     <div class="cont-warp">
       <el-row class="mt-30 mb-30" :gutter="20">
         <el-col :span="12">
           <el-carousel height="250px">
-            <el-carousel-item v-for="item in 4" :key="item">
-              <img :src="require('../assets/images/bisai.png')" class="image"/>
+            <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
+              <a :href="item.url" target="_blank"><img :src="item.image" class="image"/></a>
+              <p class="carousel-title">{{item.title}}</p>
             </el-carousel-item>
           </el-carousel>
         </el-col>
@@ -26,55 +26,25 @@
             <button class="more">更多+</button>
           </div>
           <div class="tab-content">
-            <div class="news-list">
-              <div class="news-item">
+            <div class="news-list" v-show="activeIndex==0">
+              <div class="news-item" v-for="(item,index) in newsList.slice(0,5)">
                 <div class="news-title">
-                  <a
-                    href="">关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知</a>
+                  <a href=""><span class="circle"></span>{{item.title}}</a>
                 </div>
                 <div class="news-status">
-                  <span type="danger">new</span>
-                  <p>2022-08-08</p>
+                  <span type="danger" v-if="item.latest=='1'">new</span>
+                  <p>{{item.updateDate&&item.updateDate.substring(0,10)}}</p>
                 </div>
               </div>
-              <div class="news-item">
+            </div>
+            <div class="news-list" v-show="activeIndex==1">
+              <div class="news-item" v-for="(item,index) in announcementList.slice(0,5)">
                 <div class="news-title">
-                  <a
-                    href="">关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知</a>
+                  <a href=""><span class="circle"></span>{{item.title}}</a>
                 </div>
                 <div class="news-status">
-                  <span type="danger">new</span>
-                  <p>2022-08-08</p>
-                </div>
-              </div>
-              <div class="news-item">
-                <div class="news-title">
-                  <a
-                    href="">关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知</a>
-                </div>
-                <div class="news-status">
-                  <span type="danger">new</span>
-                  <p>2022-08-08</p>
-                </div>
-              </div>
-              <div class="news-item">
-                <div class="news-title">
-                  <a
-                    href="">关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知</a>
-                </div>
-                <div class="news-status">
-                  <span type="danger">new</span>
-                  <p>2022-08-08</p>
-                </div>
-              </div>
-              <div class="news-item">
-                <div class="news-title">
-                  <a
-                    href="">关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知关于举办2022一带一路暨金砖国家技能发展与技术创新大赛之飞机维修赛项的报名预通知</a>
-                </div>
-                <div class="news-status">
-                  <span type="danger">new</span>
-                  <p>2022-08-08</p>
+                  <span type="danger" v-if="item.latest=='1'">new</span>
+                  <p>{{item.updateDate&&item.updateDate.substring(0,10)}}</p>
                 </div>
               </div>
             </div>
@@ -86,20 +56,16 @@
       <div class="competition">
         <div class="clearfix">
           <ul>
-            <li>车辆技术</li>
-            <li>运营管理</li>
-            <li>飞机维修</li>
-            <li>应急安全</li>
-            <li>列车司机</li>
+            <li v-for="item in $dictUtils.getDictList('jab_new_type')" :class="{active:item.value==type}" :key="item.value" :label="item.label" @click="getCompetitionList(item.value)">{{item.label}}</li>
             <li>更多.....</li>
           </ul>
         </div>
         <el-row :gutter="15" class="mt-20">
-          <el-col :span="6" v-for="(o, index) in 4" :key="o">
+          <el-col :span="6" v-for="(item, index) in competitionList.slice(0,4)" :key="index">
             <el-card :body-style="{ padding: '0px' }" shadow="never">
-              <img :src="require('../assets/images/bisai.png')" class="image">
+              <img :src="item.image" class="competition-image">
               <div class="desc">
-                <span>关于举办2022一带一路暨金砖国家技能发展与技术创新大之飞机维修赛项的报名预通知</span>
+                {{item.describe0}}
               </div>
             </el-card>
           </el-col>
@@ -113,9 +79,9 @@
         </ul>
       </div>
       <el-row :gutter="10" class="competition">
-        <el-col :span="12" v-for="(o, index) in 2" :key="o">
+        <el-col :span="12" v-for="(item, index) in certificateList.slice(0,2)" :key="index">
           <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img :src="require('../assets/images/zhengshu.png')" class="image">
+            <img :src="item.image" class="certificate-image">
           </el-card>
         </el-col>
       </el-row>
@@ -128,9 +94,9 @@
         </ul>
       </div>
       <el-row :gutter="10" class="competition">
-        <el-col :span="8" v-for="(o, index) in 3" :key="o">
+        <el-col :span="8" v-for="(item, index) in platformList.slice(0,3)" :key="index">
           <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img :src="require('../assets/images/kaoshi.png')" class="image">
+            <img :src="item.image" class="platform-image">
           </el-card>
         </el-col>
       </el-row>
@@ -144,12 +110,21 @@
       return {
         activeIndex: 0,
         newsList:[],
-        carouselList:[]
+        carouselList:[],
+        announcementList:[],
+        competitionList:[],
+        certificateList:[],
+        platformList:[],
+        type:''//比赛分类
       }
     },
     created(){
-      //this.getNewsList();
-      this.getCarouselList();
+      this.getNewsList();//新闻列表
+      this.getCarouselList();//轮播图列表
+      this.getAnnouncementList();//公告列表
+      this.getCompetitionList();
+      this.getCertificateList();
+      this.getPlatformList();
     },
     methods: {
       getCarouselList(){
@@ -157,23 +132,56 @@
           url: '/carousel/carousel/public/list',
           method: 'get'
         }).then(({data})=>{
-          this.carouselList = data;
+          this.carouselList = data.records;
         })
       },
       getNewsList() {
          this.$http({
-           url: '/news/news/list',
+           url: '/news/news/public/list',
            method: 'get'
          }).then(({data})=>{
-           console.log(data);
-           this.newsList = data;
+           this.newsList = data.records;
          })
+      },
+      getAnnouncementList() {
+         this.$http({
+           url: '/announcement/announcement/public/list',
+           method: 'get'
+         }).then(({data})=>{
+           this.announcementList = data.records;
+         })
+      },
+      getCompetitionList(type){
+        this.type = type;
+        this.$http({
+          url: '/competition/competition/public/list',
+          method: 'get',
+          params:{type: type}
+        }).then(({data})=>{
+          this.competitionList = data.records;
+        })
+      },
+      getCertificateList(){
+        this.$http({
+          url: '/certificate/certificate/public/list',
+          method: 'get'
+        }).then(({data})=>{
+          this.certificateList = data.records;
+        })
+      },
+      getPlatformList(){
+        this.$http({
+          url: '/platform/platform/public/list',
+          method: 'get'
+        }).then(({data})=>{
+          this.platformList = data.records;
+        })
       }
     }
   }
 </script>
 
-<style>
+<style lang="scss">
   .index-warp {
     margin-top: -90px;
   }
@@ -181,6 +189,16 @@
   .cont-warp {
     max-width: 1200px;
     margin: 0 auto;
+    .carousel-title{
+      position: absolute;
+      width: 100%;
+      height: 24px;
+      padding-left: 15px;
+      font-size: 14px;
+      bottom: 0;
+      background:rgb(26 19 17 / 50%);
+      color: #ffffff;
+    }
   }
 
   .title {
@@ -210,6 +228,7 @@
     border-right: 1px solid #1A1718;
     cursor: pointer;
     font-size:12px;
+    &.active{color:#E50006}
   }
 
   .competition ul li:first-child {
@@ -224,11 +243,19 @@
     width: 100%;
     height:100%;
   }
+  .competition-image{width:100%;height:156px;}
 
   .desc {
     padding: 14px;
     background-color: #E0E1E4;
     position: relative;
+    font-size: 14px;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 
   .desc:after {
@@ -247,7 +274,7 @@
     border-bottom: 1px solid #E50006;
     height: 30px;
   }
-  .mytabs .more{border:none;background: #E7001C;border-radius: 5px;padding:0 8px;color: #fff;float: right;}
+  .mytabs .more{border:none;background: #DC000C;border-radius: 5px;padding:3px 7px;color: #fff;float: right;font-size: 12px;}
 
   .mytabs li {
     display: block;
@@ -255,6 +282,7 @@
     padding-right: 20px;
     color: #1A1718;
     cursor: pointer;
+    font-size: 18px;
   }
 
   .mytabs li:hover,
@@ -295,6 +323,7 @@
 
   .news-list .news-item {
     margin: 10px 0;
+    height:30px;
   }
 
   .news-list .news-item .news-title {
@@ -302,14 +331,17 @@
     align-items: center;
     display: flex;
     padding-right: 15px;
+    line-height: 24px;
   }
+
+  .news-list .news-item .news-title .circle{width:8px;height: 8px;background-color:#DC000C;border-radius: 50%;vertical-align: middle;padding: 0;margin-right: 10px;}
 
   .news-list .news-item .news-status {
     width: 75px;
     font-size: 12px;
   }
 
-  .news-list .news-item a {
+  .news-list .news-item .news-title a {
     overflow: hidden;
 
     text-overflow: ellipsis;
@@ -334,6 +366,8 @@
     padding: 0 5px;
     text-align: center;
   }
+  .certificate-image{width: 100%;height:112px;}
+  .platform-image{width:100%;height:170px;}
   .el-backtop{color: #E50006;}
 
 

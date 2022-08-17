@@ -33,6 +33,16 @@ export default new Router({
 			path: '/suggestion',
 			name: 'suggestion',
 			component: () => import('./page/suggestion.vue')
-		}
+		},
+    {
+    	path: '/login',
+    	name: 'login',
+    	component: () => import('./page/login.vue')
+    },
+    {
+    	path: '/register',
+    	name: 'register',
+    	component: () => import('./page/register.vue')
+    }
 	]
 })

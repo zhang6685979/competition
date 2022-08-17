@@ -32,4 +32,11 @@ export default class MemberService {
       params: params
     })
   }
+  register (inputForm) {
+    return request({
+      url: '/member/member/public/register',
+      method: 'post',
+      data: inputForm
+    })
+  }
 }
