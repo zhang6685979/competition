@@ -7,11 +7,12 @@ export default class LoginService {
       method: 'get'
     })
   }
-  login (data) {
+  login (data, type) {
     return request({
       url: '/sys/login',
       method: 'post',
-      data: data
+      data: data,
+      params: {type}
     })
   }
   logout () {

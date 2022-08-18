@@ -47,8 +47,7 @@
           uuid:'',
           username: '',
           password: '',
-          code: '',
-          type: 1
+          code: ''
         }
       }
     },
@@ -65,7 +64,7 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
-            this.loginService.login(this.inputForm).then(({
+            this.loginService.login(this.inputForm,1).then(({
               data
             }) => {
               debugger;
