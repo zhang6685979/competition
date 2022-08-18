@@ -3,7 +3,7 @@
 
     <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
       <el-col :span="6">
-          <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
+          <router-link class="thumbnail" :to="{path:'/notice/'+item.id}">
           <img :src="item.image" ></router-link>
       </el-col>
       <el-col :span="18">
@@ -14,7 +14,7 @@
             <span>
               <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
           </div>
-          <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
+          <router-link :to="{path:'/notice/'+item.id}">{{item.title}}</router-link>
         </div>
         <p class="item-content">
           {{item.describe0}}
@@ -45,13 +45,13 @@
       }
     },
     created() {
-      this.getList();
+      this.getNewsList();
     },
     methods: {
-      getList(currentPage) {
+      getNewsList(currentPage) {
         this.tablePage.currentPage = currentPage||1;
         this.$http({
-          url: '/news/news/public/list',
+          url: '/announcement/announcement/public/list',
           method: 'get',
           params: {
             'current': this.tablePage.currentPage,

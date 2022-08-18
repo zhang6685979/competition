@@ -23,7 +23,7 @@
               <li :class="{active:activeIndex==1}" @click="activeIndex=1">通知公告</li>
             </ul>
             <div class="border" :style="{left:activeIndex==0?'25px':'110px'}"></div>
-            <button class="more" @click="$router.push(activeIndex==0?'/news':'')">更多+</button>
+            <button class="more" @click="$router.push(activeIndex==0?'/news':'/notice')">更多+</button>
           </div>
           <div class="tab-content">
             <div class="news-list" v-show="activeIndex==0">
@@ -222,7 +222,7 @@
     font-size: 22px;
     line-height: 22px;
     font-weight: bold;
-    border-left: 5px solid #E50006;
+    border-left: 5px solid #DC000C;
     padding-left: 10px;
     margin-bottom: 15px;
   }
@@ -250,7 +250,7 @@
     font-size: 12px;
 
     &.active {
-      color: #E50006
+      color: #DC000C
     }
   }
 
@@ -259,7 +259,7 @@
   }
 
   .competition ul li:last-child {
-    color: #E50006;
+    color: #DC000C;
   }
 
   .image {
@@ -290,7 +290,7 @@
     display: block;
     width: 64px;
     height: 5px;
-    background-color: #E50006;
+    background-color: #DC000C;
     position: absolute;
     top: 0;
     left: 15px;
@@ -298,7 +298,7 @@
 
   .mytabs {
     position: relative;
-    border-bottom: 1px solid #E50006;
+    border-bottom: 1px solid #DC000C;
     height: 30px;
   }
 
@@ -324,7 +324,7 @@
 
   .mytabs li:hover,
   .mytabs li.active {
-    color: #E50006;
+    color: #DC000C;
   }
 
 
@@ -341,7 +341,7 @@
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     border-bottom: 0;
-    border-top: 6px solid #E50006;
+    border-top: 6px solid #DC000C;
     position: absolute;
     top: 0;
     left: 0;
@@ -406,7 +406,7 @@
   .news-list .news-item span {
     display: inline-block;
     border-radius: 5px;
-    background-color: #E7001C;
+    background-color: #DC000C;
     color: #fff;
     padding: 0 5px;
     text-align: center;
@@ -423,6 +423,6 @@
   }
 
   .el-backtop {
-    color: #E50006;
+    color: #DC000C;
   }
 </style>

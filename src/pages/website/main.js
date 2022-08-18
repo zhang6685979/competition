@@ -12,6 +12,8 @@ Vue.prototype.validator = validator
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 import router from './router.js'
+import FormMake from '@/components/FormMake/index'
+Vue.use(FormMake);
 new Vue({
 	router,
   render: h => h(App),

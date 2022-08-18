@@ -5,6 +5,7 @@
            <ul class="nav">
              <li :class="$route.path=='/'?'active':''"><a @click="goto('/')">首页</a></li>
              <li :class="$route.path.indexOf('/news')!=-1?'active':''"><a @click="goto('/news')">新闻资讯</a></li>
+             <li :class="$route.path.indexOf('/notice')!=-1?'active':''"><a @click="goto('/notice')">通知公告</a></li>
              <li :class="$route.path.indexOf('/competitions')!=-1?'active':''"><a @click="goto('/competitions')" >大赛专区</a></li>
              <li :class="$route.path=='/certificate'?'active':''"><a @click="goto('/certificate')">技能认证</a></li>
              <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a></li>

@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <div>
 
     <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
       <el-col :span="6">
@@ -29,7 +29,7 @@
     </div>
 
 
-  </el-card>
+  </div>
 </template>
 
 <script>
@@ -55,14 +55,14 @@
           method: 'get',
           params: {
             'current': this.tablePage.currentPage,
-            'size': this.tablePage.pageSize
+            'size': this.tablePage.pageSize,
+            'cid':this.$route.params.id
           }
         }).then(({
           data
         }) => {
           this.dataList = data.records
           this.tablePage.total = data.total
-          this.$forceUpdate()
         })
       }
     }
@@ -70,54 +70,49 @@
 </script>
 
 <style lang="scss" scoped>
-  .box-card {
-    width: 80%;
-    margin: 0 auto;
+ .item {
+   border-bottom: 1px solid #C0C4CC;
+   padding: 10px 0;
 
-    .item {
-      border-bottom: 1px solid #C0C4CC;
-      padding: 10px 0;
+   .thumbnail {
+     display: block;
+     width: 100%;
+     height: 160px;
 
-      .thumbnail {
-        display: block;
-        width: 100%;
-        height: 160px;
+     img {
+       width: 100%;
+       height: 100%
+     }
 
-        img {
-          width: 100%;
-          height: 100%
-        }
+   }
 
-      }
+   .item-heading {
+     margin-top: 10px;
 
-      .item-heading {
-        margin-top: 10px;
+     a {
+       font-size: 20px;
+       font-weight: bold;
+       color: #303133;
+       line-height: 30px;
+     }
 
-        a {
-          font-size: 20px;
-          font-weight: bold;
-          color: #303133;
-          line-height: 30px;
-        }
+     .text-muted {
+       float: right;
+       colot: #707070;
+       font-size: 16px;
+     }
+   }
 
-        .text-muted {
-          float: right;
-          colot: #707070;
-          font-size: 16px;
-        }
-      }
+   .item-content {
+     font-size: 16px;
+     color: #707070;
+     line-height: 30px;
+     ;
+   }
+ }
 
-      .item-content {
-        font-size: 16px;
-        color: #707070;
-        line-height: 30px;
-        ;
-      }
-    }
-
-    .pager {
-      text-align: center;
-      padding: 20px;
-    }
-  }
+ .pager {
+   text-align: center;
+   padding: 20px;
+ }
 </style>

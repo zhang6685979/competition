@@ -19,6 +19,16 @@ export default new Router({
     	name: 'newsInfo',
     	component: () => import('./page/newsInfo.vue')
     },
+    {
+    	path: '/notice',
+    	name: 'notice',
+    	component: () => import('./page/notice.vue')
+    },
+    {
+    	path: '/notice/:id',
+    	name: 'noticeInfo',
+    	component: () => import('./page/noticeInfo.vue')
+    },
 		{
 			path: '/competitions',
 			name: 'competitions',
@@ -27,7 +37,54 @@ export default new Router({
     {
     	path: '/competitions/:id',
     	name: 'competitionInfo',
-    	component: () => import('./page/competitionInfo.vue')
+      redirect: '/competition/:id/index',
+    	component: () => import('./page/competitionInfo.vue'),
+      children:[{
+        path:'/competition/:id/index',
+        name:'home',
+        component: () => import('./page/competition/index.vue')
+      },
+      {
+        path:'/competition/:id/signup',
+        name:'competition-signup',
+        component: () => import('./page/competition/signup.vue')
+      },
+      {
+        path:'/competition/:id/style',
+        name:'competition-style',
+        component: () => import('./page/competition/style.vue')
+      },
+      {
+        path:'/competition/:id/news',
+        name:'competition-news',
+        component: () => import('./page/competition/news.vue')
+      },
+      {
+        path:'/competition/:id/queryScore',
+        name:'competition-queryScore',
+        component: () => import('./page/competition/queryScore.vue')
+      },
+      {
+        path:'/competition/:id/live',
+        name:'competition-live',
+        component: () => import('./page/competition/live.vue')
+      },
+      {
+        path:'/competition/:id/device',
+        name:'competition-device',
+        component: () => import('./page/competition/device.vue')
+      },
+      {
+        path:'/competition/:id/notice',
+        name:'competition-notice',
+        component: () => import('./page/competition/notice.vue')
+      },
+      {
+        path:'/competition/:id/download',
+        name:'competition-download',
+        component: () => import('./page/competition/download.vue')
+      }]
+
     },
 		{
 			path: '/certificate',
