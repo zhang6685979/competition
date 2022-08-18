@@ -12,12 +12,12 @@
       <el-row :gutter="20" class="mt-20" v-for="(item,index) in dataList" :key="index">
         <el-col :span="12">
           <el-card :body-style="{ padding: '0px',height:'260px' }">
-            <img :src="item.image" class="bisai-img">
+            <router-link :to="'/competitions/'+item.id"><img :src="item.image" class="bisai-img"></router-link>
           </el-card>
         </el-col>
         <el-col :span="12">
           <div class="bisai-info">
-            <h5>{{item.title}}</h5>
+            <h5><router-link :to="'/competitions/'+item.id">{{item.title}}</router-link></h5>
             <p>
               {{item.describe0}}
             </p>
@@ -27,7 +27,7 @@
 
       <div class="pager">
         <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
-          :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getNewsList">
+          :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
         </el-pagination>
       </div>
     </div>
@@ -71,15 +71,14 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .container {
     background-color: #fff;
     margin-top: -20px;
-  }
-
-  .main-content {
-    max-width: 1200px;
-    margin: 20px auto 0;
+    .main-content {
+      max-width: 1200px;
+      margin: 20px auto 0;
+    }
   }
 
   .image {
@@ -96,8 +95,9 @@
     height: 260px;
     padding: 20px;
     box-sizing: border-box;
-    h5 {
-      font-size: 16px;
+    h5 a{
+      display: block;
+      font-size: 20px;
       color: #1A1718;
       font-weight: bold;
       margin-bottom: 20px;
@@ -106,16 +106,16 @@
       &:after {
         content: "";
         display: block;
-        width: 110px;
-        height: 10px;
-        background-color: #E50006;
+        width: 90px;
+        height: 6px;
+        background-color: #DC000C;
         position: absolute;
         left: 0;
         top: 0;
       }
     }
     p {
-      font-size: 14px;
+      font-size: 16px;
     }
   }
   .pager {

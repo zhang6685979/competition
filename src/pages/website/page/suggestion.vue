@@ -135,13 +135,13 @@
     height: 700px;
     background: url(../assets/images/suggest-bg.png) no-repeat #fff;
     background-position: bottom center;
-    background-size: 100%;
+    background-size: 100% 515px;
     position: relative;
 
     img {
       width: 370px;
       height: 80px;
-      margin-left: 52px;
+      margin-left: 10%;
       margin-top: 30px;
     }
 
@@ -159,11 +159,12 @@
     }
     .other-info{
       position: absolute;
-      bottom: 52px;
-          left: 88px;
-          width: 400px;
-          height: 460px;
-      img{width:390px;height:187px;margin:0 0 30px 0;}
+     position: absolute;
+     bottom: 0%;
+     left: 10%;
+     width: 30%;
+     height: 460px;
+      img{width:100%;height:187px;margin:0 0 30px 0;}
     }
     .table-data {
       font-size: 16px;

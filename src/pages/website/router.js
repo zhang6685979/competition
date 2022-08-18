@@ -24,6 +24,11 @@ export default new Router({
 			name: 'competitions',
 			component: () => import('./page/competitions.vue')
 		},
+    {
+    	path: '/competitions/:id',
+    	name: 'competitionInfo',
+    	component: () => import('./page/competitionInfo.vue')
+    },
 		{
 			path: '/certificate',
 			name: 'certificate',
