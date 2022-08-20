@@ -14,6 +14,12 @@
     components: {
       'm-header': Header,
       'm-footer': Footer
+    },
+    created(){
+      var user = localStorage.getItem('user');
+      if(user){
+        this.$store.commit('user/updateUser',JSON.parse(user))
+      }
     }
   }
 </script>

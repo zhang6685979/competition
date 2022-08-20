@@ -7,7 +7,7 @@
           <div class="desc">
             <h5>{{item.title}}</h5>
             <p>{{item.describe0}}</p>
-            <el-button size="small" type="primary">立即观看</el-button>
+            <el-button size="small" type="primary" @click="showVideo(item)">立即观看</el-button>
           </div>
         </el-card>
       </el-col>
@@ -17,6 +17,14 @@
         :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
       </el-pagination>
     </div>
+    <el-dialog
+      :title="currItem.title||''"
+      :close-on-click-modal="false"
+       v-dialogDrag
+       width="60%"
+      :visible.sync="videoVisible">
+      <iframe :src="currItem.url||''" width="100%" height="500" frameborder="0" scrolling="yes"></iframe>
+    </el-dialog>
   </div>
 </template>
 
@@ -32,7 +40,9 @@
           total: 0,
           currentPage: 1,
           pageSize: 8
-        }
+        },
+        videoVisible:false,
+        currItem:{}
       }
     },
     created() {
@@ -56,6 +66,10 @@
           this.dataList = data.records
           this.tablePage.total = data.total
         })
+      },
+      showVideo(item){
+        this.currItem = item;
+        this.videoVisible = true;
       }
     }
   }

@@ -67,7 +67,10 @@
             this.loginService.login(this.inputForm,1).then(({
               data
             }) => {
-              debugger;
+              this.$message.success("登录成功");
+              this.$cookie.set('token', data.token);
+              this.$store.commit('user/updateUser',data);
+              this.$router.push('/')
               this.loading = false
             }).catch(() => {
               this.loading = false

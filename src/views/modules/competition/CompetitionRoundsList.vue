@@ -12,8 +12,8 @@
             plain>删除</el-button>
         </template>
       </vxe-toolbar>
-      <div style="height: calc(100% - 80px);">
-        <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small"
+      <div>
+        <vxe-table border="inner" auto-resize resizable height="500" :loading="loading" size="small"
           ref="competitionRoundsTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
           :print-config="{}" :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle"
           :sort-config="{remote:true}" :data="dataList" :checkbox-config="{}">

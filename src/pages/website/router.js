@@ -37,7 +37,7 @@ export default new Router({
     {
     	path: '/competitions/:id',
     	name: 'competitionInfo',
-      redirect: '/competition/:id/index',
+      redirect: '/competition/:id/signup',
     	component: () => import('./page/competitionInfo.vue'),
       children:[{
         path:'/competition/:id/index',
