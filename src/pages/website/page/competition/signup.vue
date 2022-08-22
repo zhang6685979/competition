@@ -1,7 +1,7 @@
 <template>
   <div class="signup-list">
-    <el-row :gutter="10">
-      <el-col :span="6" v-for="(item,index) in dataList" >
+    <el-row :gutter="10" v-if="!signFormVisible">
+      <el-col :span="6" v-for="(item,index) in dataList">
         <div class="signup-item" :style="{background:colors[index%3]}" @click="showSignupForm(item.id)">
           <img :src="require('../../assets/images/signup-form.png')" alt="">
           <p>{{item.name}}</p>
@@ -14,15 +14,30 @@
         </div>
       </el-col>
     </el-row>
-    <fm-generate-form style="margin: 0 auto;" insite="true"
-      v-if="json" :data="json"
-      :value="{}" :remote="{}" ref="generateForm">
+    <div class="signup-form" v-if="signFormVisible">
+      <button class="btn" @click="signFormVisible=false">返 回</button>
+      <h5>{{signupInfo.name}}</h5>
+      <div class="signup-info">
+        <table>
+          <tr>
+            <td>报名时间：</td>
+            <td>{{signupInfo.starttime}}--{{signupInfo.endtime}}</td>
+          </tr>
+          <tr>
+            <td>报名说明:</td>
+            <td>{{signupInfo.describe0}}</td>
+          </tr>
+        </table>
+      </div>
 
-      <template v-slot:blank="scope">
-        Width<el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>
-        Height：<el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
-      </template>
-    </fm-generate-form>
+      <fm-generate-form  style="margin: 0 auto;" insite="true" v-if="json" :data="json" :value="{}" :remote="{}"
+        ref="generateForm">
+      </fm-generate-form>
+      <div class="btn-warp">
+        <button class="btn btn-save" @click="save">保存</button>
+      </div>
+    </div>
+
 
 
   </div>
@@ -32,8 +47,10 @@
   export default {
     data() {
       return {
+        signFormVisible:false,
         dataList: [],
-        json:'',
+        json: '',
+        signupInfo: {},
         colors: ['linear-gradient(180deg, #7DB3F9 0%, #4B6DF6 100%)',
           'linear-gradient(180deg, #7CD6BD 0%, #55B8CE 100%)', 'linear-gradient(180deg, #BAA4F8 0%, #7D67F3 100%)'
         ]
@@ -56,19 +73,40 @@
           this.dataList = data.records
         })
       },
-      queryById(id){
-
-      },
-      showSignupForm(id){
+      showSignupForm(id) {
         this.$http({
           url: '/competition/competitionSignup/public/queryById',
           method: 'get',
-          params: {id: id}
-        }).then(({data})=>{
-
-          this.json = JSON.parse(data.content);
+          params: {
+            id: id
+          }
+        }).then(({
+          data
+        }) => {
+          this.signFormVisible = true;
+          this.$nextTick(()=>{
+            this.signupInfo = data;
+            this.json = JSON.parse(data.content);
+          })
         })
+      },
+      save(){
+        const $form = this.$refs.generateForm
 
+        $form.getData().then(data => {
+          data.tid = this.signupInfo.id;//模板id
+          data.cid = this.$route.params.id; //大赛id
+          data.uid = 'abc';
+          this.$http({
+            url: '/competition/competitionSignup/forminput',
+            method: 'post',
+            data:data
+          }).then(({data})=>{
+            this.$message('报名成功!');
+          })
+        }).catch(e => {
+          this.$message.error(e)
+        })
       }
     }
   }
@@ -76,8 +114,8 @@
 
 <style lang="scss" scoped>
   .signup-list {
-    width: 650px;
-    margin:100px auto;
+    width: 80%;
+    margin: 100px auto;
   }
 
   .signup-item {
@@ -94,6 +132,42 @@
       color: #fff;
     }
   }
+
+  .signup-form {
+    h5 {
+      font-size: 18px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .signup-info {
+      background: rgb(230 162 60 / 10%);
+      padding: 30px;
+      font-size: 16px;
+      color: #303133;
+      margin-bottom: 20px;
+
+      p {
+        margin: 10px 0;
+      }
+    }
+    .btn-warp{text-align: center;margin-top: 20px;}
+    .btn {
+      width: 120px;
+      height: 45px;
+      background: #FFFFFF;
+      border: 1px solid #DC000C;
+      font-size: 16px;
+      color: #DC000C;
+      cursor: pointer;
+      &.btn-save{
+        background-color: #DC000C;
+        color: #fff;
+        margin-right: 15px;
+      }
+    }
+  }
+
 
   .my-signup {
     background: linear-gradient(180deg, #F09EBA 0%, #EC6085 100%);

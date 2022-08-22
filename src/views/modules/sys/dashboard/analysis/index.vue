@@ -305,7 +305,7 @@
 
   .item {
     margin-bottom: 5px;
-    border-bottom: 1px solid #DCDFE6;
+    border-bottom: 1px solid #C0C4CC;
     p {
       margin: 5px 0 2px;
       white-space: nowrap;
@@ -313,7 +313,7 @@
       overflow: hidden;
     }
     span {
-      color: #DCDFE6;
+      color: #C0C4CC;
       display: inline-block;
       margin-bottom: 5px;
     }

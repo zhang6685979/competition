@@ -1,20 +1,31 @@
 import Vue from 'vue'
 import App from './App.vue'
-import ElementUI from 'element-ui';
+import ElementUI,{Message} from 'element-ui';
 import './assets/css/variables.scss'
 import './assets/css/style.css'
 import httpRequest from '@/utils/httpRequest'
-Vue.prototype.$http = httpRequest // ajax请求方法
-import dictUtils from '@/utils/dictUtils'
-Vue.prototype.$dictUtils = dictUtils
 import validator from '@/utils/validator'
-Vue.prototype.validator = validator
-Vue.use(ElementUI);
-Vue.config.productionTip = false
+import dictUtils from '@/utils/dictUtils'
 import router from './router.js'
 import FormMake from '@/components/FormMake/index'
+import VueCookie from 'vue-cookie'
+import store from '@/store'
+
+Vue.config.productionTip = false
+Vue.prototype.$http = httpRequest // ajax请求方法
+
+Vue.prototype.$dictUtils = dictUtils
+
+Vue.prototype.validator = validator
+Vue.use(ElementUI);
+
 Vue.use(FormMake);
+Vue.use(Message)
+Vue.prototype.$message = Message;
+
+Vue.use(VueCookie)
 new Vue({
 	router,
+  store,
   render: h => h(App),
 }).$mount('#app')

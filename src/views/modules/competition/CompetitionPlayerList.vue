@@ -22,7 +22,7 @@
             <el-button v-if="hasPermission('competition:competitionPlayer:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.competitionPlayerTable && $refs.competitionPlayerTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>
         </vxe-toolbar>
-        <div style="height: calc(100% - 80px);">
+        <div style="height: 500px;">
         <vxe-table
             border="inner"
             auto-resize

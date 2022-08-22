@@ -3,7 +3,7 @@
     <div class="bg-white top">
       <el-page-header @back="goBack" content="比赛详情" class="page-header"></el-page-header>
       <el-divider></el-divider>
-      <el-tabs v-model="activeName">
+      <el-tabs v-model="activeName" style="height: calc(100% - 84px);">
         <el-tab-pane label="报名管理" name="1">
           <CompetitionSignupList :id.sync="$route.query.cid"></CompetitionSignupList>
         </el-tab-pane>
@@ -78,5 +78,12 @@
 <style>
   .el-divider--horizontal {
     margin: 10px 0;
+  }
+  .el-tabs__content{
+    height: 100%;
+    overflow: auto;
+    .el-tab-pane{
+      height:100%;
+    }
   }
 </style>

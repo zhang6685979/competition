@@ -9,12 +9,12 @@
             <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.competitionSignupTable && $refs.competitionSignupTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>
         </vxe-toolbar>
-        <div style="height: calc(100% - 80px);">
+        <div>
         <vxe-table
             border="inner"
             auto-resize
             resizable
-            height="auto"
+            height="500"
             :loading="loading"
             size="small"
             ref="competitionSignupTable"
