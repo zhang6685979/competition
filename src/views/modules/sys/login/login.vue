@@ -53,7 +53,7 @@
         captchaImg: '',
         inputForm: {
           username: 'admin',
-          password: 'admin',
+          password: 'jsglpt@123',
           uuid: '',
           code: ''
         },

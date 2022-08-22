@@ -24,7 +24,7 @@
 
     <div class="pager">
       <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
-        :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getNewsList">
+        :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
       </el-pagination>
     </div>
 

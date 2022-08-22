@@ -232,7 +232,7 @@
       margin: 0 auto 10px;
       font-weight: normal;
       color: #303133;
-      height: 32px;
+      height: 30px;
       width: 100%;
       word-break: break-all;
       text-overflow: ellipsis;

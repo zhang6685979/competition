@@ -20,13 +20,6 @@
           <vxe-column type="seq" width="40"></vxe-column>
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column field="title" sortable title="轮次标题">
-            <template slot-scope="scope">
-              <el-link type="primary" :underline="false" v-if="hasPermission('competition:competitionRounds:edit')"
-                @click="edit(scope.row.id)">{{scope.row.title}}</el-link>
-              <el-link type="primary" :underline="false" v-else-if="hasPermission('competition:competitionRounds:view')"
-                @click="view(scope.row.id)">{{scope.row.title}}</el-link>
-              <span v-else>{{scope.row.title}}</span>
-            </template>
           </vxe-column>
           <vxe-column field="starttime" sortable title="开始时间">
           </vxe-column>
@@ -34,7 +27,7 @@
           </vxe-column>
           <vxe-column fixed="right" align="center" width="200" title="操作">
             <template slot-scope="scope">
-              <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
+              <el-button type="text" icon="el-icon-view" size="small" @click="importScore(scope.row.id)">查看成绩</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
@@ -49,11 +42,21 @@
     </div>
     <!-- 弹窗, 新增 / 修改 -->
     <CompetitionRoundsForm ref="competitionRoundsForm" :id="id" @refreshDataList="refreshList"></CompetitionRoundsForm>
+    <el-dialog
+      title="导入成绩"
+      :close-on-click-modal="false"
+       v-dialogDrag
+      :visible.sync="visible"
+      width="60%"
+    >
+      <CompetitionScoreList :cid="id" :crid="currId" v-if="visible"></CompetitionScoreList>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import CompetitionRoundsForm from './CompetitionRoundsForm'
+  import CompetitionScoreList from './CompetitionScoreList'
   import CompetitionRoundsService from '@/api/competition/CompetitionRoundsService'
   export default {
     props: {
@@ -68,11 +71,14 @@
           pageSize: 10,
           orders: []
         },
-        loading: false
+        loading: false,
+        currId:'',
+        visible:false
       }
     },
     components: {
-      CompetitionRoundsForm
+      CompetitionRoundsForm,
+      CompetitionScoreList
     },
     competitionRoundsService: null,
     created() {
@@ -130,8 +136,9 @@
         this.$refs.competitionRoundsForm.init('edit', id)
       },
       // 查看
-      view(id) {
-        this.$refs.competitionRoundsForm.init('view', id)
+      importScore(id) {
+         this.currId = id;
+         this.visible = true;
       },
       // 删除
       del(id) {

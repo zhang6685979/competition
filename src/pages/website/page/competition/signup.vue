@@ -1,14 +1,14 @@
 <template>
   <div class="signup-list">
-    <el-row :gutter="10" v-if="!signFormVisible">
-      <el-col :span="6" v-for="(item,index) in dataList">
-        <div class="signup-item" :style="{background:colors[index%3]}" @click="showSignupForm(item.id)">
+    <el-row :gutter="20" v-if="!signFormVisible&&!mySignupVisible">
+      <el-col :span="12" v-for="(item,index) in dataList" :key="index">
+        <div class="signup-item" :style="{background:colors[index%5]}" @click="showSignupForm(item.id)">
           <img :src="require('../../assets/images/signup-form.png')" alt="">
           <p>{{item.name}}</p>
         </div>
       </el-col>
-      <el-col :span="6">
-        <div class="signup-item my-signup">
+      <el-col :span="12">
+        <div class="signup-item my-signup" @click="getMySignupList()">
           <img :src="require('../../assets/images/signup-form.png')" alt="">
           <p>我的报名</p>
         </div>
@@ -38,6 +38,26 @@
       </div>
     </div>
 
+    <div v-if="mySignupVisible" class="mysignup-list">
+      <button class="btn" @click="mySignupVisible=false">返 回</button>
+      <table>
+        <tr>
+          <td width="5%" align="center">#</td>
+          <td width="45%">报名名称</td>
+          <td height="30%">报名时间</td>
+          <td width="15%">状态</td>
+          <td width="10%">操作</td>
+        </tr>
+        <tr>
+          <td align="center">1</td>
+          <td>数学竞赛全省领跑合肥一中</td>
+          <td>2022-8-9 13:53:00</td>
+          <td class="status">报名成功</td>
+          <td><a >重新提报</a></td>
+        </tr>
+      </table>
+    </div>
+
 
 
   </div>
@@ -48,12 +68,14 @@
     data() {
       return {
         signFormVisible:false,
+        mySignupVisible:false,
         dataList: [],
         json: '',
         signupInfo: {},
         colors: ['linear-gradient(180deg, #7DB3F9 0%, #4B6DF6 100%)',
-          'linear-gradient(180deg, #7CD6BD 0%, #55B8CE 100%)', 'linear-gradient(180deg, #BAA4F8 0%, #7D67F3 100%)'
-        ]
+          'linear-gradient(180deg, #7CD6BD 0%, #55B8CE 100%)', 'linear-gradient(180deg, #F09EBA 0%, #EC6085 100%)','linear-gradient(180deg, #BAA4F8 0%, #7D67F3 100%)','linear-gradient(180deg, #96FCB1 0%, #24E52B 100%)'
+        ],
+        signupList:[]
       }
     },
     created() {
@@ -74,6 +96,10 @@
         })
       },
       showSignupForm(id) {
+        if(!this.userName){
+          this.$message.warning("请先进行登陆才能进行报名!");
+          return;
+        }
         this.$http({
           url: '/competition/competitionSignup/public/queryById',
           method: 'get',
@@ -102,11 +128,34 @@
             method: 'post',
             data:data
           }).then(({data})=>{
-            this.$message('报名成功!');
+            this.$message.success('报名成功!');
+            this.signFormVisible = false;
+            this.getMySignupList();
           })
         }).catch(e => {
           this.$message.error(e)
         })
+      },
+      //获取我的报名列表
+      getMySignupList(){
+        if(!this.userName){
+          this.$message.warning("请先进行登陆才能查看我的报名!");
+          return;
+        }
+        this.$http({
+          url:'/competition/competitionSignup/myrecords',
+          params:{cid:this.$route.params.id}
+        }).then(({data})=>{
+           this.mySignupVisible = true;
+           this.signupList = data;
+        })
+      }
+    },
+    computed: {
+      userName: {
+        get() {
+          return this.$store.state.user.name
+        }
       }
     }
   }
@@ -120,13 +169,14 @@
 
   .signup-item {
     width: 100%;
-    height: 220px;
+    height: 160px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-
+    margin-bottom:20px;
+    border-radius: 6px;
     p {
       margin-top: 10px;
       color: #fff;
@@ -135,7 +185,7 @@
 
   .signup-form {
     h5 {
-      font-size: 18px;
+      font-size: 32px;
       margin: 20px 0;
       text-align: center;
     }
@@ -168,8 +218,44 @@
     }
   }
 
+  .mysignup-list{
+    .btn {
+      width: 120px;
+      height: 45px;
+      background: #FFFFFF;
+      border: 1px solid #DC000C;
+      font-size: 16px;
+      color: #DC000C;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    table{
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      tr{
+        &:first-child{
+          background-color: #F5F5F5;
+        }
+        height:60px;
+        td{
+          border:1px solid #dddddd;
+          border-left: none;
+          border-right: none;
+          font-size: 18px;
+          &.status{
+            color: #44AF10;
+          }
+          a{
+            color: #1890FF;
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
 
   .my-signup {
-    background: linear-gradient(180deg, #F09EBA 0%, #EC6085 100%);
+    background: linear-gradient(180deg, #F1F110 0%, #EBB218 100%);
   }
 </style>
