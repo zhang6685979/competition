@@ -20,7 +20,6 @@ Vue.prototype.validator = validator
 Vue.use(ElementUI);
 
 Vue.use(FormMake);
-Vue.use(Message)
 Vue.prototype.$message = Message;
 
 Vue.use(VueCookie)
