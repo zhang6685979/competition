@@ -157,9 +157,9 @@
       // 查看报名信息
       view (id) {
          this.$http({
-           url:'/competition/competitionSignup/forminput',
+           url:'/competition/competitionSignup/forminput/list',
            method:'GET',
-           params:{id:id}
+           params:{cid:this.id,tid:id}
          }).then(({data})=>{
            debugger;
          })

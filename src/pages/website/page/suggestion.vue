@@ -42,7 +42,7 @@
       </el-col>
     </el-row>
     <div class="other-info">
-      <img :src="require('../assets/images/map.jpg')" alt="">
+      <img :src="require('../assets/images/map.png')" alt="">
       <table class="table table-data">
         <tbody>
           <tr>
@@ -163,8 +163,8 @@
      bottom: 0%;
      left: 10%;
      width: 30%;
-     height: 460px;
-      img{width:100%;height:187px;margin:0 0 30px 0;}
+     height: 480px;
+      img{width:100%;height:240px;margin:0 0 20px 0;}
     }
     .table-data {
       font-size: 16px;

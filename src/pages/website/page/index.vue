@@ -9,7 +9,7 @@
     <div class="cont-warp">
       <el-row class="mt-30 mb-30" :gutter="20">
         <el-col :span="12">
-          <el-carousel height="250px">
+          <el-carousel height="250px" indicator-position="none">
             <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
               <router-link  :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
               <p class="carousel-title">{{item.title}}</p>
@@ -40,7 +40,7 @@
             <div class="news-list" v-show="activeIndex==1">
               <div class="news-item" v-for="(item,index) in announcementList.slice(0,5)">
                 <div class="news-title">
-                  <a href=""><span class="circle"></span>{{item.title}}</a>
+                  <router-link  :to="{path:'/notice/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
                 </div>
                 <div class="news-status">
                   <span type="danger" v-if="item.latest=='1'">new</span>
@@ -52,7 +52,7 @@
         </el-col>
       </el-row>
 
-      <p class="title">大赛专区 <sub>Competition Zone</sub></p>
+      <p class="title">大赛专区 <sub>Competition Area</sub></p>
       <div class="competition">
         <div class="clearfix">
           <ul>
@@ -71,8 +71,18 @@
             </el-card>
           </el-col>
         </el-row>
+
+        <!-- <swiper
+            :slides-per-view="3"
+            :space-between="50"
+          >
+            <swiper-slide>Slide 1</swiper-slide>
+            <swiper-slide>Slide 2</swiper-slide>
+            <swiper-slide>Slide 3</swiper-slide>
+            ...
+          </swiper> -->
       </div>
-      <p class="title">技能认证 <sub>Competition Zone</sub></p>
+      <p class="title">技能认证 <sub>Skill Certification</sub></p>
       <div class="clearfix competition">
         <ul>
           <li>车辆维修与保养证书</li>
@@ -86,7 +96,7 @@
           </el-card>
         </el-col>
       </el-row>
-      <p class="title">考试专区 <sub>Competition Zone</sub></p>
+      <p class="title">考试专区 <sub>Examination Area</sub></p>
       <div class="clearfix competition">
         <ul>
           <li>理论考核平台</li>
@@ -106,6 +116,13 @@
 </template>
 
 <script>
+  // Import Swiper Vue.js components
+   // import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue.js';
+
+    // Import Swiper styles
+    //import 'swiper/swiper.min.css';
+
+
   export default {
     data() {
       return {
@@ -119,6 +136,10 @@
         type: '' //比赛分类
       }
     },
+    components: {
+         // Swiper,
+          //SwiperSlide,
+        },
     created() {
       this.getNewsList(); //新闻列表
       this.getCarouselList(); //轮播图列表
@@ -196,27 +217,28 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .index-warp {
     margin-top: -110px;
     background-color: #fff;
-  }
+    .cont-warp {
+      max-width: 1200px;
+      margin: 0 auto;
 
-  .cont-warp {
-    max-width: 1200px;
-    margin: 0 auto;
-
-    .carousel-title {
-      position: absolute;
-      width: 100%;
-      height: 24px;
-      padding-left: 15px;
-      font-size: 14px;
-      bottom: 0;
-      background: rgb(26 19 17 / 50%);
-      color: #ffffff;
+      .carousel-title {
+        position: absolute;
+        width: 100%;
+        height: 24px;
+        padding-left: 15px;
+        font-size: 14px;
+        bottom: 0;
+        background: rgb(26 19 17 / 50%);
+        color: #ffffff;
+      }
     }
   }
+
+
 
   .title {
     font-size: 22px;
@@ -230,7 +252,6 @@
   .title sub {
     font-size: 13px;
     color: #898b8c;
-    vertical-align: text-bottom;
   }
 
   .competition {
@@ -273,11 +294,12 @@
   }
 
   .desc {
-    padding: 14px;
+    padding: 10px;
     background-color: #E0E1E4;
     position: relative;
     font-size: 14px;
-    height: 50px;
+    height: 75px;
+    line-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

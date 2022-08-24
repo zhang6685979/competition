@@ -48,12 +48,12 @@
           <td width="15%">状态</td>
           <td width="10%">操作</td>
         </tr>
-        <tr>
-          <td align="center">1</td>
-          <td>数学竞赛全省领跑合肥一中</td>
-          <td>2022-8-9 13:53:00</td>
-          <td class="status">报名成功</td>
-          <td><a >重新提报</a></td>
+        <tr v-for="(item,index) in signupList" :key="index">
+          <td align="center">{{index+1}}</td>
+          <td>{{item.templateName}}</td>
+          <td>{{item.createTime}}</td>
+          <td class="status">{{status[item.status]}}</td>
+          <td><a @click="reWrite(item.tid,item.content)">重新提报</a></td>
         </tr>
       </table>
     </div>
@@ -75,6 +75,11 @@
         colors: ['linear-gradient(180deg, #7DB3F9 0%, #4B6DF6 100%)',
           'linear-gradient(180deg, #7CD6BD 0%, #55B8CE 100%)', 'linear-gradient(180deg, #F09EBA 0%, #EC6085 100%)','linear-gradient(180deg, #BAA4F8 0%, #7D67F3 100%)','linear-gradient(180deg, #96FCB1 0%, #24E52B 100%)'
         ],
+        status:{
+          0:'待审核',
+          1:'报名成功',
+          2:'审核不通过'
+        },
         signupList:[]
       }
     },
@@ -95,7 +100,7 @@
           this.dataList = data.records
         })
       },
-      showSignupForm(id) {
+      showSignupForm(id,formData) {
         if(!this.memberName){
           this.$message.warning("请先进行登陆才能进行报名!");
           return;
@@ -110,14 +115,19 @@
           data
         }) => {
           this.signFormVisible = true;
+          this.signupInfo = data;
+          this.json = JSON.parse(data.content);
           this.$nextTick(()=>{
-            this.signupInfo = data;
-            this.json = JSON.parse(data.content);
+            if(formData){
+              const $form = this.$refs.generateForm
+              formData = JSON.parse(formData);
+              $form.setData(formData);
+            }
           })
         })
       },
       save(){
-        const $form = this.$refs.generateForm
+
 
         $form.getData().then(data => {
           data.tid = this.signupInfo.id;//模板id
@@ -146,15 +156,24 @@
           return;
         }
         this.$http({
-          url:'/competition/competitionSignup/myrecords',
+          url:'/competition/competitionSignup/forminput/list',
           headers:{
             token:this.$cookie.get('user-token')
           },
-          params:{cid:this.$route.params.id}
+          params: {
+            'current': 1,
+            'size': 100,
+            'cid':this.$route.params.id
+          }
         }).then(({data})=>{
            this.mySignupVisible = true;
-           this.signupList = data;
+           this.signupList = data.records;
         })
+      },
+      //重新填报
+      reWrite(tid,content){
+         this.mySignupVisible = false;
+         this.showSignupForm(tid,content)
       }
     },
     computed: {

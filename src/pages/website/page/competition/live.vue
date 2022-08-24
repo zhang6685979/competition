@@ -97,7 +97,7 @@
     }
 
     p {
-      height: 42px;
+      height: 35px;
       font-size: 14px;
       overflow: hidden;
       text-overflow: ellipsis;

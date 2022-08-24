@@ -3,7 +3,7 @@
     <img :src="inputForm.banner" alt="" class="banner">
     <div class="nav">
       <ul>
-        <li><a :class="{active:$route.path.indexOf('signup')!=-1}" @click="goto('signup')">参赛报名</a></li>
+        <li><a :class="{active:$route.path.indexOf('signup')!=-1}" @click="goto('signup')">信息填报</a></li>
         <li><a :class="{active:$route.path.indexOf('style')!=-1}" @click="goto('style')">赛事风采</a></li>
         <li><a :class="{active:$route.path.indexOf('news')!=-1}" @click="goto('news')">赛事新闻</a></li>
         <li><a :class="{active:$route.path.indexOf('live')!=-1}" @click="goto('live')">赛事直播</a></li>
