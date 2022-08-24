@@ -96,7 +96,7 @@
         })
       },
       showSignupForm(id) {
-        if(!this.userName){
+        if(!this.memberName){
           this.$message.warning("请先进行登陆才能进行报名!");
           return;
         }
@@ -126,6 +126,9 @@
           this.$http({
             url: '/competition/competitionSignup/forminput',
             method: 'post',
+            headers:{
+              token:this.$cookie.get('user-token')
+            },
             data:data
           }).then(({data})=>{
             this.$message.success('报名成功!');
@@ -138,12 +141,15 @@
       },
       //获取我的报名列表
       getMySignupList(){
-        if(!this.userName){
+        if(!this.memberName){
           this.$message.warning("请先进行登陆才能查看我的报名!");
           return;
         }
         this.$http({
           url:'/competition/competitionSignup/myrecords',
+          headers:{
+            token:this.$cookie.get('user-token')
+          },
           params:{cid:this.$route.params.id}
         }).then(({data})=>{
            this.mySignupVisible = true;
@@ -152,9 +158,9 @@
       }
     },
     computed: {
-      userName: {
+      memberName: {
         get() {
-          return this.$store.state.user.name
+          return this.$store.state.user.memberName
         }
       }
     }

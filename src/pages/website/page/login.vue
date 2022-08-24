@@ -68,8 +68,8 @@
               data
             }) => {
               this.$message.success("登录成功");
-              this.$cookie.set('token', data.token);
-              this.$store.commit('user/updateUser',data);
+              this.$cookie.set('user-token', data.token);
+              this.$store.commit('user/updateMember',data);
               this.$router.push('/')
               this.loading = false
             }).catch(() => {

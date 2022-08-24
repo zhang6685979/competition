@@ -16,9 +16,9 @@
       'm-footer': Footer
     },
     created(){
-      var user = localStorage.getItem('user');
-      if(user){
-        this.$store.commit('user/updateUser',JSON.parse(user))
+      var member = localStorage.getItem('member');
+      if(member){
+        this.$store.commit('user/updateMember',JSON.parse(member))
       }
     }
   }

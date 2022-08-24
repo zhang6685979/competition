@@ -14,12 +14,12 @@
       </ul>
     </div>
     <div class="siteNav">
-      <template v-if="!userName">
+      <template v-if="!memberName">
         <a @click="goto('/login')">登录</a>
         <a @click="goto('/register')">账号申请</a>
       </template>
       <template v-else>
-        <a><i class="el-icon-user-solid"> </i>{{userName}}</a><a @click="logout">退出</a>
+        <a><i class="el-icon-user-solid"> </i>{{memberName}}</a><a @click="logout">退出</a>
       </template>
     </div>
   </div>
@@ -37,14 +37,14 @@
         this.$router.push(path);
       },
       logout(){
-        this.$store.commit('user/updateUser',{})
-        localStorage.removeItem('user');
+        this.$store.commit('user/updateMember',{})
+        localStorage.removeItem('member');
       }
     },
     computed: {
-      userName: {
+      memberName: {
         get() {
-          return this.$store.state.user.name
+          return this.$store.state.user.memberName
         }
       }
     }

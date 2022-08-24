@@ -13,7 +13,8 @@ export default {
       id: '',
       name: ''
     },
-    photo: ''
+    photo: '',
+	  memberName:''
   },
   mutations: {
     updateId (state, id) {
@@ -37,6 +38,11 @@ export default {
       state.no = user.no
       state.photo = user.photo
       localStorage.setItem('user', JSON.stringify(user))
-    }
+    },
+	//更新门户网站会员信息
+	updateMember (state, user) {
+	  state.memberName = user.name
+	  localStorage.setItem('member', JSON.stringify(user))
+	}
   }
 }

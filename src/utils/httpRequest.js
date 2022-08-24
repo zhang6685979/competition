@@ -37,7 +37,7 @@ axios.interceptors.request.use(config => {
     })
   }
   // 请求头带上token
-  if (Vue.cookie&&Vue.cookie.get('token')) {
+  if (!config.headers.token&&Vue.cookie&&Vue.cookie.get('token')) {
     config.headers.token = Vue.cookie.get('token')
   }
   // 请求地址处理
