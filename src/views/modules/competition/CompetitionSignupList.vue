@@ -79,6 +79,7 @@
         <!-- 弹窗, 新增 / 修改 -->
     <CompetitionSignupForm  ref="competitionSignupForm" :id="id" @refreshDataList="refreshList"></CompetitionSignupForm>
     <MakeForm  ref="makeForm" @refreshDataList="refreshList"></MakeForm>
+    <signupInfoList ref="signupInfoList" :cid="id"></signupInfoList>
   </div>
 </template>
 
@@ -86,6 +87,7 @@
   import CompetitionSignupForm from './CompetitionSignupForm'
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
   import MakeForm from './MakeForm'
+  import signupInfoList from './signupInfoList'
   export default {
     props:{id:String},
     data () {
@@ -104,7 +106,8 @@
     },
     components: {
       CompetitionSignupForm,
-      MakeForm
+      MakeForm,
+      signupInfoList
     },
     competitionSignupService: null,
     created () {
@@ -156,13 +159,7 @@
       },
       // 查看报名信息
       view (id) {
-         this.$http({
-           url:'/competition/competitionSignup/forminput/list',
-           method:'GET',
-           params:{cid:this.id,tid:id}
-         }).then(({data})=>{
-           debugger;
-         })
+         this.$refs.signupInfoList.init(id);
       },
       // 删除
       del (id) {

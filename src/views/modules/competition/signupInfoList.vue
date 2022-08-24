@@ -1,0 +1,192 @@
+<template>
+  <div>
+    <el-dialog title="报名信息" fullscreen :close-on-click-modal="false" v-dialogDrag :visible.sync="visible">
+
+      <vxe-table border="inner" auto-resize resizable height="450" :loading="loading" size="small"
+        ref="competitionSignupTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
+        :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList" :checkbox-config="{}">
+        <vxe-column type="seq" width="40"></vxe-column>
+        <vxe-column field="templateName" title="报名名称">
+        </vxe-column>
+        <vxe-column field="createTime" title="报名时间">
+        </vxe-column>
+        <vxe-column field="status" title="报名状态">
+          <template  slot-scope="scope">
+            {{status[scope.row.status]}}
+          </template>
+        </vxe-column>
+        <vxe-column fixed="right" align="center" width="300" title="操作">
+          <template slot-scope="scope">
+            <el-button type="text" icon="el-icon-edit" size="small" @click="approval(scope.row)">审核</el-button>
+          </template>
+        </vxe-column>
+      </vxe-table>
+      <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
+        :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+        :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+        @page-change="currentChangeHandle">
+      </vxe-pager>
+    </el-dialog>
+    <el-dialog :title="signupInfo.name" width="60%" :visible.sync="signFormVisible">
+      <div class="signup-form">
+        <div class="signup-info">
+          <table>
+            <tr>
+              <td>报名时间：</td>
+              <td>{{signupInfo.starttime}}--{{signupInfo.endtime}}</td>
+            </tr>
+            <tr>
+              <td>报名说明:</td>
+              <td>{{signupInfo.describe0}}</td>
+            </tr>
+          </table>
+        </div>
+        <fm-generate-form  style="margin: 0 auto;" insite="true" :edit="false" :data="json" :value="{}" :remote="{}"
+          ref="generateForm">
+        </fm-generate-form>
+        <el-form ref="form" :model="form" label-width="100px">
+          <el-form-item label="报名审批:">
+            <el-radio-group v-model="form.status">
+              <el-radio label="1">审批通过</el-radio>
+              <el-radio label="2">审批不通过</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="signFormVisible = false">关闭</el-button>
+        <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>确定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+
+<script>
+  export default {
+    props: {
+      cid: String
+    },
+    data() {
+      return {
+        visible: false,
+        tid: '', //报名模板id
+        dataList: [],
+        tablePage: {
+          total: 0,
+          currentPage: 1,
+          pageSize: 10
+        },
+        loading: false,
+        status:{
+          0:'待审核',
+          1:'报名成功',
+          2:'审核不通过'
+        },
+        signFormVisible:false,
+        signupInfo:{},
+        json:{},
+        form:{status:'1'}
+      }
+    },
+    components: {},
+    created() {},
+    methods: {
+      init(id) {
+        this.visible = true
+        this.loading = false
+        this.tid = id;
+        this.$nextTick(() => {
+          this.loading = true
+          this.$http({
+            url: '/competition/competitionSignup/forminput/list',
+            method: 'GET',
+            params: {
+              cid: this.cid,
+              tid: this.tid,
+              current: this.tablePage.currentPage,
+              size: this.tablePage.pageSize
+            }
+          }).then(({
+            data
+          }) => {
+            this.dataList = data.records
+            this.tablePage.total = data.total
+            this.loading = false
+          })
+        })
+      },
+      // 当前页
+      currentChangeHandle({
+        currentPage,
+        pageSize
+      }) {
+        this.tablePage.currentPage = currentPage
+        this.tablePage.pageSize = pageSize
+        this.init(this.tid);
+      },
+      approval(item) {
+        this.$http({
+          url: '/competition/competitionSignup/queryById',
+          method: 'get',
+          params: {
+            id: item.tid
+          }
+        }).then(({
+          data
+        }) => {
+          this.signFormVisible = true;
+          this.signupInfo = data;
+          this.json = JSON.parse(data.content);
+          this.$nextTick(()=>{
+            var formData = item.content;
+            if(formData){
+              const $form = this.$refs.generateForm
+              formData = JSON.parse(formData);
+              $form.setData(formData);
+            }
+          })
+        })
+      },
+      // 审批接口
+      doSubmit() {
+        this.inputForm.content = JSON.stringify(this.$refs.formDesign.getJSON())
+        this.$refs['inputForm'].validate((valid) => {
+          if (valid) {
+            this.loading = true
+            this.competitionSignupService.save(this.inputForm).then(({
+              data
+            }) => {
+              this.visible = false
+              this.$message.success(data)
+              this.$emit('refreshDataList')
+            }).catch(() => {
+              this.loading = false
+            })
+          }
+        })
+      }
+    }
+  }
+</script>
+<style lang="scss">
+  .signup-form {
+    h5 {
+      font-size: 32px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .signup-info {
+      background: rgb(230 162 60 / 10%);
+      padding: 30px;
+      font-size: 16px;
+      color: #303133;
+      margin-bottom: 20px;
+
+      p {
+        margin: 10px 0;
+      }
+    }
+  }
+</style>

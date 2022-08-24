@@ -11,7 +11,7 @@
         <el-col :span="12">
           <el-carousel height="250px" indicator-position="none">
             <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
-              <router-link  :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
+              <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
               <p class="carousel-title">{{item.title}}</p>
             </el-carousel-item>
           </el-carousel>
@@ -29,7 +29,7 @@
             <div class="news-list" v-show="activeIndex==0">
               <div class="news-item" v-for="(item,index) in newsList.slice(0,5)">
                 <div class="news-title">
-                  <router-link  :to="{path:'/news/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
+                  <router-link :to="{path:'/news/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
                 </div>
                 <div class="news-status">
                   <span type="danger" v-if="item.latest=='1'">new</span>
@@ -40,7 +40,7 @@
             <div class="news-list" v-show="activeIndex==1">
               <div class="news-item" v-for="(item,index) in announcementList.slice(0,5)">
                 <div class="news-title">
-                  <router-link  :to="{path:'/notice/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
+                  <router-link :to="{path:'/notice/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
                 </div>
                 <div class="news-status">
                   <span type="danger" v-if="item.latest=='1'">new</span>
@@ -61,7 +61,7 @@
             <li @click="$router.push('/competitions')">更多.....</li>
           </ul>
         </div>
-        <el-row :gutter="15" class="mt-20">
+        <!-- <el-row :gutter="15" class="mt-20">
           <el-col :span="6" v-for="(item, index) in competitionList.slice(0,4)" :key="index">
             <el-card :body-style="{ padding: '0px' }" shadow="never">
               <img :src="item.image" class="competition-image">
@@ -70,17 +70,23 @@
               </div>
             </el-card>
           </el-col>
-        </el-row>
+        </el-row> -->
 
-        <!-- <swiper
-            :slides-per-view="3"
-            :space-between="50"
-          >
-            <swiper-slide>Slide 1</swiper-slide>
-            <swiper-slide>Slide 2</swiper-slide>
-            <swiper-slide>Slide 3</swiper-slide>
-            ...
-          </swiper> -->
+        <div class="recommendPage mt-20">
+          <swiper :options="swiperOption" ref="mySwiper">
+            <swiper-slide v-for="(item, index) in competitionList" :key="index">
+              <el-card :body-style="{ padding: '0px' }" shadow="never">
+                <img :src="item.image" class="competition-image">
+                <div class="desc">
+                  {{item.describe0}}
+                </div>
+              </el-card>
+            </swiper-slide>
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
+          </swiper>
+
+        </div>
       </div>
       <p class="title">技能认证 <sub>Skill Certification</sub></p>
       <div class="clearfix competition">
@@ -117,10 +123,16 @@
 
 <script>
   // Import Swiper Vue.js components
-   // import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue.js';
+  // import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue.js';
 
-    // Import Swiper styles
-    //import 'swiper/swiper.min.css';
+  // Import Swiper styles
+  //import 'swiper/swiper.min.css';
+  // 引入插件
+  import {
+    Swiper,
+    SwiperSlide
+  } from "vue-awesome-swiper";
+  import "swiper/css/swiper.css";
 
 
   export default {
@@ -133,13 +145,29 @@
         competitionList: [],
         certificateList: [],
         platformList: [],
-        type: '' //比赛分类
+        type: '', //比赛分类
+        swiperOption: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+          slidesPerGroup: 4,
+          loop: true,
+          // 显示分页
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true //允许分页点击跳转
+          },
+          // 设置点击箭头
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev"
+          }
+        }
       }
     },
     components: {
-         // Swiper,
-          //SwiperSlide,
-        },
+      Swiper,
+      SwiperSlide,
+    },
     created() {
       this.getNewsList(); //新闻列表
       this.getCarouselList(); //轮播图列表
@@ -221,6 +249,7 @@
   .index-warp {
     margin-top: -110px;
     background-color: #fff;
+
     .cont-warp {
       max-width: 1200px;
       margin: 0 auto;
@@ -257,8 +286,9 @@
   .competition {
     padding: 0 15px;
     margin-bottom: 20px;
-    &:last-child{
-      margin-bottom:0;
+
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 

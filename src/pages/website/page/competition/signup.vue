@@ -53,7 +53,7 @@
           <td>{{item.templateName}}</td>
           <td>{{item.createTime}}</td>
           <td class="status">{{status[item.status]}}</td>
-          <td><a @click="reWrite(item.tid,item.content)">重新提报</a></td>
+          <td><a @click="reWrite(item)">重新提报</a></td>
         </tr>
       </table>
     </div>
@@ -127,12 +127,11 @@
         })
       },
       save(){
-
-
+        const $form = this.$refs.generateForm
         $form.getData().then(data => {
           data.tid = this.signupInfo.id;//模板id
           data.cid = this.$route.params.id; //大赛id
-          data.uid = 'abc';
+          data.id = this.recordId||'';
           this.$http({
             url: '/competition/competitionSignup/forminput',
             method: 'post',
@@ -142,6 +141,7 @@
             data:data
           }).then(({data})=>{
             this.$message.success('报名成功!');
+            this.recordId = '';
             this.signFormVisible = false;
             this.getMySignupList();
           })
@@ -171,8 +171,9 @@
         })
       },
       //重新填报
-      reWrite(tid,content){
+      reWrite({tid,content,id}){
          this.mySignupVisible = false;
+         this.recordId = id;//报名记录id
          this.showSignupForm(tid,content)
       }
     },
