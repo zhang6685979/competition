@@ -11,13 +11,16 @@
         <vxe-column field="createTime" title="报名时间">
         </vxe-column>
         <vxe-column field="status" title="报名状态">
-          <template  slot-scope="scope">
-            {{status[scope.row.status]}}
+          <template slot-scope="scope">
+            <el-tag type="success" v-if="scope.row.status==1">{{status[scope.row.status]}}</el-tag>
+            <el-tag type="danger" v-if="scope.row.status==2">{{status[scope.row.status]}}</el-tag>
+            <el-tag type="primary" v-if="scope.row.status==0">{{status[scope.row.status]}}</el-tag>
           </template>
         </vxe-column>
         <vxe-column fixed="right" align="center" width="300" title="操作">
           <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-edit" size="small" @click="approval(scope.row)">审核</el-button>
+            <el-button type="text" icon="el-icon-view" size="small" @click="approval(scope.row)">
+              {{scope.row.status==0?'审核':'查看报名详情'}}</el-button>
           </template>
         </vxe-column>
       </vxe-table>
@@ -41,10 +44,10 @@
             </tr>
           </table>
         </div>
-        <fm-generate-form  style="margin: 0 auto;" insite="true" :edit="false" :data="json" :value="{}" :remote="{}"
+        <fm-generate-form style="margin: 0 auto;" insite="true" :edit="false" :data="json" :value="{}" :remote="{}"
           ref="generateForm">
         </fm-generate-form>
-        <el-form ref="form" :model="form" label-width="100px">
+        <el-form ref="form" :model="form" label-width="100px" :disabled="currItem.status!=0">
           <el-form-item label="报名审批:">
             <el-radio-group v-model="form.status">
               <el-radio label="1">审批通过</el-radio>
@@ -55,7 +58,8 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="signFormVisible = false">关闭</el-button>
-        <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>确定</el-button>
+        <el-button v-if="currItem.status==0" size="small" type="primary" @click="doSubmit()" v-noMoreClick>确定
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -78,14 +82,15 @@
           pageSize: 10
         },
         loading: false,
-        status:{
-          0:'待审核',
-          1:'报名成功',
-          2:'审核不通过'
+        status: {
+          0: '待审核',
+          1: '报名成功',
+          2: '审核不通过'
         },
-        signFormVisible:false,
-        signupInfo:{},
-        json:{},
+        signFormVisible: false,
+        signupInfo: {},
+        json: {},
+        currItem: {},
         form:{status:'1'}
       }
     },
@@ -126,6 +131,7 @@
         this.init(this.tid);
       },
       approval(item) {
+        this.currItem = item;
         this.$http({
           url: '/competition/competitionSignup/queryById',
           method: 'get',
@@ -138,9 +144,9 @@
           this.signFormVisible = true;
           this.signupInfo = data;
           this.json = JSON.parse(data.content);
-          this.$nextTick(()=>{
+          this.$nextTick(() => {
             var formData = item.content;
-            if(formData){
+            if (formData) {
               const $form = this.$refs.generateForm
               formData = JSON.parse(formData);
               $form.setData(formData);
@@ -150,20 +156,18 @@
       },
       // 审批接口
       doSubmit() {
-        this.inputForm.content = JSON.stringify(this.$refs.formDesign.getJSON())
-        this.$refs['inputForm'].validate((valid) => {
-          if (valid) {
-            this.loading = true
-            this.competitionSignupService.save(this.inputForm).then(({
-              data
-            }) => {
-              this.visible = false
-              this.$message.success(data)
-              this.$emit('refreshDataList')
-            }).catch(() => {
-              this.loading = false
-            })
+        this.$http({
+          url: '/competition/competitionSignup/forminput/audit',
+          method: 'patch',
+          params: {
+            id: this.currItem.id,
+            status: this.form.status
           }
+        }).then(({
+          data
+        }) => {
+          this.signFormVisible = false;
+          this.init(this.tid); //刷新列表
         })
       }
     }

@@ -30,10 +30,10 @@
         </table>
       </div>
 
-      <fm-generate-form  style="margin: 0 auto;" insite="true" v-if="json" :data="json" :value="{}" :remote="{}"
+      <fm-generate-form  style="margin: 0 auto;" insite="true" :edit="currItem.status!=1" v-if="json" :data="json" :value="{}" :remote="{}"
         ref="generateForm">
       </fm-generate-form>
-      <div class="btn-warp">
+      <div class="btn-warp" v-if="currItem.status!=1">
         <button class="btn btn-save" @click="save">保存</button>
       </div>
     </div>
@@ -52,8 +52,8 @@
           <td align="center">{{index+1}}</td>
           <td>{{item.templateName}}</td>
           <td>{{item.createTime}}</td>
-          <td class="status">{{status[item.status]}}</td>
-          <td><a @click="reWrite(item)">重新提报</a></td>
+          <td class="status" :class="{'status-error':item.status==2}">{{status[item.status]}}</td>
+          <td><a @click="reWrite(item)" :class="{disabled:item.status==1}">重新提报</a></td>
         </tr>
       </table>
     </div>
@@ -80,7 +80,8 @@
           1:'报名成功',
           2:'审核不通过'
         },
-        signupList:[]
+        signupList:[],
+        currItem:{}//当前信息填报信息
       }
     },
     created() {
@@ -171,8 +172,11 @@
         })
       },
       //重新填报
-      reWrite({tid,content,id}){
+      reWrite(item){
+         var {tid,content,id} = item;
+         this.currItem = item;
          this.mySignupVisible = false;
+         this.signFormVisible = true;
          this.recordId = id;//报名记录id
          this.showSignupForm(tid,content)
       }
@@ -271,11 +275,13 @@
           font-size: 18px;
           &.status{
             color: #44AF10;
+            &.status-error{color:#f00}
           }
           a{
             color: #1890FF;
             font-size: 18px;
           }
+          .disabled{color:#ccc;}
         }
       }
     }

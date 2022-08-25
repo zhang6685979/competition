@@ -10,6 +10,7 @@
 
         </fm-making-form>
       </el-form>
+
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="visible = false" icon="el-icon-circle-close">关闭</el-button>
         <el-button size="small" type="primary" v-if="method != 'view'" @click="doSubmit()" icon="el-icon-circle-check"
@@ -23,6 +24,7 @@
 <script>
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
   export default {
+    props:{cid:String},
     data() {
       return {
         title: '',
@@ -41,7 +43,6 @@
           "starttime": "",
           "endtime": "",
           "describe0": "",
-          "cid": "",
           "content":""
         }
       }
@@ -91,6 +92,7 @@
       // 表单提交
       doSubmit() {
         this.inputForm.content = JSON.stringify(this.$refs.formDesign.getJSON())
+        this.inputForm.cid = this.cid
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true

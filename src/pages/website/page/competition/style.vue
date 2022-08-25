@@ -31,6 +31,13 @@
         }
       }
     },
+    watch:{
+      cid:function(newVal,oldVal){
+        if(newVal!=oldVal){
+          this.getList();
+        }
+      }
+    },
     created() {
       this.getList();
     },

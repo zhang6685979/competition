@@ -2,7 +2,7 @@
   <div>
     <el-row class="mt-30 mb-30" :gutter="20">
       <el-col :span="12">
-        <el-carousel height="320px" :autoplay="false">
+        <el-carousel height="320px"  indicator-position="none">
           <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
             <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
             <p class="carousel-title">{{item.title}}</p>
@@ -29,19 +29,19 @@
             </p>
           </el-col>
         </el-row>
-        <a class="pull-right">查看更多>></a>
+        <a class="pull-right" @click="$router.push('/competition/'+cid+'/news')">查看更多>></a>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row :gutter="20">
       <el-col :span="6">
-        <div class="card card1">
+        <div class="card card1" @click="$router.push('/competition/'+cid+'/signup')">
           <img :src="require('../../assets/images/csbm.png')" alt="">
-          <p>参赛报名</p>
+          <p>信息填报</p>
         </div>
 
       </el-col>
       <el-col :span="6">
-        <div class="card card2">
+        <div class="card card2" @click="$router.push('/competition/'+cid+'/queryScore')">
           <img :src="require('../../assets/images/cjcx.png')" alt="">
           <p>成绩查询</p>
         </div>
@@ -59,7 +59,7 @@
         </div>
       </el-col>
     </el-row>
-    <p class="title">赛事风采 <sub>Competition Zone</sub></p>
+    <p class="title">赛事风采 <sub>Competition Style</sub></p>
     <competition-style :cid="cid"></competition-style>
   </div>
 </template>
@@ -85,18 +85,28 @@
     components:{
       CompetitionStyle
     },
+    watch: {
+      '$route.params.id': {
+        handler(newVal, oldVal) {
+           this.cid = newVal;
+           this.getNewsList();
+        },
+        deep: true,
+      }
+    },
     mounted() {
       this.getNewsList();
     },
     methods: {
       getNewsList() {
+        var cid = this.$route.params.id;
         this.$http({
           url: '/news/news/public/list',
           method: 'get',
           params: {
             'current': 1,
             'size': 3,
-            'cid': this.cid
+            'cid': cid
           }
         }).then(({
           data
@@ -160,7 +170,7 @@
   .card {
     text-align: center;
     color: #fff;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     padding: 30px 0;
     cursor: pointer;
@@ -194,7 +204,6 @@
     sub {
       font-size: 13px;
       color: #898b8c;
-      vertical-align: text-bottom;
     }
   }
 

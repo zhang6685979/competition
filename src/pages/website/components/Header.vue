@@ -6,7 +6,11 @@
         <li :class="$route.path=='/'?'active':''"><a @click="goto('/')">首页</a></li>
         <li :class="$route.path.indexOf('/news')==1?'active':''"><a @click="goto('/news')">新闻资讯</a></li>
         <li :class="$route.path.indexOf('/notice')!=-1?'active':''"><a @click="goto('/notice')">通知公告</a></li>
-        <li :class="$route.path.indexOf('/competition')!=-1?'active':''"><a @click="goto('/competitions')">大赛专区</a>
+        <li :class="$route.path.indexOf('/competition')!=-1?'active':''">
+          <a @click="goto('/competitions')">大赛专区</a>
+          <ul class="dropdown-menu">
+            <li v-for="(item,index) in competitionList" :class="$route.params.id==item.id?'active':''"><router-link :to="'/competitions/'+item.id">{{item.title}}</router-link></li>
+          </ul>
         </li>
         <li :class="$route.path=='/certificate'?'active':''"><a @click="goto('/certificate')">技能认证</a></li>
         <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a></li>
@@ -29,16 +33,36 @@
   export default {
     data() {
       return {
-        activeIndex: '1'
+        activeIndex: '1',
+        competitionList:[]
       }
+    },
+    mounted(){
+      this.getCompetitionList()
     },
     methods: {
       goto(path) {
         this.$router.push(path);
       },
-      logout(){
-        this.$store.commit('user/updateMember',{})
+      logout() {
+        this.$store.commit('user/updateMember', {})
         localStorage.removeItem('member');
+      },
+      getCompetitionList(type) {
+        this.type = type;
+        this.$http({
+          url: '/competition/competition/public/list',
+          method: 'get',
+          params: {
+            type: type,
+            current:1,
+            size:999
+          }
+        }).then(({
+          data
+        }) => {
+          this.competitionList = data.records;
+        })
       }
     },
     computed: {
@@ -51,7 +75,7 @@
   }
 </script>
 
-<style scoped="">
+<style scoped="" lang="scss">
   .header {
     width: 100%;
     position: fixed;
@@ -80,15 +104,42 @@
   .header .nav-warp .nav li {
     float: left;
     list-style: none;
-  }
+    position: relative;
+    a {
+      display: block;
+      padding: 0 20px;
+      line-height: 90px;
+      color: #353535;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    &:hover .dropdown-menu{
+       display:block;
+    }
 
-  .header .nav-warp .nav li a {
-    display: block;
-    padding: 0 20px;
-    line-height: 90px;
-    color: #555;
-    text-decoration: none;
-    font-size: 16px;
+    .dropdown-menu {
+      width:160px ;
+      position: absolute;
+      left: 50%;
+      margin-left: -80px;
+      top: 100%;
+      background-color: #fff;
+      display: none;
+      li {
+        float: none;
+        a {
+          line-height: 40px;
+          white-space: nowrap;
+          font-size: 13px;
+          color: #555!important;
+          text-align: center;
+          &:hover {
+            color: #e91b23 !important;
+          }
+        }
+        &.active a{ color: #e91b23 !important;}
+      }
+    }
   }
 
   .header .nav-warp .nav li.active a,
@@ -122,6 +173,9 @@
 
   .header.black {
     background: rgba(0, 0, 0, .4) !important;
+  }
+  .header.black .dropdown-menu{
+    background: rgba(255, 255, 255, .7) !important;
   }
 
   .header.black a {

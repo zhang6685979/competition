@@ -78,7 +78,7 @@
     </div>
         <!-- 弹窗, 新增 / 修改 -->
     <CompetitionSignupForm  ref="competitionSignupForm" :id="id" @refreshDataList="refreshList"></CompetitionSignupForm>
-    <MakeForm  ref="makeForm" @refreshDataList="refreshList"></MakeForm>
+    <MakeForm  ref="makeForm" @refreshDataList="refreshList" :cid="id"></MakeForm>
     <signupInfoList ref="signupInfoList" :cid="id"></signupInfoList>
   </div>
 </template>

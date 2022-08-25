@@ -14,7 +14,7 @@
       </ul>
     </div>
     <el-card class="box-card">
-       <router-view></router-view>
+      <router-view></router-view>
     </el-card>
 
   </div>
@@ -29,7 +29,7 @@
       var cid = this.$route.params.id;
       return {
         cid: cid,
-        page:'',
+        page: '',
         inputForm: {
           id: '',
           title: '',
@@ -40,7 +40,6 @@
         },
       }
     },
-
     mounted() {
       this.queryById();
     },
@@ -58,9 +57,9 @@
           this.inputForm = data;
         })
       },
-      goto(page){
+      goto(page) {
         this.page = page;
-        this.$router.push('/competition/'+this.cid+'/'+page);
+        this.$router.push('/competition/' + this.cid + '/' + page);
       }
     }
   }
@@ -119,7 +118,11 @@
             line-height: 80px;
             text-align: center;
             width: 100%;
-            &:hover,&.active{color:#DC000C;}
+
+            &:hover,
+            &.active {
+              color: #DC000C;
+            }
           }
         }
       }

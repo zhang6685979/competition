@@ -61,31 +61,18 @@
             <li @click="$router.push('/competitions')">更多.....</li>
           </ul>
         </div>
-        <!-- <el-row :gutter="15" class="mt-20">
-          <el-col :span="6" v-for="(item, index) in competitionList.slice(0,4)" :key="index">
-            <el-card :body-style="{ padding: '0px' }" shadow="never">
-              <img :src="item.image" class="competition-image">
-              <div class="desc">
-                {{item.describe0}}
-              </div>
-            </el-card>
-          </el-col>
-        </el-row> -->
 
-        <div class="recommendPage mt-20">
+        <div class="mt-20">
           <swiper :options="swiperOption" ref="mySwiper">
             <swiper-slide v-for="(item, index) in competitionList" :key="index">
               <el-card :body-style="{ padding: '0px' }" shadow="never">
-                <img :src="item.image" class="competition-image">
+                <router-link :to="'/competitions/'+item.id"><img :src="item.image" class="competition-image"></router-link>
                 <div class="desc">
                   {{item.describe0}}
                 </div>
               </el-card>
             </swiper-slide>
-            <div class="swiper-button-prev" slot="button-prev"></div>
-            <div class="swiper-button-next" slot="button-next"></div>
           </swiper>
-
         </div>
       </div>
       <p class="title">技能认证 <sub>Skill Certification</sub></p>
@@ -122,19 +109,12 @@
 </template>
 
 <script>
-  // Import Swiper Vue.js components
-  // import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue.js';
-
-  // Import Swiper styles
-  //import 'swiper/swiper.min.css';
   // 引入插件
   import {
     Swiper,
     SwiperSlide
   } from "vue-awesome-swiper";
   import "swiper/css/swiper.css";
-
-
   export default {
     data() {
       return {
@@ -150,17 +130,7 @@
           slidesPerView: 4,
           spaceBetween: 20,
           slidesPerGroup: 4,
-          loop: true,
-          // 显示分页
-          pagination: {
-            el: ".swiper-pagination",
-            clickable: true //允许分页点击跳转
-          },
-          // 设置点击箭头
-          navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev"
-          }
+          loop: false
         }
       }
     },
