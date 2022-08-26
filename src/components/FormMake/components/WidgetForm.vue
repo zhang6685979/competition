@@ -2,6 +2,7 @@
   <div class="widget-form-container" :style="{width: data.config.width, margin: 'auto'}">
     <el-form  :size="data.config.size" label-suffix=": " :label-position="data.config.labelPosition" :label-width="data.config.labelWidth + 'px'">
       <div v-if="data.list.length == 0" class="form-empty">{{$t('fm.description.containerEmpty')}}</div>
+
       <draggable class=""
         v-model="data.list"
         v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.drag-widget'}"

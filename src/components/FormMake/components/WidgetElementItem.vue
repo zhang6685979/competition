@@ -189,8 +189,8 @@
     </template>
 
     <template v-if="element.type == 'custom'">
-      <component v-if="element.component"  :is="element.component.name" v-model="element.options.defaultValue"></component>
-      <component v-else  :is="element.el" v-model="element.options.defaultValue"></component>
+      <component v-if="element.component"  :is="element.component.name" :options="element.options" v-model="element.options.defaultValue"></component>
+      <component v-else  :is="element.el" v-model="element.options.defaultValue" :options="element.options"></component>
     </template>
 
     <template v-if="element.type == 'text'">

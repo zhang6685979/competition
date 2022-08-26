@@ -59,7 +59,6 @@
               <draggable tag="ul" :list="customComponents"
                 v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
                 @end="handleMoveEnd" @start="handleMoveStart" :move="handleMove">
-
                 <li @click="handleField(item)" class="form-edit-widget-label" v-for="(item, index) in customComponents"
                   :key="index">
                   <a>
@@ -590,9 +589,9 @@
 
         this.customComponents = this.customFields.map(item => {
           return {
-            ...item,
             type: 'custom',
             icon: 'icon iconfont icon-table',
+            ...item,
             options: {
               ...item.options
             }

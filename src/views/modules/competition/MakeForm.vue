@@ -6,7 +6,8 @@
         <fm-making-form :bindDataTable="inputForm.autoCreate !=='1'" ref="formDesign" style="height:700px"
           :data="options" v-if="visible"
           :uploadPath="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/formbuilder`" preview
-          :ds="inputForm.dataSource" :tableName="inputForm.tableName" tab-list generate-json clearable>
+          :custom-fields="customFields" :ds="inputForm.dataSource" :tableName="inputForm.tableName" tab-list
+          generate-json clearable>
 
         </fm-making-form>
       </el-form>
@@ -24,7 +25,9 @@
 <script>
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
   export default {
-    props:{cid:String},
+    props: {
+      cid: String
+    },
     data() {
       return {
         title: '',
@@ -43,8 +46,28 @@
           "starttime": "",
           "endtime": "",
           "describe0": "",
-          "content":""
-        }
+          "content": ""
+        },
+        customFields: [{
+          name: '下载组件',
+          el: 'download',
+          icon:'el-icon-download',
+          options: {
+            type:'download',
+            defaultValue: {},
+            customClass: '',
+            labelWidth: 100,
+            isLabelWidth: false,
+            hidden: false,
+            dataBind: true,
+            required: false,
+            dataType: '',
+            pattern: '',
+            btnText:'下载模板',//按钮文字
+            downloadDesc:'',//下载描述
+            downloadUrl:'',//下载地址
+          }
+        }]
       }
     },
     components: {},

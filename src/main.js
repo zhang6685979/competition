@@ -124,8 +124,12 @@ Vue.use(Print)
 Vue.use(VueEditor)
 
 import FormMaking from '@/components/FormMake/index'
+import Download from '@/components/FormMake/components/Download/index'
 Vue.use(FormMaking, {
-  components: []
+  components: [{
+      name: 'download',
+      component: Download
+    }]
 })
 
 
