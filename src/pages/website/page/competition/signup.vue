@@ -137,6 +137,7 @@
             url: '/competition/competitionSignup/forminput',
             method: 'post',
             headers:{
+              isFront:1,//是否是门户网站调用
               token:this.$cookie.get('user-token')
             },
             data:data
@@ -159,6 +160,7 @@
         this.$http({
           url:'/competition/competitionSignup/forminput/list',
           headers:{
+            isFront:1,//是否是门户网站调用
             token:this.$cookie.get('user-token')
           },
           params: {

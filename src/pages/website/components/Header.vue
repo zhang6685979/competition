@@ -13,7 +13,11 @@
           </ul>
         </li>
         <li :class="$route.path=='/certificate'?'active':''"><a @click="goto('/certificate')">技能认证</a></li>
-        <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a></li>
+        <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a>
+        <ul class="dropdown-menu">
+          <li v-for="(item,index) in platformList" ><a :href="item.url" target="_blank">{{item.title}}</a></li>
+        </ul>
+        </li>
         <li :class="$route.path=='/suggestion'?'active':''"><a @click="goto('/suggestion')">沟通与建议</a></li>
       </ul>
     </div>
@@ -34,11 +38,13 @@
     data() {
       return {
         activeIndex: '1',
-        competitionList:[]
+        competitionList:[],
+        platformList:[]
       }
     },
     mounted(){
-      this.getCompetitionList()
+      this.getCompetitionList();
+      this.getPlatformList();
     },
     methods: {
       goto(path) {
@@ -63,6 +69,20 @@
         }) => {
           this.competitionList = data.records;
         })
+      },
+      getPlatformList() {
+        this.$http({
+          url: '/platform/platform/public/list',
+          method: 'get',
+          params: {
+            current:1,
+            size:999
+          }
+        }).then(({
+          data
+        }) => {
+          this.platformList = data.records;
+        })
       }
     },
     computed: {
@@ -81,7 +101,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 100;
     border: none;
     background: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

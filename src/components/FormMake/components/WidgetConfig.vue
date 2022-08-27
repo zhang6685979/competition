@@ -206,7 +206,8 @@
           :allow-half="data.options.allowHalf" v-model="data.options.defaultValue"></el-rate>
         <el-button type="text" v-if="data.type == 'rate'"
           style="display:inline-block;vertical-align: middle;margin-left: 10px;" @click="data.options.defaultValue=0">
-          {{$t('fm.actions.clear')}}</el-button>
+          {{$t('fm.actions.clear')}}
+        </el-button>
         <el-color-picker v-if="data.type == 'color'" v-model="data.options.defaultValue"
           :show-alpha="data.options.showAlpha"></el-color-picker>
         <el-switch v-if="data.type=='switch'" v-model="data.options.defaultValue"></el-switch>
@@ -273,8 +274,7 @@
             v-model="data.options.downloadDesc"></el-input>
         </el-form-item>
         <el-form-item label="下载模板设置">
-          <el-upload ref="file"
-            :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/template`"
+          <el-upload ref="file" :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/template`"
             :headers="{token: $cookie.get('token')}"
             :on-preview="(file, fileList) => {$window.location.href = (file.response && file.response.url) || file.url}"
             :on-success="(response, file, fileList) => {
@@ -288,7 +288,7 @@
                    return $confirm(`确定移除 ${file.name}？`)
                  }" multiple :limit="1" :on-exceed="(files, fileList) =>{
                    $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-                 }" :file-list="fileArra">
+                 }" :file-list="getFileList(data.options.downloadUrl)">
             <el-button size="small" type="primary">上传模板</el-button>
           </el-upload>
         </el-form-item>
@@ -492,25 +492,35 @@
         </el-checkbox>
         <el-checkbox v-model="data.options.hidden"
           v-if="Object.keys(data.options).indexOf('hidden')>=0 && !data.options.tableColumn">
-          {{$t('fm.config.widget.hidden')}} </el-checkbox>
+          {{$t('fm.config.widget.hidden')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.readonly" v-if="Object.keys(data.options).indexOf('readonly')>=0">
-          {{$t('fm.config.widget.readonly')}} </el-checkbox>
+          {{$t('fm.config.widget.readonly')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.disabled" v-if="Object.keys(data.options).indexOf('disabled')>=0">
-          {{$t('fm.config.widget.disabled')}} </el-checkbox>
+          {{$t('fm.config.widget.disabled')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.editable" v-if="Object.keys(data.options).indexOf('editable')>=0">
-          {{$t('fm.config.widget.editable')}} </el-checkbox>
+          {{$t('fm.config.widget.editable')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.clearable" v-if="Object.keys(data.options).indexOf('clearable')>=0">
-          {{$t('fm.config.widget.clearable')}} </el-checkbox>
+          {{$t('fm.config.widget.clearable')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.arrowControl" v-if="Object.keys(data.options).indexOf('arrowControl')>=0">
-          {{$t('fm.config.widget.arrowControl')}} </el-checkbox>
+          {{$t('fm.config.widget.arrowControl')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.isDelete" v-if="Object.keys(data.options).indexOf('isDelete')>=0">
-          {{$t('fm.config.widget.isDelete')}} </el-checkbox>
+          {{$t('fm.config.widget.isDelete')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.isEdit" v-if="Object.keys(data.options).indexOf('isEdit')>=0">
-          {{$t('fm.config.widget.isEdit')}} </el-checkbox>
+          {{$t('fm.config.widget.isEdit')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.showPassword" v-if="Object.keys(data.options).indexOf('showPassword')>=0">
-          {{$t('fm.config.widget.showPassword')}} </el-checkbox>
+          {{$t('fm.config.widget.showPassword')}}
+        </el-checkbox>
         <el-checkbox v-model="data.options.showScore" v-if="Object.keys(data.options).indexOf('showScore')>=0">
-          {{$t('fm.config.widget.showScore')}} </el-checkbox>
+          {{$t('fm.config.widget.showScore')}}
+        </el-checkbox>
 
       </el-form-item>
 
@@ -590,6 +600,18 @@
       }
     },
     methods: {
+      getFileList(url) {
+        var fileArra = [];
+        url.split('|').forEach((item) => {
+          if (item.trim().length > 0) {
+            fileArra.push({
+              name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
+              url: item
+            })
+          }
+        })
+        return fileArra;
+      },
       handleOptionsRemove(index) {
         if (this.data.type === 'grid') {
           this.data.columns.splice(index, 1)

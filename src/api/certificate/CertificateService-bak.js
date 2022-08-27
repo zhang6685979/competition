@@ -25,10 +25,11 @@ export default class CertificateService {
     })
   }
 
-  treeData () {
+  list (params) {
     return request({
       url: '/certificate/certificate/list',
-      method: 'get'
+      method: 'get',
+      params: params
     })
   }
 }

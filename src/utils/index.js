@@ -53,6 +53,12 @@ export function clearLoginInfo () {
   router.options.isAddDynamicMenuRoutes = false
 }
 
+export function clearWebLoginInfo(){
+  Vue.cookie.delete('user-token')
+  store.commit('user/updateMember', {})
+  localStorage.removeItem('member');
+}
+
 /**
  * 表单对象赋值:
  * 对目标对象存在且源对象同样存在的属性，全部覆盖；

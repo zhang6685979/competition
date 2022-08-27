@@ -40,7 +40,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+         <!-- <el-col :span="12">
             <el-form-item label="是否首页" prop="index0" :rules="[
                   {required: true, message:'是否首页不能为空', trigger:'blur'}
                  ]">
@@ -49,6 +49,36 @@
                   :value="item.value">
                 </el-option>
               </el-select>
+            </el-form-item>
+          </el-col> -->
+          <el-col :span="24">
+            <el-form-item label="附件" prop="appendix">
+               <el-upload ref="file" v-if="visible"
+                     :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/announcement`"
+                     :headers="{token: $cookie.get('token')}"
+                     accept=".pdf,.doc,.docx"
+                     :on-preview="(file, fileList) => {$window.location.href = (file.response && file.response.url) || file.url}"
+                     :on-success="(response, file, fileList) => {
+                       inputForm.appendix = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                     }"
+                     :on-remove="(file, fileList) => {
+                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
+                         $message.success(data)
+                       })
+                       inputForm.appendix = fileList.map(item => item.url).join('|')
+                     }"
+                     :before-remove="(file, fileList) => {
+                       return $confirm(`确定移除 ${file.name}？`)
+                     }"
+                     multiple
+                     :limit="5"
+                     :on-exceed="(files, fileList) =>{
+                       $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                     }"
+                     :file-list="fileArra">
+                     <el-button size="small" type="primary">点击上传</el-button>
+                     <div slot="tip" class="el-upload__tip">只能上传word/pdf文件</div>
+                   </el-upload>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -90,8 +120,10 @@
           top: '',
           index0: '',
           describe0: '',
+          appendix:'',
           cid: this.id
-        }
+        },
+        fileArra:[]
       }
     },
     components: {
@@ -122,6 +154,11 @@
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
+              this.inputForm.appendix.split('|').forEach((item) => {
+                if (item.trim().length > 0) {
+                  this.fileArra.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
+                }
+              })
               this.loading = false
             })
           }

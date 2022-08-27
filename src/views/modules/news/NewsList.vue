@@ -34,15 +34,16 @@
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column field="title" sortable title="新闻标题">
             <template slot-scope="scope">
-              <span>{{scope.row.title}}</span> <el-tag size="mini" v-if="scope.row.top==1">置顶</el-tag>
+              <span>{{scope.row.title}}</span>
+              <el-tag size="mini" v-if="scope.row.top==1">置顶</el-tag>
             </template>
           </vxe-column>
-          <vxe-column field="type" sortable title="新闻类别">
+          <vxe-column field="type" width="150" sortable title="新闻类别">
             <template slot-scope="scope">
               {{ $dictUtils.getDictLabel("jab_new_type", scope.row.type, '-') }}
             </template>
           </vxe-column>
-          <vxe-column field="image" sortable title="新闻图片">
+          <vxe-column field="image" width="150" title="新闻图片">
             <template slot-scope="scope" v-if="scope.row.image">
               <el-image style="height: 50px;width:50px;margin-right:10px;" :src="src"
                 v-for="(src, index) in scope.row.image.split('|')" :key="index"
@@ -50,16 +51,18 @@
               </el-image>
             </template>
           </vxe-column>
-          <vxe-column field="latest" sortable title="是否为最新">
+          <vxe-column field="latest" sortable width="120" title="是否为最新">
             <template slot-scope="scope">
               {{ $dictUtils.getDictLabel("yes_no", scope.row.latest, '-') }}
             </template>
           </vxe-column>
           <vxe-column field="describe0" sortable title="新闻描述">
           </vxe-column>
-          <vxe-column fixed="right" align="center" width="200" title="操作">
+          <vxe-column fixed="right" align="center" width="300" title="操作">
             <template slot-scope="scope">
-              <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
+              <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small" @click="publishToIndex(scope.row.id)">首页显示
+              </el-button>
+              <el-button type="text" icon="el-icon-upload2" size="small" @click="toTop(scope.row.id,scope.row.top==1?0:1)">{{scope.row.top==1?'取消置顶':'置顶'}}</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
@@ -161,9 +164,36 @@
         })[0]
         this.$refs.newsForm.init('edit', id)
       },
-      // 查看
-      view(id) {
-        this.$refs.newsForm.init('view', id)
+      // 发布到首页显示
+      publishToIndex(id) {
+        this.$http({
+          url: '/news/news/setindex',
+          method: 'patch',
+          params: {
+            id: id,
+            status: 1
+          }
+        }).then(({
+          data
+        }) => {
+          this.$message.success(data)
+        })
+      },
+      //置顶
+      toTop(id,status) {
+        this.$http({
+          url: '/news/news/settop',
+          method: 'patch',
+          params: {
+            id: id,
+            status: status
+          }
+        }).then(({
+          data
+        }) => {
+           this.$message.success(data);
+           this.refreshList()
+        })
       },
       // 删除
       del(id) {

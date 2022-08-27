@@ -25,6 +25,7 @@
           :disabled="!edit || widget.options.disabled"
           :editable="widget.options.editable"
           :clearable="widget.options.clearable"
+          :options="widget.options"
         ></component>
       </div>
     </template>

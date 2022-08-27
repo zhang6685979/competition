@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 // import axiosRetry from 'axios-retry'
 import router from '@/router'
-import { clearLoginInfo } from '@/utils'
+import { clearLoginInfo,clearWebLoginInfo } from '@/utils'
 import qs from 'qs'
 import {
   Message,
@@ -76,8 +76,6 @@ axios.interceptors.response.use(response => {
     loading.close()
   }
   if (error.response.status === 408 || error.response.status === 401) { // 需要重新登录
-    clearLoginInfo()
-    router.push({ name: 'login' })
     Message({
       message: error.response.data,
       type: 'error',
@@ -85,6 +83,14 @@ axios.interceptors.response.use(response => {
       dangerouslyUseHTMLString: true,
       duration: 3000
     })
+    if(error.response.config.headers.isFront==1){//前台调用
+      clearWebLoginInfo()
+    }else{
+      clearLoginInfo()
+      router.push({ name: 'login' })
+    }
+
+
   } else if (error.response.status === 404) { // 路径找不到
     Message({
       message: '404 路径找不到' + ': ' + error.response.config.url,

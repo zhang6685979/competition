@@ -29,7 +29,7 @@
             <div class="news-list" v-show="activeIndex==0">
               <div class="news-item" v-for="(item,index) in newsList.slice(0,5)">
                 <div class="news-title">
-                  <router-link :to="{path:'/news/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
+                  <router-link :to="{path:'/news/'+item.id}"><span class="circle"></span><el-tag v-if="item.top==1" style="float:right" size="small" type="success">置顶</el-tag>{{item.title}}</router-link>
                 </div>
                 <div class="news-status">
                   <span type="danger" v-if="item.latest=='1'">new</span>
@@ -78,22 +78,21 @@
       <p class="title">技能认证 <sub>Skill Certification</sub></p>
       <div class="clearfix competition">
         <ul>
-          <li>车辆维修与保养证书</li>
+          <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/certificate?type='+item.id)">{{item.title}}</li>
           <li @click="$router.push('/certificate')">更多.....</li>
         </ul>
       </div>
       <el-row :gutter="10" class="competition">
-        <el-col :span="12" v-for="(item, index) in certificateList.slice(0,2)" :key="index">
-          <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img :src="item.image" class="certificate-image">
+        <el-col :span="8" v-for="(item, index) in certificateList" :key="index">
+          <el-card :body-style="{ padding: '0px' }" shadow="never" >
+            <img :src="item.image" class="certificate-image"  @click="$router.push('/certificate?type='+item.id)">
           </el-card>
         </el-col>
       </el-row>
       <p class="title">考试专区 <sub>Examination Area</sub></p>
       <div class="clearfix competition">
         <ul>
-          <li>理论考核平台</li>
-          <li>实训竞赛平台</li>
+          <li v-for="(item, index) in platformList.slice(0,3)" :key="index"><a :href="item.url" target="_blank">{{item.title}}</a></li>
           <li @click="$router.push('/examination')">更多.....</li>
         </ul>
       </div>
@@ -198,7 +197,7 @@
         }).then(({
           data
         }) => {
-          this.certificateList = data.records;
+          this.certificateList = data;
         })
       },
       getPlatformList() {
@@ -221,13 +220,14 @@
     background-color: #fff;
 
     .cont-warp {
-      max-width: 1200px;
+      max-width: 80%;
       margin: 0 auto;
 
       .carousel-title {
         position: absolute;
         width: 100%;
         height: 24px;
+        line-height: 24px;
         padding-left: 15px;
         font-size: 14px;
         bottom: 0;
@@ -273,6 +273,9 @@
     &.active {
       color: #DC000C
     }
+    a{
+      color:#303133;
+    }
   }
 
   .competition ul li:first-child {
@@ -298,7 +301,7 @@
     background-color: #E0E1E4;
     position: relative;
     font-size: 14px;
-    height: 75px;
+    height: 74px;
     line-height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -437,6 +440,7 @@
   .certificate-image {
     width: 100%;
     height: 112px;
+    cursor: pointer;
   }
 
   .platform-image {

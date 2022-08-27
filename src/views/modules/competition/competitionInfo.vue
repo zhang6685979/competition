@@ -75,7 +75,7 @@
   }
 </script>
 
-<style>
+<style lang="scss">
   .el-divider--horizontal {
     margin: 10px 0;
   }

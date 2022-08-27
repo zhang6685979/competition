@@ -21,11 +21,17 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
+             <el-form-item label="是否启用" prop="enabled">
+                <el-switch v-model="inputForm.enabled"  active-value="1" inactive-value="0"></el-switch>
+              </el-form-item>
+          </el-col>
+          <el-col :span="24">
             <el-form-item label="报名说明" prop="describe0" :rules="[
                  ]">
               <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写报名说明"></el-input>
             </el-form-item>
           </el-col>
+
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -40,7 +46,7 @@
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
   export default {
     props: {
-      id: String
+      cid: String
     },
     data() {
       return {
@@ -55,7 +61,8 @@
           endtime: '',
           describe0: '',
           time: '',
-          cid: this.id
+          cid: '',
+          enabled:false
         }
       }
     },
@@ -98,6 +105,7 @@
             var time = this.inputForm.time;
             this.inputForm.starttime = time[0];
             this.inputForm.endtime = time[1];
+            this.inputForm.cid = this.cid;
             this.competitionSignupService.save(this.inputForm).then(({
               data
             }) => {

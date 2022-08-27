@@ -18,8 +18,13 @@ Vue.prototype.$dictUtils = dictUtils
 
 Vue.prototype.validator = validator
 Vue.use(ElementUI);
-
-Vue.use(FormMake);
+import Download from '@/components/FormMake/components/Download/index'
+Vue.use(FormMake, {
+  components: [{
+      name: 'download',
+      component: Download
+    }]
+});
 Vue.prototype.$message = Message;
 
 Vue.use(VueCookie)

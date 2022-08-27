@@ -9,17 +9,17 @@
              label-width="120px">
       <el-row  :gutter="15">
         <el-col :span="24">
-            <el-form-item label="证书名称" prop="title"
+            <el-form-item label="证书分类名称" prop="title"
                 :rules="[
-                  {required: true, message:'证书名称不能为空', trigger:'blur'}
+                  {required: true, message:'证书分类名称不能为空', trigger:'blur'}
                  ]">
-              <el-input v-model="inputForm.title" placeholder="请填写证书名称"  maxlength="250"    ></el-input>
+          <el-input v-model="inputForm.title" placeholder="请填写证书名称"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
         <el-col :span="24">
-            <el-form-item label="证书图片" prop="image"
+            <el-form-item label="证书分类图片" prop="image"
                 :rules="[
-                  {required: true, message:'证书图片不能为空', trigger:'blur'}
+                  {required: true, message:'证书分类图片不能为空', trigger:'blur'}
                  ]">
               <el-upload ref="image"
               v-if="visible"
@@ -47,36 +47,13 @@
                       return $confirm(`确定移除 ${file.name}？`)
                     }"
                     multiple
-                    :limit="5"
+                    :limit="1"
                     :on-exceed="(files, fileList) =>{
-                      $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                      $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }"
                     :file-list="imageArra">
                     <i class="el-icon-plus"></i>
                   </el-upload>
-           </el-form-item>
-        </el-col>
-        <el-col :span="24">
-            <el-form-item label="学员姓名" prop="name"
-                :rules="[
-                  {required: true, message:'学员姓名不能为空', trigger:'blur'}
-                 ]">
-              <el-input v-model="inputForm.name" placeholder="请填写学员姓名"  maxlength="250"    ></el-input>
-           </el-form-item>
-        </el-col>
-        <el-col :span="24">
-            <el-form-item label="身份证号" prop="idcardno"
-                :rules="[
-                  {required: true, message:'身份证号不能为空', trigger:'blur'}
-                 ]">
-              <el-input v-model="inputForm.idcardno" placeholder="请填写身份证号"  maxlength="18"    ></el-input>
-           </el-form-item>
-        </el-col>
-        <el-col :span="24">
-            <el-form-item label="证书描述" prop="describe0"
-                :rules="[
-                 ]">
-          <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写证书描述"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
         </el-row>
@@ -105,32 +82,34 @@
           image: '',
           name: '',
           idcardno: '',
-          describe0: ''
+          describe0: '',
+          sort: '',
+          parent: {
+            id: ''
+          }
         }
       }
-    },
-    components: {
     },
     certificateService: null,
     created () {
       this.certificateService = new CertificateService()
     },
     methods: {
-      init (method, id) {
+      init (method, obj) {
         this.method = method
-        this.inputForm.id = id
+        this.inputForm.id = obj.id
         if (method === 'add') {
-          this.title = `新建技能证书`
+          this.title = '新建证书分类'
         } else if (method === 'edit') {
-          this.title = '修改技能证书'
-        } else if (method === 'view') {
-          this.title = '查看技能证书'
+          this.title = '修改证书分类'
         }
         this.imageArra = []
         this.visible = true
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
+          this.inputForm.parent.id = obj.parent.id
+          this.inputForm.parent.name = obj.parent.name
           if (method === 'edit' || method === 'view') { // 修改或者查看
             this.loading = true
             this.certificateService.queryById(this.inputForm.id).then(({data}) => {
@@ -151,12 +130,10 @@
           if (valid) {
             this.loading = true
             this.certificateService.save(this.inputForm).then(({data}) => {
+              this.loading = false
               this.visible = false
-              this.$message.success(data)
-              this.$emit('refreshDataList')
-              this.loading = false
-            }).catch(() => {
-              this.loading = false
+              this.$message.success('证书分类保存成功')
+              this.$emit('refreshTree')
             })
           }
         })
@@ -164,5 +141,3 @@
     }
   }
 </script>
-
-  
