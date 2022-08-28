@@ -50,7 +50,6 @@
           </vxe-column>
           <vxe-column fixed="right" align="center" width="200" title="操作">
             <template slot-scope="scope">
-              <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
@@ -144,10 +143,6 @@
           return item.id
         })[0]
         this.$refs.platformForm.init('edit', id)
-      },
-      // 查看
-      view(id) {
-        this.$refs.platformForm.init('view', id)
       },
       // 删除
       del(id) {

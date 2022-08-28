@@ -75,11 +75,9 @@
         this.method = method
         this.inputForm.id = id
         if (method === 'add') {
-          this.title = `新建比赛报名`
+          this.title = `新建信息填报模板`
         } else if (method === 'edit') {
-          this.title = '修改比赛报名'
-        } else if (method === 'view') {
-          this.title = '查看比赛报名'
+          this.title = '修改信息填报模板'
         }
         this.visible = true
         this.loading = false

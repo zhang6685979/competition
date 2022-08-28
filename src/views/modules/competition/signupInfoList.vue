@@ -1,34 +1,43 @@
 <template>
   <div>
-    <el-dialog title="报名信息" fullscreen :close-on-click-modal="false" v-dialogDrag :visible.sync="visible">
+    <el-dialog :title="title||'报名信息'" fullscreen :close-on-click-modal="false" v-dialogDrag :visible.sync="visible">
 
-      <vxe-table border="inner" auto-resize resizable height="450" :loading="loading" size="small"
-        ref="competitionSignupTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
-        :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList" :checkbox-config="{}">
-        <vxe-column type="seq" width="40"></vxe-column>
-        <vxe-column field="templateName" title="报名名称">
-        </vxe-column>
-        <vxe-column field="createTime" title="报名时间">
-        </vxe-column>
-        <vxe-column field="status" title="报名状态">
-          <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.status==1">{{status[scope.row.status]}}</el-tag>
-            <el-tag type="danger" v-if="scope.row.status==2">{{status[scope.row.status]}}</el-tag>
-            <el-tag type="primary" v-if="scope.row.status==0">{{status[scope.row.status]}}</el-tag>
-          </template>
-        </vxe-column>
-        <vxe-column fixed="right" align="center" width="300" title="操作">
-          <template slot-scope="scope">
-            <el-button type="text" icon="el-icon-view" size="small" @click="approval(scope.row)">
-              {{scope.row.status==0?'审核':'查看报名详情'}}</el-button>
-          </template>
-        </vxe-column>
-      </vxe-table>
-      <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
-        :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
-        :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-        @page-change="currentChangeHandle">
-      </vxe-pager>
+      <el-tabs v-model="activeName">
+          <el-tab-pane label="填报信息审批" name="first">
+            <vxe-table border="inner" auto-resize resizable height="450" :loading="loading" size="small"
+              ref="competitionSignupTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
+              :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList" :checkbox-config="{}">
+              <vxe-column type="seq" width="40"></vxe-column>
+              <vxe-column field="templateName" title="报名名称">
+              </vxe-column>
+              <vxe-column field="createTime" title="报名时间">
+              </vxe-column>
+              <vxe-column field="status" title="报名状态">
+                <template slot-scope="scope">
+                  <el-tag type="success" v-if="scope.row.status==1">{{status[scope.row.status]}}</el-tag>
+                  <el-tag type="danger" v-if="scope.row.status==2">{{status[scope.row.status]}}</el-tag>
+                  <el-tag type="primary" v-if="scope.row.status==0">{{status[scope.row.status]}}</el-tag>
+                </template>
+              </vxe-column>
+              <vxe-column fixed="right" align="center" width="300" title="操作">
+                <template slot-scope="scope">
+                  <el-button type="text" icon="el-icon-view" size="small" @click="approval(scope.row)">
+                    {{scope.row.status==0?'审核':'查看填报详情'}}</el-button>
+                </template>
+              </vxe-column>
+            </vxe-table>
+            <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
+              :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+              :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+              @page-change="currentChangeHandle">
+            </vxe-pager>
+          </el-tab-pane>
+          <el-tab-pane label="填报信息列表" name="second">
+            <GenerateList :tid="tid" v-if="visible" :dataList="signupDataList" :title="title"></GenerateList>
+          </el-tab-pane>
+        </el-tabs>
+
+
     </el-dialog>
     <el-dialog :title="signupInfo.name" width="60%" :visible.sync="signFormVisible">
       <div class="signup-form">
@@ -67,14 +76,20 @@
 
 
 <script>
+  import GenerateList from './form/GenerateList.vue'
   export default {
     props: {
       cid: String
     },
+    components:{
+      GenerateList
+    },
     data() {
       return {
         visible: false,
+        activeName:'first',
         tid: '', //报名模板id
+        title:'',//报名表名称
         dataList: [],
         tablePage: {
           total: 0,
@@ -94,13 +109,12 @@
         form:{status:'1'}
       }
     },
-    components: {},
-    created() {},
     methods: {
-      init(id) {
+      init(id,title) {
         this.visible = true
         this.loading = false
         this.tid = id;
+        this.title = title;
         this.$nextTick(() => {
           this.loading = true
           this.$http({
@@ -169,6 +183,39 @@
           this.signFormVisible = false;
           this.init(this.tid); //刷新列表
         })
+      }
+    },
+    computed:{
+      signupDataList:function(){
+        var dataList = [];
+        this.dataList.map(item=>{
+          var content = item.content;
+          if(content){
+            content = JSON.parse(content);
+            var obj = {},isSubForm=false;
+            for(var key in content){
+              if(content.hasOwnProperty(key)){
+                var value = content[key]
+                var type = typeof value
+                if(type=='string'||type=='number'){
+                  obj[key] = value
+                }else if(value instanceof Array){
+                  dataList = dataList.concat(value)
+                  isSubForm = true;//如果包含子表单以子表单数据为准
+                }
+              }
+            }
+            if(isSubForm){
+              dataList.forEach(item=>{
+                Object.assign(item,obj);
+              })
+            }else{
+              dataList.push(obj);
+            }
+          }
+
+        });
+        return dataList
       }
     }
   }

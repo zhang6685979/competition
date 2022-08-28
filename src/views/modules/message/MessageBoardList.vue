@@ -12,11 +12,9 @@
       </el-form>
 
      <div class="bg-white top">
-        <vxe-toolbar :refresh="{query: refreshList}" export print custom>
+        <vxe-toolbar :refresh="{query: refreshList}">
           <template #buttons>
-            <el-button v-if="hasPermission('message:messageBoard:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-            <el-button v-if="hasPermission('message:messageBoard:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.messageBoardTable && $refs.messageBoardTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-            <el-button v-if="hasPermission('message:messageBoard:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.messageBoardTable && $refs.messageBoardTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+            <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.messageBoardTable && $refs.messageBoardTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>
         </vxe-toolbar>
         <div style="height: calc(100% - 80px);">
@@ -46,9 +44,7 @@
         sortable
         title="留言标题">
             <template slot-scope="scope">
-              <el-link  type="primary" :underline="false" v-if="hasPermission('message:messageBoard:edit')" @click="edit(scope.row.id)">{{scope.row.title}}</el-link>
-              <el-link  type="primary" :underline="false" v-else-if="hasPermission('message:messageBoard:view')"  @click="view(scope.row.id)">{{scope.row.title}}</el-link>
-              <span v-else>{{scope.row.title}}</span>
+              <el-link  type="primary" :underline="false"  @click="view(scope.row.id)">{{scope.row.title}}</el-link>
             </template>
       </vxe-column>
     <vxe-column
@@ -79,12 +75,10 @@
       <vxe-column
         fixed="right"
         align="center"
-        width="200"
+        width="100"
         title="操作">
         <template  slot-scope="scope">
-          <el-button v-if="hasPermission('message:messageBoard:view')" type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
-          <el-button v-if="hasPermission('message:messageBoard:edit')" type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-          <el-button v-if="hasPermission('message:messageBoard:del')" type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
+          <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
       </vxe-column>
     </vxe-table>
@@ -167,13 +161,6 @@
       add () {
         this.$refs.messageBoardForm.init('add', '')
       },
-      // 修改
-      edit (id) {
-        id = id || this.$refs.messageBoardTable.getCheckboxRecords().map(item => {
-          return item.id
-        })[0]
-        this.$refs.messageBoardForm.init('edit', id)
-      },
       // 查看
       view (id) {
         this.$refs.messageBoardForm.init('view', id)
@@ -203,4 +190,3 @@
     }
   }
 </script>
-

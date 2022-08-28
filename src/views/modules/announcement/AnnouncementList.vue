@@ -24,41 +24,37 @@
           </el-button>
         </template>
       </vxe-toolbar>
-      <div>
-        <vxe-table border="inner" auto-resize resizable height="500" :loading="loading" size="small"
+      <div style="height:calc(100% - 80px);">
+        <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small"
           ref="announcementTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
           :print-config="{}" :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle"
           :sort-config="{remote:true}" :data="dataList" :checkbox-config="{}">
           <vxe-column type="seq" width="40"></vxe-column>
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column field="title" sortable title="公告标题">
-          </vxe-column>
-          <vxe-column field="content" sortable title="公告内容">
             <template slot-scope="scope">
-              <p v-html="$utils.unescapeHTML(scope.row.content)"></p>
+              <span>{{scope.row.title}}</span>
+              <el-tag size="mini" v-if="scope.row.top==1">置顶</el-tag>
             </template>
           </vxe-column>
-          <vxe-column field="latest" sortable title="是否最新">
+         <vxe-column field="describe0" sortable title="公告描述">
+         </vxe-column>
+          <vxe-column field="latest" width="100" sortable title="是否最新">
             <template slot-scope="scope">
               {{ $dictUtils.getDictLabel("yes_no", scope.row.latest, '-') }}
             </template>
           </vxe-column>
-          <vxe-column field="top" sortable title="是否置顶">
+          
+          <vxe-column field="createDate" width="170" sortable title="发布时间">
+          </vxe-column>
+          <vxe-column fixed="right" align="center" width="300" title="操作">
             <template slot-scope="scope">
-              {{ $dictUtils.getDictLabel("yes_no", scope.row.top, '-') }}
-            </template>
-          </vxe-column>
-          <vxe-column field="describe0" sortable title="公告描述">
-          </vxe-column>
-          <vxe-column field="createDate" sortable title="发布时间">
-          </vxe-column>
-          <vxe-column fixed="right" align="center" width="200" title="操作">
-            <template slot-scope="scope">
-              <el-button v-if="hasPermission('announcement:announcement:view')" type="text" icon="el-icon-view"
-                size="small" @click="view(scope.row.id)">查看</el-button>
-              <el-button v-if="hasPermission('announcement:announcement:edit')" type="text" icon="el-icon-edit"
+              <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small" @click="publishToIndex(scope.row.id,scope.row.index0==1?0:1)">{{scope.row.index0==1?'取消首页显示':'首页显示'}}
+              </el-button>
+              <el-button type="text" icon="el-icon-upload2" size="small" @click="toTop(scope.row.id,scope.row.top==1?0:1)">{{scope.row.top==1?'取消置顶':'置顶'}}</el-button>
+              <el-button type="text" icon="el-icon-edit"
                 size="small" @click="edit(scope.row.id)">修改</el-button>
-              <el-button v-if="hasPermission('announcement:announcement:del')" type="text" icon="el-icon-delete"
+              <el-button type="text" icon="el-icon-delete"
                 size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
           </vxe-column>
@@ -154,9 +150,37 @@
         })[0]
         this.$refs.announcementForm.init('edit', id)
       },
-      // 查看
-      view(id) {
-        this.$refs.announcementForm.init('view', id)
+      // 发布到首页显示
+      publishToIndex(id,status) {
+        this.$http({
+          url: '/announcement/announcement/setindex',
+          method: 'patch',
+          params: {
+            id: id,
+            status: status
+          }
+        }).then(({
+          data
+        }) => {
+          this.$message.success(data)
+          this.refreshList()
+        })
+      },
+      //置顶
+      toTop(id,status) {
+        this.$http({
+          url: '/announcement/announcement/settop',
+          method: 'patch',
+          params: {
+            id: id,
+            status: status
+          }
+        }).then(({
+          data
+        }) => {
+           this.$message.success(data);
+           this.refreshList()
+        })
       },
       // 删除
       del(id) {

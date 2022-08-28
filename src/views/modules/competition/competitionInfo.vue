@@ -4,7 +4,7 @@
       <el-page-header @back="goBack" content="比赛详情" class="page-header"></el-page-header>
       <el-divider></el-divider>
       <el-tabs v-model="activeName" style="height: calc(100% - 84px);">
-        <el-tab-pane label="报名管理" name="1">
+        <el-tab-pane label="信息填报" name="1">
           <CompetitionSignupList :id.sync="$route.query.cid"></CompetitionSignupList>
         </el-tab-pane>
         <el-tab-pane label="比赛轮次" name="2">
@@ -86,4 +86,5 @@
       height:100%;
     }
   }
+  .jp-center .page{overflow: auto!important;}
 </style>

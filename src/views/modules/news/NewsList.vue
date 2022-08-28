@@ -25,8 +25,8 @@
           </el-button>
         </template>
       </vxe-toolbar>
-      <div>
-        <vxe-table border="inner" auto-resize resizable height="500" :loading="loading" size="small" ref="newsTable"
+      <div style="height:calc(100% - 80px);">
+        <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small" ref="newsTable"
           show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
           :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}"
           :data="dataList" :checkbox-config="{}">
@@ -60,7 +60,7 @@
           </vxe-column>
           <vxe-column fixed="right" align="center" width="300" title="操作">
             <template slot-scope="scope">
-              <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small" @click="publishToIndex(scope.row.id)">首页显示
+              <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small" @click="publishToIndex(scope.row.id,scope.row.index0==1?0:1)">{{scope.row.index0==1?'取消首页显示':'首页显示'}}
               </el-button>
               <el-button type="text" icon="el-icon-upload2" size="small" @click="toTop(scope.row.id,scope.row.top==1?0:1)">{{scope.row.top==1?'取消置顶':'置顶'}}</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
@@ -165,18 +165,19 @@
         this.$refs.newsForm.init('edit', id)
       },
       // 发布到首页显示
-      publishToIndex(id) {
+      publishToIndex(id,status) {
         this.$http({
           url: '/news/news/setindex',
           method: 'patch',
           params: {
             id: id,
-            status: 1
+            status: status
           }
         }).then(({
           data
         }) => {
           this.$message.success(data)
+          this.refreshList()
         })
       },
       //置顶

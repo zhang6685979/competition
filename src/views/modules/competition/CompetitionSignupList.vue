@@ -31,7 +31,7 @@
           <vxe-column fixed="right" align="center" width="320" title="操作">
             <template slot-scope="scope">
               <el-button type="text" icon="el-icon-edit" size="small" @click="design(scope.row.id)">表单设计</el-button>
-              <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看报名信息</el-button>
+              <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id,scope.row.name)">查看填报信息</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
@@ -135,8 +135,8 @@
         this.$refs.competitionSignupForm.init('edit', id)
       },
       // 查看报名信息
-      view(id) {
-        this.$refs.signupInfoList.init(id);
+      view(id,title) {
+        this.$refs.signupInfoList.init(id,title);
       },
       // 删除
       del(id) {
