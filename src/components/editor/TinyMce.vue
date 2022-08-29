@@ -21,7 +21,7 @@ const defaultConfig = {
   language: 'zh_CN'
 }
 
-const apiKey = 'aaiu8u7yrq204xloul2q92mi0sdaneml86evmnvcrj0e3dqa'
+const apiKey = 'fzt0wgn2rzxitc2x9n2zo9ijui983b5hyure0nyl6fse8inb'
 
 export default {
   name: 'TinyMce',
