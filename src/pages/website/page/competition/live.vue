@@ -20,7 +20,6 @@
     <el-dialog
       :title="currItem.title||''"
       :close-on-click-modal="false"
-       v-dialogDrag
        width="60%"
       :visible.sync="videoVisible">
       <iframe :src="currItem.url||''" width="100%" height="500" frameborder="0" scrolling="yes"></iframe>
@@ -97,7 +96,8 @@
     }
 
     p {
-      height: 35px;
+      min-height: 33px;
+      color:#707070;
       font-size: 14px;
       overflow: hidden;
       text-overflow: ellipsis;

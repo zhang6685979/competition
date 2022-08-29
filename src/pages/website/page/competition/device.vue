@@ -1,20 +1,28 @@
 <template>
   <div>
-    <el-row :gutter="15" class="mt-20">
-      <el-col :span="6" v-for="(item, index) in dataList" :key="index" class="el-col">
-        <el-card :body-style="{ padding: '0px'}" shadow="never">
-          <img :src="item.image" class="competition-image">
-          <div class="desc">
-            {{item.title}}
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-    <div class="pager">
-      <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
-        :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
-      </el-pagination>
+    <template v-if="!infoVisible">
+      <el-row :gutter="15" class="mt-20">
+        <el-col :span="6" v-for="(item, index) in dataList" :key="index" class="el-col">
+          <el-card :body-style="{ padding: '0px'}" shadow="never">
+            <img :src="item.image" class="competition-image" @click="showDesc(item)">
+            <div class="desc">
+              {{item.title}}
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <div class="pager">
+        <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
+          :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
+        </el-pagination>
+      </div>
+    </template>
+    <div class="device-info" v-else>
+      <button class="btn" @click="infoVisible=false">返 回</button>
+      <h5>{{currItem.title}}</h5>
+      <div class="content" v-html="currItem.describe0"></div>
     </div>
+
   </div>
 </template>
 
@@ -27,7 +35,9 @@
           total: 0,
           currentPage: 1,
           pageSize: 10
-        }
+        },
+        infoVisible:false,
+        currItem:{}
       }
     },
     created() {
@@ -51,6 +61,10 @@
           this.dataList = data.records
           this.tablePage.total = data.total
         })
+      },
+      showDesc(item){
+        this.currItem = item;
+        this.infoVisible = true;
       }
     }
   }
@@ -60,6 +74,7 @@
   .competition-image {
     width: 100%;
     height: 156px;
+    cursor: pointer;
   }
   .el-col{
     margin-bottom: 15px;
@@ -78,5 +93,18 @@
   .pager {
     text-align: center;
     padding: 20px;
+  }
+  .device-info{
+    .btn {
+      width: 120px;
+      height: 45px;
+      background: #FFFFFF;
+      border: 1px solid #DC000C;
+      font-size: 16px;
+      color: #DC000C;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    h5{text-align: center;margin-bottom: 20px;font-size: 20px;}
   }
 </style>

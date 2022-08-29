@@ -100,6 +100,9 @@
       h5 {
         font-size: 16px;
         color: #000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       p {

@@ -35,7 +35,7 @@
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="card card1" @click="$router.push('/competition/'+cid+'/signup')">
-          <img :src="require('../../assets/images/csbm.png')" alt="">
+          <img :src="require('../../assets/images/xxtb.png')" alt="">
           <p>信息填报</p>
         </div>
 
@@ -174,6 +174,7 @@
     margin: 0 auto;
     padding: 30px 0;
     cursor: pointer;
+    img{width: 72px;height: 72px;margin-bottom:8px;}
   }
 
   .card1 {

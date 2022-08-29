@@ -6,11 +6,11 @@
         <el-form-item label="" prop="username" :rules="[
                     {required: true, message:'请输入手机号或邮箱', trigger:'blur'}
                    ]">
-          <el-input v-model="inputForm.username" placeholder="请输入手机号或邮箱" maxlength="250"></el-input>
+          <el-input v-model="inputForm.username" autocomplete="off" placeholder="请输入手机号或邮箱" maxlength="250"></el-input>
         </el-form-item>
 
         <el-form-item label="" prop="password" :rules="[{required: true, message:'密码不能为空', trigger:'blur'}]">
-          <el-input v-model="inputForm.password" maxlength="50" placeholder="请输入密码" show-password></el-input>
+          <el-input v-model="inputForm.password" autocomplete="off" maxlength="50" placeholder="请输入密码" show-password></el-input>
         </el-form-item>
         <el-form-item>
           <el-row :gutter="16">
@@ -106,7 +106,7 @@
   }
 
   .box-card {
-    width: 800px;
+    width: 450px;
     margin: 30px auto;
     padding: 20px 50px;
 

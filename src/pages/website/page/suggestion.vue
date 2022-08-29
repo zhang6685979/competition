@@ -146,7 +146,7 @@
     }
 
     .el-form {
-      margin-top: 100px;
+      margin-top: 30%;
     }
 
     .btn-warp {
@@ -157,27 +157,36 @@
         border-color: #a80824;
       }
     }
-    .other-info{
+
+    .other-info {
       position: absolute;
-     position: absolute;
-     bottom: 0%;
-     left: 10%;
-     width: 30%;
-     height: 480px;
-      img{width:100%;height:240px;margin:0 0 20px 0;}
+      position: absolute;
+      bottom: 0%;
+      left: 10%;
+      width: 30%;
+      height: 480px;
+
+      img {
+        width: 100%;
+        height: 240px;
+        margin: 0 0 20px 0;
+      }
     }
+
     .table-data {
-      font-size: 16px;
-      width:100%;
-      tr{
-        height:30px;
+      font-size: 14px;
+      width: 100%;
+
+      tr {
+        height: 30px;
+
         th {
           font-weight: 400;
-          vertical-align: top;
+          vertical-align: middle;
         }
-
         td a {
-          color: #000;font-size: 16px
+          color: #000;
+          font-size: 14px
         }
       }
     }

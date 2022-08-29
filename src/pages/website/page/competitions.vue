@@ -13,7 +13,9 @@
         </el-col>
         <el-col :span="12">
           <div class="bisai-info">
-            <h5><router-link :to="'/competitions/'+item.id">{{item.title}}</router-link></h5>
+            <h5>
+              <router-link :to="'/competitions/'+item.id">{{item.title}}</router-link>
+            </h5>
             <p>
               {{item.describe0}}
             </p>
@@ -77,7 +79,12 @@
 <style scoped lang="scss">
   .container {
     background-color: #fff;
-    .banner{width:100%;height:330px;}
+
+    .banner {
+      width: 100%;
+      height: 330px;
+    }
+
     .main-content {
       max-width: 1200px;
       margin: 20px auto 0;
@@ -93,19 +100,23 @@
     width: 100%;
     height: 100%;
   }
+
   .bisai-info {
     background-color: #E0E1E4;
     height: 260px;
     padding: 20px;
     box-sizing: border-box;
-    h5 a{
+
+    h5 a {
       display: block;
       font-size: 20px;
+      line-height: 29px;
       color: #1A1718;
       font-weight: bold;
       margin-bottom: 20px;
       position: relative;
       padding-top: 20px;
+
       &:after {
         content: "";
         display: block;
@@ -117,10 +128,13 @@
         top: 0;
       }
     }
+
     p {
       font-size: 16px;
+      line-height: 26px;
     }
   }
+
   .pager {
     text-align: center;
     padding: 20px;

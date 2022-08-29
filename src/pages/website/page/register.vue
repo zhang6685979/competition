@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1 class="text-center">账号申请</h1>
-    <p class="tit">请您填写基本信息，我们会尽快与您取得联系，谢谢！</p>
     <el-card class="box-card">
+      <h1 class="text-center">账号申请</h1>
+      <p class="tit">请您填写基本信息，我们会尽快与您取得联系，谢谢！</p>
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
         :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
         <el-form-item label="您的姓名" prop="name" :rules="[
@@ -27,7 +27,7 @@
                    ]">
           <el-input v-model="inputForm.mobile" placeholder="请填写手机号码"></el-input>
         </el-form-item>
-        <el-form-item label="密码:" prop="password" :rules="inputForm.id?[]:[{required: true, message:'密码不能为空', trigger:'blur'}]">
+        <el-form-item label="密码" prop="password" :rules="inputForm.id?[]:[{required: true, message:'密码不能为空', trigger:'blur'}]">
             <el-input v-model="inputForm.password" maxlength="50" placeholder="请输入密码" show-password></el-input>
           </el-form-item>
         <el-form-item label="确认密码" prop="confirmNewPassword" :rules="inputForm.id?[{validator: validatePass2, trigger: 'blur'}]:[{required: true, message:'确认密码不能为空', trigger:'blur'},{validator: validatePass2, trigger: 'blur'}]">
@@ -130,7 +130,8 @@
     content: '';
     display: inline-block;
     width: 32px;
-    height: 33px;
+    height: 32px;
+    margin-right: 10px;
     background: url('../assets/images/title.png');
     background-size: 100%;
     vertical-align: bottom;
@@ -138,7 +139,7 @@
 
   .tit {
     text-align: center;
-    margin: 20px 0 0;
+    margin: 20px 0;
     font-size: 15px;
     color: #666;
   }
