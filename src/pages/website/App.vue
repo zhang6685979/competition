@@ -20,6 +20,14 @@
       if(member){
         this.$store.commit('user/updateMember',JSON.parse(member))
       }
+      this.$http({
+        url:'/sys/sysConfig/public/banners',
+        method:'get'
+      }).then(({
+        data
+      }) => {
+       this.$store.commit('config/updateBannerConfig', data);
+      })
     }
   }
 </script>

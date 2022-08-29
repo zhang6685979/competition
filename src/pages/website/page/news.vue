@@ -1,35 +1,37 @@
 <template>
-  <el-card class="box-card">
+  <div>
+    <img v-if="banners['news']" :src="banners['news']" alt="" class="banner">
+    <el-card class="box-card">
 
-    <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
-      <el-col :span="6">
-          <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
-          <img :src="item.image" ></router-link>
-      </el-col>
-      <el-col :span="18">
-        <div class="item-heading">
-          <div class="text-muted pull-right">
-            <span>
-              <i class="el-icon-view"></i> {{item.times}}</span> &nbsp;
-            <span>
-              <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
+      <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
+        <el-col :span="6">
+            <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
+            <img :src="item.image" ></router-link>
+        </el-col>
+        <el-col :span="18">
+          <div class="item-heading">
+            <div class="text-muted pull-right">
+              <span>
+                <i class="el-icon-view"></i> {{item.times}}</span> &nbsp;
+              <span>
+                <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
+            </div>
+            <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
           </div>
-          <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
-        </div>
-        <p class="item-content">
-          {{item.describe0}}
-        </p>
-      </el-col>
-    </el-row>
+          <p class="item-content">
+            {{item.describe0}}
+          </p>
+        </el-col>
+      </el-row>
 
-    <div class="pager">
-      <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
-        :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
-      </el-pagination>
-    </div>
+      <div class="pager">
+        <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
+          :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
+        </el-pagination>
+      </div>
+    </el-card>
+  </div>
 
-
-  </el-card>
 </template>
 
 <script>
@@ -65,11 +67,22 @@
           this.$forceUpdate()
         })
       }
+    },
+    computed: {
+      banners: {
+        get() {
+          return this.$store.state.config.banners
+        }
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  .banner {
+    width: 100%;
+    height: 330px;
+  }
   .box-card {
     width: 80%;
     margin: 0 auto;

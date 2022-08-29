@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-weaper animated bounceInDown" style="z-index:100">
-      <el-image :src="require('@/assets/img/logo.png')" class="logo"></el-image>
+      <!-- <el-image :src="require('@/assets/img/logo.png')" class="logo"></el-image> -->
       <p class="title">{{productName}}</p>
       <div class="login-border">
         <div class="login-main">

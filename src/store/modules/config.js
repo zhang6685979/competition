@@ -18,7 +18,9 @@ export default {
     defaultTheme: localStorage.getItem('defaultTheme'), // 默认主题
     defaultLayout: localStorage.getItem('defaultLayout'),
     productName: '', // 产品名称
-    logo: '' // 产品logo: '',
+    logo: '', // 产品logo: '',
+
+    banners:{}
 
   },
   mutations: {
@@ -47,6 +49,9 @@ export default {
       state.defaultLayout = config.defaultLayout
       state.productName = config.productName
       state.logo = config.logo
+    },
+    updateBannerConfig(state,config){
+      state.banners = config
     }
   }
 }

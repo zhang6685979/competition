@@ -330,6 +330,11 @@
         this.themeFormSetting = this.recover(this.themeFormSetting, data)
         this.smsFormSetting = this.recover(this.smsFormSetting, data)
         this.emailFormSetting = this.recover(this.emailFormSetting, data)
+        this.bannerSetting = this.recover(this.bannerSetting,data);
+        this.banners.forEach(banner=>{
+          var item = data[banner.field];
+          banner.fileList = [{name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item}]
+        })
       })
     },
     methods: {

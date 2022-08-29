@@ -1,10 +1,6 @@
 <template>
   <div class="container">
-    <el-carousel :interval="5000" height="320px">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <img class="image" :src="require('../assets/images/bisai.png')" />
-      </el-carousel-item>
-    </el-carousel>
+    <img v-if="banners['competition']" :src="banners['competition']" alt="" class="banner">
     <div class="main-content">
       当前位置：首页-大赛专区
       <el-divider></el-divider>
@@ -67,6 +63,13 @@
           this.tablePage.total = data.total
         })
       }
+    },
+    computed: {
+      banners: {
+        get() {
+          return this.$store.state.config.banners
+        }
+      }
     }
   }
 </script>
@@ -74,7 +77,7 @@
 <style scoped lang="scss">
   .container {
     background-color: #fff;
-    margin-top: -20px;
+    .banner{width:100%;height:330px;}
     .main-content {
       max-width: 1200px;
       margin: 20px auto 0;
