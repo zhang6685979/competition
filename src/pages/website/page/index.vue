@@ -29,22 +29,23 @@
             <div class="news-list" v-show="activeIndex==0">
               <div class="news-item" v-for="(item,index) in newsList.slice(0,5)">
                 <div class="news-title">
-                  <router-link :to="{path:'/news/'+item.id}"><span class="circle"></span><el-tag v-if="item.top==1" style="float:right" size="small" type="success">置顶</el-tag>{{item.title}}</router-link>
-                </div>
-                <div class="news-status">
+                  <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
                   <span type="danger" v-if="item.latest=='1'">new</span>
-                  <p>{{item.updateDate&&item.updateDate.substring(0,10)}}</p>
+                </div>
+                <div class="news-time">
+                  {{item.updateDate&&item.updateDate.substring(0,10)}}
                 </div>
               </div>
             </div>
             <div class="news-list" v-show="activeIndex==1">
               <div class="news-item" v-for="(item,index) in announcementList.slice(0,5)">
                 <div class="news-title">
-                  <router-link :to="{path:'/notice/'+item.id}"><span class="circle"></span>{{item.title}}</router-link>
-                </div>
-                <div class="news-status">
+                  <router-link :to="{path:'/notice/'+item.id}">{{item.title}}</router-link>
                   <span type="danger" v-if="item.latest=='1'">new</span>
-                  <p>{{item.updateDate&&item.updateDate.substring(0,10)}}</p>
+                </div>
+
+                <div class="news-time">
+                  {{item.updateDate&&item.updateDate.substring(0,10)}}
                 </div>
               </div>
             </div>
@@ -66,7 +67,8 @@
           <swiper :options="swiperOption" ref="mySwiper">
             <swiper-slide v-for="(item, index) in competitionList" :key="index">
               <el-card :body-style="{ padding: '0px' }" shadow="never">
-                <router-link :to="'/competitions/'+item.id"><img :src="item.image" class="competition-image"></router-link>
+                <router-link :to="'/competitions/'+item.id"><img :src="item.image" class="competition-image">
+                </router-link>
                 <div class="desc">
                   {{item.describe0}}
                 </div>
@@ -78,21 +80,24 @@
       <p class="title">技能认证 <sub>Skill Certification</sub></p>
       <div class="clearfix competition">
         <ul>
-          <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/certificate?type='+item.id)">{{item.title}}</li>
+          <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/certificate?type='+item.id)">
+            {{item.title}}
+          </li>
           <li @click="$router.push('/certificate')">更多.....</li>
         </ul>
       </div>
       <el-row :gutter="10" class="competition">
         <el-col :span="8" v-for="(item, index) in certificateList" :key="index">
-          <el-card :body-style="{ padding: '0px' }" shadow="never" >
-            <img :src="item.image" class="certificate-image"  @click="$router.push('/certificate?type='+item.id)">
+          <el-card :body-style="{ padding: '0px' }" shadow="never">
+            <img :src="item.image" class="certificate-image" @click="$router.push('/certificate?type='+item.id)">
           </el-card>
         </el-col>
       </el-row>
       <p class="title">考试专区 <sub>Examination Area</sub></p>
       <div class="clearfix competition">
         <ul>
-          <li v-for="(item, index) in platformList.slice(0,3)" :key="index"><a :href="item.url" target="_blank">{{item.title}}</a></li>
+          <li v-for="(item, index) in platformList.slice(0,3)" :key="index"><a :href="item.url"
+              target="_blank">{{item.title}}</a></li>
           <li @click="$router.push('/examination')">更多.....</li>
         </ul>
       </div>
@@ -273,8 +278,9 @@
     &.active {
       color: #DC000C
     }
-    a{
-      color:#303133;
+
+    a {
+      color: #303133;
     }
   }
 
@@ -344,7 +350,7 @@
     padding-right: 20px;
     color: #1A1718;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .mytabs li:hover,
@@ -385,56 +391,58 @@
 
   .news-list .news-item {
     margin: 10px 0;
-    height: 30px;
   }
 
   .news-list .news-item .news-title {
     flex: 1;
-    align-items: center;
+    padding: 0 15px;
+    position: relative;
     display: flex;
-    padding-right: 15px;
-    line-height: 24px;
+    flex-wrap: nowrap;
+
+    a {
+      color: #000;
+      line-height: 22px;
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    span {
+      display: inline-block;
+      border-radius: 20px;
+      background-color: #DC000C;
+      color: #fff;
+      padding: 0 7px;
+      margin-left: 5px;
+      height: 20px;
+      text-align: center;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      background-color: #DC000C;
+      border-radius: 50%;
+    }
   }
 
-  .news-list .news-item .news-title .circle {
-    width: 8px;
-    height: 8px;
-    background-color: #DC000C;
-    border-radius: 50%;
-    vertical-align: middle;
-    padding: 0;
-    margin-right: 10px;
-  }
-
-  .news-list .news-item .news-status {
-    width: 75px;
-    font-size: 12px;
-  }
-
-  .news-list .news-item .news-title a {
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    display: -webkit-box;
-
-    -webkit-box-orient: vertical;
-
-    -webkit-line-clamp: 2;
-    color: #242222;
+  .news-list .news-item .news-time {
+    width: 85px;
+    font-size: 14px;
+    color: #707070;
   }
 
   .news-item {
     display: flex;
-  }
-
-  .news-list .news-item span {
-    display: inline-block;
-    border-radius: 5px;
-    background-color: #DC000C;
-    color: #fff;
-    padding: 0 5px;
-    text-align: center;
   }
 
   .certificate-image {

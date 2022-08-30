@@ -38,8 +38,20 @@
               <el-form-item label="产品logo">
                 <el-upload class="avatar-uploader"
                   :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=logo`"
-                  :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :show-file-list="false">
+                  :on-success="(res,file)=>{
+                    handleAvatarSuccess(res,file,'logo')
+                  }" :before-upload="beforeAvatarUpload" :show-file-list="false">
                   <img v-if="themeFormSetting.logo" :src="themeFormSetting.logo" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </el-form-item>
+              <el-form-item label="网站logo">
+                <el-upload class="avatar-uploader"
+                  :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=logo`"
+                  :on-success="(res,file)=>{
+                    handleAvatarSuccess(res,file,'weblogo')
+                  }" :before-upload="beforeAvatarUpload" :show-file-list="false">
+                  <img v-if="themeFormSetting.weblogo" :src="themeFormSetting.weblogo" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
@@ -145,16 +157,16 @@
               <el-form-item :label="item.label" :prop="item.field" :rules="[
                  {required: true, message:'banner图片不能为空', trigger:'blur'}
                 ]" v-for="(item,index) in banners" :key="index">
-                <el-upload  list-type="picture"
+
+                <el-upload
                   :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/banner`"
-                  :headers="{token: $cookie.get('token')}" :on-success="(response, file, fileList)=>{onSuccess(response, file, fileList,item.field)}" :on-remove="(file, fileList)=>{onRemove(file,fileList,item.field)}"
-                  :before-remove="beforeRemove"
-                  :limit="1"
-                  :on-exceed="(files, fileList) =>{
-                    $message.warning(`只能设置1张banner图片,请删除之后再进行设置`)
-                  }"
-                  :file-list="item.fileList">
-                  <el-button size="small" type="primary">点击上传</el-button>
+                  :headers="{token: $cookie.get('token')}" :on-success="(response, file, fileList)=>{onSuccess(response, file, fileList,item.field)}"
+                  accept="*.jpg,*.png,*.gif,*.jpeg"
+                  :show-file-list="false"
+                  list-type="picture-card">
+                  <img v-if="bannerSetting[item.field]" :src="bannerSetting[item.field]" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  
                   <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为1920*330</div>
                 </el-upload>
               </el-form-item>
@@ -186,6 +198,7 @@
           defaultTheme: '#1890FF',
           productName: '',
           logo: '',
+          weblogo: '',
           defaultLayout: '',
           homeUrl: ''
         },
@@ -331,15 +344,11 @@
         this.smsFormSetting = this.recover(this.smsFormSetting, data)
         this.emailFormSetting = this.recover(this.emailFormSetting, data)
         this.bannerSetting = this.recover(this.bannerSetting,data);
-        this.banners.forEach(banner=>{
-          var item = data[banner.field];
-          banner.fileList = [{name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item}]
-        })
       })
     },
     methods: {
-      handleAvatarSuccess(res, file) {
-        this.themeFormSetting.logo = res.url
+      handleAvatarSuccess(res, file,type) {
+        this.themeFormSetting[type] = res.url
       },
 
       beforeAvatarUpload(file) {
@@ -369,18 +378,6 @@
       },
       onSuccess(response, file, fileList,type) {
         this.bannerSetting[type] = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
-      },
-      onRemove(file, fileList,type) {
-        this.$http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`)
-          .then(({
-            data
-          }) => {
-            this.$message.success(data)
-          })
-        this.bannerSetting[type] = fileList.map(item => item.url).join('|')
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${file.name}？`)
       }
     }
   }

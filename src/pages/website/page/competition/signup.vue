@@ -16,31 +16,42 @@
     </el-row>
     <div class="signup-form" v-if="signFormVisible">
       <button class="btn" @click="signFormVisible=false">返 回</button>
-      <h5>{{signupInfo.name}}</h5>
-      <div class="signup-info">
-        <table>
-          <tr>
-            <td>报名时间：</td>
-            <td>{{signupInfo.starttime}}--{{signupInfo.endtime}}</td>
-          </tr>
-          <tr>
-            <td>报名说明:</td>
-            <td>{{signupInfo.describe0}}</td>
-          </tr>
-        </table>
+      <div v-if="!memberName" class="login-tip">
+        <p>您需要登录才能访问此页面！</p>
+        <el-button type="primary" @click="$router.push('/login')">立即登录</el-button>
       </div>
+      <template v-else>
+        <h5>{{signupInfo.name}}</h5>
+        <div class="signup-info">
+          <table>
+            <tr>
+              <td>报名时间：</td>
+              <td>{{signupInfo.starttime}}--{{signupInfo.endtime}}</td>
+            </tr>
+            <tr>
+              <td>报名说明:</td>
+              <td>{{signupInfo.describe0}}</td>
+            </tr>
+          </table>
+        </div>
 
-      <fm-generate-form  style="margin: 0 auto;" insite="true" :edit="currItem.status!=1" v-if="json" :data="json" :value="{}" :remote="{}"
-        ref="generateForm">
-      </fm-generate-form>
-      <div class="btn-warp" v-if="currItem.status!=1">
-        <button class="btn btn-save" @click="save">保存</button>
-      </div>
+        <fm-generate-form style="margin: 0 auto;" insite="true" :edit="currItem.status!=1" v-if="json" :data="json"
+          :value="{}" :remote="{}" ref="generateForm">
+        </fm-generate-form>
+        <div class="btn-warp" v-if="currItem.status!=1">
+          <button class="btn btn-save" @click="save">保存</button>
+        </div>
+      </template>
+
     </div>
 
     <div v-if="mySignupVisible" class="mysignup-list">
       <button class="btn" @click="mySignupVisible=false">返 回</button>
-      <table>
+      <div v-if="!memberName" class="login-tip">
+        <p>您需要登录才能访问此页面！</p>
+        <el-button type="primary" @click="$router.push('/login')">立即登录</el-button>
+      </div>
+      <table v-else>
         <tr>
           <td width="5%" align="center">#</td>
           <td width="45%">报名名称</td>
@@ -67,21 +78,22 @@
   export default {
     data() {
       return {
-        signFormVisible:false,
-        mySignupVisible:false,
+        signFormVisible: false,
+        mySignupVisible: false,
         dataList: [],
         json: '',
         signupInfo: {},
         colors: ['linear-gradient(180deg, #7DB3F9 0%, #4B6DF6 100%)',
-          'linear-gradient(180deg, #7CD6BD 0%, #55B8CE 100%)', 'linear-gradient(180deg, #F09EBA 0%, #EC6085 100%)','linear-gradient(180deg, #BAA4F8 0%, #7D67F3 100%)','linear-gradient(180deg, #96FCB1 0%, #24E52B 100%)'
+          'linear-gradient(180deg, #7CD6BD 0%, #55B8CE 100%)', 'linear-gradient(180deg, #F09EBA 0%, #EC6085 100%)',
+          'linear-gradient(180deg, #BAA4F8 0%, #7D67F3 100%)', 'linear-gradient(180deg, #96FCB1 0%, #24E52B 100%)'
         ],
-        status:{
-          0:'待审核',
-          1:'报名成功',
-          2:'审核不通过'
+        status: {
+          0: '待审核',
+          1: '报名成功',
+          2: '审核不通过'
         },
-        signupList:[],
-        currItem:{}//当前信息填报信息
+        signupList: [],
+        currItem: {} //当前信息填报信息
       }
     },
     created() {
@@ -101,9 +113,9 @@
           this.dataList = data.records
         })
       },
-      showSignupForm(id,formData) {
-        if(!this.memberName){
-          this.$message.warning("请先进行登陆才能进行报名!");
+      showSignupForm(id, formData) {
+        if (!this.memberName) {
+          this.signFormVisible = true;
           return;
         }
         this.$http({
@@ -118,8 +130,8 @@
           this.signFormVisible = true;
           this.signupInfo = data;
           this.json = JSON.parse(data.content);
-          this.$nextTick(()=>{
-            if(formData){
+          this.$nextTick(() => {
+            if (formData) {
               const $form = this.$refs.generateForm
               formData = JSON.parse(formData);
               $form.setData(formData);
@@ -127,21 +139,23 @@
           })
         })
       },
-      save(){
+      save() {
         const $form = this.$refs.generateForm
         $form.getData().then(data => {
-          data.tid = this.signupInfo.id;//模板id
+          data.tid = this.signupInfo.id; //模板id
           data.cid = this.$route.params.id; //大赛id
-          data.id = this.recordId||'';
+          data.id = this.recordId || '';
           this.$http({
             url: '/competition/competitionSignup/forminput',
             method: 'post',
-            headers:{
-              isFront:1,//是否是门户网站调用
-              token:this.$cookie.get('user-token')
+            headers: {
+              isFront: 1, //是否是门户网站调用
+              token: this.$cookie.get('user-token')
             },
-            data:data
-          }).then(({data})=>{
+            data: data
+          }).then(({
+            data
+          }) => {
             this.$message.success('报名成功!');
             this.recordId = '';
             this.signFormVisible = false;
@@ -152,35 +166,41 @@
         })
       },
       //获取我的报名列表
-      getMySignupList(){
-        if(!this.memberName){
-          this.$message.warning("请先进行登陆才能查看我的报名!");
+      getMySignupList() {
+        if (!this.memberName) {
+          this.mySignupVisible = true;
           return;
         }
         this.$http({
-          url:'/competition/competitionSignup/forminput/list',
-          headers:{
-            isFront:1,//是否是门户网站调用
-            token:this.$cookie.get('user-token')
+          url: '/competition/competitionSignup/forminput/list',
+          headers: {
+            isFront: 1, //是否是门户网站调用
+            token: this.$cookie.get('user-token')
           },
           params: {
             'current': 1,
             'size': 100,
-            'cid':this.$route.params.id
+            'cid': this.$route.params.id
           }
-        }).then(({data})=>{
-           this.mySignupVisible = true;
-           this.signupList = data.records;
+        }).then(({
+          data
+        }) => {
+          this.mySignupVisible = true;
+          this.signupList = data.records;
         })
       },
       //重新填报
-      reWrite(item){
-         var {tid,content,id} = item;
-         this.currItem = item;
-         this.mySignupVisible = false;
-         this.signFormVisible = true;
-         this.recordId = id;//报名记录id
-         this.showSignupForm(tid,content)
+      reWrite(item) {
+        var {
+          tid,
+          content,
+          id
+        } = item;
+        this.currItem = item;
+        this.mySignupVisible = false;
+        this.signFormVisible = true;
+        this.recordId = id; //报名记录id
+        this.showSignupForm(tid, content)
       }
     },
     computed: {
@@ -207,8 +227,9 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    margin-bottom:20px;
+    margin-bottom: 20px;
     border-radius: 6px;
+
     p {
       margin-top: 10px;
       color: #fff;
@@ -233,7 +254,12 @@
         margin: 10px 0;
       }
     }
-    .btn-warp{text-align: center;margin-top: 20px;}
+
+    .btn-warp {
+      text-align: center;
+      margin-top: 20px;
+    }
+
     .btn {
       width: 120px;
       height: 45px;
@@ -242,15 +268,26 @@
       font-size: 16px;
       color: #DC000C;
       cursor: pointer;
-      &.btn-save{
+      margin-bottom: 20px;
+
+      &.btn-save {
         background-color: #DC000C;
         color: #fff;
         margin-right: 15px;
       }
     }
   }
+  .login-tip {
+    text-align: center;
+    padding: 40px;
+    background: rgba(220, 0, 12, 0.07);
 
-  .mysignup-list{
+    .el-button {
+      margin-top: 20px;
+    }
+  }
+
+  .mysignup-list {
     .btn {
       width: 120px;
       height: 45px;
@@ -261,29 +298,41 @@
       cursor: pointer;
       margin-bottom: 20px;
     }
-    table{
+
+    table {
       width: 100%;
       table-layout: fixed;
       border-collapse: collapse;
-      tr{
-        &:first-child{
+
+      tr {
+        &:first-child {
           background-color: #F5F5F5;
         }
+
         height:60px;
-        td{
-          border:1px solid #dddddd;
+
+        td {
+          border: 1px solid #dddddd;
           border-left: none;
           border-right: none;
           font-size: 18px;
-          &.status{
+
+          &.status {
             color: #44AF10;
-            &.status-error{color:#f00}
+
+            &.status-error {
+              color: #f00
+            }
           }
-          a{
+
+          a {
             color: #1890FF;
             font-size: 18px;
           }
-          .disabled{color:#ccc;}
+
+          .disabled {
+            color: #ccc;
+          }
         }
       }
     }

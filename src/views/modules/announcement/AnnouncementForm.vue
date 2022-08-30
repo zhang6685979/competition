@@ -169,6 +169,7 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
+            this.inputForm.cid = this.id
             this.announcementService.save(this.inputForm).then(({
               data
             }) => {

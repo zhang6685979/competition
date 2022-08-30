@@ -190,7 +190,7 @@
   }
 
   .jp-card {
-    height: 278px;
+    height: 276px;
   }
 
   .jp-card-label {

@@ -26,6 +26,9 @@
           <vxe-column field="type" sortable title="文件类型">
           </vxe-column>
           <vxe-column field="size" sortable title="文件大小">
+            <template slot-scope="scope">
+              <span>{{(scope.row.size/1024/1024).toFixed(2)}}M</span>
+            </template>
           </vxe-column>
           <vxe-column field="times" sortable title="下载次数">
             <template slot-scope="scope">
