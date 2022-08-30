@@ -31,15 +31,6 @@ const mainRoutes = {
   children: [
     {path: '/redirect/:path(.*)', component: _import('modules/redirect/index')},
     {path: '/home', redirect: '/sys/dashboard/analysis/index', name: 'home'},
-    {path: '/flowable/task/TaskForm', component: _import('modules/flowable/task/TaskForm'), name: 'task-form', meta: {title: '流程表单'}},
-    {path: '/flowable/task/TaskFormEdit', component: _import('modules/flowable/task/TaskFormEdit'), name: 'task-form-edit', meta: {title: '流程表单'}},
-    {path: '/flowable/task/TaskFormDetail', component: _import('modules/flowable/task/TaskFormDetail'), name: 'task-form-detail', meta: {title: '流程表单详情'}},
-    {path: '/form/generateList', component: _import('modules/form/GenerateList'), name: 'form-preview-list', meta: {title: '列表'}},
-    {path: '/echarts/GenerateChart', component: _import('modules/echarts/GenerateChart'), name: 'echarts-generate', meta: {title: '预览图表'}},
-    {path: '/ureport/designer', component: null, name: 'ureport-designer', meta: {title: '预览报表', type: 'iframe', menuId: 'ureport-designer'}},
-    {path: '/ureport/preview', component: null, name: 'ureport-preview', meta: {title: '预览报表', type: 'iframe', menuId: 'ureport-preview'}},
-    {path: '/form/explorer', component: null, name: 'form-explorer', meta: {title: '浏览器', type: 'iframe'}},
-    {path: '/database/datatable/TableForm', component: _import('modules/database/datatable/TableForm'), name: 'table-form', meta: {title: '数据库表详情'}},
     {path: '/404', component: _import('common/404'), name: '404', meta: {title: '404未找到'}}
 
   ]

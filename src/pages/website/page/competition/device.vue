@@ -48,7 +48,7 @@
         var cid = this.$route.params.id || this.cid;
         this.tablePage.currentPage = currentPage||1;
         this.$http({
-          url: '//competition/competitionEquipment/public/list',
+          url: '/competition/competitionEquipment/public/list',
           method: 'get',
           params: {
             'current': this.tablePage.currentPage,

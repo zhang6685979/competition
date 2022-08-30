@@ -59,14 +59,6 @@
                 <color-picker></color-picker>
           </template>
         </el-menu-item>
-        <!-- <el-menu-item class="hide-sm">
-          <template slot="title">
-                <notice-icon
-                    class="action notice"
-                    :tabs="noticeTabs" >
-              </notice-icon>
-          </template>
-        </el-menu-item> -->
         <el-menu-item class="jp-navbar__avatar">
           <el-dropdown :show-timeout="0" placement="bottom">
             <span class="el-dropdown-link">
@@ -95,7 +87,6 @@
   import {clearLoginInfo} from '@/utils'
   //import NoticeIcon from '@/components/NoticeIcon'
   import ColorPicker from '@/components/colors/ColorPicker'
-  import NotifyService from '@/api/notify/NotifyService'
   import MailBoxService from '@/api/mail/MailBoxService'
   import LoginService from '@/api/auth/LoginService'
   export default {
@@ -132,11 +123,9 @@
       ColorPicker,
       //NoticeIcon
     },
-    notifyService: null,
     mailBoxService: null,
     loginService: null,
     beforeCreate () {
-      this.notifyService = new NotifyService()
       this.mailBoxService = new MailBoxService()
       this.loginService = new LoginService()
     },
@@ -199,20 +188,7 @@
       } else {
         this.$store.commit('common/updateLeftMenuList', this.allMenuList)
       }
-      this.notifyService.list({readFlag: 0, isSelf: true, current: 1, size: 10}).then(({data}) => {
-        this.noticeTabs[0].count = data.total
-        this.noticeTabs[0].url = '/notify/MyNotifyList'
-        this.noticeTabs[0].list = data.records.map((item) => {
-          return {
-            id: item.id,
-            avatar: item.createBy.photo,
-            title: item.title,
-            description: item.content,
-            datetime: item.createDate,
-            type: '通知'
-          }
-        })
-      })
+
       // this.mailBoxService.list({readStatus: 0, current: 1, size: 10}).then(({data}) => {
       //   this.noticeTabs[1].count = data.total
       //   this.noticeTabs[1].url = '/mailbox/index'
