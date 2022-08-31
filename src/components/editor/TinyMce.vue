@@ -172,7 +172,7 @@ export default {
       // 注：此为调用后端上传接口，需根据实际情况进行调整
       const { data } = await this.$http({
         method: 'POST',
-        url: '/sys/file/webupload/upload?uploadPath=/',
+        url: '/sys/file/webupload/upload',
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' }
       })
