@@ -12,7 +12,8 @@
         <el-form-item label="" prop="password" :rules="[{required: true, message:'密码不能为空', trigger:'blur'}]">
           <el-input v-model="inputForm.password" autocomplete="off" maxlength="50" placeholder="请输入密码" show-password></el-input>
         </el-form-item>
-        <el-form-item>
+
+        <el-form-item style="margin-bottom: 0;">
           <el-row :gutter="16">
             <el-col :span="16">
               <el-form-item prop="code">
@@ -20,9 +21,12 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-image @click="getCaptcha" :src="captchaImg" style="height:34px"></el-image>
+              <el-image @click="getCaptcha" :src="captchaImg" style="height:32px"></el-image>
             </el-col>
           </el-row>
+        </el-form-item>
+        <el-form-item >
+          <a href="#/register">还没有账号？立即申请</a>
         </el-form-item>
         <div class="btn-warp">
           <el-button type="primary" @click="doSubmit">提交</el-button>
