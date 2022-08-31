@@ -1,6 +1,6 @@
 <template>
   <div class="header" :class="{black:$route.path=='/'}">
-    <img :src="require('../assets/images/logo.png')" />
+    <img :src="banners.weblogo||require('../assets/images/logo.png')" />
     <div class="nav-warp">
       <ul class="nav">
         <li :class="$route.path=='/'?'active':''"><a @click="goto('/')">首页</a></li>
@@ -89,6 +89,11 @@
       memberName: {
         get() {
           return this.$store.state.user.memberName
+        }
+      },
+      banners: {
+        get() {
+          return this.$store.state.config.banners
         }
       }
     }

@@ -35,22 +35,18 @@
                         });
                     }"
                     :on-success="(response, file, fileList) => {
-                       inputForm.image = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                       inputForm.image = file.response.url
                     }"
                     :on-remove="(file, fileList) => {
                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
                         $message.success(data)
                       })
-                      inputForm.image = fileList.map(item => item.url).join('|')
+                      inputForm.image = ''
                     }"
                     :before-remove="(file, fileList) => {
                       return $confirm(`确定移除 ${file.name}？`)
                     }"
-                    multiple
-                    :limit="1"
-                    :on-exceed="(files, fileList) =>{
-                      $message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-                    }"
+                   :on-change="(file, fileList)=>{imageArra = [file]}"
                     :file-list="imageArra">
                     <i class="el-icon-plus"></i>
                   </el-upload>
