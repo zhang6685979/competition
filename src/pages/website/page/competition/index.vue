@@ -2,7 +2,7 @@
   <div>
     <el-row class="mt-30 mb-30" :gutter="20">
       <el-col :span="12">
-        <el-carousel height="320px"  indicator-position="none">
+        <el-carousel height="320px" indicator-position="none">
           <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
             <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
             <p class="carousel-title">{{item.title}}</p>
@@ -60,11 +60,28 @@
       </el-col>
     </el-row>
     <p class="title">赛事风采 <sub>Competition Style</sub></p>
-    <competition-style :cid="cid"></competition-style>
+    <div>
+      <swiper :options="swiperOption" ref="mySwiper">
+        <swiper-slide v-for="(item, index) in styleList" :key="index">
+          <el-card :body-style="{ padding: '0px'}" shadow="never" class="style-card">
+            <img :src="item.image" class="competition-image">
+            <div class="desc">
+              {{item.describe0}}
+            </div>
+          </el-card>
+        </swiper-slide>
+      </swiper>
+    </div>
   </div>
 </template>
 
 <script>
+  // 引入插件
+  import {
+    Swiper,
+    SwiperSlide
+  } from "vue-awesome-swiper";
+  import "swiper/css/swiper.css";
   import CompetitionStyle from './style'
   export default {
     data() {
@@ -79,23 +96,42 @@
           banner: '',
           describe0: ''
         },
-        newsList: []
+        newsList: [],
+        styleList: [],
+        swiperOption: {
+          slidesPerView: 4,
+          slidesPerColumnFill: 'row',
+          slidesPerColumn: 2,
+          spaceBetween: 20,
+          slidesPerGroup: 4,
+          loop: true,
+          speed: 4000, //匀速时间
+          autoplay: {
+            delay: 0,
+            stopOnLastSlide: false,
+            disableOnInteraction: false,
+          }
+
+        }
       }
     },
-    components:{
-      CompetitionStyle
+    components: {
+      CompetitionStyle,
+      Swiper,
+      SwiperSlide
     },
     watch: {
       '$route.params.id': {
         handler(newVal, oldVal) {
-           this.cid = newVal;
-           this.getNewsList();
+          this.cid = newVal;
+          this.getNewsList();
         },
         deep: true,
       }
     },
     mounted() {
       this.getNewsList();
+      this.getStyles();
     },
     methods: {
       getNewsList() {
@@ -112,6 +148,23 @@
           data
         }) => {
           this.newsList = data.records
+        })
+      },
+      //获取赛事风采
+      getStyles() {
+        var cid = this.$route.params.id;
+        this.$http({
+          url: '/competition/competitionStyle/public/list',
+          method: 'get',
+          params: {
+            'current': 1,
+            'size': 999,
+            'cid': cid
+          }
+        }).then(({
+          data
+        }) => {
+          this.styleList = data.records
         })
       }
     }
@@ -174,7 +227,12 @@
     margin: 0 auto;
     padding: 30px 0;
     cursor: pointer;
-    img{width: 72px;height: 72px;margin-bottom:8px;}
+
+    img {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 8px;
+    }
   }
 
   .card1 {
@@ -208,4 +266,27 @@
     }
   }
 
+  .style-card {
+    .competition-image {
+      width: 100%;
+      height: 156px;
+    }
+
+    .el-col {
+      margin-bottom: 15px;
+    }
+
+    .desc {
+      padding: 14px;
+      background-color: #EBEBEB;
+      position: relative;
+      font-size: 14px;
+      height: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+  }
 </style>

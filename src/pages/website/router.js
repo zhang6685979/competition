@@ -9,6 +9,11 @@ export default new Router({
 			name: 'index',
 			component: () => import('./page/index.vue')
 		},
+    {
+    		path: '/search',
+    		name: 'search',
+    		component: () => import('./page/search.vue')
+    	},
 		{
 			path: '/news',
 			name: 'news',

@@ -33,7 +33,7 @@
         <el-form-item label="确认密码" prop="confirmNewPassword" :rules="inputForm.id?[{validator: validatePass2, trigger: 'blur'}]:[{required: true, message:'确认密码不能为空', trigger:'blur'},{validator: validatePass2, trigger: 'blur'}]">
           <el-input v-model="inputForm.confirmNewPassword" maxlength="50" placeholder="再次输入密码" show-password></el-input>
         </el-form-item>
-        <el-form-item label="联系电话" prop="telephone" :rules="[
+        <!-- <el-form-item label="联系电话" prop="telephone" :rules="[
                     {validator: validator.isTel, trigger:'blur'}
                    ]">
           <el-input v-model="inputForm.telephone" placeholder="请填写联系电话"></el-input>
@@ -45,7 +45,7 @@
         <el-form-item label="单位地址" prop="address" :rules="[
                    ]">
           <el-input v-model="inputForm.address" placeholder="请填写单位地址"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <div class="btn-warp">
           <el-button type="primary" @click="doSubmit">提交</el-button>
         </div>

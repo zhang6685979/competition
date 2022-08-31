@@ -20,7 +20,7 @@
           <CompetitionLiveList :id="$route.query.cid"></CompetitionLiveList>
         </el-tab-pane>
         <el-tab-pane label="大赛设备" name="6">
-          <CompetitionEquipmentList :id="$route.query.cid"></CompetitionEquipmentList>
+          <CompetitionEquipmentForm :id="$route.query.cid"></CompetitionEquipmentForm>
         </el-tab-pane>
         <el-tab-pane label="通知公告" name="7">
           <AnnouncementList :id="$route.query.cid"></AnnouncementList>
@@ -36,7 +36,7 @@
 <script>
   import AnnouncementList from '../announcement/AnnouncementList'
   import CompetitionDownloadList from './CompetitionDownloadList'
-  import CompetitionEquipmentList from './CompetitionEquipmentList'
+  import CompetitionEquipmentForm from './CompetitionEquipmentForm'
   import CompetitionLiveList from './CompetitionLiveList'
   import NewsList from '../news/NewsList'
   import CompetitionRoundsList from './CompetitionRoundsList'
@@ -52,15 +52,12 @@
     components: {
       AnnouncementList,
       CompetitionDownloadList,
-      CompetitionEquipmentList,
+      CompetitionEquipmentForm,
       CompetitionLiveList,
       NewsList,
       CompetitionRoundsList,
       CompetitionStyleList,
       CompetitionSignupList
-    },
-    mounted() {
-
     },
     methods: {
       goBack() {

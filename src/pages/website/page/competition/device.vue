@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!infoVisible">
+    <!-- <template v-if="!infoVisible">
       <el-row :gutter="15" class="mt-20">
         <el-col :span="6" v-for="(item, index) in dataList" :key="index" class="el-col">
           <el-card :body-style="{ padding: '0px'}" shadow="never">
@@ -16,10 +16,11 @@
           :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
         </el-pagination>
       </div>
-    </template>
-    <div class="device-info" v-else>
-      <button class="btn" @click="infoVisible=false">返 回</button>
+    </template> -->
+    <div class="device-info">
+      <!-- <button class="btn" @click="infoVisible=false">返 回</button> -->
       <h5>{{currItem.title}}</h5>
+      <el-divider></el-divider>
       <div class="content" v-html="currItem.describe0"></div>
     </div>
 
@@ -58,8 +59,10 @@
         }).then(({
           data
         }) => {
-          this.dataList = data.records
-          this.tablePage.total = data.total
+          var records = data.records
+          if(records&&records.length>0){
+            this.currItem = records[0];
+          }
         })
       },
       showDesc(item){
@@ -105,6 +108,6 @@
       cursor: pointer;
       margin-bottom: 20px;
     }
-    h5{text-align: center;margin-bottom: 20px;font-size: 20px;}
+    h5{margin-bottom: 20px;font-size: 20px;}
   }
 </style>

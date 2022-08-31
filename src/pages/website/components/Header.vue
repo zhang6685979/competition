@@ -9,22 +9,27 @@
         <li :class="$route.path.indexOf('/competition')!=-1?'active':''">
           <a @click="goto('/competitions')">大赛专区</a>
           <ul class="dropdown-menu">
-            <li v-for="(item,index) in competitionList" :class="$route.params.id==item.id?'active':''"><router-link :to="'/competitions/'+item.id">{{item.title}}</router-link></li>
+            <li v-for="(item,index) in competitionList" :class="$route.params.id==item.id?'active':''">
+              <router-link :to="'/competitions/'+item.id">{{item.title}}</router-link>
+            </li>
           </ul>
         </li>
         <li :class="$route.path=='/certificate'?'active':''"><a @click="goto('/certificate')">技能认证</a></li>
         <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a>
-        <ul class="dropdown-menu">
-          <li v-for="(item,index) in platformList" ><a :href="item.url" target="_blank">{{item.title}}</a></li>
-        </ul>
+          <ul class="dropdown-menu">
+            <li v-for="(item,index) in platformList"><a :href="item.url" target="_blank">{{item.title}}</a></li>
+          </ul>
         </li>
         <li :class="$route.path=='/suggestion'?'active':''"><a @click="goto('/suggestion')">沟通与建议</a></li>
       </ul>
     </div>
     <div class="siteNav">
+      <el-input placeholder="请输入关键字" class="search-input" v-model="keyword" clearable @keyup.enter.native="toSearch()">
+          <i slot="suffix" class="el-input__icon el-icon-search" @click="toSearch()"></i>
+      </el-input>
       <template v-if="!memberName">
         <a @click="goto('/login')">登录</a>
-        <a @click="goto('/register')">账号申请</a>
+        <!-- <a @click="goto('/register')">账号申请</a> -->
       </template>
       <template v-else>
         <a><i class="el-icon-user-solid"> </i>{{memberName}}</a><a @click="logout">退出</a>
@@ -38,11 +43,13 @@
     data() {
       return {
         activeIndex: '1',
-        competitionList:[],
-        platformList:[]
+        competitionList: [],
+        platformList: [],
+        keyword: ''
       }
     },
-    mounted(){
+    mounted() {
+      this.keyword = this.$route.query.keyword;
       this.getCompetitionList();
       this.getPlatformList();
     },
@@ -61,8 +68,8 @@
           method: 'get',
           params: {
             type: type,
-            current:1,
-            size:999
+            current: 1,
+            size: 999
           }
         }).then(({
           data
@@ -75,14 +82,22 @@
           url: '/platform/platform/public/list',
           method: 'get',
           params: {
-            current:1,
-            size:999
+            current: 1,
+            size: 999
           }
         }).then(({
           data
         }) => {
           this.platformList = data.records;
         })
+      },
+      toSearch(){
+        var keyword = this.keyword;
+        if(keyword){
+          this.$router.push('/search?keyword='+keyword);
+        }else{
+          this.$message.warning('请输入您要搜索的关键字!');
+        }
       }
     },
     computed: {
@@ -130,6 +145,7 @@
     float: left;
     list-style: none;
     position: relative;
+
     a {
       display: block;
       padding: 0 20px;
@@ -138,31 +154,38 @@
       text-decoration: none;
       font-size: 16px;
     }
-    &:hover .dropdown-menu{
-       display:block;
+
+    &:hover .dropdown-menu {
+      display: block;
     }
 
     .dropdown-menu {
-      width:160px ;
+      width: 160px;
       position: absolute;
       left: 50%;
       margin-left: -80px;
       top: 100%;
       background-color: #fff;
       display: none;
+
       li {
         float: none;
+
         a {
           line-height: 40px;
           white-space: nowrap;
           font-size: 13px;
-          color: #555!important;
+          color: #555 !important;
           text-align: center;
+
           &:hover {
             color: #e91b23 !important;
           }
         }
-        &.active a{ color: #e91b23 !important;}
+
+        &.active a {
+          color: #e91b23 !important;
+        }
       }
     }
   }
@@ -199,7 +222,8 @@
   .header.black {
     background: rgba(0, 0, 0, .4) !important;
   }
-  .header.black .dropdown-menu{
+
+  .header.black .dropdown-menu {
     background: rgba(255, 255, 255, .7) !important;
   }
 

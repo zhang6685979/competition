@@ -1,10 +1,14 @@
 <template>
-  <div>
-    <img v-if="banners['announcement']" :src="banners['announcement']" alt="" class="banner">
-    <el-card class="box-card">
 
+  <el-card class="box-card">
+    <template v-if="$route.query.keyword&&dataList.length>0">
       <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
-        <el-col :span="24">
+        <el-col :span="6" v-if="item.type==1">
+          <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
+            <img :src="item.image">
+          </router-link>
+        </el-col>
+        <el-col :span="item.type==1?18:24">
           <div class="item-heading">
             <div class="text-muted pull-right">
               <span>
@@ -12,7 +16,8 @@
               <span>
                 <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
             </div>
-            <router-link :to="{path:'/notice/'+item.id}">{{item.title}}</router-link>
+            <router-link :to="{path:'/'+(item.type==1?'news':'notice')+'/'+item.id}"
+              v-html="brightenKeyword(item.title)"></router-link>
           </div>
           <p class="item-content">
             {{item.describe0}}
@@ -22,13 +27,19 @@
 
       <div class="pager">
         <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
-          :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getNewsList">
+          :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
         </el-pagination>
       </div>
+    </template>
+    <div class="error-tip" v-else>
+      <img :src="require('../assets/images/symbol-icon.png')" alt="">
+      <p>{{!$route.query.keyword?'请输入关键字才能进行检索!':'未查询相关信息，请更换关键字重新检索'}}</p>
+    </div>
+  </el-card>
 
 
-    </el-card>
-  </div>
+
+
 </template>
 
 <script>
@@ -43,18 +54,30 @@
         }
       }
     },
+    watch: {
+      '$route.query.keyword': function(newVal, oldVal) {
+        if (newVal != oldVal) {
+          this.getList();
+        }
+      }
+    },
     created() {
-      this.getNewsList();
+      this.getList();
     },
     methods: {
-      getNewsList(currentPage) {
+      getList(currentPage) {
+        var keyword = this.$route.query.keyword;
+        if (!keyword) {
+          return;
+        }
         this.tablePage.currentPage = currentPage || 1;
         this.$http({
-          url: '/announcement/announcement/public/list',
+          url: '/public/search',
           method: 'get',
           params: {
             'current': this.tablePage.currentPage,
-            'size': this.tablePage.pageSize
+            'size': this.tablePage.pageSize,
+            'key': keyword
           }
         }).then(({
           data
@@ -63,12 +86,15 @@
           this.tablePage.total = data.total
           this.$forceUpdate()
         })
-      }
-    },
-    computed: {
-      banners: {
-        get() {
-          return this.$store.state.config.banners
+      },
+      brightenKeyword(val) {
+        var keyword = this.$route.query.keyword;
+        if (keyword.length > 0) {
+          let replaceReg = new RegExp(keyword, 'ig')
+          let replaceString = `<font style="color: #f75353">${keyword}</font>`
+          return val.replace(replaceReg, replaceString)
+        } else {
+          return val;
         }
       }
     }
@@ -129,6 +155,20 @@
     .pager {
       text-align: center;
       padding: 20px;
+    }
+    .error-tip {
+      width: 614px;
+      height: 325px;
+      margin: 0 auto;
+      background: rgba(220, 0, 12, 0.07);
+      border-radius: 4px 4px 4px 4px;
+      border: 1px solid #DC000C;
+      text-align: center;
+      padding: 100px 0;
+
+      p {
+        margin-top: 20px;
+      }
     }
   }
 </style>

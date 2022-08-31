@@ -134,7 +134,13 @@
           slidesPerView: 4,
           spaceBetween: 20,
           slidesPerGroup: 4,
-          loop: false
+          loop: true,
+          speed: 4000, //匀速时间
+          autoplay: {
+            delay: 0,
+            stopOnLastSlide: false,
+            disableOnInteraction: false,
+          }
         }
       }
     },
