@@ -17,11 +17,19 @@
           </vxe-column>
           <vxe-column field="mobile" sortable title="手机号码">
           </vxe-column>
-          <vxe-column field="telephone" sortable title="联系电话">
+          <vxe-column field="tags" sortable title="用户标签">
+            <template slot-scope="scope">
+              <el-tag type="primary" v-if="scope.row.tags" v-for="(item,index) in (scope.row.tags||'').split(',')" :key="index" class="user-tag">{{item}}</el-tag>
+            </template>
           </vxe-column>
-          <vxe-column field="jobtitle" sortable title="您的职务">
-          </vxe-column>
-          <vxe-column field="address" sortable title="单位地址">
+          <vxe-column
+            fixed="right"
+            align="center"
+            width="100"
+            title="操作">
+            <template  slot-scope="scope">
+              <el-button type="text"  icon="el-icon-edit" size="small" @click="edit(scope.row.id)">设置标签</el-button>
+            </template>
           </vxe-column>
         </vxe-table>
       </div>
