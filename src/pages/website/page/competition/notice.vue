@@ -94,7 +94,7 @@
 <style lang="scss" scoped>
   .box-card{
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto;
   }
  .item {
    border-bottom: 1px solid #C0C4CC;

@@ -3,9 +3,9 @@
     <template v-if="!infoVisible">
       <div class="item" v-for="(item,index) in dataList" :key="index">
         <div class="left">
-          <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
+          <a class="thumbnail" @click="showInfo(item)">
             <img :src="item.image">
-          </router-link>
+          </a>
         </div>
         <div class="right">
           <div class="item-heading">
@@ -15,7 +15,7 @@
               <span>
                 <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
             </div>
-            <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
+            <a @click="showInfo(item)">{{item.title}}</a>
           </div>
           <p class="item-content">
             {{item.describe0}}
@@ -101,7 +101,7 @@
 <style lang="scss" scoped>
   .box-card{
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto;
   }
  .item {
    border-bottom: 1px solid #C0C4CC;
@@ -111,7 +111,7 @@
    {
      border:none;
    }
- 
+
    .left {
      display: block;
      width: 240px;
@@ -121,35 +121,35 @@
        width: 100%;
        height: 100%
      }
- 
+
    }
- 
+
    .right {
      flex:1;
      .item-heading {
        margin-top: 10px;
- 
+
        a {
          font-size: 20px;
          font-weight: bold;
          color: #303133;
          line-height: 30px;
        }
- 
+
        .text-muted {
          float: right;
          colot: #707070;
          font-size: 16px;
        }
      }
- 
+
      .item-content {
        font-size: 16px;
        color: #707070;
        line-height: 30px;
      }
    }
- 
+
  }
 
  .pager {
