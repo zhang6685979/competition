@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-card">
     <!-- <template v-if="!infoVisible">
       <el-row :gutter="15" class="mt-20">
         <el-col :span="6" v-for="(item, index) in dataList" :key="index" class="el-col">
@@ -74,6 +74,10 @@
 </script>
 
 <style lang="scss" scoped>
+  .box-card{
+    width: 80%;
+    margin: 30px auto;
+  }
   .competition-image {
     width: 100%;
     height: 156px;

@@ -1,12 +1,115 @@
 <template>
   <div class="index-warp">
     <el-backtop :bottom="60"></el-backtop>
-    <el-carousel :interval="5000" height="560px">
+    <el-carousel :interval="5000" height="760px">
       <el-carousel-item v-for="(item,index) in carouselList" :key="index">
         <a :href="item.url" target="_blank"><img :src="item.image" class="image" /></a>
       </el-carousel-item>
     </el-carousel>
-    <div class="cont-warp">
+    <div class="news-warp">
+
+      <el-tabs v-model="activeIndex" class="my-tab">
+        <el-tab-pane label="新闻动态" name="0">
+          <span slot="label" class="tab-title">新闻动态</span>
+          <div class="news-list">
+            <div class="news-item" v-for="(item,index) in newsList.slice(0,3)">
+              <div class="news-left">
+                <img :src="item.image" alt="">
+              </div>
+              <div class="news-right">
+                <h5>{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
+                <p>{{item.describe0}}</p>
+                <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="通知公告" name="1">
+          <span slot="label" class="tab-title">通知公告</span>
+          <div class="news-list">
+            <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)">
+              <div class="news-right">
+                <h5>{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
+                <p>{{item.describe0}}</p>
+                <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <div class="competition-warp">
+      <h5 class="title">
+        大赛专区
+      </h5>
+      <ul>
+        <li v-for="item in $dictUtils.getDictList('jab_new_type')" :class="{active:item.value==type}" :key="item.value"
+          :label="item.label" @click="getCompetitionList(item.value)">{{item.label}}</li>
+      </ul>
+      <img class="line" :src="require('../assets/images/line.png')" alt="">
+      <div>
+        <swiper :options="swiperOption" ref="mySwiper">
+          <swiper-slide v-for="(item, index) in competitionList" :key="index">
+            <div class="competition-item">
+              <router-link :to="'/competitions/'+item.id"><img :src="item.image" class="competition-image">
+              </router-link>
+              <div class="desc">
+                {{item.title}}
+              </div>
+            </div>
+          </swiper-slide>
+        </swiper>
+      </div>
+    </div>
+    <div class="certficate-warp">
+      <h5 class="title">
+        技能认证
+      </h5>
+      <ul>
+        <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/certificate?type='+item.id)">
+          {{item.title}}
+        </li>
+      </ul>
+      <img class="line" :src="require('../assets/images/line.png')" alt="">
+
+      <div v-for="(item, index) in certificateList" :key="index" class="certficate-item" :class="{reverse:index%2==1}">
+
+        <div class="left">
+          <img :src="require('../assets/images/arrow.png')" alt="">
+          <h5>{{item.title}}</h5>
+          <button  @click="$router.push('/certificate?type='+item.id)">查看详情</button>
+        </div>
+        <div class="right">
+          <img :src="item.image" alt="">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="platform-warp">
+      <h5 class="title">
+        考试专区
+      </h5>
+      <ul>
+        <li v-for="(item, index) in platformList.slice(0,3)" :key="index">{{item.title}}</li>
+      </ul>
+      <img class="line" :src="require('../assets/images/line.png')" alt="">
+
+      <el-row>
+        <el-col :span="12" v-for="(item, index) in platformList.slice(0,2)" :key="index">
+          <div class="platform-item">
+            <a :href="item.url" target="_blank"><img :src="item.image" class="platform-image"></a>
+            <div class="desc">
+              <h5>{{item.title}}</h5>
+              <p>{{item.describe0}}</p>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+
+    </div>
+    <!-- <div class="cont-warp">
       <el-row class="mt-30 mb-30" :gutter="20">
         <el-col :span="12">
           <el-carousel height="250px" indicator-position="none">
@@ -108,7 +211,7 @@
           </el-card>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -131,9 +234,9 @@
         platformList: [],
         type: '', //比赛分类
         swiperOption: {
-          slidesPerView: 4,
+          slidesPerView: 3,
           spaceBetween: 20,
-          slidesPerGroup: 4,
+          slidesPerGroup: 3,
           loop: true,
           speed: 4000, //匀速时间
           autoplay: {
@@ -225,10 +328,330 @@
   }
 </script>
 
+
 <style lang="scss" scoped>
   .index-warp {
     margin-top: -110px;
     background-color: #fff;
+
+
+    .news-warp {
+      width: 1400px;
+      margin: 80px auto;
+
+      .news-item {
+        display: flex;
+        margin-bottom: 48px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .news-left {
+          margin-right: 50px;
+
+          img {
+            width: 300px;
+            height: 170px
+          }
+        }
+
+        .news-right {
+          flex: 1;
+
+          h5 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #303133;
+            line-height: 17px;
+            margin-bottom: 13px;
+          }
+
+          p {
+            font-size: 16px;
+            font-weight: 400;
+            color: #707070;
+            line-height: 28px;
+            margin-bottom: 45px;
+          }
+
+          span {
+            font-size: 14px;
+            font-weight: 400;
+            color: #303133;
+            line-height: 17px;
+          }
+        }
+      }
+    }
+
+
+
+    .competition-warp {
+      width: 100%;
+      height: 650px;
+      background: url(../assets/images/competition-bg.png) center;
+      background-size: 100%;
+      text-align: center;
+      padding: 80px 260px 100px;
+
+      .title {
+        font-size: 32px;
+        font-weight: normal;
+        color: #FFFFFF;
+        line-height: 30px;
+      }
+
+      ul {
+        overflow: hidden;
+        clear: both;
+        margin: auto;
+        display: inline-block;
+        margin: 20px 0 10px;
+
+        li {
+          float: left;
+          display: block;
+          padding: 0 10px;
+          border-right: 1px solid #1A1718;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: normal;
+          color: #FFFFFF;
+          border-left: 1px solid #fff;
+
+          &:first-child {
+            padding-left: 0;
+            border: none;
+          }
+
+          &.active {
+            color: #DC000C
+          }
+        }
+      }
+
+      .line {
+        display: block;
+        margin: 0 auto 80px;
+      }
+
+      .competition-item {
+        position: relative;
+        width: 445px;
+        height: 282px;
+        margin: 0 auto;
+
+        .competition-image {
+          width: 100%;
+          height: 100%;
+        }
+
+        .desc {
+          position: absolute;
+          bottom: 0;
+          width: 445px;
+          height: 60px;
+          background: rgb(220 0 12 / 40%);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-height: 60px;
+          font-size: 20px;
+          font-weight: 400;
+          color: #FFFFFF;
+        }
+      }
+    }
+
+    .certficate-warp {
+      text-align: center;
+      padding: 80px 260px 100px;
+
+      .title {
+        font-size: 32px;
+        font-weight: normal;
+        color: #000000;
+        line-height: 30px;
+      }
+
+      ul {
+        overflow: hidden;
+        clear: both;
+        margin: auto;
+        display: inline-block;
+        margin: 20px 0 10px;
+
+        li {
+          float: left;
+          display: block;
+          padding: 0 10px;
+          border-left: 1px solid #1A1718;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: normal;
+          color: #999999;
+          border-left: 1px solid #999999;
+
+          &:first-child {
+            padding-left: 0;
+            border: none;
+          }
+
+          &.active {
+            color: #DC000C
+          }
+        }
+      }
+
+      .line {
+        display: block;
+        margin: 0 auto 80px;
+      }
+
+      .certficate-item {
+        display: flex;
+
+        &.reverse {
+          flex-direction: row-reverse;
+          text-align: right;
+
+          .left {
+            text-align: right;
+            padding: 80px 260px 80px 0;
+
+            img {
+              transform: rotate(180deg);
+            }
+          }
+        }
+
+        .left {
+          width: 50%;
+          height: 400px;
+          background: #000000;
+          padding: 80px 0 80px 260px;
+          text-align: left;
+
+          h5 {
+            margin: 25px 0 40px;
+            font-size: 38px;
+            font-weight: normal;
+            color: #FFFFFF;
+            line-height: 38px;
+          }
+
+          button {
+            width: 141px;
+            height: 53px;
+            background: #8500DC;
+            border-radius: 4px 4px 4px 4px;
+            color: #FDFDFE;
+            font-size: 20px;
+            cursor: pointer;
+          }
+        }
+
+        .right {
+          width: 50%;
+          height: 400px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    .platform-warp {
+      text-align: center;
+      padding: 80px 260px 100px;
+      background: url(../assets/images/platform-bg.png) center;
+      background-size: 100%;
+
+      .title {
+        font-size: 32px;
+        font-weight: normal;
+        color: #000000;
+        line-height: 30px;
+      }
+
+      ul {
+        overflow: hidden;
+        clear: both;
+        margin: auto;
+        display: inline-block;
+        margin: 20px 0 10px;
+
+        li {
+          float: left;
+          display: block;
+          padding: 0 10px;
+          border-left: 1px solid #1A1718;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: normal;
+          color: #999999;
+          border-left: 1px solid #999999;
+
+          &:first-child {
+            padding-left: 0;
+            border: none;
+          }
+
+          &.active {
+            color: #DC000C
+          }
+        }
+      }
+
+      .line {
+        display: block;
+        margin: 0 auto 80px;
+      }
+
+      .platform-item {
+        position: relative;
+        width: 670px;
+        height: 380px;
+        margin: 0 auto;
+
+        .platform-image {
+          width: 100%;
+          height: 100%;
+        }
+
+        .desc {
+          position: absolute;
+          bottom: 0;
+          background: rgb(220 0 12 / 40%);
+          padding: 30px 40px;
+          text-align: left;
+
+          h5 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 20px;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 36px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #fff;
+            display: inline-block;
+            padding-bottom: 10px;
+          }
+
+          p {
+            font-size: 14px;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 22px;
+          }
+        }
+      }
+    }
 
     .cont-warp {
       max-width: 80%;
@@ -250,19 +673,19 @@
 
 
 
-  .title {
-    font-size: 22px;
-    line-height: 22px;
-    font-weight: bold;
-    border-left: 5px solid #DC000C;
-    padding-left: 10px;
-    margin-bottom: 15px;
-  }
+  // .title {
+  //   font-size: 22px;
+  //   line-height: 22px;
+  //   font-weight: bold;
+  //   border-left: 5px solid #DC000C;
+  //   padding-left: 10px;
+  //   margin-bottom: 15px;
+  // }
 
-  .title sub {
-    font-size: 13px;
-    color: #898b8c;
-  }
+  // .title sub {
+  //   font-size: 13px;
+  //   color: #898b8c;
+  // }
 
   .competition {
     padding: 0 15px;
@@ -308,30 +731,30 @@
     height: 156px;
   }
 
-  .desc {
-    padding: 10px;
-    background-color: #E0E1E4;
-    position: relative;
-    font-size: 14px;
-    height: 74px;
-    line-height: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
+  // .desc {
+  //   padding: 10px;
+  //   background-color: #E0E1E4;
+  //   position: relative;
+  //   font-size: 14px;
+  //   height: 74px;
+  //   line-height: 20px;
+  //   overflow: hidden;
+  //   text-overflow: ellipsis;
+  //   display: -webkit-box;
+  //   -webkit-line-clamp: 3;
+  //   -webkit-box-orient: vertical;
+  // }
 
-  .desc:after {
-    content: "";
-    display: block;
-    width: 64px;
-    height: 5px;
-    background-color: #DC000C;
-    position: absolute;
-    top: 0;
-    left: 15px;
-  }
+  // .desc:after {
+  //   content: "";
+  //   display: block;
+  //   width: 64px;
+  //   height: 5px;
+  //   background-color: #DC000C;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 15px;
+  // }
 
   .mytabs {
     position: relative;
@@ -395,9 +818,9 @@
     left: 0px;
   }
 
-  .news-list .news-item {
-    margin: 10px 0;
-  }
+  // .news-list .news-item {
+  //   margin: 10px 0;
+  // }
 
   .news-list .news-item .news-title {
     flex: 1;
@@ -428,17 +851,17 @@
       text-align: center;
     }
 
-    &:after {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 0;
-      top: 7px;
-      width: 8px;
-      height: 8px;
-      background-color: #DC000C;
-      border-radius: 50%;
-    }
+    // &:after {
+    //   content: '';
+    //   display: block;
+    //   position: absolute;
+    //   left: 0;
+    //   top: 7px;
+    //   width: 8px;
+    //   height: 8px;
+    //   background-color: #DC000C;
+    //   border-radius: 50%;
+    // }
   }
 
   .news-list .news-item .news-time {

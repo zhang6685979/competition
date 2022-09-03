@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-card">
    <template v-if="!infoVisible">
      <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
        <el-col :span="24">
@@ -92,9 +92,17 @@
 </script>
 
 <style lang="scss" scoped>
+  .box-card{
+    width: 80%;
+    margin: 0 auto;
+  }
  .item {
    border-bottom: 1px solid #C0C4CC;
    padding: 10px 0;
+   &:nth-last-child(2)
+   {
+     border:none;
+   }
 
    .thumbnail {
      display: block;

@@ -45,7 +45,7 @@
 
 <style>
   #foot {
-    background: #363742;
+    background: #434B57;
     border-bottom: solid 1px rgba(255, 255, 255, 0.1);
     width: 100%;
     font-size:12px;

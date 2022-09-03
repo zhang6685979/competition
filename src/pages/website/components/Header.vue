@@ -1,11 +1,11 @@
 <template>
-  <div class="header" :class="{black:$route.path=='/'}">
-    <img :src="banners.weblogo||require('../assets/images/logo.png')" />
+  <div class="header" :class="{black:transparent}">
+    <img :src="banners.weblogo" />
     <div class="nav-warp">
       <ul class="nav">
         <li :class="$route.path=='/'?'active':''"><a @click="goto('/')">首页</a></li>
         <li :class="$route.path.indexOf('/news')==0?'active':''"><a @click="goto('/news')">新闻资讯</a></li>
-        <li :class="$route.path.indexOf('/notice')!=-1?'active':''"><a @click="goto('/notice')">通知公告</a></li>
+        <li :class="$route.path.indexOf('/notice')==0?'active':''"><a @click="goto('/notice')">通知公告</a></li>
         <li :class="$route.path.indexOf('/competition')!=-1?'active':''">
           <a @click="goto('/competitions')">大赛专区</a>
           <ul class="dropdown-menu">
@@ -25,10 +25,10 @@
     </div>
     <div class="siteNav">
       <el-input placeholder="请输入关键字" class="search-input" v-model="keyword" clearable @keyup.enter.native="toSearch()">
-          <i slot="suffix" class="el-input__icon el-icon-search" @click="toSearch()"></i>
+        <i slot="suffix" class="el-input__icon el-icon-search" @click="toSearch()"></i>
       </el-input>
       <template v-if="!memberName">
-        <a @click="goto('/login')">登录</a>
+        <a @click="goto('/login')"><i class="el-icon-user-solid"> </i> 登录</a>
         <!-- <a @click="goto('/register')">账号申请</a> -->
       </template>
       <template v-else>
@@ -45,15 +45,43 @@
         activeIndex: '1',
         competitionList: [],
         platformList: [],
-        keyword: ''
+        keyword: '',
+        transparent:false
+      }
+    },
+    watch:{
+      '$route.path':function(newVal){
+        if(newVal=='/'){
+           window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
+           this.transparent = true;
+        }else{
+           window.removeEventListener('scroll', this.handleScroll)
+           this.transparent = false;
+        }
       }
     },
     mounted() {
       this.keyword = this.$route.query.keyword;
       this.getCompetitionList();
       this.getPlatformList();
+      if(this.$route.path=='/'){
+         window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
+         this.transparent = true;
+      }else{
+         window.removeEventListener('scroll', this.handleScroll)
+         this.transparent = false;
+      }
     },
     methods: {
+      // 获取页面滚动距离
+      handleScroll() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        if(scrollTop>760){
+          this.transparent = false;
+        }else{
+          this.transparent = true;
+        }
+      },
       goto(path) {
         this.$router.push(path);
       },
@@ -91,11 +119,11 @@
           this.platformList = data.records;
         })
       },
-      toSearch(){
+      toSearch() {
         var keyword = this.keyword;
-        if(keyword){
-          this.$router.push('/search?keyword='+keyword);
-        }else{
+        if (keyword) {
+          this.$router.push('/search?keyword=' + keyword);
+        } else {
           this.$message.warning('请输入您要搜索的关键字!');
         }
       }
@@ -123,13 +151,16 @@
     left: 0;
     z-index: 100;
     border: none;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
+    padding: 0 290px;
+    align-items: center;
+    background: #303133;
+    transition: background 0.5s linear;
   }
 
   .header img {
-    max-height: 90px;
+    width: 180px;
+    height: 50px;
   }
 
   .header .nav-warp {
@@ -150,7 +181,7 @@
       display: block;
       padding: 0 20px;
       line-height: 90px;
-      color: #353535;
+      color: #fff;
       text-decoration: none;
       font-size: 16px;
     }
@@ -165,7 +196,7 @@
       left: 50%;
       margin-left: -80px;
       top: 100%;
-      background-color: #fff;
+      background-color: #303133;
       display: none;
 
       li {
@@ -175,7 +206,7 @@
           line-height: 40px;
           white-space: nowrap;
           font-size: 13px;
-          color: #555 !important;
+          color: #fff !important;
           text-align: center;
 
           &:hover {
@@ -215,12 +246,11 @@
 
   .header .siteNav a:last-child {
     color: #fff !important;
-    background: #cf0a2c;
     margin-right: 0;
   }
 
   .header.black {
-    background: rgba(0, 0, 0, .4) !important;
+    background: none;
   }
 
   .header.black .dropdown-menu {
@@ -229,5 +259,10 @@
 
   .header.black a {
     color: #fff !important;
+  }
+
+  .header .search-input {
+    width: 220px;
+    height: 36px;
   }
 </style>

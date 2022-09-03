@@ -1,38 +1,25 @@
 <template>
   <div>
-    <el-row class="mt-30 mb-30" :gutter="20">
-      <el-col :span="12">
-        <el-carousel height="320px" indicator-position="none">
-          <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
-            <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
-            <p class="carousel-title">{{item.title}}</p>
-          </el-carousel-item>
-        </el-carousel>
-      </el-col>
-      <el-col :span="12">
-        <el-row class="item" :gutter="20" v-for="(item,index) in newsList" :key="index">
-          <el-col :span="6">
-            <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
-              <img :src="item.image">
-            </router-link>
-          </el-col>
-          <el-col :span="18">
-            <div class="item-heading">
-              <div class="text-muted pull-right">
-                <span>
-                  <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
-              </div>
-              <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
-            </div>
-            <p class="item-content">
-              {{item.describe0}}
-            </p>
-          </el-col>
-        </el-row>
-        <a class="pull-right" @click="$router.push('/competition/'+cid+'/news')">查看更多>></a>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
+    <div class="news-warp">
+      <el-row :gutter="30">
+        <el-col :span="12">
+          <el-carousel height="400px" indicator-position="none">
+            <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
+              <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
+              <p class="carousel-title">{{item.title}}</p>
+            </el-carousel-item>
+          </el-carousel>
+        </el-col>
+        <el-col :span="12">
+          <div class="item" :gutter="20" v-for="(item,index) in newsList" :key="index">
+            <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
+            <span>{{item.updateDate.substring(0,10)}}</span>
+          </div>
+          <!-- <a class="pull-right" @click="$router.push('/competition/'+cid+'/news')">查看更多>></a> -->
+        </el-col>
+      </el-row>
+    </div>
+    <el-row :gutter="20" class="func-warp">
       <el-col :span="6">
         <div class="card card1" @click="$router.push('/competition/'+cid+'/signup')">
           <img :src="require('../../assets/images/xxtb.png')" alt="">
@@ -59,16 +46,19 @@
         </div>
       </el-col>
     </el-row>
-    <p class="title">赛事风采 <sub>Competition Style</sub></p>
-    <div>
+    <div class="style-warp">
+      <h5 class="title">
+        赛事风采
+      </h5>
+      <img class="line" :src="require('../../assets/images/line.png')" alt="">
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(item, index) in styleList" :key="index">
-          <el-card :body-style="{ padding: '0px'}" shadow="never" class="style-card">
+          <div class="style-card">
             <img :src="item.image" class="competition-image">
             <div class="desc">
               {{item.describe0}}
             </div>
-          </el-card>
+          </div>
         </swiper-slide>
       </swiper>
     </div>
@@ -99,11 +89,11 @@
         newsList: [],
         styleList: [],
         swiperOption: {
-          slidesPerView: 4,
+          slidesPerView: 3,
           slidesPerColumnFill: 'row',
           slidesPerColumn: 2,
           spaceBetween: 20,
-          slidesPerGroup: 4,
+          slidesPerGroup: 3,
           loop: true,
           speed: 4000, //匀速时间
           autoplay: {
@@ -172,121 +162,130 @@
 </script>
 
 <style lang="scss" scoped>
-  .image {
-    width: 100%;
-    height: 100%;
-  }
+  .news-warp {
+    width: 80%;
+    margin: 30px auto;
 
-  .item {
-    margin-bottom: 20px;
-
-    .thumbnail {
-      display: block;
+    .carousel-title {
+      position: absolute;
+      bottom: 0;
       width: 100%;
-      height: 83px;
-
-      img {
-        width: 100%;
-        height: 100%
-      }
-
+      color: #fff;
+      background: rgba(0, 0, 0, .4);
+      height: 40px;
+      line-height: 40px;
+      padding: 0 15px;
     }
 
-    .item-heading {
+    .image {
+      width: 100%;
+      height: 100%;
+    }
+
+    .item {
+      margin-bottom: 20px;
+      position: relative;
+      &:after {
+        display: block;
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #DC000C;
+        left: 0;
+        position: absolute;
+        top: 8px;
+      }
+
       a {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
         color: #303133;
-        width: 70%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        display: inline-block;
+        display: block;
+        line-height: 24px;
+        padding-left:15px;
       }
 
-      .text-muted {
-        float: right;
-        colot: #707070;
-        font-size: 16px;
+      span {
+        color: #707070;
+        line-height: 30px;
+        padding-left:15px;
       }
-    }
-
-    .item-content {
-      font-size: 14px;
-      color: #707070;
-      line-height: 23px;
-      height: 42px;
-      overflow: hidden;
     }
   }
 
-  .card {
+  .func-warp {
+    background: #27314F;
+    padding: 80px 260px;
+
+    .card {
+      text-align: center;
+      color: #fff;
+      width: 328px;
+      height: 240px;
+      margin: 0 auto;
+      padding: 60px 0;
+      cursor: pointer;
+      background: #fff;
+      box-shadow: 0px 3px 6px 1px rgba(0, 0, 0, 0.16);
+      border-radius: 8px 8px 8px 8px;
+      font-size: 24px;
+      font-weight: 400;
+      color: #000000;
+      line-height: 24px;
+
+      img {
+        width: 72px;
+        height: 72px;
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .style-warp {
+    margin: 80px 260px;
     text-align: center;
-    color: #fff;
-    width: 100%;
-    margin: 0 auto;
-    padding: 30px 0;
-    cursor: pointer;
 
-    img {
-      width: 72px;
-      height: 72px;
-      margin-bottom: 8px;
-    }
-  }
-
-  .card1 {
-    background-color: #F27E00;
-  }
-
-  .card2 {
-    background-color: #004093;
-  }
-
-  .card3 {
-    background-color: #53955E;
-  }
-
-  .card4 {
-    background-color: #ED6B00;
-  }
-
-  .title {
-    font-size: 22px;
-    line-height: 22px;
-    font-weight: bold;
-    border-left: 5px solid #E50006;
-    padding-left: 10px;
-    margin-bottom: 15px;
-    margin-top: 30px;
-
-    sub {
-      font-size: 13px;
-      color: #898b8c;
-    }
-  }
-
-  .style-card {
-    .competition-image {
-      width: 100%;
-      height: 156px;
+    .title {
+      font-size: 32px;
+      font-weight: normal;
+      color: #000;
+      line-height: 30px;
+      margin-bottom: 20px;
     }
 
-    .el-col {
-      margin-bottom: 15px;
+    .line {
+      display: block;
+      margin: 0 auto 80px;
     }
 
-    .desc {
-      padding: 14px;
-      background-color: #EBEBEB;
+    .style-card {
       position: relative;
-      font-size: 14px;
-      height: 50px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
+      width: 445px;
+      height: 282px;
+      margin: 0 auto;
+
+      .competition-image {
+        width: 100%;
+        height: 100%;
+      }
+
+      .desc {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: rgb(220 0 12 / 40%);
+        font-size: 20px;
+        height: 60px;
+        line-height: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #fff;
+      }
     }
   }
 </style>

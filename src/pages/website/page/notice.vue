@@ -1,7 +1,7 @@
 <template>
   <div>
     <img v-if="banners['announcement']" :src="banners['announcement']" alt="" class="banner">
-    <el-card class="box-card">
+    <div class="box-card">
 
       <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
         <el-col :span="24">
@@ -27,7 +27,7 @@
       </div>
 
 
-    </el-card>
+    </div>
   </div>
 </template>
 
@@ -87,7 +87,11 @@
 
     .item {
       border-bottom: 1px solid #C0C4CC;
-      padding: 10px 0;
+      padding: 20px 0;
+      &:nth-last-child(2)
+      {
+        border:none;
+      }
 
       .thumbnail {
         display: block;

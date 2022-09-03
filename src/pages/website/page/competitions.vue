@@ -5,20 +5,11 @@
       当前位置：首页-大赛专区
       <el-divider></el-divider>
 
-      <el-row :gutter="20" class="mt-20" v-for="(item,index) in dataList" :key="index">
-        <el-col :span="12">
-          <el-card :body-style="{ padding: '0px',height:'260px' }">
-            <router-link :to="'/competitions/'+item.id"><img :src="item.image" class="bisai-img"></router-link>
-          </el-card>
-        </el-col>
-        <el-col :span="12">
-          <div class="bisai-info">
-            <h5>
-              <router-link :to="'/competitions/'+item.id">{{item.title}}</router-link>
-            </h5>
-            <p>
-              {{item.describe0}}
-            </p>
+      <el-row :gutter="20" class="mt-20" >
+        <el-col :span="12" v-for="(item,index) in dataList" :key="index">
+          <div class="item">
+            <img :src="item.image" class="bisai-img">
+            <div class="desc">{{item.title}} <img :src="require('../assets/images/arrow.png')" alt="" @click="$router.push('/competition/'+item.id+'/index')"></div>
           </div>
         </el-col>
       </el-row>
@@ -86,8 +77,36 @@
     }
 
     .main-content {
-      max-width: 1200px;
+      max-width: 80%;
       margin: 20px auto 0;
+    }
+  }
+
+  .item{
+    width: 680px;
+    height:380px;
+    margin: auto;
+    position: relative;
+    cursor: pointer;
+    .desc{
+      width: 100%;
+      height:84px;
+      line-height:84px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      position: absolute;
+      bottom:0;
+      color: #fff;
+      background: rgba(0,0,0,0.4);
+      padding:0 28px;
+      img{
+        float: right;
+        width: 28px;
+        height:28px;
+        margin-top: 28px;
+        vertical-align: middle;
+      }
     }
   }
 

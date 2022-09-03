@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div class="box-card">
     <template v-if="!infoVisible">
-      <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
-        <el-col :span="6">
-            <a class="thumbnail" @click="showInfo(item)">
-            <img :src="item.image" ></a>
-        </el-col>
-        <el-col :span="18">
+      <div class="item" v-for="(item,index) in dataList" :key="index">
+        <div class="left">
+          <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
+            <img :src="item.image">
+          </router-link>
+        </div>
+        <div class="right">
           <div class="item-heading">
             <div class="text-muted pull-right">
               <span>
@@ -14,21 +15,21 @@
               <span>
                 <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
             </div>
-            <a @click="showInfo(item)">{{item.title}}</a>
+            <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
           </div>
           <p class="item-content">
             {{item.describe0}}
           </p>
-        </el-col>
-      </el-row>
-      
+        </div>
+      </div>
+
       <div class="pager">
         <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
           :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
         </el-pagination>
       </div>
     </template>
-    
+
     <div v-if="infoVisible" class="news-info">
       <button class="btn" @click="infoVisible=false">返 回</button>
       <h1>{{currNews.title}}</h1>
@@ -98,45 +99,57 @@
 </script>
 
 <style lang="scss" scoped>
+  .box-card{
+    width: 80%;
+    margin: 0 auto;
+  }
  .item {
    border-bottom: 1px solid #C0C4CC;
-   padding: 10px 0;
-
-   .thumbnail {
+   padding: 20px 0;
+   display: flex;
+   &:nth-last-child(2)
+   {
+     border:none;
+   }
+ 
+   .left {
      display: block;
-     width: 100%;
+     width: 240px;
      height: 160px;
-
+     margin-right: 30px;
      img {
        width: 100%;
        height: 100%
      }
-
+ 
    }
-
-   .item-heading {
-     margin-top: 10px;
-
-     a {
-       font-size: 20px;
-       font-weight: bold;
-       color: #303133;
+ 
+   .right {
+     flex:1;
+     .item-heading {
+       margin-top: 10px;
+ 
+       a {
+         font-size: 20px;
+         font-weight: bold;
+         color: #303133;
+         line-height: 30px;
+       }
+ 
+       .text-muted {
+         float: right;
+         colot: #707070;
+         font-size: 16px;
+       }
+     }
+ 
+     .item-content {
+       font-size: 16px;
+       color: #707070;
        line-height: 30px;
      }
-
-     .text-muted {
-       float: right;
-       colot: #707070;
-       font-size: 16px;
-     }
    }
-
-   .item-content {
-     font-size: 16px;
-     color: #707070;
-     line-height: 30px;
-     ;
-   }
+ 
  }
 
  .pager {

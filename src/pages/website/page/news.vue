@@ -1,14 +1,14 @@
 <template>
   <div>
     <img v-if="banners['news']" :src="banners['news']" alt="" class="banner">
-    <el-card class="box-card">
-
-      <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
-        <el-col :span="6">
-            <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
-            <img :src="item.image" ></router-link>
-        </el-col>
-        <el-col :span="18">
+    <div class="box-card">
+      <div class="item" v-for="(item,index) in dataList" :key="index">
+        <div class="left">
+          <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
+            <img :src="item.image">
+          </router-link>
+        </div>
+        <div class="right">
           <div class="item-heading">
             <div class="text-muted pull-right">
               <span>
@@ -21,15 +21,15 @@
           <p class="item-content">
             {{item.describe0}}
           </p>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
 
       <div class="pager">
         <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
           :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
         </el-pagination>
       </div>
-    </el-card>
+    </div>
   </div>
 
 </template>
@@ -51,7 +51,7 @@
     },
     methods: {
       getList(currentPage) {
-        this.tablePage.currentPage = currentPage||1;
+        this.tablePage.currentPage = currentPage || 1;
         this.$http({
           url: '/news/news/public/list',
           method: 'get',
@@ -83,19 +83,24 @@
     width: 100%;
     height: 330px;
   }
+
   .box-card {
     width: 80%;
     margin: 0 auto;
-
     .item {
       border-bottom: 1px solid #C0C4CC;
-      padding: 10px 0;
+      padding: 20px 0;
+      display: flex;
+      &:nth-last-child(2)
+      {
+        border:none;
+      }
 
-      .thumbnail {
+      .left {
         display: block;
-        width: 100%;
+        width: 240px;
         height: 160px;
-
+        margin-right: 30px;
         img {
           width: 100%;
           height: 100%
@@ -103,29 +108,32 @@
 
       }
 
-      .item-heading {
-        margin-top: 10px;
+      .right {
+        flex:1;
+        .item-heading {
+          margin-top: 10px;
 
-        a {
-          font-size: 20px;
-          font-weight: bold;
-          color: #303133;
+          a {
+            font-size: 20px;
+            font-weight: bold;
+            color: #303133;
+            line-height: 30px;
+          }
+
+          .text-muted {
+            float: right;
+            colot: #707070;
+            font-size: 16px;
+          }
+        }
+
+        .item-content {
+          font-size: 16px;
+          color: #707070;
           line-height: 30px;
         }
-
-        .text-muted {
-          float: right;
-          colot: #707070;
-          font-size: 16px;
-        }
       }
 
-      .item-content {
-        font-size: 16px;
-        color: #707070;
-        line-height: 30px;
-        ;
-      }
     }
 
     .pager {

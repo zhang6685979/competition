@@ -13,9 +13,7 @@
         <li><a :class="{active:$route.path.indexOf('download')!=-1}" @click="goto('download')">资源下载</a></li>
       </ul>
     </div>
-    <el-card class="box-card">
-      <router-view></router-view>
-    </el-card>
+    <router-view></router-view>
 
   </div>
 </template>
@@ -81,7 +79,7 @@
     .nav {
       height: 80px;
       background-color: #fff;
-
+      box-shadow: 0px 3px 6px 1px rgba(0,0,0,0.05);
       ul {
         display: flex;
         width: 80%;
@@ -127,11 +125,5 @@
         }
       }
     }
-
-    .box-card {
-      width: 80%;
-      margin: 0 auto;
-    }
-
   }
 </style>

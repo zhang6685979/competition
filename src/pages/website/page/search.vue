@@ -1,14 +1,13 @@
 <template>
-
-  <el-card class="box-card">
+  <div class="box-card">
     <template v-if="$route.query.keyword&&dataList.length>0">
-      <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
-        <el-col :span="6" v-if="item.type==1">
+      <div class="item" v-for="(item,index) in dataList" :key="index">
+        <div class="left" v-if="item.type==1">
           <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
             <img :src="item.image">
           </router-link>
-        </el-col>
-        <el-col :span="item.type==1?18:24">
+        </div>
+        <div class="right">
           <div class="item-heading">
             <div class="text-muted pull-right">
               <span>
@@ -16,14 +15,13 @@
               <span>
                 <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
             </div>
-            <router-link :to="{path:'/'+(item.type==1?'news':'notice')+'/'+item.id}"
-              v-html="brightenKeyword(item.title)"></router-link>
+            <router-link :to="{path:'/'+(item.type==1?'news':'notice')+'/'+item.id}"  v-html="brightenKeyword(item.title)"></router-link>
           </div>
           <p class="item-content">
             {{item.describe0}}
           </p>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
 
       <div class="pager">
         <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
@@ -35,7 +33,7 @@
       <img :src="require('../assets/images/symbol-icon.png')" alt="">
       <p>{{!$route.query.keyword?'请输入关键字才能进行检索!':'未查询相关信息，请更换关键字重新检索'}}</p>
     </div>
-  </el-card>
+  </div>
 
 
 
@@ -113,13 +111,18 @@
 
     .item {
       border-bottom: 1px solid #C0C4CC;
-      padding: 10px 0;
+      padding: 20px 0;
+      display: flex;
+      &:nth-last-child(2)
+      {
+        border:none;
+      }
 
-      .thumbnail {
+      .left {
         display: block;
-        width: 100%;
+        width: 240px;
         height: 160px;
-
+        margin-right: 30px;
         img {
           width: 100%;
           height: 100%
@@ -127,29 +130,32 @@
 
       }
 
-      .item-heading {
-        margin-top: 10px;
+      .right {
+        flex:1;
+        .item-heading {
+          margin-top: 10px;
 
-        a {
-          font-size: 20px;
-          font-weight: bold;
-          color: #303133;
+          a {
+            font-size: 20px;
+            font-weight: bold;
+            color: #303133;
+            line-height: 30px;
+          }
+
+          .text-muted {
+            float: right;
+            colot: #707070;
+            font-size: 16px;
+          }
+        }
+
+        .item-content {
+          font-size: 16px;
+          color: #707070;
           line-height: 30px;
         }
-
-        .text-muted {
-          float: right;
-          colot: #707070;
-          font-size: 16px;
-        }
       }
 
-      .item-content {
-        font-size: 16px;
-        color: #707070;
-        line-height: 30px;
-        ;
-      }
     }
 
     .pager {
