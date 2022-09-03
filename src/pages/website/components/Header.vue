@@ -32,7 +32,7 @@
         <!-- <a @click="goto('/register')">账号申请</a> -->
       </template>
       <template v-else>
-        <a><i class="el-icon-user-solid"> </i>{{memberName}}</a><a @click="logout">退出</a>
+        <a><i class="el-icon-user-solid"> </i>&nbsp;{{memberName}}</a><a @click="logout">退出</a>
       </template>
     </div>
   </div>
@@ -143,7 +143,7 @@
   }
 </script>
 
-<style scoped="" lang="scss">
+<style lang="scss">
   .header {
     width: 100%;
     position: fixed;
@@ -241,7 +241,7 @@
     padding: 0 10px;
     display: inline-block;
     margin-right: 5px;
-    color: #333;
+    color: #fff;
   }
 
   .header .siteNav a:last-child {

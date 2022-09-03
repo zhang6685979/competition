@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <div class="box-card">
       <h1 class="text-center">用户登录</h1>
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" label-width="0">
         <el-form-item label="" prop="username" :rules="[
@@ -33,7 +33,7 @@
         </div>
 
       </el-form>
-    </el-card>
+    </div>
   </div>
 </template>
 

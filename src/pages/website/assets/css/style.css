@@ -94,9 +94,10 @@ li {
   width: 200px;
   margin-right: 10px;
 }
-.search-input input{border-radius: 20px;background:none;border: 1px solid #fff!important;color: #fff;}
+.search-input input{border-radius: 20Px;background:none;border: 1px solid #fff!important;color: #fff;height: 100%;}
 .news-warp .el-tabs__item{height: auto; margin: 0 0 13px;line-height: unset;}
 .news-warp .tab-title{font-size: 32px;}
 .news-warp .el-tabs__header{margin-bottom: 30px;}
 
 .news-warp .el-tabs__item.is-active{font-weight: bold;}
+.el-carousel__container{height:100%!important;}

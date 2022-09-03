@@ -11,6 +11,8 @@ import FormMake from '@/components/FormMake/index'
 import VueCookie from 'vue-cookie'
 import store from '@/store'
 
+import  "amfe-flexible";
+
 Vue.config.productionTip = false
 Vue.prototype.$http = httpRequest // ajax请求方法
 

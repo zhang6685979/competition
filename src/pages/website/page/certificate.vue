@@ -1,7 +1,7 @@
 <template>
   <div>
     <img v-if="banners['certificate']" :src="banners['certificate']" alt="" class="banner">
-    <el-card class="box-card">
+    <div class="box-card">
       <h1 class="text-center">证书查询</h1>
       <el-form size="small" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()"
         @submit.native.prevent label-width="150px">
@@ -47,7 +47,7 @@
           </el-card>
         </el-col>
       </el-row>
-    </el-card>
+    </div>
   </div>
 
 </template>
@@ -137,7 +137,7 @@
   .banner{width:100%;height:330px;}
   .box-card {
     width: 60%;
-    margin: 0 auto 20px;
+    margin: 20px auto;
 
     .text-center {
       text-align: center;

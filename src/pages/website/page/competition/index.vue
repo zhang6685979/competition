@@ -3,7 +3,7 @@
     <div class="news-warp">
       <el-row :gutter="30">
         <el-col :span="12">
-          <el-carousel height="400px" indicator-position="none">
+          <el-carousel class="carouse" indicator-position="none">
             <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
               <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
               <p class="carousel-title">{{item.title}}</p>
@@ -165,7 +165,7 @@
   .news-warp {
     width: 80%;
     margin: 30px auto;
-
+    .carouse{height: 400px;}
     .carousel-title {
       position: absolute;
       bottom: 0;

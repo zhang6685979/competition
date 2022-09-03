@@ -1,7 +1,7 @@
 <template>
   <div class="index-warp">
     <el-backtop :bottom="60"></el-backtop>
-    <el-carousel :interval="5000" height="760px">
+    <el-carousel :interval="5000" class="carousel">
       <el-carousel-item v-for="(item,index) in carouselList" :key="index">
         <a :href="item.url" target="_blank"><img :src="item.image" class="image" /></a>
       </el-carousel-item>
@@ -17,7 +17,7 @@
                 <img :src="item.image" alt="">
               </div>
               <div class="news-right">
-                <h5>{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
+                <h5 @click="$router.push('/news/'+item.id)">{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
               </div>
@@ -29,7 +29,7 @@
           <div class="news-list">
             <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)">
               <div class="news-right">
-                <h5>{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
+                <h5 @click="$router.push('/notice/'+item.id)">{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
               </div>
@@ -333,7 +333,7 @@
   .index-warp {
     margin-top: -110px;
     background-color: #fff;
-
+    .carousel{height:760px;}
 
     .news-warp {
       width: 1400px;
@@ -365,6 +365,7 @@
             color: #303133;
             line-height: 17px;
             margin-bottom: 13px;
+            cursor: pointer;
           }
 
           p {

@@ -16,15 +16,8 @@ import lodash from 'lodash/object'
 import axios from 'axios'
 import moment from 'moment'
 import 'font-awesome/css/font-awesome.min.css'
-// import i18n from './lang' // Internationalization
-import VueClipboard from 'vue-clipboard2'
 import VCharts from 'v-charts'
-import JeeplusGencode from 'jeeplus-gencode'
-import JeeplusFlow from 'jeeplus-flowable'
-import 'jeeplus-flowable/lib/jeeplus-flowable.css'
 import './directive'
-import VueEditor from 'vue2-editor'
-import Print from 'vue-print-nb'
 import XEUtils from 'xe-utils'
 import VXETablePluginExportXLSX from 'vxe-table-plugin-export-xlsx'
 // 按需导入 vxeTable
@@ -120,8 +113,6 @@ Vue.use(Header)
   // 安装表格
   .use(Table)
 
-Vue.use(Print)
-Vue.use(VueEditor)
 
 import FormMaking from '@/components/FormMake/index'
 import Download from '@/components/FormMake/components/Download/index'
@@ -133,11 +124,7 @@ Vue.use(FormMaking, {
 })
 
 
-Vue.use(JeeplusGencode)
-Vue.use(JeeplusFlow)
-VueClipboard.config.autoSetContainer = true
 Vue.use(VCharts)
-Vue.use(VueClipboard)
 Vue.use(VueCookie)
 Vue.use(ElementUI)
 // Vue.use(ElementUI, {

@@ -2,7 +2,7 @@
   <el-card class="box-card">
     <h1>{{inputForm.title}}</h1>
     <div class="other-info">
-      <span><i class="el-icon-time"></i> {{inputForm.updateDate.substring(0,10)}}</span>&nbsp;&nbsp;
+      <span><i class="el-icon-time"></i> {{inputForm.updateDate&&inputForm.updateDate.substring(0,10)}}</span>&nbsp;&nbsp;
       <el-tag v-if="inputForm.top==1" type="success" size="small" effect="dark">
         置顶
       </el-tag>
@@ -60,7 +60,7 @@
 <style lang="scss" scoped>
   .box-card {
     width: 80%;
-    margin: 0 auto 20px;
+    margin: 20px auto;
 
     h1 {
       font-size: 24px;

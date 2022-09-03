@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <div class="box-card">
       <h1 class="text-center">账号申请</h1>
       <p class="tit">请您填写基本信息，我们会尽快与您取得联系，谢谢！</p>
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
@@ -51,7 +51,7 @@
         </div>
 
       </el-form>
-    </el-card>
+    </div>
   </div>
 </template>
 

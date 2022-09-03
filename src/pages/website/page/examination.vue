@@ -1,16 +1,16 @@
 <template>
   <div>
     <img v-if="banners['platform']" :src="banners['platform']" alt="" class="banner">
-    <el-card class="box-card">
+    <div class="box-card">
       <el-row :gutter="20">
-        <el-col :span="6" v-for="(item,index) in dataList" :key="index">
-          <el-card :body-style="{ padding: '0px' }" class="item" shadow="never">
+        <el-col :span="12" v-for="(item,index) in dataList" :key="index">
+          <div  class="item">
             <a :href="item.url" target="_blank"><img :src="item.image" class="certificate-image"></a>
             <div class="other-info">
               <h5 :title="item.title">{{ item.title }}</h5>
               <p :title="item.describe0">{{item.describe0}}</p>
             </div>
-          </el-card>
+          </div>
         </el-col>
       </el-row>
 
@@ -19,7 +19,7 @@
           :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
         </el-pagination>
       </div>
-    </el-card>
+    </div>
   </div>
 </template>
 
@@ -74,33 +74,45 @@
 
   .box-card {
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto;
 
     .item {
       border: none !important;
-
+      position: relative;
+      width: 670px;
+      height: 380px;
+      margin: 0 auto;
       img {
         width: 100%;
-        height: 170px;
+        height: 100%;
       }
 
       .other-info {
+        position: absolute;
+        width: 100%;
+        bottom:0;
+        background: rgb(220 0 12 / 40%);
+        padding: 30px 40px;
+        text-align: left;
         h5 {
-          color: #303133;
-          font-size: 16px;
-          margin: 10px 0;
-          font-weight: 400;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          font-size: 20px;
+          font-weight: 400;
+          color: #FFFFFF;
+          line-height: 36px;
+          margin-bottom: 18px;
+          border-bottom: 1px solid #fff;
+          display: inline-block;
+          padding-bottom: 10px;
         }
 
         p {
           font-size: 14px;
-          color: #707070;
-          line-height: 25px;
-          height: 80px;
-          overflow: hidden;
+          font-weight: 400;
+          color: #FFFFFF;
+          line-height: 22px;
         }
       }
     }
