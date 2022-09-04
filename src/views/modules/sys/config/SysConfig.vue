@@ -166,7 +166,7 @@
                   list-type="picture-card">
                   <img v-if="bannerSetting[item.field]" :src="bannerSetting[item.field]" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                  
+
                   <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为1920*330</div>
                 </el-upload>
               </el-form-item>
@@ -221,7 +221,8 @@
           announcement:'',
           competition:'',
           certificate:'',
-          platform:''
+          platform:'',
+          complaint:''
         },
         banners:[{
           label:'新闻资讯',
@@ -242,6 +243,10 @@
         },{
           label:'考试专区',
           field:'platform',
+          fileList:[]
+        },{
+          label:'沟通与建议',
+          field:'complaint',
           fileList:[]
         }],
         bannerArra:[],

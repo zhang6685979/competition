@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img v-if="banners['announcement']" :src="banners['announcement']" alt="" class="banner">
+    <img v-if="banners['complaint']" :src="banners['complaint']" alt="" class="banner">
     <div class="box-card">
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" class="el-form" label-width="120px">
         <el-form-item label="姓名" prop="name" :rules="[
