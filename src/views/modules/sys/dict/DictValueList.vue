@@ -10,7 +10,7 @@
             border="inner"
             auto-resize
             resizable
-            height="auto"
+            height="400"
             :loading="loading"
             size="small"
             ref="dictValueTable"
@@ -26,7 +26,7 @@
             :checkbox-config="{}">
           <vxe-column type="seq" width="40"></vxe-column>
           <vxe-column type="checkbox"  width="40px"></vxe-column>
-          <vxe-column 
+          <vxe-column
             field="label"
             title="标签">
             <template slot-scope="scope">
