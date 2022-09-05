@@ -119,10 +119,15 @@ Vue.use(Header)
 
 import FormMaking from '@/components/FormMake/index'
 import Download from '@/components/FormMake/components/Download/index'
+import SignupTable from '@/components/FormMake/components/SignupTable/index'
 Vue.use(FormMaking, {
   components: [{
       name: 'download',
       component: Download
+    },
+    {
+      name: 'signup-table',
+      component: SignupTable
     }]
 })
 

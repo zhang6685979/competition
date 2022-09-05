@@ -188,6 +188,9 @@
         </el-select>
       </el-form-item>
 
+
+
+
       <el-form-item :label="$t('fm.config.widget.defaultValue')"
         v-if="Object.keys(data.options).indexOf('defaultValue')>=0 && (data.type == 'text' || data.type == 'textarea' || data.type == 'input' || data.type=='number' || data.type=='rate' || data.type=='color' || data.type=='switch' || data.type == 'html')">
         <el-input v-if="data.type=='textarea'" type="textarea" :rows="5" v-model="data.options.defaultValue"></el-input>
@@ -201,6 +204,7 @@
             <el-input v-model="data.options.defaultValue"></el-input>
           </template>
         </template>
+
 
         <el-rate v-if="data.type == 'rate'" style="display:inline-block;vertical-align: middle;" :max="data.options.max"
           :allow-half="data.options.allowHalf" v-model="data.options.defaultValue"></el-rate>
@@ -263,6 +267,36 @@
           <el-time-picker key="2" v-if="data.options.isRange" style="width: 100%;" v-model="data.options.defaultValue"
             is-range :arrowControl="data.options.arrowControl" :value-format="data.options.format">
           </el-time-picker>
+        </el-form-item>
+      </template>
+      <template v-if="data.options.type=='signup-table'">
+        <el-form-item label="表格行数">
+          <el-input type="number" v-model.number="data.options.rows"></el-input>
+        </el-form-item>
+        <el-form-item label="模块配置">
+          <template>
+            <el-radio-group v-model="data.options.defaultValue">
+              <draggable tag="ul" :list="data.options.modules"
+                v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}" handle=".drag-item">
+                <li v-for="(item, index) in data.options.modules" :key="index">
+                  <el-radio :label="item.value" style="margin-right: 5px;">
+                    <el-input :style="{'width': '180px' }" size="mini" v-model="item.value"></el-input>
+
+                  </el-radio>
+                  <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;"><i
+                      class="iconfont icon-icon_bars"></i></i>
+                  <el-button @click="handleOptionsRemove(index)" circle plain type="danger" size="mini"
+                    icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+
+                </li>
+              </draggable>
+
+            </el-radio-group>
+            <div style="margin-left: 22px;">
+              <el-button type="text" @click="handleAddOption">{{$t('fm.actions.addOption')}}</el-button>
+            </div>
+          </template>
+
         </el-form-item>
       </template>
       <template v-if="data.options.type=='download'">
@@ -619,7 +653,9 @@
           this.data.tabs.splice(index, 1)
         } else if (this.data.type === 'imgupload' || this.data.type === 'fileupload') {
           this.data.options.headers.splice(index, 1)
-        } else {
+        } else if(this.data.options.type=='signup-table'){
+          this.data.options.modules.splice(index,1)
+        }else {
           if (!this.data.options.remote && this.data.options.options[index].value) {
             this.data.options.defaultValue = typeof this.data.options.defaultValue === 'string' ? '' : []
           }
@@ -635,6 +671,13 @@
             label: this.$t('fm.config.widget.newOption')
           })
         } else {
+          //报名赛项配置
+          if (this.data.options.modules) {
+            this.data.options.modules.push({
+              value: this.$t('fm.config.widget.newOption')
+            })
+            return;
+          }
           this.data.options.options.push({
             value: this.$t('fm.config.widget.newOption')
           })
