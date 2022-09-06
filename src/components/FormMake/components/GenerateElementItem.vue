@@ -26,6 +26,7 @@
           :editable="widget.options.editable"
           :clearable="widget.options.clearable"
           :options="widget.options"
+          :model="widget.model"
         ></component>
       </div>
     </template>
@@ -244,7 +245,7 @@
       <span v-html="dataModel"></span>
     </template>
 
-    <template v-if="widget.type == 'table' || widget.type.indexOf('signup')!=-1" >
+    <template v-if="widget.type == 'table'" >
       <fm-form-table
         :value="dataModel"
         :columns="widget.tableColumns"

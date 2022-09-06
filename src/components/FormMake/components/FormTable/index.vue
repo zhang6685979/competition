@@ -28,6 +28,8 @@
           :label-class-name="column.options.required ? 'required' : ''"
         >
           <template slot-scope="scope">
+            {{`${name}.${scope.$index}.${column.model}`}}
+            {{rules[`${name}.${column.model}`]}}
             <el-form-item :prop="`${name}.${scope.$index}.${column.model}`" :rules="rules[`${name}.${column.model}`]">
               <GenerateElementItem :edit="!disabled" :blanks="blanks" :is-table="true" :widget="column" v-model="scope.row[column.model]" :models.sync="tableData[scope.$index]" :remote="remote" :remote-option="remoteOption">
                 <template v-slot:[blank.name]="blankScope" v-for="blank in blanks">

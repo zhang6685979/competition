@@ -67,27 +67,91 @@
             downloadDesc: '', //下载描述
             downloadUrl: '', //下载地址
           }
-        }],
-        // ,
-        // {
-        //   name: '选手报名',
-        //   el: 'signup-table',
-        //   icon: 'icon iconfont icon-table',
-        //   options: {
-        //     type: 'signup-table',
-        //     defaultValue: [],
-        //     customClass: '',
-        //     labelWidth: 100,
-        //     isLabelWidth: false,
-        //     hidden: false,
-        //     dataBind: true,
-        //     required: false,
-        //     dataType: '',
-        //     pattern: '',
-        //     rows:0,
-        //     modules:[{value:'模块1'}]
-        //   }
-        // }
+        },{
+          name: '领队报名',
+          el: 'signup-table',
+          icon: 'icon iconfont icon-table',
+          model:'instructor-signup',
+          options: {
+            type: 'signup-table',
+            defaultValue: [{
+              role:'领队',
+              name:'',
+              caculty:'',
+              module:'',
+              jobtitle:'',
+              sex:'男',
+              mobile:'',
+              idcardno:''
+            }],
+            customClass: '',
+            labelWidth: 100,
+            isLabelWidth: false,
+            hidden: false,
+            dataBind: true,
+            required: false,
+            dataType: '',
+            pattern: '',
+            rows:1,
+            modules:[{value:'模块1'}]
+          }
+        },{
+          name: '指导老师报名',
+          el: 'signup-table',
+          icon: 'icon iconfont icon-table',
+          model:'referee-signup',
+          options: {
+            type: 'signup-table',
+            defaultValue: [{
+              role:'指导老师',
+              name:'',
+              caculty:'',
+              module:'',
+              jobtitle:'',
+              sex:'男',
+              mobile:'',
+              idcardno:''
+            }],
+            customClass: '',
+            labelWidth: 100,
+            isLabelWidth: false,
+            hidden: false,
+            dataBind: true,
+            required: false,
+            dataType: '',
+            pattern: '',
+            rows:1,
+            modules:[{value:'模块1'}]
+          }
+        },{
+          name: '选手报名',
+          el: 'signup-table',
+          icon: 'icon iconfont icon-table',
+          model:'player-signup',
+          options: {
+            type: 'signup-table',
+            defaultValue: [{
+              role:'参赛选手',
+              name:'',
+              caculty:'',
+              module:'',
+              jobtitle:'',
+              sex:'男',
+              mobile:'',
+              idcardno:''
+            }],
+            customClass: '',
+            labelWidth: 100,
+            isLabelWidth: false,
+            hidden: false,
+            dataBind: true,
+            required: false,
+            dataType: '',
+            pattern: '',
+            rows:1,
+            modules:[{value:'模块1'}]
+          }
+        }]
       }
     },
     components: {},

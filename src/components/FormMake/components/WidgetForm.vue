@@ -14,7 +14,7 @@
         <transition-group name="fade" tag="div" class="widget-form-list" >
           <template v-for="(element, index) in data.list" v-if="element && element.key">
             <widget-table
-              v-if="element.type === 'table' || element.type.indexOf('signup')!=-1"
+              v-if="element.type === 'table'"
               :key="element.key"
               :element="element"
               :select.sync="selectWidget"

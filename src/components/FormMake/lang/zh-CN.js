@@ -21,9 +21,6 @@ export default {
         editor: '编辑器',
         cascader: '级联选择器',
         table: '子表单',
-        'player-signup': '选手报名',
-        'instructor-signup': '领队报名',
-        'referee-signup': '裁判报名',
         user: '用户',     //*jeeplus定制修改*/
         role: '角色',
         office: '机构',

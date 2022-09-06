@@ -8,9 +8,9 @@
       }"
       label-suffix=": "
       :size="data.config.size"
-      :model="models" 
-      :rules="rules" 
-      :label-position="data.config.labelPosition" 
+      :model="models"
+      :rules="rules"
+      :label-position="data.config.labelPosition"
       :disabled="!edit"
       :label-width="data.config.labelWidth + 'px'">
 
@@ -169,7 +169,7 @@ export default {
               this.models[genList[i].model] = this.formValue[genList[i].model]
               this.dataBindFields.push(genList[i].model)
             }
-            
+
             this.displayFields[genList[i].model] = !genList[i].options.hidden
 
             if (genList[i].type === 'blank') {
@@ -230,9 +230,9 @@ export default {
               ]
             }
           })
-          
+
           if (this.rules[genList[i].model]) {
-            
+
             this.rules[genList[i].model] = [...this.rules[genList[i].model], ...genList[i].rules.map(item => {
               if (item.pattern) {
                 return {...item, pattern: eval(item.pattern)}
@@ -241,7 +241,7 @@ export default {
               }
             })]
           } else {
-            
+
             this.rules[genList[i].model] = [...genList[i].rules.map(item => {
               if (item.pattern) {
                 return {...item, pattern: eval(item.pattern)}
@@ -310,14 +310,14 @@ export default {
       this.displayFields = {...this.displayFields}
     },
     hide (fields) {
-      
+
       Object.keys(this.displayFields).forEach(key => {
-        
+
         if (fields.indexOf(key) >= 0) {
           this.$set(this.displayFields, key, false)
         }
       })
-      
+
       this.displayFields = {...this.displayFields}
     },
     disabled (fields, disabled) {

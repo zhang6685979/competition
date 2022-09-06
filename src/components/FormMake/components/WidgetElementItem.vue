@@ -1,7 +1,7 @@
 <template>
   <span>
     <template v-if="element.type == 'input'">
-      <el-input 
+      <el-input
         v-model="element.options.defaultValue"
         :style="{width: isTable ? '100%' : element.options.width}"
         :placeholder="element.options.placeholder"
@@ -20,8 +20,8 @@
     </template>
 
     <template v-if="element.type == 'number'">
-      <el-input-number 
-        v-model="element.options.defaultValue" 
+      <el-input-number
+        v-model="element.options.defaultValue"
         :disabled="element.options.disabled"
         :controls-position="element.options.controlsPosition"
         :style="{width: isTable ? '100%' : element.options.width}"
@@ -33,7 +33,7 @@
         :style="{width: isTable ? '100%' : element.options.width}"
         :disabled="element.options.disabled"
       >
-        <el-radio  
+        <el-radio
           :style="{display: element.options.inline ? 'inline-block' : 'block'}"
           :label="item.value" v-for="(item, index) in element.options.options" :key="item.value + index"
         >
@@ -57,7 +57,7 @@
     </template>
 
     <template v-if="element.type == 'time'">
-      <el-time-picker 
+      <el-time-picker
         v-model="element.options.defaultValue"
         :is-range="element.options.isRange"
         :placeholder="element.options.placeholder"
@@ -85,7 +85,7 @@
         :disabled="element.options.disabled"
         :editable="element.options.editable"
         :clearable="element.options.clearable"
-        :style="{width: isTable ? '100%' : element.options.width}"  
+        :style="{width: isTable ? '100%' : element.options.width}"
       >
       </el-date-picker>
     </template>
@@ -100,7 +100,7 @@
     </template>
 
     <template v-if="element.type == 'color'">
-      <el-color-picker 
+      <el-color-picker
         v-model="element.options.defaultValue"
         :disabled="element.options.disabled"
         :show-alpha="element.options.showAlpha"
@@ -129,7 +129,7 @@
     </template>
 
     <template v-if="element.type=='slider'">
-      <el-slider 
+      <el-slider
         v-model="element.options.defaultValue"
         :min="element.options.min"
         :max="element.options.max"
@@ -151,7 +151,7 @@
         token="xxx"
         domain="xxx"
       >
-        
+
       </fm-upload>
     </template>
 
@@ -181,7 +181,7 @@
 
     <template v-if="element.type=='blank'">
       <div style="height: 50px;color: #999;background: #eee;line-height:50px;text-align:center;">{{element.model}}</div>
-      
+
     </template>
 
     <template v-if="element.type == 'component'">
@@ -189,8 +189,8 @@
     </template>
 
     <template v-if="element.type == 'custom'">
-      <component v-if="element.component"  :is="element.component.name" :options="element.options" v-model="element.options.defaultValue"></component>
-      <component v-else  :is="element.el" v-model="element.options.defaultValue" :options="element.options"></component>
+      <component v-if="element.component"  :is="element.component.name" :options="element.options" v-model="element.options.defaultValue" :model="element.model"></component>
+      <component v-else  :is="element.el" v-model="element.options.defaultValue" :options="element.options"  :model="element.model"></component>
     </template>
 
     <template v-if="element.type == 'text'">
@@ -221,7 +221,7 @@
       ></user-select>
     </template>
      <template v-if="element.type == 'office'">
-            <SelectTree 
+            <SelectTree
               :props="{
                   value: 'id',             // ID字段名
                   label: 'name',         // 显示名称
@@ -230,15 +230,15 @@
 
               :disabled="element.options.disabled"
               :placeholder="element.options.placeholder"
-              :style="{width: isTable ? '100%' : element.options.width}" 
+              :style="{width: isTable ? '100%' : element.options.width}"
               :url="`/sys/office/treeData`"
-              :clearable="true" 
+              :clearable="true"
               :accordion="true"
               v-model="element.options.defaultValue"
               />
       </template>
       <template v-if="element.type == 'area'">
-            <SelectTree 
+            <SelectTree
              :props="{
                 value: 'id',             // ID字段名
                 label: 'name',         // 显示名称
@@ -246,10 +246,10 @@
               }"
             :disabled="element.options.disabled"
             :placeholder="element.options.placeholder"
-            :style="{width: isTable ? '100%' : element.options.width}" 
+            :style="{width: isTable ? '100%' : element.options.width}"
             :url="`/sys/area/treeData`"
              v-model="element.options.defaultValue"
-            :clearable="true" 
+            :clearable="true"
             :accordion="true"/>
       </template>
 
