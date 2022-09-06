@@ -1,10 +1,12 @@
 <template>
-  <editor
-    id="editor"
-    v-model="content"
-    :api-key="apiKey"
-    :init="initConfig"
-  />
+  <div>
+    <editor
+      v-model="content"
+      :api-key="apiKey"
+      :init="initConfig"
+    />
+  </div>
+
 </template>
 
 <script>
@@ -50,7 +52,7 @@ export default {
       apiKey,
       content: '',
       initConfig: {
-        toolbar_drawer: "sliding",
+        //toolbar_drawer: "sliding",
         quickbars_selection_toolbar: "removeformat | bold italic underline strikethrough | fontsizeselect forecolor backcolor",
         plugins,
         toolbar,
@@ -103,6 +105,9 @@ export default {
         this.$emit('input',this.content)
       }
     }
+  },
+  mounted(){
+
   },
   methods: {
     /**
@@ -182,6 +187,9 @@ export default {
         name: file.name
       }
     }
+  },
+  destroyed(){
+    console.log('我被销毁了')
   }
 }
 </script>

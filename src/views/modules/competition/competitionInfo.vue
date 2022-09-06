@@ -16,14 +16,14 @@
         <el-tab-pane label="赛事新闻" name="4">
           <NewsList :id="$route.query.cid"></NewsList>
         </el-tab-pane>
+        <el-tab-pane label="通知公告" name="7">
+          <AnnouncementList :id="$route.query.cid"></AnnouncementList>
+        </el-tab-pane>
         <el-tab-pane label="赛事直播" name="5">
           <CompetitionLiveList :id="$route.query.cid"></CompetitionLiveList>
         </el-tab-pane>
         <el-tab-pane label="大赛设备" name="6">
           <CompetitionEquipmentForm :id="$route.query.cid"></CompetitionEquipmentForm>
-        </el-tab-pane>
-        <el-tab-pane label="通知公告" name="7">
-          <AnnouncementList :id="$route.query.cid"></AnnouncementList>
         </el-tab-pane>
         <el-tab-pane label="资源下载" name="8">
           <CompetitionDownloadList :id="$route.query.cid"></CompetitionDownloadList>
