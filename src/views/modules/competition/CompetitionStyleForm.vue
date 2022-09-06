@@ -25,6 +25,7 @@
               v-if="visible"
               list-type="picture-card"
                     :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/competition/competitionStyle`"
+                    accept="image/png,image/jpeg"
                     :headers="{token: $cookie.get('token')}"
                     :on-preview="(file, fileList) => {
                         $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
@@ -49,6 +50,7 @@
                     :on-change="(file, fileList)=>{imageArra = [file]}"
                     :file-list="imageArra">
                     <i class="el-icon-plus"></i>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为450*280</div>
                   </el-upload>
            </el-form-item>
         </el-col>

@@ -56,7 +56,7 @@
 
 <style lang="scss" scoped>
   .box-card {
-    width: 80%;
+    width: 1000px;
     margin: 20px auto;
 
     h1 {

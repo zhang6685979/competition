@@ -292,5 +292,60 @@ function toLine (name) {
     return name
   }
 }
+export function jsonSimpleClone(obj) {
+    return JSON.parse(JSON.stringify(obj))
+}
+export function getQueryString(name) {
+    let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+    let r = window.location.search.substr(1).match(reg)  // 获取url中"?"符后的字符串并正则匹配
+    let context = ''
+    if (r != null)
+        context = r[2]
+    reg = null
+    r = null
+    return context == null || context == '' || context == 'undefined' ? '' : context
+}
+
+/**
+ * 获取当前域名
+ *  http://www.baidu.com
+ * @returns {string}
+ */
+export function getCurrentDomain() {
+    return window.location.protocol + '//' + window.location.host
+}
+
+/**
+ * 将毫秒数转为hh:mm:ss或mm:ss格式
+ * 如果毫秒数超过60分钟，则以hh:mm:ss格式显示，反之以mm:ss格式显示
+ * @param ms 毫秒数
+ * @returns {string}
+ */
+export function timeFormat(ms) {
+    let h = Math.floor(ms / 1000 / 60 / 60)
+    let m = Math.floor(ms / 1000 / 60)
+    let s = Math.floor(ms / 1000)
+    if (h === 1) {
+        // 当时间刚好是60分钟时，让它以mm:ss格式显示,即显示60:00,而不是显示01:00:00
+        if (m / 60 === 1 && s % 60 === 0) {
+            h = ''
+            m = '60:'
+        } else {
+            h = '01:'
+            m = addZero(m % 60) + ':'
+        }
+        s = addZero(s % 60)
+    } else {
+        h = h === 0 ? '' : addZero(h) + ':'
+        m = addZero(m % 60) + ':'
+        s = addZero(s % 60)
+    }
+    return h + m + s
+}
+
+// 进行补0操作
+function addZero(n) {
+    return n < 10 ? '0' + n : n
+}
 
 export default {toLine, escapeHTML, hashCode, unescapeHTML, handleImageAdded, download, downloadExcel, recover, recoverNotNull, hasPermission, treeDataTranslate, printLogo, deepClone, validatenull}

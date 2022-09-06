@@ -20,6 +20,9 @@ import VCharts from 'v-charts'
 import './directive'
 import XEUtils from 'xe-utils'
 import VXETablePluginExportXLSX from 'vxe-table-plugin-export-xlsx'
+
+import FontIcon from '@/components/FontIcon/index'
+Vue.component('font-icon',FontIcon);
 // 按需导入 vxeTable
 import {
   // 核心
@@ -116,10 +119,15 @@ Vue.use(Header)
 
 import FormMaking from '@/components/FormMake/index'
 import Download from '@/components/FormMake/components/Download/index'
+import SignupTable from '@/components/FormMake/components/SignupTable/index'
 Vue.use(FormMaking, {
   components: [{
       name: 'download',
       component: Download
+    },
+    {
+      name: 'signup-table',
+      component: SignupTable
     }]
 })
 

@@ -67,7 +67,27 @@
             downloadDesc: '', //下载描述
             downloadUrl: '', //下载地址
           }
-        }]
+        }],
+        // ,
+        // {
+        //   name: '选手报名',
+        //   el: 'signup-table',
+        //   icon: 'icon iconfont icon-table',
+        //   options: {
+        //     type: 'signup-table',
+        //     defaultValue: [],
+        //     customClass: '',
+        //     labelWidth: 100,
+        //     isLabelWidth: false,
+        //     hidden: false,
+        //     dataBind: true,
+        //     required: false,
+        //     dataType: '',
+        //     pattern: '',
+        //     rows:0,
+        //     modules:[{value:'模块1'}]
+        //   }
+        // }
       }
     },
     components: {},

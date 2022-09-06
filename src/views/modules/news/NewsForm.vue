@@ -28,7 +28,7 @@
             <el-form-item label="新闻图片" prop="image" :rules="[
                   {required: true, message:'新闻图片不能为空', trigger:'blur'}
                  ]">
-              <el-upload ref="image" v-if="visible" list-type="picture-card"
+              <el-upload ref="image" v-if="visible" list-type="picture-card" accept="image/png,image/jpeg"
                 :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/news/news`"
                 :headers="{token: $cookie.get('token')}" :on-preview="(file, fileList) => {
                         $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
@@ -46,10 +46,11 @@
                       inputForm.image = ''
                     }" :before-remove="(file, fileList) => {
                       return $confirm(`确定移除 ${file.name}？`)
-                    }" 
+                    }"
                      :on-change="(file, fileList)=>{imageArra = [file]}"
                      :file-list="imageArra">
                 <i class="el-icon-plus"></i>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为240*160</div>
               </el-upload>
             </el-form-item>
           </el-col>

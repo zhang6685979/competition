@@ -41,6 +41,7 @@
               list-type="picture-card"
                     :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/competition/competition`"
                     :headers="{token: $cookie.get('token')}"
+                    accept="image/png,image/jpeg"
                     :on-preview="(file, fileList) => {
                         $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
                           dangerouslyUseHTMLString: true,
@@ -64,6 +65,7 @@
                     :on-change="(file, fileList)=>{imageArra = [file]}"
                     :file-list="imageArra">
                     <i class="el-icon-plus"></i>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为680*380</div>
                   </el-upload>
            </el-form-item>
         </el-col>
@@ -77,6 +79,7 @@
               list-type="picture-card"
                     :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/competition/competition`"
                     :headers="{token: $cookie.get('token')}"
+                    accept="image/png,image/jpeg"
                     :on-preview="(file, fileList) => {
                         $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
                           dangerouslyUseHTMLString: true,
@@ -100,6 +103,7 @@
                     :on-change="(file, fileList)=>{bannerArra = [file]}"
                     :file-list="bannerArra">
                     <i class="el-icon-plus"></i>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为1920*330</div>
                   </el-upload>
            </el-form-item>
         </el-col>
