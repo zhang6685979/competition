@@ -17,7 +17,8 @@
                 <img :src="item.image" alt="">
               </div>
               <div class="news-right">
-                <h5 @click="$router.push('/news/'+item.id)">{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
+                <h5 @click="$router.push('/news/'+item.id)">{{item.title}} <span type="danger"
+                    v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
               </div>
@@ -29,7 +30,8 @@
           <div class="news-list">
             <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)">
               <div class="news-right">
-                <h5 @click="$router.push('/notice/'+item.id)">{{item.title}} <span type="danger" v-if="item.latest=='1'">new</span></h5>
+                <h5 @click="$router.push('/notice/'+item.id)">{{item.title}} <span type="danger"
+                    v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
               </div>
@@ -72,19 +74,15 @@
       </ul>
       <img class="line" :src="require('../assets/images/line.png')" alt="">
 
-      <div v-for="(item, index) in certificateList" :key="index" class="certficate-item" :class="{reverse:index%2==1}">
-
-        <div class="left">
-          <img :src="require('../assets/images/arrow.png')" alt="">
-          <h5>{{item.title}}</h5>
-          <button  @click="$router.push('/certificate?type='+item.id)">查看详情</button>
-        </div>
-        <div class="right">
-          <img :src="item.image" alt="">
-        </div>
-
-      </div>
-
+      <el-row :gutter="20">
+        <el-col :span="8" v-for="(item, index) in certificateList" :key="index">
+          <el-card class="certficate-item">
+            <img :src="item.image" />
+            <h5>{{item.title}}</h5>
+            <button @click="$router.push('/certificate?type='+item.id)">查看详情</button>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
 
     <div class="platform-warp">
@@ -333,7 +331,10 @@
   .index-warp {
     margin-top: -110px;
     background-color: #fff;
-    .carousel{height:760px;}
+
+    .carousel {
+      height: 760px;
+    }
 
     .news-warp {
       width: 1400px;
@@ -511,58 +512,34 @@
       }
 
       .certficate-item {
-        display: flex;
+        padding: 55px 75px;
 
-        &.reverse {
-          flex-direction: row-reverse;
-          text-align: right;
-
-          .left {
-            text-align: right;
-            padding: 80px 260px 80px 0;
-
-            img {
-              transform: rotate(180deg);
-            }
-          }
+        img {
+          width: 298px;
+          height: 298px;
+          border-radius: 50%;
         }
 
-        .left {
-          width: 50%;
-          height: 400px;
-          background: #000000;
-          padding: 80px 0 80px 260px;
-          text-align: left;
-
-          h5 {
-            margin: 25px 0 40px;
-            font-size: 38px;
-            font-weight: normal;
-            color: #FFFFFF;
-            line-height: 38px;
-          }
-
-          button {
-            width: 141px;
-            height: 53px;
-            background: #8500DC;
-            border-radius: 4px 4px 4px 4px;
-            color: #FDFDFE;
-            font-size: 20px;
-            cursor: pointer;
-          }
+        h5 {
+          font-size: 20px;
+          color: #000000;
+          line-height: 38px;
+          margin-top: 57px;
+          margin-bottom: 40px;
         }
 
-        .right {
-          width: 50%;
-          height: 400px;
-
-          img {
-            width: 100%;
-            height: 100%;
-          }
+        button {
+          width: 180px;
+          height: 40px;
+          background: #1890FF;
+          border-radius: 4px 4px 4px 4px;
+          color: #FDFDFE;
+          font-size: 18px;
+          cursor: pointer;
+          border: none;
         }
       }
+
     }
 
     .platform-warp {

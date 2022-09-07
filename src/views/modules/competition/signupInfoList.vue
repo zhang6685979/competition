@@ -163,6 +163,7 @@
             if (formData) {
               const $form = this.$refs.generateForm
               formData = JSON.parse(formData);
+              debugger;
               $form.setData(formData);
             }
           })

@@ -72,7 +72,7 @@
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
           model: 'instructor-signup',
-          tableColumns: [{
+          columns: [{
             model: 'role',
             name: '角色',
             options: {
@@ -153,7 +153,7 @@
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
           model: 'referee-signup',
-          tableColumns: [{
+          columns: [{
             model: 'role',
             name: '角色',
             options: {
@@ -234,7 +234,7 @@
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
           model: 'player-signup',
-          tableColumns: [{
+          columns: [{
             model: 'role',
             name: '角色',
             options: {
