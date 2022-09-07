@@ -3,6 +3,6 @@
 
 const toolbars = `code | fontselect fontsizeselect styleselect| undo redo | cut copy paste | bold italic forecolor backcolor |
                   alignleft aligncenter alignright alignjustify |
-                  bullist numlist outdent indent | removeformat | image media | fullscreen preview`
+                  bullist numlist outdent indent | removeformat | table image media | fullscreen preview`
 
 export default toolbars

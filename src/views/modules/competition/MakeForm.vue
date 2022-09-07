@@ -67,22 +67,73 @@
             downloadDesc: '', //下载描述
             downloadUrl: '', //下载地址
           }
-        },{
+        }, {
           name: '领队报名',
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
-          model:'instructor-signup',
+          model: 'instructor-signup',
+          tableColumns: [{
+            model: 'role',
+            name: '角色',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'name',
+            name: '姓名',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'caculty',
+            name: '院系',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'jobtitle',
+            name: '职务/职称',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'sex',
+            name: '性别',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'mobile',
+            name: '联系方式',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'email',
+            name: '邮箱',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          }],
           options: {
             type: 'signup-table',
             defaultValue: [{
-              role:'领队',
-              name:'',
-              caculty:'',
-              module:'',
-              jobtitle:'',
-              sex:'男',
-              mobile:'',
-              idcardno:''
+              role: '领队',
+              name: '',
+              caculty: '',
+              module: '',
+              jobtitle: '',
+              sex: '男',
+              mobile: '',
+              email:'',
+              idcardno: ''
             }],
             customClass: '',
             labelWidth: 100,
@@ -92,25 +143,78 @@
             required: false,
             dataType: '',
             pattern: '',
-            rows:1,
-            modules:[{value:'模块1'}]
+            rows: 1,
+            modules: [{
+              value: '模块1'
+            }]
           }
-        },{
+        }, {
           name: '指导老师报名',
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
-          model:'referee-signup',
+          model: 'referee-signup',
+          tableColumns: [{
+            model: 'role',
+            name: '角色',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'name',
+            name: '姓名',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'module',
+            name: '赛项',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'jobtitle',
+            name: '职务/职称',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'sex',
+            name: '性别',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'mobile',
+            name: '联系方式',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'email',
+            name: '邮箱',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          }],
           options: {
             type: 'signup-table',
             defaultValue: [{
-              role:'指导老师',
-              name:'',
-              caculty:'',
-              module:'',
-              jobtitle:'',
-              sex:'男',
-              mobile:'',
-              idcardno:''
+              role: '指导老师',
+              name: '',
+              caculty: '',
+              module: '',
+              jobtitle: '',
+              sex: '男',
+              mobile: '',
+              email:'',
+              idcardno: ''
             }],
             customClass: '',
             labelWidth: 100,
@@ -120,25 +224,78 @@
             required: false,
             dataType: '',
             pattern: '',
-            rows:1,
-            modules:[{value:'模块1'}]
+            rows: 1,
+            modules: [{
+              value: '模块1'
+            }]
           }
-        },{
+        }, {
           name: '选手报名',
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
-          model:'player-signup',
+          model: 'player-signup',
+          tableColumns: [{
+            model: 'role',
+            name: '角色',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'name',
+            name: '姓名',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'module',
+            name: '赛项',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'idcardno',
+            name: '身份证号',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'sex',
+            name: '性别',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'mobile',
+            name: '联系方式',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'email',
+            name: '邮箱',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          }],
           options: {
             type: 'signup-table',
             defaultValue: [{
-              role:'参赛选手',
-              name:'',
-              caculty:'',
-              module:'',
-              jobtitle:'',
-              sex:'男',
-              mobile:'',
-              idcardno:''
+              role: '参赛选手',
+              name: '',
+              caculty: '',
+              module: '',
+              jobtitle: '',
+              sex: '男',
+              mobile: '',
+              email:'',
+              idcardno: ''
             }],
             customClass: '',
             labelWidth: 100,
@@ -148,8 +305,10 @@
             required: false,
             dataType: '',
             pattern: '',
-            rows:1,
-            modules:[{value:'模块1'}]
+            rows: 1,
+            modules: [{
+              value: '模块1'
+            }]
           }
         }]
       }
