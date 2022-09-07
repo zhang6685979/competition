@@ -38,21 +38,25 @@
               <el-form-item label="产品logo">
                 <el-upload class="avatar-uploader"
                   :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=logo`"
+                  accept="*.jpg,*.png,*.gif,*.jpeg"
                   :on-success="(res,file)=>{
                     handleAvatarSuccess(res,file,'logo')
                   }" :before-upload="beforeAvatarUpload" :show-file-list="false">
                   <img v-if="themeFormSetting.logo" :src="themeFormSetting.logo" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为40*40</div>
                 </el-upload>
               </el-form-item>
               <el-form-item label="网站logo">
                 <el-upload class="avatar-uploader"
                   :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=logo`"
+                  accept="*.jpg,*.png,*.gif,*.jpeg"
                   :on-success="(res,file)=>{
                     handleAvatarSuccess(res,file,'weblogo')
                   }" :before-upload="beforeAvatarUpload" :show-file-list="false">
                   <img v-if="themeFormSetting.weblogo" :src="themeFormSetting.weblogo" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为180*50</div>
                 </el-upload>
               </el-form-item>
               <el-form-item label="默认布局">

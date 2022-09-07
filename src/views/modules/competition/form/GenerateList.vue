@@ -133,7 +133,7 @@
               this.generateModel(item.list)
             })
           } else if(genList[i].options&&(genList[i].options.type||'').indexOf('signup-table')!=-1){
-            this.generateModel(genList[i].tableColumns||[])
+            this.generateModel(genList[i].columns||[])
           }else {
             // 处理老版本没有dataBind值的情况，默认绑定数据
             if (genList[i].options.dataBind) {

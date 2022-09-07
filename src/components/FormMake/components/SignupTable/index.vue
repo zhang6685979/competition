@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{value}}
     <table class="table">
       <tr>
         <th align="center">角色</th>
