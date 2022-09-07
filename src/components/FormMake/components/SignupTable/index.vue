@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{value}}
     <table class="table">
       <tr>
         <th align="center">角色</th>
@@ -93,7 +92,11 @@
       },
       dataModel(val) {
         this.$emit('input', val)
+      },
+      value(val) {
+        this.dataModel = val;
       }
+
     },
     created(){
       if(this.value&&this.value.length>0){
