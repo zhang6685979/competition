@@ -2,13 +2,13 @@
     <div class="page">
       <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
             <!-- 搜索框-->
-         <el-form-item prop="participate">
-                  <el-select v-model="searchForm.participate" placeholder="请选择参与方式" size="small" style="width: 100%;">
+         <el-form-item prop="participate0">
+                  <el-select v-model="searchForm.participate0" placeholder="请选择参与方式" size="small" style="width: 100%;">
                     <el-option
-                      v-for="item in $dictUtils.getDictList('jab_participate')"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                      v-for="item in ['线上参会', '线下参会']"
+                      :key="item"
+                      :label="item"
+                      :value="item">
                     </el-option>
                   </el-select>
          </el-form-item>
@@ -67,12 +67,9 @@
         title="所在学院">
       </vxe-column>
     <vxe-column
-        field="participate"
+        field="participate0"
         sortable
         title="参与方式">
-        <template slot-scope="scope">
-              {{ $dictUtils.getDictLabel("jab_participate", scope.row.participate, '-') }}
-        </template>
       </vxe-column>
     <vxe-column
         field="name"
@@ -83,9 +80,6 @@
         field="sex"
         sortable
         title="性别">
-        <template slot-scope="scope">
-              {{ $dictUtils.getDictLabel("sex", scope.row.sex, '-') }}
-        </template>
       </vxe-column>
     <vxe-column
         field="idcardno"
@@ -98,7 +92,7 @@
         title="职务">
       </vxe-column>
     <vxe-column
-        field="telphone"
+        field="mobile"
         sortable
         title="手机号码">
       </vxe-column>
@@ -121,9 +115,6 @@
         field="stay"
         sortable
         title="住宿方式">
-        <template slot-scope="scope">
-              {{ $dictUtils.getDictLabel("jab_stay", scope.row.stay, '-') }}
-        </template>
       </vxe-column>
     <vxe-column
         field="cid"
@@ -166,7 +157,7 @@
     data () {
       return {
         searchForm: {
-          participate: '',
+          participate0: '',
           cid: ''
         },
         dataList: [],

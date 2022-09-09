@@ -140,7 +140,7 @@
       // 获取数据列表
       refreshList () {
         this.loading = true
-        this.schoolService.list({
+        this.schoolService.page({
           'current': this.tablePage.currentPage,
           'size': this.tablePage.pageSize,
           'orders': this.tablePage.orders,
