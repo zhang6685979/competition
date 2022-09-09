@@ -2,8 +2,8 @@
     <div class="page">
       <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
             <!-- 搜索框-->
-         <el-form-item prop="items">
-                <el-input size="small" v-model="searchForm.items" placeholder="赛项" clearable></el-input>
+         <el-form-item prop="module">
+                <el-input size="small" v-model="searchForm.module" placeholder="赛项" clearable></el-input>
          </el-form-item>
          <el-form-item prop="cid">
                 <el-input size="small" v-model="searchForm.cid" placeholder="比赛编号" clearable></el-input>
@@ -66,9 +66,6 @@
         field="sex"
         sortable
         title="性别">
-        <template slot-scope="scope">
-              {{ $dictUtils.getDictLabel("sex", scope.row.sex, '-') }}
-        </template>
       </vxe-column>
     <vxe-column
         field="mobile"
@@ -81,16 +78,6 @@
         title="电子邮箱">
       </vxe-column>
     <vxe-column
-        field="jobtitle"
-        sortable
-        title="职务">
-      </vxe-column>
-    <vxe-column
-        field="faculty"
-        sortable
-        title="院系">
-      </vxe-column>
-    <vxe-column
         field="address"
         sortable
         title="地址">
@@ -101,7 +88,7 @@
         title="单位名称">
       </vxe-column>
     <vxe-column
-        field="items"
+        field="module"
         sortable
         title="赛项">
       </vxe-column>
@@ -141,7 +128,7 @@
     data () {
       return {
         searchForm: {
-          items: '',
+          module: '',
           cid: '',
           ctid: ''
         },
