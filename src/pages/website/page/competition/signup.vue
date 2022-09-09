@@ -145,6 +145,10 @@
           data.tid = this.signupInfo.id; //模板id
           data.cid = this.$route.params.id; //大赛id
           data.id = this.recordId || '';
+          var signupName = this.signupInfo.name;
+          if(signupName.indexOf('裁判报名')!=-1){
+            data.signType = 'referee'
+          }
           this.$http({
             url: '/competition/competitionSignup/forminput',
             method: 'post',

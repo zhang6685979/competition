@@ -71,7 +71,7 @@
           name: '领队报名',
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
-          model: 'instructor-signup',
+          model: 'leader-signup',
           columns: [{
             model: 'role',
             name: '角色',
@@ -144,15 +144,13 @@
             dataType: '',
             pattern: '',
             rows: 1,
-            modules: [{
-              value: '模块1'
-            }]
+            modules: []
           }
         }, {
           name: '指导老师报名',
           el: 'signup-table',
           icon: 'icon iconfont icon-table',
-          model: 'referee-signup',
+          model: 'instructor-signup',
           columns: [{
             model: 'role',
             name: '角色',
@@ -225,9 +223,8 @@
             dataType: '',
             pattern: '',
             rows: 1,
-            modules: [{
-              value: '模块1'
-            }]
+            modules: [],
+            defaultModule:''
           }
         }, {
           name: '选手报名',
@@ -306,9 +303,8 @@
             dataType: '',
             pattern: '',
             rows: 1,
-            modules: [{
-              value: '模块1'
-            }]
+            modules: [],
+            defaultModule:''
           }
         }]
       }

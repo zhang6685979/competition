@@ -200,9 +200,13 @@
                 if(type=='string'||type=='number'){
                   obj[key] = value
                 }else if(value instanceof Array){
-                  dataList = dataList.concat(value)
-                  isSubForm = true;//如果包含子表单以子表单数据为准
-                }
+                  if(typeof value[0] == 'object'){
+                    dataList = dataList.concat(value)
+                      isSubForm = true;//如果包含子表单以子表单数据为准
+                    }
+                  }else{
+                    obj[key] = value
+                  }
               }
             }
             if(isSubForm){

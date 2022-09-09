@@ -25,6 +25,10 @@ Vue.use(JeeplusGencode)
 
 import FontIcon from '@/components/FontIcon/index'
 Vue.component('font-icon',FontIcon);
+
+import tinymce from '@/components/tinymce/index'
+Vue.component('Tinymce',tinymce);
+
 // 按需导入 vxeTable
 import {
   // 核心

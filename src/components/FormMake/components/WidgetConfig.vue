@@ -275,18 +275,18 @@
         </el-form-item>
         <el-form-item label="模块配置">
           <template>
-            <el-radio-group v-model="data.options.defaultValue">
+            <el-radio-group v-model="data.options.defaultModule">
               <draggable tag="ul" :list="data.options.modules"
                 v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}" handle=".drag-item">
                 <li v-for="(item, index) in data.options.modules" :key="index">
+					{{item.value}}
                   <el-radio :label="item.value" style="margin-right: 5px;">
                     <el-input :style="{'width': '180px' }" size="mini" v-model="item.value"></el-input>
-
                   </el-radio>
                   <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;"><i
                       class="iconfont icon-icon_bars"></i></i>
                   <el-button @click="handleOptionsRemove(index)" circle plain type="danger" size="mini"
-                    icon="el-icon-minus" style="padding: 4px;margin-left: 5px;"></el-button>
+                    icon="el-icon-minus" style="padding: 4px;"></el-button>
 
                 </li>
               </draggable>

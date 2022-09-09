@@ -1,5 +1,5 @@
 <template>
-    <div class="my-project-container">
+  <!-- <div class="my-project-container">
         <div class="filter-view">
             <div>
                 <span @click="switchDataShowTypeHandle('gird')">
@@ -226,230 +226,310 @@
                 @current-change="queryProjectPage"
             />
         </div>
+    </div> -->
+
+  <div class="page">
+    <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="queryParams"
+      @keyup.enter.native="refreshList()" @submit.native.prevent>
+      <!-- 搜索框-->
+      <el-form-item label="项目更新时间">
+        <el-date-picker v-model="queryParams.beginDateTime" placeholder="选择开始时间" type="datetime"
+          value-format="yyyy-MM-dd HH:mm:ss" />
+        至
+        <el-date-picker v-model="queryParams.endDateTime" :default-time="'23:59:59'" placeholder="选择结束时间"
+          type="datetime" value-format="yyyy-MM-dd HH:mm:ss" />
+      </el-form-item>
+      <el-form-item prop="name" label="项目名称">
+        <el-input v-model="queryParams.name" placeholder="请输入项目名称" type="text" />
+      </el-form-item>
+      <el-form-item label="项目状态">
+        <el-radio-group v-model="queryParams.status" size="small" @change="()=>{
+                this.queryParams.current=0
+                this.queryProjectPage()
+            }">
+          <el-radio-button v-for="status in projectStatusList" :key="status.code" :label="status.code">
+            {{ status.name }}
+          </el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="queryProjectPage()" size="small" icon="el-icon-search">查询</el-button>
+        <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <div class="bg-white top" style="padding:0px">
+      <div class="el-scrollbar__wrap" style="padding:10px;height:calc(100% - 70px)">
+        <div class="el-scrollbar__view">
+          <el-row>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+              <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
+                <div class="jp-card jp-card-bordered">
+                  <div class="add-border">
+                    <a @click="createBlankTemplate()">
+                      <i class="el-icon-plus"></i>
+                      <p>新建问卷</p>
+                    </a>
+                  </div>
+                </div>
+              </el-card>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(item, index) in projectList" :key="index">
+              <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
+                <img :src="item.image" class="image">
+                <h3 class="jp-card-label">
+                  <el-row>
+                    <el-col :span="24">
+                      <div class="top">
+                        {{item}}
+                      </div>
+                      <p class="desc">{{item.describe0}}</p>
+                    </el-col>
+                  </el-row>
+                </h3>
+
+                <ul class="jp-card-actions">
+                  <li style="width: 33.333%">
+                    <el-link :underline="false" @click="toProjectHandle(item.key,'editor')"><i class="el-icon-edit-outline"></i> 编辑
+                    </el-link>
+                  </li>
+                  <li style="width: 33.333%">
+                    <el-link :underline="false" @click="del(item.id)"><i class="el-icon-delete"></i> 删除</el-link>
+                  </li>
+                  <li style="width: 33.333%">
+                    <el-link :underline="false" @click="view(item.id)"><i class="el-icon-view"></i> 比赛详情</el-link>
+                  </li>
+                </ul>
+              </el-card>
+            </el-col>
+          </el-row>
+        </div>`
+      </div>
+      <vxe-pager background size="small" :current-page="queryParams.current" :page-size="queryParams.size"
+        :total="total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+        :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']" @page-change="queryProjectPage">
+      </vxe-pager>
     </div>
+  </div>
 </template>
 <script>
-import dayjs from 'dayjs'
-import {createFormRequest, deleteFormRequest, pageFormRequest, stopFormRequest} from '@/api/project/form'
+  import dayjs from 'dayjs'
+  import {
+    createFormRequest,
+    deleteFormRequest,
+    pageFormRequest,
+    stopFormRequest
+  } from '@/api/project/form'
 
-export default {
+  export default {
     name: 'MyProject',
     filters: {
-        formatDate(time) {
-            return dayjs(time).format('YYYY/MM/DD')
-        }
+      formatDate(time) {
+        return dayjs(time).format('YYYY/MM/DD')
+      }
     },
     data() {
-        return {
-            dialogVisible: false,
-            dataShowType: 'gird',
-            total: 0,
-            queryParams: {
-                current: 1,
-                size: 10,
-                name: '',
-                beginDateTime: null,
-                endDateTime: null,
-                status: null
-            },
-            formData: {
-                description: '',
-                name: '问卷名称'
-            },
-            projectStatusList: [
-                {code: 1, name: '未发布', color: '#006EFF'},
-                {code: 2, name: '收集中', color: '#34C82A'},
-                {code: 3, name: '已结束', color: '#955A45'}
-            ],
-            projectList: [],
-            projectListLoading: true
-        }
+      return {
+        dialogVisible: false,
+        dataShowType: 'gird',
+        total: 0,
+        queryParams: {
+          current: 1,
+          size: 10,
+          name: '',
+          beginDateTime: null,
+          endDateTime: null,
+          status: null
+        },
+        formData: {
+          description: '',
+          name: '问卷名称'
+        },
+        projectStatusList: [{
+            code: 1,
+            name: '未发布',
+            color: '#006EFF'
+          },
+          {
+            code: 2,
+            name: '收集中',
+            color: '#34C82A'
+          },
+          {
+            code: 3,
+            name: '已结束',
+            color: '#955A45'
+          }
+        ],
+        projectList: [],
+        projectListLoading: true
+      }
     },
     computed: {
-        getStatusColorStyle() {
-            return function(code) {
-                let color = this.projectStatusList.find(item => item.code == code).color
-                return {
-                    backgroundColor: color,
-                    borderColor: color
-                }
-            }
+      getStatusColorStyle() {
+        return function(code) {
+          let color = this.projectStatusList.find(item => item.code == code).color
+          return {
+            backgroundColor: color,
+            borderColor: color
+          }
         }
+      }
     },
     created() {
-        this.queryProjectPage()
+      this.queryProjectPage()
     },
     methods: {
-        createFormHandle() {
-            this.$refs['createForm'].validate(valid => {
-                if (valid) {
-                    createFormRequest(this.formData).then(res => {
-                        this.$router.push({path: '/project/form', query: {key: res.data}})
-                    })
-                } else {
-                    console.log('error submit!!')
-                    return false
+      createBlankTemplate() {
+        createFormRequest({
+          description: '快来填写你的问卷描述吧',
+          name: '问卷名称'
+        }).then(res => {
+          this.$router.push({
+            path: '/form/index',
+            query: {
+              key: res.data
+            }
+          })
+        })
+      },
+      createFormHandle() {
+        this.$refs['createForm'].validate(valid => {
+          if (valid) {
+            createFormRequest(this.formData).then(res => {
+              this.$router.push({
+                path: '/form/index',
+                query: {
+                  key: res.data
                 }
+              })
             })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
 
-        },
-        switchDataShowTypeHandle(type) {
-            this.dataShowType = type
-        },
-        toProjectHandle(key, type) {
-            this.$router.push({path: `/project/form/${type}`, query: {key: key, active: type}})
-        },
-        deleteProject(key) {
-            deleteFormRequest({'key': key}).then(res => {
-                if (res.data) {
-                    this.msgSuccess('刪除成功')
-                    this.queryProjectPage()
-                }
-            })
-        },
-        stopProject(key) {
-            stopFormRequest({'key': key}).then(res => {
-                if (res.data) {
-                    this.msgSuccess('停止成功')
-                    this.queryProjectPage()
-                }
-            })
-        },
-        queryProjectPage() {
-          debugger;
-            pageFormRequest(
-                this.queryParams
-            ).then(res => {
-                let {records, total, size} = res.data
-                this.projectList = records
-                this.total = total
-                this.queryParams.size = size
-                this.projectListLoading = false
-            })
-        }
+      },
+      switchDataShowTypeHandle(type) {
+        this.dataShowType = type
+      },
+      toProjectHandle(key, type) {
+        this.$router.push({
+          path: `/form/index`,
+          query: {
+            key: key,
+            active: type
+          }
+        })
+      },
+      deleteProject(key) {
+        deleteFormRequest({
+          'key': key
+        }).then(res => {
+          if (res.data) {
+            this.msgSuccess('刪除成功')
+            this.queryProjectPage()
+          }
+        })
+      },
+      stopProject(key) {
+        stopFormRequest({
+          'key': key
+        }).then(res => {
+          if (res.data) {
+            this.msgSuccess('停止成功')
+            this.queryProjectPage()
+          }
+        })
+      },
+      queryProjectPage() {
+        pageFormRequest(
+          this.queryParams
+        ).then(res => {
+          let {
+            records,
+            total,
+            size
+          } = res.data
+          this.projectList = records
+          this.total = total
+          this.queryParams.size = size
+          this.projectListLoading = false
+        })
+      }
     }
-}
+  }
 </script>
 
-<style lang="scss" scoped>
-.my-project-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-}
-
-.back-view {
-  display: flex;
-  width: 80%;
-  align-content: flex-start;
-  margin: 10px;
-}
-
-.filter-view {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-}
-
-.show-view-type-icon {
-  color: white;
-  font-size: 18px;
-  -webkit-text-stroke: 0.5px #a8a8a8;
-  margin: 5px;
-  cursor: pointer;
-}
-
-.show-view-type-icon-active {
-  color: rgba(92, 155, 249, 100);
-  -webkit-text-stroke: 0.5px rgba(92, 155, 249, 100);
-}
-
-.project-grid-container {
-  margin-top: 20px;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
-.project-grid-view {
-  display: flex;
-  width: 1045px;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.project-table-view {
-  margin-top: 20px;
-  width: 80%;
-}
-
-.project-grid-item-view {
-  width: 169px;
-  height: 199px;
-  line-height: 20px;
-  border-radius: 10px;
-  background-color: rgba(255, 255, 255, 100);
-  text-align: center;
-  margin: 20px;
-  position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-
-  .project-title {
-    color: rgba(16, 16, 16, 100);
-    font-size: 14px;
-    text-align: left;
-    line-height: 20px;
-    max-height: 20px;
-    -webkit-box-orient: vertical;
+<style lang="less" scoped>
+  .image {
+    width: 100%;
+    height: 156px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
-  .project-grid-view-status {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    line-height: 20px;
-    background-color: rgba(0, 110, 255, 100);
-    text-align: center;
-    border: 1px solid rgba(0, 110, 255, 100);
-    border-radius: 20px;
+  .bottom {
+    background-color: #f5f7fa;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    font-size: 12px;
   }
-}
 
-.gird-operating-btns {
-  position: absolute;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #f0f0f0;
-  bottom: 0;
-  display: none;
-  border: none;
-}
+  .jp-card {
+    height: 278px;
+  }
 
-.project-grid-item-view:hover .gird-operating-btns {
-  display: block;
-}
+  .jp-card-label {
 
-.project-grid-view-preimg {
-  width: 143px;
-  height: 121px;
-}
+    font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
 
-.project-grid-view-time {
-  color: rgba(144, 147, 153, 100);
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
-  margin: 0;
-}
+    .top {
+      line-height: 36px;
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #1890FF;
+      white-space: nowrap;
+      font-size: 12px;
 
-.project-page-view {
-  margin-top: 30px;
-}
+      .label {
+        margin-right: 10px;
+        height: 24px;
+        line-height: 24px;
+      }
+    }
+
+    .desc {
+      margin: 0 auto 10px;
+      font-weight: normal;
+      color: #303133;
+      height: 30px;
+      width: 100%;
+      word-break: break-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      font-size: 13px;
+    }
+
+    .right {
+      line-height: 38px;
+      justify-content: center;
+      text-decoration: none;
+      float: right;
+    }
+  }
 </style>

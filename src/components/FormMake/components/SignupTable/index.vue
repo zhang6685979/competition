@@ -3,20 +3,29 @@
     <table class="table">
       <tr>
         <th align="center">角色</th>
-        <th><font style="color:#f00">*</font> 姓名</th>
+        <th>
+          <font style="color:#f00">*</font> 姓名
+        </th>
         <th v-if="rowInfo.role=='领队'">院系</th>
         <th v-if="rowInfo.role!='领队'">赛项</th>
         <th v-if="rowInfo.role!='参赛选手'">职务/职称</th>
-        <th v-if="rowInfo.role=='参赛选手'"><font style="color:#f00">*</font> 身份证号</th>
+        <th v-if="rowInfo.role=='参赛选手'">
+          <font style="color:#f00">*</font> 身份证号
+        </th>
         <th>性别</th>
-        <th><font style="color:#f00">*</font> 联系方式</th>
-        <th><font style="color:#f00">*</font> 邮箱</th>
+        <th>
+          <font style="color:#f00">*</font> 联系方式
+        </th>
+        <th>
+          <font style="color:#f00">*</font> 邮箱
+        </th>
 
       </tr>
       <tr v-for="(item,index) in dataModel" :key="index">
         <td align="center">{{item.role}}</td>
         <td>
-          <el-form-item class="field-item" :prop="`${model}.${index}.name`" :rules='[{ "required": true, "message": "必须填写" }]'>
+          <el-form-item class="field-item" :prop="`${model}.${index}.name`"
+            :rules='[{ "required": true, "message": "必须填写" }]'>
             <el-input v-model="item.name"></el-input>
           </el-form-item>
         </td>
@@ -33,7 +42,8 @@
           <el-input v-model="item.jobtitle"></el-input>
         </td>
         <td v-if="rowInfo.role=='参赛选手'">
-          <el-form-item class="field-item" :prop="`${model}.${index}.idcardno`" :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isCardId, trigger:["blur","change"]}]'>
+          <el-form-item class="field-item" :prop="`${model}.${index}.idcardno`"
+            :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isCardId, trigger:["blur","change"]}]'>
             <el-input v-model="item.idcardno"></el-input>
           </el-form-item>
         </td>
@@ -44,12 +54,14 @@
           </el-select>
         </td>
         <td>
-          <el-form-item class="field-item" :prop="`${model}.${index}.mobile`" :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isMobile, trigger:["blur","change"]}]'>
-          <el-input v-model="item.mobile"></el-input>
+          <el-form-item class="field-item" :prop="`${model}.${index}.mobile`"
+            :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isMobile, trigger:["blur","change"]}]'>
+            <el-input v-model="item.mobile"></el-input>
           </el-form-item>
         </td>
         <td>
-          <el-form-item class="field-item" :prop="`${model}.${index}.email`" :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isEmail, trigger:["blur","change"]}]'>
+          <el-form-item class="field-item" :prop="`${model}.${index}.email`"
+            :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isEmail, trigger:["blur","change"]}]'>
             <el-input v-model="item.email"></el-input>
           </el-form-item>
         </td>
@@ -73,7 +85,10 @@
           return {}
         }
       },
-      model:{type:String,default:''}
+      model: {
+        type: String,
+        default: ''
+      }
     },
     data() {
       return {
@@ -86,9 +101,18 @@
         if (newVal && (newVal != oldVal)) {
           this.dataModel = [];
           for (var i = 0; i < newVal; i++) {
-            this.dataModel.push(Object.assign({},this.rowInfo))
+            //this.rowInfo.module = this.options.modules[0].value;
+            this.dataModel.push(Object.assign({}, this.rowInfo))
           }
         }
+      },
+      'options.defaultModule': function(newVal) {
+         this.rowInfo.module = newVal;
+         if(this.dataModel&&this.dataModel.length>0){
+           this.dataModel.forEach(item=>{
+             item.module = newVal;
+           })
+         }
       },
       dataModel(val) {
         this.$emit('input', val)
@@ -98,10 +122,10 @@
       }
 
     },
-    created(){
-      if(this.value&&this.value.length>0){
-        this.value[0].module = this.options.modules[0].value;
-        this.rowInfo = Object.assign({},this.value[0]);
+    created() {
+      if (this.value && this.value.length > 0) {
+        //this.value[0].module = this.options.modules[0].value;
+        this.rowInfo = Object.assign({}, this.value[0]);
       }
     },
     methods: {
@@ -123,9 +147,14 @@
       td {
         border: 1px solid #ccc;
         vertical-align: top;
-        .field-item{margin-bottom: 0px;&.is-error{
-          margin-bottom: 18px;
-        }}
+
+        .field-item {
+          margin-bottom: 0px;
+
+          &.is-error {
+            margin-bottom: 18px;
+          }
+        }
       }
     }
   }
