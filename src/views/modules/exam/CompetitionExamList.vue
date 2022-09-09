@@ -65,6 +65,11 @@
         title="结束时间">
       </vxe-column>
     <vxe-column
+        field="rooms"
+        sortable
+        title="考场数量">
+      </vxe-column>
+    <vxe-column
         field="describe0"
         sortable
         title="考试描述">

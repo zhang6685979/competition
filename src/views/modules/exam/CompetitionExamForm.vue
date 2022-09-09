@@ -45,10 +45,31 @@
            </el-form-item>
         </el-col>
         <el-col :span="12">
+            <el-form-item label="考场数量" prop="rooms"
+                :rules="[
+                 ]">
+              <el-input v-model="inputForm.rooms" placeholder="请填写考场数量"     ></el-input>
+           </el-form-item>
+        </el-col>
+        <el-col :span="12">
+            <el-form-item label="比赛裁判" prop="referees"
+                :rules="[
+                 ]">
+                <user-select :limit='1' :value="inputForm.referees" @getValue='(value) => {inputForm.referees=value}'></user-select>
+           </el-form-item>
+        </el-col>
+        <el-col :span="12">
+            <el-form-item label="参赛团队" prop="teams"
+                :rules="[
+                 ]">
+                <user-select :limit='1' :value="inputForm.teams" @getValue='(value) => {inputForm.teams=value}'></user-select>
+           </el-form-item>
+        </el-col>
+        <el-col :span="12">
             <el-form-item label="考试描述" prop="describe0"
                 :rules="[
                  ]">
-              <el-input v-model="inputForm.describe0" placeholder="请填写考试描述"     ></el-input>
+              <el-input v-model="inputForm.describe0" placeholder="请填写考试描述"></el-input>
            </el-form-item>
         </el-col>
         </el-row>
@@ -62,6 +83,7 @@
 </template>
 
 <script>
+  import UserSelect from '@/components/userSelect'
   import CompetitionExamService from '@/api/exam/CompetitionExamService'
   export default {
     data () {
@@ -75,11 +97,15 @@
           name: '',
           starttime: '',
           endtime: '',
+          rooms: '',
+          referees: [],
+          teams: [],
           describe0: ''
         }
       }
     },
     components: {
+      UserSelect
     },
     competitionExamService: null,
     created () {
@@ -90,11 +116,11 @@
         this.method = method
         this.inputForm.id = id
         if (method === 'add') {
-          this.title = `新建考试`
+          this.title = `新建考试信息`
         } else if (method === 'edit') {
-          this.title = '修改考试'
+          this.title = '修改考试信息'
         } else if (method === 'view') {
-          this.title = '查看考试'
+          this.title = '查看考试信息'
         }
         this.visible = true
         this.loading = false
