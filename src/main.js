@@ -26,9 +26,6 @@ Vue.use(JeeplusGencode)
 import FontIcon from '@/components/FontIcon/index'
 Vue.component('font-icon',FontIcon);
 
-import tinymce from '@/components/tinymce/index'
-Vue.component('Tinymce',tinymce);
-
 // 按需导入 vxeTable
 import {
   // 核心
@@ -147,7 +144,7 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 // 挂载全局
-Vue.prototype.$http = httpRequest // ajax请求方法
+Vue.prototype.$http = Vue.prototype.$api = httpRequest // ajax请求方法
 Vue.prototype.hasPermission = utils.hasPermission // 权限方法
 Vue.prototype.treeDataTranslate = utils.treeDataTranslate // 树形数据转换
 Vue.prototype.$utils = utils
@@ -162,6 +159,18 @@ Vue.prototype.moment = moment
 Vue.prototype.deepClone = utils.deepClone
 Vue.prototype.validatenull = utils.validatenull
 Vue.prototype.$events = new Vue()
+Vue.prototype.msgSuccess = function(msg) {
+    this.$message({showClose: true, message: msg, type: 'success'})
+}
+Vue.prototype.msgError = function(msg) {
+    this.$message({showClose: true, message: msg, type: 'error'})
+}
+Vue.prototype.msgWarning = function(msg) {
+    this.$message({showClose: true, message: msg, type: 'warning'})
+}
+Vue.prototype.msgInfo = function(msg) {
+    this.$message.info(msg)
+}
 
 utils.printLogo()
 

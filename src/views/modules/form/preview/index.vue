@@ -69,7 +69,7 @@ export default {
     mounted() {
         this.formKey = this.$route.query.key
         let url = window.location.protocol + '//' + window.location.host
-        this.mobilePreviewUrl = `${url}/project/form/view?key=${this.formKey}`
+        this.mobilePreviewUrl = `${url}/#/project/form/view?key=${this.formKey}`
         this.$set(this.formConfig, 'formKey', this.formKey)
     }
 }

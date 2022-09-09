@@ -58,14 +58,13 @@
           <i v-else class="el-icon-d-arrow-right" @click="collapseHandle" />
         </div>
         <div class="right-content-container">
-          <editor></editor>
+          <component :is="defaultActiveMenu" :key="projectKey"></component>
         </div>
       </div>
       <el-dialog :visible.sync="previewDialogVisible" destroy-on-close fullscreen>
         <pre-view :key="previewKey" :preview-qrcode="true" />
       </el-dialog>
       <template-create ref="templateCreate" :form-key="projectKey" />
-
     </div>
   </div>
 </template>
@@ -74,15 +73,27 @@
 <script>
   import PreView from '@/views/modules/form/preview'
   import TemplateCreate from '@/views/modules/project/template/create'
-  
+
   import editor from './editor'
+  import logic from './logic'
+  import setting from './setting'
+  import publish from './publish'
+  import theme from './theme'
+  import data from './data'
+  import statistics from './statistics'
 
   export default {
     name: 'NewIndex',
     components: {
       TemplateCreate,
       PreView,
-      editor
+      editor,
+      logic,
+      setting,
+      publish,
+      theme,
+      formData: data,
+      statistics
     },
     data() {
       return {
@@ -94,53 +105,48 @@
         menuItemList: [{
             title: '编辑',
             icon: 'el-icon-edit',
-            route: '/project/form/editor'
+            route: 'editor'
           },
           {
             title: '逻辑',
             icon: 'el-icon-menu',
-            route: '/project/form/logic'
+            route: 'logic'
           }, {
             title: '外观',
             icon: 'el-icon-view',
-            route: '/project/form/theme'
+            route: 'theme'
           },
           {
             title: '设置',
             icon: 'el-icon-setting',
-            route: '/project/form/setting'
+            route: 'setting'
           },
           {
             title: '发布',
             icon: 'el-icon-video-play',
-            route: '/project/form/publish'
+            route: 'publish'
           },
           {
             title: '数据',
             icon: 'el-icon-s-data',
-            route: '/project/form/data'
+            route: 'formData'
           },
           {
             title: '统计',
             icon: 'el-icon-data-line',
-            route: '/project/form/statistics'
+            route: 'statistics'
           }
         ]
       }
     },
     created() {
       this.projectKey = this.$route.query.key
-      this.defaultActiveMenu = this.$route.path
+      //this.defaultActiveMenu = this.$route.path
       //this.isCollapse = this.$store.state.form.isCollapse
     },
     methods: {
       menuSelectHandle(index) {
-        this.$router.replace({
-          path: index,
-          query: {
-            key: this.projectKey
-          }
-        })
+        this.defaultActiveMenu = index;
       },
       openPreviewHandle() {
         this.previewKey = +new Date()
@@ -151,9 +157,7 @@
       },
       collapseHandle() {
         let isCollapse = !this.isCollapse
-        this.$store.dispatch('form/setIsCollapse', isCollapse).then(() => {
-          this.isCollapse = isCollapse
-        })
+        this.isCollapse = isCollapse
       },
       goBack() {
         this.$store.dispatch('tagsView/delView', {

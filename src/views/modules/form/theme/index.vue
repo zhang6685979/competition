@@ -1,6 +1,6 @@
 <template>
     <div class="theme-container">
-        <div class="left-container">
+        <!-- <div class="left-container">
             <el-scrollbar class="left-scrollbar-container">
                 <p class="theme-title">
                     外观主题
@@ -57,7 +57,7 @@
                     </el-col>
                 </el-row>
             </el-scrollbar>
-        </div>
+        </div> -->
         <pre-view :key="projectFormKey" :form-key="formKey" />
         <div class="right-container">
             <p class="right-title">
