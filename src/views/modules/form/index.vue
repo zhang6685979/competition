@@ -213,13 +213,13 @@
 
   .main-container {
     width: 100%;
-    height: calc(100vh - 60px);
+    height: calc(100% - 60px);
     display: flex;
     flex-direction: row;
 
     .right-content-container {
       width: calc(100% - 100px);
-      height: calc(100vh - 60px);
+      height: 100%;
       overflow-x: hidden;
     }
   }

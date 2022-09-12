@@ -4,12 +4,12 @@
             回收设置
         </p>
         <el-form ref="writeSettingForm" :model="writeSettingForm" :rules="settingRules">
-            <div class="setting-item">
+            <!-- <div class="setting-item">
                 <p class="label">
                     只在微信中填写
                 </p>
                 <el-switch v-model="writeSettingForm.wxWrite" />
-            </div>
+            </div> -->
             <div class="setting-item">
                 <p class="label">
                     定时收集表单
@@ -105,7 +105,7 @@
                 </el-form-item>
             </div>
 
-            <div class="setting-item">
+            <!-- <div class="setting-item">
                 <p class="label">
                     每个微信仅填写一次
                 </p>
@@ -116,7 +116,7 @@
                         writeSettingForm.wxWrite=true
                     }"
                 />
-            </div>
+            </div> -->
             <div class="setting-item">
                 <p class="label">
                     每人限制填写1次
@@ -141,7 +141,7 @@
             >
                 <el-input v-model.number="writeSettingForm.writeOncePromptText" placeholder="请输入重复填写后提示语" />
             </el-form-item>
-            <div class="setting-item">
+            <!-- <div class="setting-item">
                 <p class="label">
                     记录微信用户个人信息
                 </p>
@@ -153,12 +153,12 @@
                         }
                     }"
                 />
-            </div>
-            <el-row>
+            </div> -->
+            <!-- <el-row>
                 <p class="project-setting-sub-label">
                     * 开启后将会授权登录，提供微信昵称、性别、城市信息
                 </p>
-            </el-row>
+            </el-row> -->
             <div class="submit-btn">
                 <el-button type="primary" @click="saveSettingHandle">
                     保存设置

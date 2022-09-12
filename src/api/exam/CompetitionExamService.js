@@ -32,4 +32,20 @@ export default class CompetitionExamService {
       params: params
     })
   }
+
+  getRefereesByCid(params){
+    return request({
+      url: '/exam/competitionExam/referees',
+      method: 'get',
+      params: params
+    })
+  }
+  
+  getTeamsByCid(params){
+    return request({
+      url: '/exam/competitionExam/teams',
+      method: 'get',
+      params: params
+    })
+  }
 }

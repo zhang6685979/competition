@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+</html>
+<script>
+  window.onload = function(){
+    //取交集
+    function intersection(a,b){
+      var intersection =  a.filter(item => b.indexOf(item) > -1)
+      return intersection;
+    }
+    var table = [{name:'裁判A',team:'',matches:['B1','C1'],originMatches:['B1','C1']},{name:'裁判B',team:'',matches:['A1','C1'],originMatches:['A1','C1']},{name:'裁判C',team:'',matches:['A1','B1'],originMatches:['A1','B1']}]
+    var num = 1;
+    const insect = (array, valuesToRemove) => array.filter((value) => ! valuesToRemove.includes(value))
+    //第一步，给裁判设置团队，设置成功之后删除后边重复的数据，不允许其他裁判再执裁
+    for(var i=0;i<table.length;i++){
+      var item = table[i];
+      item.team = item.matches.splice(0,num);
+      for(var j=i;j<table.length;j++){
+        table[j].matches = insect(table[j].matches,item.team);
+      }
+    }
+    //第二步，找到没有分配的裁判信息，跟前边的数据进行交换
+    var emptyData = table.filter(function(item){
+      return item.team.length==0
+    })
+    emptyData.forEach(function(data){
+      var originMatches = data.originMatches;
+      for(var m=0;m<table.length;m++){
+        var matches = table[m].matches;
+        if(matches.length>0){
+          var jiaoji = intersection(table[m].team,originMatches);
+          if(jiaoji.length>0){
+            var surplusNum = matches.length-num;
+            var team = table[m].team
+            var newTeam = surplusNum>=0?matches.splice(0,num):matches.concat(team.splice(0,surplusNum*-1));
+            if(data.team.length<num){
+              data.team = data.team.concat(team.splice(0,num-data.team.length))
+            }
+            table[m].team = newTeam;
+            if(data.team.length>=num){
+              break;
+            }
+          }
+        }
+
+      }
+    })
+
+    console.log(table);
+  }
+</script>

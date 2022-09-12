@@ -10,9 +10,9 @@
             <el-tab-pane label="通知设置">
                 <notify-setting />
             </el-tab-pane>
-            <el-tab-pane label="分享设置">
+            <!-- <el-tab-pane label="分享设置">
                 <share-setting />
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
     </div>
 </template>

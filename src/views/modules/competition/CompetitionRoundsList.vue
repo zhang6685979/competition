@@ -25,9 +25,10 @@
           </vxe-column>
           <vxe-column field="describe0" sortable title="轮次描述">
           </vxe-column>
-          <vxe-column fixed="right" align="center" width="200" title="操作">
+          <vxe-column fixed="right" align="center" width="280" title="操作">
             <template slot-scope="scope">
               <el-button type="text" icon="el-icon-view" size="small" @click="importScore(scope.row.id)">查看成绩</el-button>
+              <el-button type="text" icon="el-icon-view" size="small" @click="examList(scope.row.id)">考试管理</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
@@ -51,12 +52,22 @@
     >
       <CompetitionScoreList :cid="id" :crid="currId" v-if="visible"></CompetitionScoreList>
     </el-dialog>
+
+    <el-dialog
+      title="考试管理"
+      :visible.sync="examVisible"
+      :append-to-body="true"
+      width="60%"
+    >
+      <CompetitionExamList  :cid="id" :crid="currId" v-if="examVisible"></CompetitionExamList>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import CompetitionRoundsForm from './CompetitionRoundsForm'
   import CompetitionScoreList from './CompetitionScoreList'
+  import CompetitionExamList from '../exam/CompetitionExamList'
   import CompetitionRoundsService from '@/api/competition/CompetitionRoundsService'
   export default {
     props: {
@@ -73,12 +84,14 @@
         },
         loading: false,
         currId:'',
-        visible:false
+        visible:false,
+        examVisible:false
       }
     },
     components: {
       CompetitionRoundsForm,
-      CompetitionScoreList
+      CompetitionScoreList,
+      CompetitionExamList
     },
     competitionRoundsService: null,
     created() {
@@ -139,6 +152,10 @@
       importScore(id) {
          this.currId = id;
          this.visible = true;
+      },
+      examList(id){
+        this.currId = id;
+        this.examVisible = true;
       },
       // 删除
       del(id) {

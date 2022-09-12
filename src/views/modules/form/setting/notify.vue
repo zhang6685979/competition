@@ -21,12 +21,6 @@
                 </p>
                 <el-switch v-model="notifySettingForm.wxNotify" />
             </div>
-            <p class="project-setting-sub-label sub-label-text">
-                需要关注公众号
-                <el-link type="primary" @click="openSubNotifyWxDialogHandle">
-                    TDUCK
-                </el-link>
-            </p>
             <el-row v-if="notifySettingForm.newWriteNotifyWx" align="middle" type="flex">
                 <el-col :offset="3" :span="5">
                     <p class="project-setting-sub-label">
@@ -45,16 +39,6 @@
                     保存设置
                 </el-button>
             </div>
-            <el-dialog :visible.sync="dialogSubNotifyVisible"
-                       title="微信扫描二维码订阅"
-                       width="400px"
-            >
-                <el-image
-                    :src="subNotifyWxQrCode"
-                    fit="fill"
-                    style="width: 150px; height: 150px;"
-                />
-            </el-dialog>
         </el-form>
     </div>
 </template>
@@ -90,15 +74,12 @@ export default {
                 wxNotify: false,
                 newWriteNotifyWx: null
             },
-            dialogSubNotifyVisible: false,
-            subNotifyWxQrCode: '',
             subNotifyWxUserList: [],
             subNotifyUserTimer: null
         }
     },
     mounted() {
         this.queryUserProjectSetting()
-        this.getSubNotifyWxQrCode()
     },
     destroyed() {
         clearInterval(this.subNotifyUserTimer)
@@ -125,31 +106,6 @@ export default {
                 } else {
                     return false
                 }
-            })
-        },
-        openSubNotifyWxDialogHandle() {
-            this.dialogSubNotifyVisible = true
-            this.subNotifyUserTimer = setInterval(() => {
-                this.querySubNotifyWxUser()
-            }, 5 * 1000)
-        },
-        querySubNotifyWxUser(openIdStr) {
-            getWxNotifyUserRequest({
-                key: this.formKey,
-                openIdStr: openIdStr
-            }).then(res => {
-                this.subNotifyWxUserList = res.data
-                if (this.subNotifyWxUserList) {
-                    let changeNewWriteNotifyWx = this.subNotifyWxUserList.map(item => item.openId).join(';')
-                    if (!openIdStr && changeNewWriteNotifyWx != this.notifySettingForm.newWriteNotifyWx) {
-                        this.notifySettingForm.newWriteNotifyWx = changeNewWriteNotifyWx
-                    }
-                }
-            })
-        },
-        getSubNotifyWxQrCode() {
-            getWxNotifyQrcodeRequest({key: this.formKey}).then(res => {
-                this.subNotifyWxQrCode = res.data
             })
         },
         deleteSubNotifyUserHandle(i) {

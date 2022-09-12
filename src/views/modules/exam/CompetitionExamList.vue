@@ -1,28 +1,14 @@
 <template>
     <div class="page">
-      <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
-            <!-- 搜索框-->
-         <el-form-item prop="cid">
-                <el-input size="small" v-model="searchForm.cid" placeholder="关联赛事" clearable></el-input>
-         </el-form-item>
-         <el-form-item prop="crid">
-                <el-input size="small" v-model="searchForm.crid" placeholder="比赛轮次" clearable></el-input>
-         </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
-            <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
-          </el-form-item>
-      </el-form>
-
      <div class="bg-white top">
         <vxe-toolbar :refresh="{query: refreshList}" export print custom>
           <template #buttons>
-            <el-button v-if="hasPermission('exam:competitionExam:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-            <el-button v-if="hasPermission('exam:competitionExam:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.competitionExamTable && $refs.competitionExamTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-            <el-button v-if="hasPermission('exam:competitionExam:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.competitionExamTable && $refs.competitionExamTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+            <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
+            <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.competitionExamTable && $refs.competitionExamTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+            <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.competitionExamTable && $refs.competitionExamTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>
         </vxe-toolbar>
-        <div style="height: calc(100% - 80px);">
+        <div style="height:500px">
         <vxe-table
             border="inner"
             auto-resize
@@ -49,9 +35,7 @@
         sortable
         title="考试课目">
             <template slot-scope="scope">
-              <el-link  type="primary" :underline="false" v-if="hasPermission('exam:competitionExam:edit')" @click="edit(scope.row.id)">{{scope.row.name}}</el-link>
-              <el-link  type="primary" :underline="false" v-else-if="hasPermission('exam:competitionExam:view')"  @click="view(scope.row.id)">{{scope.row.name}}</el-link>
-              <span v-else>{{scope.row.name}}</span>
+              <el-link  type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.name}}</el-link>
             </template>
       </vxe-column>
     <vxe-column
@@ -80,9 +64,8 @@
         width="200"
         title="操作">
         <template  slot-scope="scope">
-          <el-button v-if="hasPermission('exam:competitionExam:view')" type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
-          <el-button v-if="hasPermission('exam:competitionExam:edit')" type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-          <el-button v-if="hasPermission('exam:competitionExam:del')" type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
+          <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
+          <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
       </vxe-column>
     </vxe-table>
@@ -99,7 +82,7 @@
     </div>
     </div>
         <!-- 弹窗, 新增 / 修改 -->
-    <CompetitionExamForm  ref="competitionExamForm" @refreshDataList="refreshList"></CompetitionExamForm>
+    <CompetitionExamForm  ref="competitionExamForm" :cid="cid" @refreshDataList="refreshList"></CompetitionExamForm>
   </div>
 </template>
 
@@ -107,12 +90,12 @@
   import CompetitionExamForm from './CompetitionExamForm'
   import CompetitionExamService from '@/api/exam/CompetitionExamService'
   export default {
+    props: {
+      cid: String,
+      crid: String,
+    },
     data () {
       return {
-        searchForm: {
-          cid: '',
-          crid: ''
-        },
         dataList: [],
         tablePage: {
           total: 0,
@@ -130,7 +113,7 @@
     created () {
       this.competitionExamService = new CompetitionExamService()
     },
-    activated () {
+    mounted () {
       this.refreshList()
     },
     methods: {
@@ -141,7 +124,8 @@
           'current': this.tablePage.currentPage,
           'size': this.tablePage.pageSize,
           'orders': this.tablePage.orders,
-          ...this.searchForm
+          'cid': this.cid,
+          'crid': this.crid
         }).then(({data}) => {
           this.dataList = data.records
           this.tablePage.total = data.total
@@ -202,4 +186,3 @@
     }
   }
 </script>
-

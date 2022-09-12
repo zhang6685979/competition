@@ -101,6 +101,7 @@
 <script>
   import PlayerService from '@/api/player/PlayerService'
   export default {
+    props:{cid:String},
     data () {
       return {
         title: '',
@@ -157,6 +158,7 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
+            this.inputForm.cid = this.cid;
             this.playerService.save(this.inputForm).then(({data}) => {
               this.visible = false
               this.$message.success(data)

@@ -16,17 +16,23 @@
         <el-tab-pane label="赛事新闻" name="4">
           <NewsList :id="$route.query.cid"></NewsList>
         </el-tab-pane>
-        <el-tab-pane label="通知公告" name="7">
+        <el-tab-pane label="通知公告" name="5">
           <AnnouncementList :id="$route.query.cid"></AnnouncementList>
         </el-tab-pane>
-        <el-tab-pane label="赛事直播" name="5">
+        <el-tab-pane label="赛事直播" name="6">
           <CompetitionLiveList :id="$route.query.cid"></CompetitionLiveList>
         </el-tab-pane>
-        <el-tab-pane label="大赛设备" name="6">
+        <el-tab-pane label="大赛设备" name="7">
           <CompetitionEquipmentForm :id="$route.query.cid"></CompetitionEquipmentForm>
         </el-tab-pane>
         <el-tab-pane label="资源下载" name="8">
           <CompetitionDownloadList :id="$route.query.cid"></CompetitionDownloadList>
+        </el-tab-pane>
+        <el-tab-pane label="选手信息" name="9">
+          <PlayerList :cid="$route.query.cid"></PlayerList>
+        </el-tab-pane>
+        <el-tab-pane label="裁判信息" name="10">
+          <RefereeList :cid="$route.query.cid"></RefereeList>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -42,6 +48,8 @@
   import CompetitionRoundsList from './CompetitionRoundsList'
   import CompetitionStyleList from './CompetitionStyleList'
   import CompetitionSignupList from './CompetitionSignupList'
+  import PlayerList from '../player/PlayerList'
+  import RefereeList from '../referee/RefereeList'
 
   export default {
     data() {
@@ -57,7 +65,9 @@
       NewsList,
       CompetitionRoundsList,
       CompetitionStyleList,
-      CompetitionSignupList
+      CompetitionSignupList,
+      PlayerList,
+      RefereeList
     },
     methods: {
       goBack() {

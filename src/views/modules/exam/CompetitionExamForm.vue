@@ -4,6 +4,7 @@
     :title="title"
     :close-on-click-modal="false"
      v-dialogDrag
+     :append-to-body="true"
     :visible.sync="visible">
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
@@ -55,7 +56,7 @@
             <el-form-item label="比赛裁判" prop="referees"
                 :rules="[
                  ]">
-                <user-select :limit='1' :value="inputForm.referees" @getValue='(value) => {inputForm.referees=value}'></user-select>
+                <referee-select :cid="cid" :value="inputForm.referees" @getValue='(value) => {inputForm.referees=value}'></referee-select>
            </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -84,8 +85,10 @@
 
 <script>
   import UserSelect from '@/components/userSelect'
+  import RefereeSelect from './refereeSelect'
   import CompetitionExamService from '@/api/exam/CompetitionExamService'
   export default {
+    props:{cid:String},
     data () {
       return {
         title: '',
@@ -99,13 +102,14 @@
           endtime: '',
           rooms: '',
           referees: [],
-          teams: [],
+          teams: '',
           describe0: ''
         }
       }
     },
     components: {
-      UserSelect
+      UserSelect,
+      RefereeSelect
     },
     competitionExamService: null,
     created () {
@@ -154,5 +158,3 @@
     }
   }
 </script>
-
-  

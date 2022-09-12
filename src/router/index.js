@@ -22,6 +22,10 @@ const globalRoutes = [
   {
       path: '/project/form/view',
       component: _import('modules/form/preview/ProjectForm')
+  },
+  {
+      path: '/s/:key',
+      component: _import('modules/form/write/index')
   }
 ]
 

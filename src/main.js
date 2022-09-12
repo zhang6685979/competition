@@ -172,6 +172,9 @@ Vue.prototype.msgInfo = function(msg) {
     this.$message.info(msg)
 }
 
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
+
 utils.printLogo()
 
 // 保存整站vuex本地储存初始状态

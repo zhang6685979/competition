@@ -93,7 +93,7 @@ export default {
     mounted() {
         this.formKey = this.$route.query.key
         let url = window.location.protocol + '//' + window.location.host
-        this.writeLink = `${url}/s/${this.formKey}`
+        this.writeLink = `${url}/#/s/${this.formKey}`
         this.getProjectStatus()
     }, methods: {
         getProjectStatus() {

@@ -26,12 +26,12 @@
             <el-form-item label="参与方式" prop="participate"
                 :rules="[
                  ]">
-                <el-select v-model="inputForm.participate" placeholder="请选择"  style="width: 100%;">
+                <el-select v-model="inputForm.participate0" placeholder="请选择"  style="width: 100%;">
                           <el-option
                             v-for="item in $dictUtils.getDictList('jab_participate')"
                             :key="item.value"
                             :label="item.label"
-                            :value="item.value">
+                            :value="item.label">
                           </el-option>
                       </el-select>
            </el-form-item>
@@ -73,11 +73,11 @@
            </el-form-item>
         </el-col>
         <el-col :span="12">
-            <el-form-item label="手机号码" prop="telphone"
+            <el-form-item label="手机号码" prop="mobile"
                 :rules="[
                   {validator: validator.isMobile, trigger:'blur'}
                  ]">
-              <el-input v-model="inputForm.telphone" placeholder="请填写手机号码"     ></el-input>
+              <el-input v-model="inputForm.mobile" placeholder="请填写手机号码"     ></el-input>
            </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -116,13 +116,6 @@
                       </el-select>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
-            <el-form-item label="关联比赛" prop="cid"
-                :rules="[
-                 ]">
-              <el-input v-model="inputForm.cid" placeholder="请填写关联比赛"     ></el-input>
-           </el-form-item>
-        </el-col>
         </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -136,6 +129,7 @@
 <script>
   import RefereeService from '@/api/referee/RefereeService'
   export default {
+    props:{cid:String},
     data () {
       return {
         title: '',
@@ -146,12 +140,12 @@
           id: '',
           city: '',
           school: '',
-          participate: '',
+          participate0: '',
           name: '',
           sex: '',
           idcardno: '',
           jobtitle: '',
-          telphone: '',
+          mobile: '',
           email: '',
           flightNumber: '',
           describe0: '',
@@ -195,6 +189,7 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
+            this.inputForm.cid = this.cid;
             this.refereeService.save(this.inputForm).then(({data}) => {
               this.visible = false
               this.$message.success(data)
@@ -209,5 +204,3 @@
     }
   }
 </script>
-
-  

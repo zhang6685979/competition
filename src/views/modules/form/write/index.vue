@@ -1,6 +1,5 @@
 <template>
     <div class="write-container">
-        <h1 id="inActiveTime" style="display: none;" />
         <div v-if="writeStatus==0" v-cloak>
             <el-result icon="error" :title="writeNotStartPrompt" :sub-title="writeNotStartPrompt" />
         </div>
@@ -48,8 +47,6 @@ import {
 const uaParser = require('ua-parser-js')
 const ua = uaParser(navigator.userAgent)
 
-require('@/utils/ut')
-
 export default {
     name: 'WriteView',
     components: {
@@ -59,7 +56,6 @@ export default {
     props: {},
     data() {
         return {
-            inActiveTime: 0,
             formConfig: {
                 formKey: '',
                 preview: false,
@@ -80,26 +76,27 @@ export default {
     async created() {
         let key = this.$route.query.key || this.$route.params.key
         this.formConfig.formKey = key
+        debugger;
         // 微信授权重定向到该页 会携带code参数
-        let wxCode = getQueryString('code')
-        if (wxCode) {
-            this.wxAuthorizationCode = wxCode
-            await this.getWxAuthorizationUserInfo()
-        }
-        // 微信逻辑授权结束
-        this.getWxAuthorizationUrl()
+        // let wxCode = getQueryString('code')
+        // if (wxCode) {
+        //     this.wxAuthorizationCode = wxCode
+        //     await this.getWxAuthorizationUserInfo()
+        // }
+        // // 微信逻辑授权结束
+        // this.getWxAuthorizationUrl()
         // 检查是否能进入填写
         this.queryProjectSettingStatus()
         this.queryProjectSetting()
-        if (constants.enableWx) {
-            // 加载微信相关 获取签名
-            getWxSignature({url: window.location.href}).then(res => {
-                this.wxSignature = res.data
-                getShareSettingRequest(this.formConfig.formKey).then(res => {
-                    setWxConfig(this.wxSignature, res.data)
-                })
-            })
-        }
+        // if (constants.enableWx) {
+        //     // 加载微信相关 获取签名
+        //     getWxSignature({url: window.location.href}).then(res => {
+        //         this.wxSignature = res.data
+        //         getShareSettingRequest(this.formConfig.formKey).then(res => {
+        //             setWxConfig(this.wxSignature, res.data)
+        //         })
+        //     })
+        // }
     },
     mounted() {
         viewFormResultRequest(this.formConfig.formKey).then(() => {
@@ -165,10 +162,7 @@ export default {
             this.$router.replace({path: '/project/public/result', query: {formKey}})
         },
         submitForm(data) {
-            // 完成时间
-            let inActiveTime = document.getElementById('inActiveTime').innerText
             createPublicFormResultRequest({
-                'completeTime': inActiveTime,
                 'formKey': this.formConfig.formKey,
                 'submitOs': ua.os.name,
                 'submitBrowser': ua.browser.name,
