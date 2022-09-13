@@ -1,6 +1,6 @@
 <template>
     <!-- 添加或修改单模板对话框 -->
-    <el-dialog class="t-dialog t-dialog--top" title="保存模板" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog class="t-dialog t-dialog--top" title="保存模板" :visible.sync="open" width="600px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
             <el-form-item label="封面图" prop="coverImg">
                 <imageUpload v-model="form.coverImg" />
@@ -30,7 +30,7 @@
 
 <script>
 import {getFormTemplateTypeListRequest, createTemplateRequest} from '@/api/project/template'
-
+import ImageUpload from '@/components/ImageUpload/index'
 export default {
     name: 'CreateTemplate',
     props: {
@@ -38,6 +38,9 @@ export default {
             type: String,
             default: ''
         }
+    },
+    components:{
+      imageUpload:ImageUpload
     },
     data() {
         return {
@@ -96,7 +99,7 @@ export default {
                     this.form.key = this.formKey
                     createTemplateRequest(this.form).then(res => {
                         this.msgSuccess('保存成功')
-                        this.$router.push('/project/template')
+                        this.$router.push('/project/template/index')
                     })
                 }
             })

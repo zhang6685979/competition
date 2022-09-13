@@ -82,7 +82,7 @@
     </div>
     </div>
         <!-- 弹窗, 新增 / 修改 -->
-    <CompetitionExamForm  ref="competitionExamForm" :cid="cid" @refreshDataList="refreshList"></CompetitionExamForm>
+    <CompetitionExamForm  ref="competitionExamForm" :cid="cid" :crid="crid" @refreshDataList="refreshList"></CompetitionExamForm>
   </div>
 </template>
 

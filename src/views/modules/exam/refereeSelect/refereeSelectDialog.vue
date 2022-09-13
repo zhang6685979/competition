@@ -3,31 +3,37 @@
     <el-dialog title="裁判选择" width="1000px" :close-on-click-modal="false" :append-to-body="true" v-dialogDrag
       class="userDialog" :visible.sync="visible">
       <el-container style="height: 500px">
+        <div class="referee-table">
+          <vxe-table  border="inner" auto-resize resizable height="400" :loading="loading" size="small" ref="refereeTable"
+            show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
+            :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}"
+            :data="dataList" :checkbox-config="{}" @checkbox-change="checkboxChange">
+            <vxe-column type="seq" width="40"></vxe-column>
+            <vxe-column type="checkbox" width="40px"></vxe-column>
 
-        <vxe-table class="referee-table" border="inner" auto-resize resizable height="500" :loading="loading" size="small" ref="refereeTable"
-          show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
-          :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}"
-          :data="dataList" :checkbox-config="{}" @checkbox-change="checkboxChange">
-          <vxe-column type="seq" width="40"></vxe-column>
-          <vxe-column type="checkbox" width="40px"></vxe-column>
-
-          <vxe-column field="name" sortable title="姓名">
-          </vxe-column>
-          <vxe-column field="sex" sortable title="性别">
-          </vxe-column>
-          <vxe-column field="idcardno" sortable title="身份证号">
-          </vxe-column>
-          <vxe-column field="jobtitle" sortable title="职务">
-          </vxe-column>
-          <vxe-column field="school" sortable title="所在学院">
-          </vxe-column>
-          <vxe-column field="participate0" sortable title="参与方式">
-          </vxe-column>
-          <vxe-column field="mobile" sortable title="手机号码">
-          </vxe-column>
-          <vxe-column field="email" sortable title="电子邮箱">
-          </vxe-column>
-        </vxe-table>
+            <vxe-column field="name" sortable title="姓名">
+            </vxe-column>
+            <vxe-column field="sex" sortable title="性别">
+            </vxe-column>
+            <vxe-column field="idcardno" sortable title="身份证号">
+            </vxe-column>
+            <vxe-column field="jobtitle" sortable title="职务">
+            </vxe-column>
+            <vxe-column field="school" sortable title="所在学院">
+            </vxe-column>
+            <vxe-column field="participate0" sortable title="参与方式">
+            </vxe-column>
+            <vxe-column field="mobile" sortable title="手机号码">
+            </vxe-column>
+            <vxe-column field="email" sortable title="电子邮箱">
+            </vxe-column>
+          </vxe-table>
+          <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
+            :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+            :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+            @page-change="currentChangeHandle">
+          </vxe-pager>
+        </div>
         <el-aside width="200px">
           <el-tag :key="tag.id" v-for="tag in dataListAllSelections" closable :disable-transitions="false"
             @close="del(tag)">
@@ -46,31 +52,21 @@
 
 <script>
   import RefereeForm from '@/views/modules/referee/RefereeForm'
-  import CompetitionExamService from '@/api/exam/CompetitionExamService'
+  import RefereeService from '@/api/referee/RefereeService'
   export default {
     data() {
       return {
-        searchForm: {
-          loginName: '',
-          companyDTO: {
-            id: ''
-          },
-          officeDTO: {
-            id: ''
-          },
-          name: ''
-        },
-        filterText: '',
         dataListAllSelections: [], // 所有选中的数据包含跨页数据
         dataListSelections: [],
         idKey: 'id', // 标识列表数据中每一行的唯一键的名称(需要按自己的数据改一下)
         dataList: [],
+        tablePage: {
+          total: 0,
+          currentPage: 1,
+          pageSize: 1,
+          orders: []
+        },
         dynamicTags: [],
-        officeTreeData: [],
-        pageNo: 1,
-        pageSize: 10,
-        total: 0,
-        orders: [],
         loading: false,
         visible: false
       }
@@ -91,14 +87,9 @@
     components: {
       RefereeForm
     },
-    watch: {
-      filterText(val) {
-        this.$refs.officeTree.filter(val)
-      }
-    },
-    competitionExamService: null,
+    refereeService: null,
     created () {
-      this.competitionExamService = new CompetitionExamService()
+      this.refereeService = new RefereeService()
     },
     methods: {
       init() {
@@ -108,31 +99,10 @@
           this.resetSearch()
         })
       },
-      renderContent(h, {
-        node,
-        data,
-        store
-      }) {
-        return ( <
-          span class = "custom-tree-node" > {
-            data.type === '1' ? < i class = "fa fa-sitemap" > < /i> : <i class="fa fa-users"></i >
-          } <
-          span class = "text" > {
-            node.label
-          } < /span> < /
-          span >
-        )
-      },
-      getTemplateRow(index, row) { // 获取选中数据
-        this.dataListSelections = [row]
-        this.$nextTick(() => {
-          this.changePageCoreRecordData()
-        })
-      },
       // 设置选中的方法
       setSelectRow() {
         if (!this.dataListAllSelections || this.dataListAllSelections.length <= 0) {
-          this.$refs.userTable.clearSelection()
+          this.$refs.refereeTable.clearCheckboxRow()
           return
         }
         // 标识当前行的唯一键的名称
@@ -141,11 +111,11 @@
         this.dataListAllSelections.forEach(row => {
           selectAllIds.push(row[idKey])
         })
-        this.$refs.userTable.clearSelection()
+        this.$refs.refereeTable.clearCheckboxRow()
         for (var i = 0; i < this.dataList.length; i++) {
           if (selectAllIds.indexOf(this.dataList[i][idKey]) >= 0) {
             // 设置选中，记住table组件需要使用ref="table"
-            this.$refs.userTable.toggleRowSelection(this.dataList[i], true)
+            this.$refs.refereeTable.setCheckboxRow(this.dataList[i], true)
           }
         }
       },
@@ -194,15 +164,6 @@
           }
         })
       },
-      // 得到选中的所有数据
-      getAllSelectionData() {
-        // 再执行一次记忆勾选数据匹配，目的是为了在当前页操作勾选后直接获取选中数据
-        this.changePageCoreRecordData()
-      },
-      filterNode(value, data) {
-        if (!value) return true
-        return data.name.indexOf(value) !== -1
-      },
       del(tag) {
         this.dataListAllSelections.splice(this.dataListAllSelections.indexOf(tag), 1)
         this.$nextTick(() => {
@@ -212,32 +173,30 @@
       // 获取数据列表
       refreshList() {
         this.loading = true
-        this.competitionExamService.getRefereesByCid({cid:this.cid}).then(({
+        this.refereeService.list({
+          'current': this.tablePage.currentPage,
+          'size': this.tablePage.pageSize,
+          'orders': this.tablePage.orders,
+          'cid': this.cid,
+        }).then(({
           data
         }) => {
-          this.dataList = data
+          this.dataList = data.records
+          this.tablePage.total = data.total
           this.loading = false
           this.$nextTick(() => {
-            //this.setSelectRow()
+            this.setSelectRow()
           })
         })
       },
-      // 每页数
-      sizeChangeHandle(val) {
-        this.pageSize = val
-        this.pageNo = 1
-        this.refreshList()
-        this.$nextTick(() => {
-          this.changePageCoreRecordData()
-        })
-      },
       // 当前页
-      currentChangeHandle(val) {
-        this.pageNo = val
+      currentChangeHandle({
+        currentPage,
+        pageSize
+      }) {
+        this.tablePage.currentPage = currentPage
+        this.tablePage.pageSize = pageSize
         this.refreshList()
-        this.$nextTick(() => {
-          this.changePageCoreRecordData()
-        })
       },
       // 多选
       selectionChangeHandle(val) {
@@ -248,28 +207,12 @@
       },
       // 排序
       sortChangeHandle(column) {
-        if (column.prop === 'officeDTO.name') {
-          column.prop = 'o.name'
-        }
-        if (column.prop === 'companyDTO.name') {
-          column.prop = 'c.name'
-        }
-        this.orders = []
+        this.tablePage.orders = []
         if (column.order != null) {
-          this.orders.push({
+          this.tablePage.orders.push({
             column: this.$utils.toLine(column.prop),
             asc: column.order === 'ascending'
           })
-        }
-        this.refreshList()
-      },
-      handleNodeClick(data) {
-        if (data.type === '1') {
-          this.searchForm.companyDTO.id = data.id
-          this.searchForm.officeDTO.id = ''
-        } else {
-          this.searchForm.companyDTO.id = ''
-          this.searchForm.officeDTO.id = data.id
         }
         this.refreshList()
       },
@@ -277,10 +220,6 @@
         this.refreshList()
       },
       doSubmit() {
-        if (this.limit < this.dataListAllSelections.length) {
-          this.$message.error(`你最多只能选择${this.limit}个用户`)
-          return
-        }
         this.visible = false
         this.$emit('doSubmit', this.dataListAllSelections)
       },

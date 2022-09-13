@@ -63,14 +63,14 @@
             <el-form-item label="参赛团队" prop="teams"
                 :rules="[
                  ]">
-                <user-select :limit='1' :value="inputForm.teams" @getValue='(value) => {inputForm.teams=value}'></user-select>
+               <team-select :cid="cid" :value="inputForm.teams" @getValue='(value) => {inputForm.teams=value}'></team-select>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
             <el-form-item label="考试描述" prop="describe0"
                 :rules="[
                  ]">
-              <el-input v-model="inputForm.describe0" placeholder="请填写考试描述"></el-input>
+              <el-input v-model="inputForm.describe0" type="textarea" placeholder="请填写考试描述"></el-input>
            </el-form-item>
         </el-col>
         </el-row>
@@ -84,11 +84,11 @@
 </template>
 
 <script>
-  import UserSelect from '@/components/userSelect'
+  import TeamSelect from './teamSelect'
   import RefereeSelect from './refereeSelect'
   import CompetitionExamService from '@/api/exam/CompetitionExamService'
   export default {
-    props:{cid:String},
+    props:{cid:String,crid:String},
     data () {
       return {
         title: '',
@@ -102,13 +102,13 @@
           endtime: '',
           rooms: '',
           referees: [],
-          teams: '',
+          teams: [],
           describe0: ''
         }
       }
     },
     components: {
-      UserSelect,
+      TeamSelect,
       RefereeSelect
     },
     competitionExamService: null,
@@ -144,6 +144,8 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
+            this.inputForm.cid = this.cid
+            this.inputForm.crid = this.crid
             this.competitionExamService.save(this.inputForm).then(({data}) => {
               this.visible = false
               this.$message.success(data)

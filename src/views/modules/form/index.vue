@@ -43,6 +43,14 @@
 
   <div class="page">
     <div class="bg-white top">
+      <div class="pull-right">
+        <el-button type="primary" icon="el-icon-view" @click="previewDialogVisible=true">
+            预览
+        </el-button>
+        <el-button type="success" icon="el-icon-folder-add" @click="saveProjectAsTemplateHandle">
+            保存至模板中心
+        </el-button>
+      </div>
       <el-page-header @back="goBack" content="问卷详情" class="page-header"></el-page-header>
       <el-divider></el-divider>
       <div class="main-container">
@@ -61,7 +69,7 @@
           <component :is="defaultActiveMenu" :key="projectKey"></component>
         </div>
       </div>
-      <el-dialog :visible.sync="previewDialogVisible" destroy-on-close fullscreen>
+      <el-dialog :visible.sync="previewDialogVisible" title="问卷预览" destroy-on-close fullscreen>
         <pre-view :key="previewKey" :preview-qrcode="true" />
       </el-dialog>
       <template-create ref="templateCreate" :form-key="projectKey" />
@@ -139,10 +147,14 @@
         ]
       }
     },
+    watch:{
+      '$route.query.type':function(newVal){
+        this.defaultActiveMenu = newVal;
+      }
+    },
     created() {
       this.projectKey = this.$route.query.key
-      //this.defaultActiveMenu = this.$route.path
-      //this.isCollapse = this.$store.state.form.isCollapse
+      this.defaultActiveMenu = this.$route.query.type||'editor'
     },
     methods: {
       menuSelectHandle(index) {

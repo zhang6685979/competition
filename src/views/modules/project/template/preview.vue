@@ -2,6 +2,7 @@
     <div v-loading="createProjectLoading" class="template-preview-container">
         <div class="header">
             <el-page-header content="模板详情" @back="$router.back(-1)" />
+            <el-divider></el-divider>
         </div>
         <div class="template-preview-content">
             <el-scrollbar class="template-scrollbar">
@@ -54,8 +55,8 @@ export default {
                     this.createProjectLoading = false
                     if (res.data) {
                         this.$router.push({
-                            path: '/project/form',
-                            query: { key: res.data, active: 1 }
+                            path: '/form/index',
+                            query: { key: res.data, type: 'editor' }
                         })
                     }
                 })

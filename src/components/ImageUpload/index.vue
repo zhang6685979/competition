@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import {getToken} from '@/utils/auth'
 
 export default {
     name: 'ImageUpload',
@@ -52,7 +51,7 @@ export default {
             dialogVisible: false,
             uploadImgUrl: process.env.VUE_APP_API_ROOT + '/common/upload', // 上传的图片服务器地址
             headers: {
-                Authorization: 'Bearer ' + getToken()
+                Authorization: 'Bearer ' + this.$cookie.get('token')
             }
         }
     },

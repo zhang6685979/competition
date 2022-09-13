@@ -43,7 +43,7 @@ export default class CompetitionExamService {
   
   getTeamsByCid(params){
     return request({
-      url: '/exam/competitionExam/teams',
+      url: '/exam/competitionExam/tree/teams',
       method: 'get',
       params: params
     })

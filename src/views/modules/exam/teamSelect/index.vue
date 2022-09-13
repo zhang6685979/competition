@@ -1,13 +1,13 @@
 <template>
 <div>
     <el-input placeholder="请选择" :size="size" :disabled="disabled"  :readonly="readonly" style="line-hight:40px" v-model="name" class="input-with-select">
-      <el-button slot="append" :disabled="disabled"  :readonly="readonly" @click="showRefereeSelect" icon="el-icon-search"></el-button>
+      <el-button slot="append" :disabled="disabled"  :readonly="readonly" @click="showTeamSelect" icon="el-icon-search"></el-button>
     </el-input>
-    <referee-select ref="refereeSelect" :cid="cid" @doSubmit="selectRefereeToInput" :limit="limit" :selectData="selectData"></referee-select>
+    <team-select ref="teamSelect" :cid="cid" @doSubmit="selectTeamToInput" :limit="limit" :selectData="selectData"></team-select>
 </div>
 </template>
 <script>
-import refereeSelect from './refereeSelectDialog'
+import teamSelect from './teamSelectDialog'
 import RefereeService from '@/api/referee/RefereeService'
 export default {
   data () {
@@ -38,7 +38,7 @@ export default {
     cid:String
   },
   components: {
-    refereeSelect
+    teamSelect
   },
   refereeService: null,
   beforeCreate () {
@@ -49,7 +49,6 @@ export default {
       handler (newVal) {
         this.selectData = []
         if (newVal) {
-          debugger;
           newVal.forEach((id) => {
             this.refereeService.queryById(id).then(({data}) => {
               if (data && data.id !== '') {
@@ -64,21 +63,21 @@ export default {
     },
     selectData: {
       handler (newVal) {
-       this.name = newVal.map(referee => { return referee.name }).join(',')
+       this.name = newVal.map(team => { return team.name }).join(',')
       },
       immediate: false,
       deep: true
     }
   },
   methods: {
-    selectRefereeToInput (referees) {
-      this.selectData = referees
-      this.labelValue = referees.map(referee => { return referee.id })
-      this.name = referees.map(referee => { return referee.name }).join(',')
+    selectTeamToInput (teams) {
+      this.selectData = teams
+      this.labelValue = teams.map(team => { return team.id })
+      this.name = teams.map(team => { return team.name }).join(',')
       this.$emit('getValue', this.labelValue, this.name)
     },
-    showRefereeSelect () {
-      this.$refs.refereeSelect.init()
+    showTeamSelect () {
+      this.$refs.teamSelect.init()
     }
   }
 }

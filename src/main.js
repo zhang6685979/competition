@@ -26,6 +26,8 @@ Vue.use(JeeplusGencode)
 import FontIcon from '@/components/FontIcon/index'
 Vue.component('font-icon',FontIcon);
 
+import CountTo from '@/components/CountTo/index'
+Vue.component('count-to',CountTo);
 // 按需导入 vxeTable
 import {
   // 核心
