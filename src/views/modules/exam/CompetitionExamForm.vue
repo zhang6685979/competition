@@ -63,7 +63,7 @@
             <el-form-item label="参赛团队" prop="teams"
                 :rules="[
                  ]">
-               <team-select :cid="cid" :value="inputForm.teams" @getValue='(value) => {inputForm.teams=value}'></team-select>
+               <team-select :cid="cid" :crid="crid" :value="inputForm.teams" @getValue='(value) => {inputForm.teams=value}'></team-select>
            </el-form-item>
         </el-col>
         <el-col :span="24">

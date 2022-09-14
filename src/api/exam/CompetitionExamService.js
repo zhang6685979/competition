@@ -40,12 +40,19 @@ export default class CompetitionExamService {
       params: params
     })
   }
-  
+
   getTeamsByCid(params){
     return request({
       url: '/exam/competitionExam/tree/teams',
       method: 'get',
       params: params
+    })
+  }
+  getTeamById(id){
+    return request({
+      url: '/team/team/queryById',
+      method: 'get',
+      params: {id: id}
     })
   }
 }

@@ -3,27 +3,32 @@
     <el-dialog title="赛队选择" width="1000px" :close-on-click-modal="false" :append-to-body="true" v-dialogDrag
       class="userDialog" :visible.sync="visible">
       <el-container style="height: 500px">
-        <div class="referee-table">
-          <vxe-table  border="inner" auto-resize resizable height="400" :loading="loading" size="small" ref="refereeTable"
+        <div class="team-table">
+          <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
+                <!-- 搜索框-->
+             <el-form-item prop="code" label="赛队名称">
+                    <el-input size="small" v-model="searchForm.module" placeholder="请输入赛队名称" clearable></el-input>
+             </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
+                <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
+              </el-form-item>
+          </el-form>
+          <vxe-table border="inner" auto-resize resizable height="400" :loading="loading" size="small" ref="teamTable"
             show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
             :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}"
-            :data="dataList" :checkbox-config="{}" @checkbox-change="checkboxChange" :tree-config="{ children: 'children'}"
->
+            :data="dataList" :checkbox-config="{}" @checkbox-change="checkboxChange"
+            :tree-config="{transform: true, rowField: 'id', parentField: 'pid'}">
             <vxe-column type="checkbox" width="40px"></vxe-column>
 
             <vxe-column field="name" tree-node title="团队名称">
             </vxe-column>
           </vxe-table>
-         <!-- <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
-            :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
-            :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-            @page-change="currentChangeHandle">
-          </vxe-pager> -->
         </div>
         <el-aside width="200px">
           <el-tag :key="tag.id" v-for="tag in dataListAllSelections" closable :disable-transitions="false"
             @close="del(tag)">
-            {{tag.name}}
+            {{tag.school+'-'+tag.module}}
           </el-tag>
         </el-aside>
       </el-container>
@@ -37,7 +42,6 @@
 </template>
 
 <script>
-  import RefereeForm from '@/views/modules/referee/RefereeForm'
   import CompetitionExamService from '@/api/exam/CompetitionExamService'
   export default {
     data() {
@@ -45,6 +49,9 @@
         dataListAllSelections: [], // 所有选中的数据包含跨页数据
         dataListSelections: [],
         idKey: 'id', // 标识列表数据中每一行的唯一键的名称(需要按自己的数据改一下)
+        searchForm:{
+          module:''
+        },
         dataList: [],
         tablePage: {
           total: 0,
@@ -68,13 +75,11 @@
         type: Number,
         default: 999999
       },
-      cid:String
-    },
-    components: {
-      RefereeForm,
+      cid: String,
+      crid: String
     },
     competitionExamService: null,
-    created () {
+    created() {
       this.competitionExamService = new CompetitionExamService()
     },
     methods: {
@@ -85,10 +90,23 @@
           this.resetSearch()
         })
       },
+      flat(arr) {
+        let newArr = [];
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].children) { //childrens存在
+            newArr.push(...this.flat(arr[i].children));
+            delete arr[i].children;
+          }
+          newArr.push({
+            ...arr[i]
+          });
+        }
+        return newArr;
+      },
       // 设置选中的方法
       setSelectRow() {
         if (!this.dataListAllSelections || this.dataListAllSelections.length <= 0) {
-          this.$refs.refereeTable.clearCheckboxRow()
+          this.$refs.teamTable.clearCheckboxRow()
           return
         }
         // 标识当前行的唯一键的名称
@@ -97,11 +115,11 @@
         this.dataListAllSelections.forEach(row => {
           selectAllIds.push(row[idKey])
         })
-        this.$refs.refereeTable.clearCheckboxRow()
+        this.$refs.teamTable.clearCheckboxRow()
         for (var i = 0; i < this.dataList.length; i++) {
           if (selectAllIds.indexOf(this.dataList[i][idKey]) >= 0) {
             // 设置选中，记住table组件需要使用ref="table"
-            this.$refs.refereeTable.setCheckboxRow(this.dataList[i], true)
+            this.$refs.teamTable.setCheckboxRow(this.dataList[i], true)
           }
         }
       },
@@ -159,11 +177,15 @@
       // 获取数据列表
       refreshList() {
         this.loading = true
-        this.competitionExamService.getTeamsByCid({'cid': this.cid}).then(({
+        this.competitionExamService.getTeamsByCid({
+          'cid': this.cid,
+          'crid': this.crid,
+          ...this.searchForm
+        }).then(({
           data
         }) => {
-          this.dataList = data
-         // this.tablePage.total = data.total
+          this.dataList = this.flat(data)
+          // this.tablePage.total = data.total
           this.loading = false
           this.$nextTick(() => {
             this.setSelectRow()
@@ -204,15 +226,21 @@
         this.visible = false
         this.$emit('doSubmit', this.dataListAllSelections)
       },
-      checkboxChange(){
-        const selectRecords = this.$refs.refereeTable.getCheckboxRecords()
-        this.selectionChangeHandle(selectRecords);
+      checkboxChange() {
+        const selectRecords = this.$refs.teamTable.getCheckboxRecords();
+        var records = selectRecords.filter(record => {
+          return record.leaf == true
+        });
+        this.selectionChangeHandle(records);
       }
     }
   }
 </script>
 <style lang="scss" scoped>
-  .referee-table{flex:1;}
+  .team-table {
+    flex: 1;
+  }
+
   .org {
     height: 100%;
 
