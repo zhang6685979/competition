@@ -1,13 +1,20 @@
 <template>
   <div class="page">
     <div class="bg-white" style="height:100%">
-      <vxe-toolbar export custom></vxe-toolbar>
+      <vxe-toolbar :refresh="{query: getList}" export custom>
+        <template #buttons>
+          <el-button type="primary" size="small" icon="el-icon-download" @click="patchDownload()"
+            :disabled="$refs.table && ($refs.table.getCheckboxRecords().length == 0) && fileFields.length>0"
+            plain>批量下载</el-button>
+        </template>
+      </vxe-toolbar>
       <div>
         <vxe-table border="inner" auto-resize resizable height="500" size="small" ref="table"
           show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
           :import-config="{}" :export-config="{filename:title}"
           :data="dataList" :checkbox-config="{}">
           <vxe-column type="seq" width="40"></vxe-column>
+          <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column v-for="(option, index) in dataBindFields.filter((item)=>{
           return item.isShow
           })" :key="option.model" :field="option.model" show-overflow-tooltip :sortable="option.isSort?true:false"
@@ -27,9 +34,9 @@
                 </el-image>
               </div>
               <div v-else-if="option.type === 'fileupload'">
-                <a :href="item.url" target="_blank" :key="index"
-                  v-for="(item, index) in JSON.parse(scope.row[`${option.model}`] || '[]')">
-                  {{decodeURIComponent(item.url.substring(item.url.lastIndexOf("/")+1))}}
+                <a  @click="downloadFile(item)" style="cursor: pointer;" target="_blank" :key="index"
+                  v-for="(item, index) in scope.row[`${option.model}`].split('|')">
+                  {{decodeURIComponent(item.substring(item.lastIndexOf("/")+1))}}
                 </a>
               </div>
               <div v-else-if="option.type === 'dict'">
@@ -105,23 +112,26 @@
       }
     },
     mounted() {
-      this.$http({
-        url: '/competition/competitionSignup/queryById',
-        method: 'get',
-        params: {
-          id: this.tid
-        }
-      }).then(({
-        data
-      }) => {
-        if (data.content) {
-          this.options = JSON.parse(data.content);
-        }
-        this.dataBindFields = []
-        this.generateModel(this.options.list)
-      })
+      this.getList();
     },
     methods: {
+      getList(){
+        this.$http({
+          url: '/competition/competitionSignup/queryById',
+          method: 'get',
+          params: {
+            id: this.tid
+          }
+        }).then(({
+          data
+        }) => {
+          if (data.content) {
+            this.options = JSON.parse(data.content);
+          }
+          this.dataBindFields = []
+          this.generateModel(this.options.list)
+        })
+      },
       generateModel(genList) {
         for (let i = 0; i < genList.length; i++) {
           if (genList[i].type === 'grid') {
@@ -155,6 +165,37 @@
           }
         }
         return this.dataBindFields
+      },
+      downloadFile(url) {
+        var fileName = decodeURIComponent(url.substring(url.lastIndexOf("/")+1))
+        const el = document.createElement('a');
+        el.style.display = 'none';
+        el.setAttribute('target', '_blank');
+        /**
+         * download的属性是HTML5新增的属性
+         * href属性的地址必须是非跨域的地址，如果引用的是第三方的网站或者说是前后端分离的项目(调用后台的接口)，这时download就会不起作用。
+         * 此时，如果是下载浏览器无法解析的文件，例如.exe,.xlsx..那么浏览器会自动下载，但是如果使用浏览器可以解析的文件，比如.txt,.png,.pdf....浏览器就会采取预览模式
+         * 所以，对于.txt,.png,.pdf等的预览功能我们就可以直接不设置download属性(前提是后端响应头的Content-Type: application/octet-stream，如果为application/pdf浏览器则会判断文件为 pdf ，自动执行预览的策略)
+         */
+        fileName && el.setAttribute('download', fileName);
+        el.href = url;
+        document.body.appendChild(el);
+        el.click();
+        document.body.removeChild(el);
+      },
+      patchDownload(){
+         var records = this.$refs.table.getCheckboxRecords();
+         var fileFields = this.fileFields
+         records.forEach(record=>{
+           fileFields.forEach(field=>{
+             this.downloadFile(record[field.model]);
+           })
+         })
+      }
+    },
+    computed:{
+      fileFields(){
+        return this.dataBindFields.filter(item=>{return item.type=='fileupload'})
       }
     }
   }

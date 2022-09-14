@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 class="text-center">成绩查询</h1>
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" class="el-form" label-width="150px"
       v-if="!resultVisible">
       <el-form-item label="请输入您的姓名" prop="name" :rules="[
@@ -15,6 +16,7 @@
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" @click="query" class="el-button">查 询</el-button>
+        <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
       </el-form-item>
     </el-form>
     <div class="text-center" v-if="resultVisible">
@@ -81,6 +83,10 @@
             })
           }
         })
+      },
+      resetSearch() {
+        this.$refs.searchForm.resetFields()
+        this.query()
       }
     }
   }
@@ -89,11 +95,7 @@
 <style lang="scss" scoped>
   .el-form {
     width: 500px;
-    margin: 100px auto;
-
-    .el-button {
-      width: 200px;
-    }
+    margin: 30px auto 100px;
   }
 
   .text-center {

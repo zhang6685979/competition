@@ -85,7 +85,7 @@
   .item{
     width: 680px;
     height:380px;
-    margin: auto;
+    margin: 0 auto 20px;
     position: relative;
     cursor: pointer;
     .desc{

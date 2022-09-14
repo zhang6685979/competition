@@ -1,6 +1,5 @@
 <template>
   <div>
-    <img v-if="banners['certificate']" :src="banners['certificate']" alt="" class="banner">
     <div class="box-card">
       <h1 class="text-center">证书查询</h1>
       <el-form size="small" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()"
@@ -122,19 +121,11 @@
         el.click();
         document.body.removeChild(el);
       }
-    },
-    computed: {
-      banners: {
-        get() {
-          return this.$store.state.config.banners
-        }
-      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .banner{width:100%;height:330px;}
   .box-card {
     width: 60%;
     margin: 20px auto;

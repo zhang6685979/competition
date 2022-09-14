@@ -400,7 +400,7 @@ export const advanceComponents = [{
     type: 'fileupload',
     icon: 'icon iconfont icon-wenjianshangchuan',
     options: {
-      defaultValue: [],
+      defaultValue: '',
       width: '',
       tokenFunc: '',
       token: '',

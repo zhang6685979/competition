@@ -16,12 +16,12 @@
     </div>
 
     <ul class="upload-list">
-      <li class="list_item" 
+      <li class="list_item"
         :class="{uploading: item.status=='uploading', 'is-success': item.status=='success', 'is-disabled': disabled}"
         v-for="(item) in fileList" :key="item.key"
       >
         <a class="list_item-name" :href="item.url" target="_blank">
-          <i v-if="ui == 'element'" class="el-icon-document"></i>  
+          <i v-if="ui == 'element'" class="el-icon-document"></i>
           <a-icon v-if="ui == 'antd'" type="paper-clip" />
           {{item.name}}
         </a>
@@ -50,8 +50,8 @@ export default {
   },
   props: {
     value: {
-      type: Array,
-      default: () => []
+      type: String,
+      default: () => ''
     },
     token: {
       type: String,
@@ -99,13 +99,15 @@ export default {
     }
   },
   data () {
+    var fileList = [];
+    this.value.split('|').forEach((item) => {
+      if (item.trim().length > 0) {
+        fileList.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
+        key:(new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
+      }
+    })
     return {
-      fileList: this.value.map(item => {
-        return {
-          ...item,
-          key: item.key ? item.key : (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999),
-        }
-      }),
+      fileList: fileList,
       viewer: null,
       uploadId: 'upload_' + new Date().getTime(),
       editIndex: -1,
@@ -125,14 +127,14 @@ export default {
     handleChange () {
       console.log(this.$refs.uploadInput.files)
       const files = this.$refs.uploadInput.files
-      
+
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
         const reader = new FileReader()
         const key = (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
         reader.readAsDataURL(file)
         reader.onload = () => {
-          
+
           if (this.editIndex >= 0) {
 
             this.$set(this.fileList, this.editIndex, {
@@ -164,12 +166,12 @@ export default {
         }
       }
       this.$refs.uploadInput.value = []
-    }, 
+    },
     uplaodAction (res, file, key) {
       let changeIndex = this.fileList.findIndex(item => item.key === key)
       console.log(this.fileList.findIndex(item => item.key === key))
       const xhr = new XMLHttpRequest()
-      
+
       const url = this.action
       xhr.open('POST', url, true)
       // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
@@ -185,7 +187,7 @@ export default {
       xhr.onreadystatechange = () => {
         console.log(xhr)
         if (xhr.readyState === 4) {
-          
+
           let resData = JSON.parse(xhr.response)
           if (resData && resData.url) {
             this.$set(this.fileList, this.fileList.findIndex(item => item.key === key), {
@@ -200,7 +202,7 @@ export default {
                 status: 'success'
               })
               if (this.ui == 'element') {
-                this.$emit('input', this.fileList)
+                this.$emit('input', this.fileList.map(item =>item.url).join('!'))
               } else {
                 EventBus.$emit('on-field-change', this.$attrs.id, this.fileList)
               }
@@ -233,7 +235,7 @@ export default {
       observable.subscribe({
         next (res) {
           _this.$set(_this.fileList[_this.fileList.findIndex(item => item.key === key)], 'percent', parseInt(res.total.percent))
-          
+
         },
         error (err) {
           _this.$set(_this.fileList, _this.fileList.findIndex(item => item.key === key), {
@@ -254,7 +256,7 @@ export default {
               ..._this.fileList[_this.fileList.findIndex(item => item.key === key)],
               status: 'success'
             })
-            
+
             if (_this.ui == 'element') {
               _this.$emit('input', _this.fileList)
             } else {
@@ -285,7 +287,7 @@ export default {
     handlePreviewFile (key) {
       this.viewer && this.viewer.destroy()
       this.uploadId = 'upload_' + new Date().getTime()
-      
+
       console.log(this.viewer)
       this.$nextTick(() => {
         this.viewer = new Viewer(document.getElementById(this.uploadId))
@@ -295,10 +297,11 @@ export default {
   },
   watch: {
     value (val) {
-      this.fileList = this.value.map(item => {
+      this.fileList = this.value.split("|").map(item => {
         return {
-          ...item,
-          key: item.key ? item.key : (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999),
+          name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
+          url: item,
+          key: (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
         }
       })
     }

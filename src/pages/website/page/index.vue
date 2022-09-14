@@ -17,7 +17,7 @@
                 <img :src="item.image" alt="">
               </div>
               <div class="news-right">
-                <h5 @click="$router.push('/news/'+item.id)">{{item.title}} <span type="danger"
+                <h5 @click="$router.push('/news/'+item.id)">{{item.title}} <span class="tag"
                     v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
@@ -30,7 +30,7 @@
           <div class="news-list">
             <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)">
               <div class="news-right">
-                <h5 @click="$router.push('/notice/'+item.id)">{{item.title}} <span type="danger"
+                <h5 @click="$router.push('/notice/'+item.id)">{{item.title}} <span class="tag"
                     v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
@@ -364,7 +364,7 @@
             font-size: 20px;
             font-weight: bold;
             color: #303133;
-            line-height: 17px;
+            line-height: 22px;
             margin-bottom: 13px;
             cursor: pointer;
           }
@@ -382,6 +382,12 @@
             font-weight: 400;
             color: #303133;
             line-height: 17px;
+          }
+          .tag{
+            background-color: #DC000C;
+            color: #fff;
+            border-radius: 5px;
+            padding:0 5px;
           }
         }
       }

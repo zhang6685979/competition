@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{value}}
     <editor v-model="content" :api-key="apiKey" :init="initConfig" />
   </div>
 

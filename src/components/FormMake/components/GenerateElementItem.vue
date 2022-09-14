@@ -264,7 +264,6 @@
     </template>
 
     <template v-if="widget.type == 'fileupload'">
- <!--jeeplus--定制-->
       <fm-file-upload
         v-model="dataModel"
         :disabled="!edit || widget.options.disabled"

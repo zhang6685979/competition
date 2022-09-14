@@ -49,7 +49,7 @@
             </tr>
             <tr>
               <td>报名说明:</td>
-              <td>{{signupInfo.describe0}}</td>
+              <td><pre>{{signupInfo.describe0}}</pre></td>
             </tr>
           </table>
         </div>
@@ -238,7 +238,13 @@
       font-size: 16px;
       color: #303133;
       margin-bottom: 20px;
-
+      table{
+        td{
+          vertical-align: top;
+          padding:5px 0;
+          pre{margin:0}
+        }
+      }
       p {
         margin: 10px 0;
       }

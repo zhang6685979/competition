@@ -92,9 +92,9 @@ export default new Router({
 
     },
 		{
-			path: '/certificate',
-			name: 'certificate',
-			component: () => import('./page/certificate.vue')
+			path: '/information',
+			name: 'information',
+			component: () => import('./page/information.vue')
 		},
 		{
 			path: '/examination',

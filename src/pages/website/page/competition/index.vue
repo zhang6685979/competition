@@ -92,7 +92,7 @@
           slidesPerView: 3,
           slidesPerColumnFill: 'row',
           slidesPerColumn: 2,
-          spaceBetween: 20,
+          //spaceBetween: 20,
           slidesPerGroup: 3,
           loop: true,
           speed: 4000, //匀速时间
@@ -266,7 +266,7 @@
       position: relative;
       width: 445px;
       height: 282px;
-      margin: 0 auto;
+      margin: 0 auto 20px;
 
       .competition-image {
         width: 100%;

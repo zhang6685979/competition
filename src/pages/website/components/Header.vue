@@ -14,7 +14,7 @@
             </li>
           </ul>
         </li>
-        <li :class="$route.path=='/certificate'?'active':''"><a @click="goto('/certificate')">技能认证</a></li>
+        <li :class="$route.path=='/information'?'active':''"><a @click="goto('/information')">信息查询</a></li>
         <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a>
           <ul class="dropdown-menu">
             <li v-for="(item,index) in platformList"><a :href="item.url" target="_blank">{{item.title}}</a></li>
@@ -46,17 +46,17 @@
         competitionList: [],
         platformList: [],
         keyword: '',
-        transparent:false
+        transparent: false
       }
     },
-    watch:{
-      '$route.path':function(newVal){
-        if(newVal=='/'){
-           window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
-           this.transparent = true;
-        }else{
-           window.removeEventListener('scroll', this.handleScroll)
-           this.transparent = false;
+    watch: {
+      '$route.path': function(newVal) {
+        if (newVal == '/') {
+          window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
+          this.transparent = true;
+        } else {
+          window.removeEventListener('scroll', this.handleScroll)
+          this.transparent = false;
         }
       }
     },
@@ -64,21 +64,21 @@
       this.keyword = this.$route.query.keyword;
       this.getCompetitionList();
       this.getPlatformList();
-      if(this.$route.path=='/'){
-         window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
-         this.transparent = true;
-      }else{
-         window.removeEventListener('scroll', this.handleScroll)
-         this.transparent = false;
+      if (this.$route.path == '/') {
+        window.addEventListener('scroll', this.handleScroll) // 监听页面滚动
+        this.transparent = true;
+      } else {
+        window.removeEventListener('scroll', this.handleScroll)
+        this.transparent = false;
       }
     },
     methods: {
       // 获取页面滚动距离
       handleScroll() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        if(scrollTop>760){
+        if (scrollTop > 760) {
           this.transparent = false;
-        }else{
+        } else {
           this.transparent = true;
         }
       },
@@ -208,6 +208,8 @@
           font-size: 13px;
           color: #fff !important;
           text-align: center;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
           &:hover {
             color: #e91b23 !important;

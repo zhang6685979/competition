@@ -30,7 +30,7 @@
             </tr>
             <tr>
               <td>报名说明:</td>
-              <td>{{signupInfo.describe0}}</td>
+              <td><pre>{{signupInfo.describe0}}</pre></td>
             </tr>
           </table>
         </div>
@@ -141,6 +141,7 @@
       },
       save() {
         const $form = this.$refs.generateForm
+        debugger;
         $form.getData().then(data => {
           data.tid = this.signupInfo.id; //模板id
           data.cid = this.$route.params.id; //大赛id
@@ -149,6 +150,7 @@
           if(signupName.indexOf('裁判报名')!=-1){
             data.signType = 'referee'
           }
+          debugger;
           this.$http({
             url: '/competition/competitionSignup/forminput',
             method: 'post',
@@ -256,6 +258,9 @@
 
       p {
         margin: 10px 0;
+      }
+      table{
+        td{vertical-align: top;padding:5px 0;}
       }
     }
 
