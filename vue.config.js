@@ -53,6 +53,13 @@ module.exports = {
       title: '技能竞赛与认证服务平台',
       filename: 'website.html',
       chunks: ['chunk-vendors', 'chunk-common', 'website']
+    },
+    mobile: {
+      entry: 'src/pages/mobile/main.js',
+      template: 'src/pages/mobile/index.html',
+      title: '问卷调查',
+      filename: 'mobile.html',
+      chunks: ['chunk-vendors', 'chunk-common', 'mobile']
     }
   },
   devServer: {

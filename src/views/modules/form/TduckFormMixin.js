@@ -12,7 +12,7 @@ export default {
     },
     created() {
     // 写入值到localStorage 给组件使用
-        if (Vue.cookie.get('token')) {
+        if (Vue.cookie&&Vue.cookie.get('token')) {
             localStorage.setItem(TduckForm.constant.ACCESS_TOKEN,  Vue.cookie.get('token'))
         }
         localStorage.setItem('FORM-SUPPORT', '捷安高科')
