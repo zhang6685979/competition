@@ -1,7 +1,5 @@
 <template>
      <div style="display: flex;">
-       
-       {{value}}
           <el-cascader
               v-model="city"
               :options="list"
@@ -16,22 +14,17 @@
 
 <script>
   export default {
-    value: {
-      type: String,
-      default: ''
+    props:{
+      value: {
+        type: String,
+        default: ''
+      }
     },
     data(){
-      var value = this.value;
-      var city = '',address = '';
-      if(value){
-        var datas = value.split('/');
-        city = datas.slice(0,3);
-        address = datas[4];
-      }
       return {
         list:[],
-        city: city,
-        address:address
+        city: [],
+        address:''
       }
     },
     watch: {
@@ -39,10 +32,10 @@
         this.$emit('input', val)
       },
       value(val) {
-        var city = '',address = '';
+        var city = [],address = '';
         if(val){
           var datas = val.split('/');
-          city = datas.slice(0,3);
+          city = datas.slice(0,4);
           address = datas[4];
         }
         this.city = city;

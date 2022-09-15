@@ -11,9 +11,11 @@
 
 <script>
   export default {
-    value: {
-      type: String,
-      default: ''
+    props:{
+      value: {
+        type: String,
+        default: ''
+      }
     },
     data(){
       return {

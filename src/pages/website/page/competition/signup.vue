@@ -2,7 +2,7 @@
   <div class="signup-list">
     <el-row :gutter="20" v-if="!signFormVisible&&!mySignupVisible">
       <el-col :span="12" v-for="(item,index) in dataList" :key="index">
-        <div class="signup-item" :style="{background:colors[index%5]}" @click="showSignupForm(item.id)">
+        <div class="signup-item" :style="{background:colors[index%5]}" @click="recordId = '';showSignupForm(item.id)">
           <img :src="require('../../assets/images/signup-form.png')" alt="">
           <p>{{item.name}}</p>
         </div>
@@ -113,7 +113,6 @@
         })
       },
       showSignupForm(id, formData) {
-        this.recordId = '';
         if (!this.memberName) {
           this.signFormVisible = true;
           return;
