@@ -4,7 +4,7 @@
       <vxe-toolbar :refresh="{query: getList}" export custom>
         <template #buttons>
           <el-button type="primary" size="small" icon="el-icon-download" @click="patchDownload()"
-            :disabled="$refs.table && ($refs.table.getCheckboxRecords().length == 0) && fileFields.length>0"
+            :disabled="($refs.table && ($refs.table.getCheckboxRecords().length == 0)) || fileFields.length==0"
             plain>批量下载</el-button>
         </template>
       </vxe-toolbar>
