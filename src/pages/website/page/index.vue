@@ -68,7 +68,7 @@
         技能认证
       </h5>
       <ul>
-        <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/certificate?type='+item.id)">
+        <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/information?type='+item.id)">
           {{item.title}}
         </li>
       </ul>
@@ -97,119 +97,16 @@
       <el-row>
         <el-col :span="12" v-for="(item, index) in platformList.slice(0,2)" :key="index">
           <div class="platform-item">
-            <a :href="item.url" target="_blank"><img :src="item.image" class="platform-image"></a>
+            <a :href="item.url" target="_blank"><img :src="item.image" class="platform-image">
             <div class="desc">
               <h5>{{item.title}}</h5>
               <p>{{item.describe0}}</p>
             </div>
+            </a>
           </div>
         </el-col>
       </el-row>
-
     </div>
-    <!-- <div class="cont-warp">
-      <el-row class="mt-30 mb-30" :gutter="20">
-        <el-col :span="12">
-          <el-carousel height="250px" indicator-position="none">
-            <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
-              <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
-              <p class="carousel-title">{{item.title}}</p>
-            </el-carousel-item>
-          </el-carousel>
-        </el-col>
-        <el-col :span="12">
-          <div class="mytabs">
-            <ul>
-              <li :class="{active:activeIndex==0}" @click="activeIndex=0">新闻动态</li>
-              <li :class="{active:activeIndex==1}" @click="activeIndex=1">通知公告</li>
-            </ul>
-            <div class="border" :style="{left:activeIndex==0?'25px':'110px'}"></div>
-            <button class="more" @click="$router.push(activeIndex==0?'/news':'/notice')">更多+</button>
-          </div>
-          <div class="tab-content">
-            <div class="news-list" v-show="activeIndex==0">
-              <div class="news-item" v-for="(item,index) in newsList.slice(0,5)">
-                <div class="news-title">
-                  <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
-                  <span type="danger" v-if="item.latest=='1'">new</span>
-                </div>
-                <div class="news-time">
-                  {{item.updateDate&&item.updateDate.substring(0,10)}}
-                </div>
-              </div>
-            </div>
-            <div class="news-list" v-show="activeIndex==1">
-              <div class="news-item" v-for="(item,index) in announcementList.slice(0,5)">
-                <div class="news-title">
-                  <router-link :to="{path:'/notice/'+item.id}">{{item.title}}</router-link>
-                  <span type="danger" v-if="item.latest=='1'">new</span>
-                </div>
-
-                <div class="news-time">
-                  {{item.updateDate&&item.updateDate.substring(0,10)}}
-                </div>
-              </div>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-
-      <p class="title">大赛专区 <sub>Competition Area</sub></p>
-      <div class="competition">
-        <div class="clearfix">
-          <ul>
-            <li v-for="item in $dictUtils.getDictList('jab_new_type')" :class="{active:item.value==type}"
-              :key="item.value" :label="item.label" @click="getCompetitionList(item.value)">{{item.label}}</li>
-            <li @click="$router.push('/competitions')">更多.....</li>
-          </ul>
-        </div>
-
-        <div class="mt-20">
-          <swiper :options="swiperOption" ref="mySwiper">
-            <swiper-slide v-for="(item, index) in competitionList" :key="index">
-              <el-card :body-style="{ padding: '0px' }" shadow="never">
-                <router-link :to="'/competitions/'+item.id"><img :src="item.image" class="competition-image">
-                </router-link>
-                <div class="desc">
-                  {{item.describe0}}
-                </div>
-              </el-card>
-            </swiper-slide>
-          </swiper>
-        </div>
-      </div>
-      <p class="title">技能认证 <sub>Skill Certification</sub></p>
-      <div class="clearfix competition">
-        <ul>
-          <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/certificate?type='+item.id)">
-            {{item.title}}
-          </li>
-          <li @click="$router.push('/certificate')">更多.....</li>
-        </ul>
-      </div>
-      <el-row :gutter="10" class="competition">
-        <el-col :span="8" v-for="(item, index) in certificateList" :key="index">
-          <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img :src="item.image" class="certificate-image" @click="$router.push('/certificate?type='+item.id)">
-          </el-card>
-        </el-col>
-      </el-row>
-      <p class="title">考试专区 <sub>Examination Area</sub></p>
-      <div class="clearfix competition">
-        <ul>
-          <li v-for="(item, index) in platformList.slice(0,3)" :key="index"><a :href="item.url"
-              target="_blank">{{item.title}}</a></li>
-          <li @click="$router.push('/examination')">更多.....</li>
-        </ul>
-      </div>
-      <el-row :gutter="10" class="competition">
-        <el-col :span="8" v-for="(item, index) in platformList.slice(0,3)" :key="index">
-          <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <a :href="item.url" target="_blank"><img :src="item.image" class="platform-image"></a>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div> -->
   </div>
 </template>
 
