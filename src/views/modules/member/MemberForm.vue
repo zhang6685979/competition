@@ -5,7 +5,7 @@
     :close-on-click-modal="false"
      v-dialogDrag
     :visible.sync="visible">
-    <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="true"
+    <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
         <el-col :span="12">
@@ -43,12 +43,10 @@
            </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form label-width="120px" :model="inputForm">
-            <el-form-item label="设置标签" prop="tags">
-              <el-input v-model="inputForm.tags" placeholder="请输入用户标签,多个标签用英文,隔开"     ></el-input>
-              <el-tag type="primary" v-if="inputForm.tags" v-for="(item,index) in inputForm.tags.split(',')" :key="index" class="user-tag">{{item}}</el-tag>
-           </el-form-item>
-          </el-form>
+          <el-form-item label="设置标签" prop="tags">
+             <el-input v-model="inputForm.tags" placeholder="请输入用户标签,多个标签用英文,隔开"     ></el-input>
+             <el-tag type="primary" v-if="inputForm.tags" v-for="(item,index) in inputForm.tags.split(',')" :key="index" class="user-tag">{{item}}</el-tag>
+          </el-form-item>
         </el-col>
 
         <!-- <el-col :span="12">

@@ -2,7 +2,7 @@
   <div>
     <el-drawer :title="title" :visible.sync="visible" :wrapperClosable="false" size="70%">
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
-        :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
+        :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px" v-if="visible">
         <el-row :gutter="15">
           <el-col :span="24">
             <el-form-item label="公告标题" prop="title" :rules="[
@@ -138,6 +138,7 @@
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
+              this.fileArra = [];
               this.inputForm.appendix.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
                   this.fileArra.push({

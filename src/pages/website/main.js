@@ -22,6 +22,8 @@ Vue.prototype.validator = validator
 Vue.use(ElementUI);
 import Download from '@/components/FormMake/components/Download/index'
 import SignupTable from '@/components/FormMake/components/SignupTable/index'
+import schoolSelect from '@/components/FormMake/components/SignupTable/schoolSelect'
+import citySelect from '@/components/FormMake/components/SignupTable/citySelect'
 Vue.use(FormMake, {
   components: [{
       name: 'download',
@@ -30,10 +32,26 @@ Vue.use(FormMake, {
     {
       name: 'signup-table',
       component: SignupTable
+    },
+    {
+      name: 'school-select',
+      component: schoolSelect
+    },
+    {
+      name: 'city-select',
+      component: citySelect
     }]
 })
 
 Vue.prototype.$message = Message;
+Vue.prototype.$window = window
+
+router.beforeEach((to, from, next) => {
+  document.body.scrollTop = 0
+  // firefox
+  document.documentElement.scrollTop = 0
+  next()
+})
 
 Vue.use(VueCookie)
 new Vue({

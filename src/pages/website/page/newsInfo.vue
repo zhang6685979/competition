@@ -2,7 +2,8 @@
   <el-card class="box-card">
     <h1>{{inputForm.title}}</h1>
     <div class="other-info">
-      <span><i class="el-icon-time"></i> {{inputForm.updateDate&&inputForm.updateDate.substring(0,10)}}</span>&nbsp;&nbsp;
+      <span><i class="el-icon-time"></i>
+        {{inputForm.updateDate&&inputForm.updateDate.substring(0,10)}}</span>&nbsp;&nbsp;
       <el-tag v-if="inputForm.top==1" type="success" size="small" effect="dark">
         置顶
       </el-tag>
@@ -13,10 +14,16 @@
     <div class="html-content" v-html="inputForm.content">
 
     </div>
+    <div v-if="inputForm.appendix">
+      附件下载：
+      <DownloadList v-model="inputForm.appendix"></DownloadList>
+    </div>
+
   </el-card>
 </template>
 
 <script>
+  import DownloadList from '../components/DownloadList'
   export default {
     data() {
       return {
@@ -28,9 +35,13 @@
           content: '',
           latest: '',
           top: '',
-          describe0: ''
+          describe0: '',
+          appendix:''
         }
       }
+    },
+    components:{
+      DownloadList
     },
     mounted() {
       this.queryById()

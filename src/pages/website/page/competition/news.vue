@@ -46,6 +46,10 @@
       <div class="html-content" v-html="currNews.content">
 
       </div>
+      <div v-if="currNews.appendix">
+        附件下载：
+        <DownloadList v-model="currNews.appendix"></DownloadList>
+      </div>
     </div>
 
   </div>
@@ -53,6 +57,7 @@
 
 <script>
   import NewsInfo from '../newsInfo'
+  import DownloadList from '../../components/DownloadList'
   export default {
     data() {
       return {
@@ -67,7 +72,8 @@
       }
     },
     components:{
-      NewsInfo
+      NewsInfo,
+      DownloadList
     },
     created() {
       this.getList();

@@ -2,14 +2,11 @@
   <div class="container">
     <img v-if="banners['competition']" :src="banners['competition']" alt="" class="banner">
     <div class="main-content">
-      当前位置：首页-大赛专区
-      <el-divider></el-divider>
-
       <el-row :gutter="20" class="mt-20" >
         <el-col :span="12" v-for="(item,index) in dataList" :key="index">
-          <div class="item">
+          <div class="item"  @click="$router.push('/competition/'+item.id+'/index')">
             <img :src="item.image" class="bisai-img">
-            <div class="desc">{{item.title}} <img :src="require('../assets/images/arrow.png')" alt="" @click="$router.push('/competition/'+item.id+'/index')"></div>
+            <div class="desc">{{item.title}} <img :src="require('../assets/images/arrow.png')" alt=""></div>
           </div>
         </el-col>
       </el-row>

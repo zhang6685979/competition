@@ -18,7 +18,7 @@
       <button class="btn" @click="signFormVisible=false">返 回</button>
       <div v-if="!memberName" class="login-tip">
         <p>您需要登录才能访问此页面！</p>
-        <el-button type="primary" @click="$router.push('/login')">立即登录</el-button>
+        <el-button type="primary" @click="toLogin">立即登录</el-button>
       </div>
       <template v-else>
         <h5>{{signupInfo.name}}</h5>
@@ -49,7 +49,7 @@
       <button class="btn" @click="mySignupVisible=false">返 回</button>
       <div v-if="!memberName" class="login-tip">
         <p>您需要登录才能访问此页面！</p>
-        <el-button type="primary" @click="$router.push('/login')">立即登录</el-button>
+        <el-button type="primary" @click="toLogin">立即登录</el-button>
       </div>
       <table v-else>
         <tr>
@@ -141,7 +141,6 @@
       },
       save() {
         const $form = this.$refs.generateForm
-        debugger;
         $form.getData().then(data => {
           data.tid = this.signupInfo.id; //模板id
           data.cid = this.$route.params.id; //大赛id
@@ -207,6 +206,10 @@
         this.signFormVisible = true;
         this.recordId = id; //报名记录id
         this.showSignupForm(tid, content)
+      },
+      toLogin(){
+        var path = this.$route.path;
+        this.$router.push('/login?redirect='+path)
       }
     },
     computed: {

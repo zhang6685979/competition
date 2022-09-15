@@ -62,7 +62,7 @@
               <div slot="header" class="clearfix">
                 <span>会员列表</span>
               </div>
-              <member-list ref="memberList"></member-list>
+              <member-list ref="memberList" :readonly="true" style="height:240px;"></member-list>
             </el-card>
           </el-col>
           <el-col :span="6">

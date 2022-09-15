@@ -9,8 +9,8 @@
     <div class="news-warp">
 
       <el-tabs v-model="activeIndex" class="my-tab">
-        <el-tab-pane label="新闻动态" name="0">
-          <span slot="label" class="tab-title">新闻动态</span>
+        <el-tab-pane label="新闻资讯" name="0">
+          <span slot="label" class="tab-title">新闻资讯</span>
           <div class="news-list">
             <div class="news-item" v-for="(item,index) in newsList.slice(0,3)">
               <div class="news-left">
@@ -612,7 +612,7 @@
           background: rgb(220 0 12 / 40%);
           padding: 30px 40px;
           text-align: left;
-
+          width: 100%;
           h5 {
             white-space: nowrap;
             overflow: hidden;

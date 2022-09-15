@@ -42,6 +42,10 @@
       <div class="html-content" v-html="currNotice.content">
 
       </div>
+      <div v-if="currNotice.appendix">
+        附件下载：
+        <DownloadList v-model="currNotice.appendix"></DownloadList>
+      </div>
     </div>
 
 
@@ -49,6 +53,7 @@
 </template>
 
 <script>
+  import DownloadList from '../../components/DownloadList'
   export default {
     data() {
       return {
@@ -61,6 +66,9 @@
         currNotice:{},
         infoVisible:false
       }
+    },
+    components:{
+      DownloadList
     },
     created() {
       this.getList();

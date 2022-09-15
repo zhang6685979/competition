@@ -2,7 +2,7 @@
   <div>
     <div class="box-card">
       <h1 class="text-center">用户登录</h1>
-      <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" label-width="0">
+      <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" @keyup.enter.native="doSubmit()" @submit.native.prevent label-width="0">
         <el-form-item label="" prop="username" :rules="[
                     {required: true, message:'请输入手机号或邮箱', trigger:'blur'}
                    ]">
@@ -71,10 +71,15 @@
             this.loginService.login(this.inputForm,1).then(({
               data
             }) => {
-              this.$message.success("登录成功");
+              this.$message({
+                type:'success',
+                message:'登录成功',
+                duration:500
+              });
               this.$cookie.set('user-token', data.token);
               this.$store.commit('user/updateMember',data);
-              this.$router.push('/')
+              var redirect = this.$route.query.redirect||'/'
+              this.$router.push(redirect)
               this.loading = false
             }).catch(() => {
               this.loading = false

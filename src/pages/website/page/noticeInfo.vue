@@ -13,10 +13,15 @@
     <div class="html-content" v-html="inputForm.content">
 
     </div>
+    <div v-if="inputForm.appendix">
+      附件下载：
+      <DownloadList v-model="inputForm.appendix"></DownloadList>
+    </div>
   </el-card>
 </template>
 
 <script>
+  import DownloadList from '../components/DownloadList'
   export default {
     props: {
       id: String
@@ -31,9 +36,13 @@
           content: '',
           latest: '',
           top: '',
-          describe0: ''
+          describe0: '',
+          appendix:''
         }
       }
+    },
+    components:{
+      DownloadList
     },
     mounted() {
       this.queryById()

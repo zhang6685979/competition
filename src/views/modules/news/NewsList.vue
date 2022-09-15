@@ -58,7 +58,7 @@
           </vxe-column>
           <vxe-column field="describe0" sortable title="新闻描述">
           </vxe-column>
-          <vxe-column fixed="right" align="center" width="300" title="操作">
+          <vxe-column fixed="right" align="center" width="320" title="操作">
             <template slot-scope="scope">
               <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small" @click="publishToIndex(scope.row.id,scope.row.index0==1?0:1)">{{scope.row.index0==1?'取消首页显示':'首页显示'}}
               </el-button>

@@ -2,11 +2,9 @@
   <div>
     <img v-if="banners['news']" :src="banners['news']" alt="" class="banner">
     <div class="box-card">
-      <div class="item" v-for="(item,index) in dataList" :key="index">
+      <div class="item" v-for="(item,index) in dataList" :key="index" @click="$router.push('/news/'+item.id)">
         <div class="left">
-          <router-link class="thumbnail" :to="{path:'/news/'+item.id}">
             <img :src="item.image">
-          </router-link>
         </div>
         <div class="right">
           <div class="item-heading">
@@ -16,7 +14,7 @@
               <span>
                 <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
             </div>
-            <router-link :to="{path:'/news/'+item.id}">{{item.title}}</router-link>
+            <a>{{item.title}}</a>
           </div>
           <p class="item-content">
             {{item.describe0}}
@@ -91,6 +89,7 @@
       border-bottom: 1px solid #C0C4CC;
       padding: 20px 0;
       display: flex;
+      cursor: pointer;
       &:nth-last-child(2)
       {
         border:none;

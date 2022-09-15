@@ -1,11 +1,40 @@
 <template>
   <div class="page">
-      <div style="height: 200px;">
+    <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm"
+      @keyup.enter.native="refreshList()" @submit.native.prevent  v-if="!readonly">
+      <!-- 搜索框-->
+      <el-form-item prop="name">
+        <el-input size="small" v-model="searchForm.name" placeholder="姓名" clearable></el-input>
+      </el-form-item>
+      <el-form-item prop="mobile">
+        <el-input size="small" v-model="searchForm.mobile" placeholder="手机号码" clearable></el-input>
+      </el-form-item>
+      <el-form-item prop="email">
+        <el-input size="small" v-model="searchForm.email" placeholder="邮箱" clearable></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
+        <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <div class="bg-white top">
+      <vxe-toolbar :refresh="{query: refreshList}" export print custom v-if="!readonly">
+        <template #buttons>
+          <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
+          <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()"
+            :disabled="$refs.memberTable && $refs.memberTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="del()"
+            :disabled="$refs.memberTable && $refs.memberTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+        </template>
+      </vxe-toolbar>
+      <div  :style="{height: readonly?'calc(100% - 20px)':'calc(100% - 80px)'}">
         <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small" ref="memberTable"
-          show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
-          :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}"
-          :data="dataList" :checkbox-config="{}">
+          show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}"
+          :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}" :data="dataList"
+          :checkbox-config="{}">
           <vxe-column type="seq" width="40"></vxe-column>
+          <vxe-column type="checkbox" width="40px"  v-if="!readonly"></vxe-column>
           <vxe-column field="name" sortable title="您的姓名">
             <template slot-scope="scope">
               <el-link type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.name}}</el-link>
@@ -19,25 +48,25 @@
           </vxe-column>
           <vxe-column field="tags" sortable title="用户标签">
             <template slot-scope="scope">
-              <el-tag type="primary" v-if="scope.row.tags" v-for="(item,index) in (scope.row.tags||'').split(',')" :key="index" class="user-tag">{{item}}</el-tag>
+              <el-tag type="primary" v-if="scope.row.tags" v-for="(item,index) in (scope.row.tags||'').split(',')"
+                :key="index" class="user-tag">{{item}}</el-tag>
             </template>
           </vxe-column>
-          <vxe-column
-            fixed="right"
-            align="center"
-            width="100"
-            title="操作">
-            <template  slot-scope="scope">
-              <el-button type="text"  icon="el-icon-edit" size="small" @click="edit(scope.row.id)">设置标签</el-button>
+          <vxe-column fixed="right" align="center" width="100" title="操作" v-if="!readonly">
+            <template slot-scope="scope">
+              <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">编辑</el-button>
             </template>
           </vxe-column>
         </vxe-table>
+        <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
+          :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+          :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+          @page-change="currentChangeHandle">
+        </vxe-pager>
       </div>
-      <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
-        :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
-        :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-        @page-change="currentChangeHandle">
-      </vxe-pager>
+
+    </div>
+
     <!-- 弹窗, 新增 / 修改 -->
     <MemberForm ref="memberForm" @refreshDataList="refreshList"></MemberForm>
   </div>
@@ -47,9 +76,14 @@
   import MemberForm from './MemberForm'
   import MemberService from '@/api/member/MemberService'
   export default {
+    props:{readonly:false},
     data() {
       return {
-        searchForm: {},
+        searchForm: {
+          name: '',
+          email: '',
+          mobile: ''
+        },
         dataList: [],
         tablePage: {
           total: 0,

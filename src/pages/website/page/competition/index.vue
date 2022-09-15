@@ -92,9 +92,9 @@
           slidesPerView: 3,
           slidesPerColumnFill: 'row',
           slidesPerColumn: 2,
-          //spaceBetween: 20,
+          spaceBetween: 20,
           slidesPerGroup: 3,
-          loop: true,
+          loop: false,
           speed: 4000, //匀速时间
           autoplay: {
             delay: 0,
@@ -183,7 +183,6 @@
     }
 
     .item {
-      margin-bottom: 20px;
       position: relative;
       &:after {
         display: block;

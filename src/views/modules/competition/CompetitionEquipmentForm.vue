@@ -9,7 +9,7 @@
             <el-input v-model="inputForm.title" placeholder="请填写设备名称" maxlength="250"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
+        <!-- <el-col :span="24">
           <el-form-item label="设备图片" prop="image" :rules="[
                   {required: true, message:'设备图片不能为空', trigger:'blur'}
                  ]">
@@ -31,13 +31,13 @@
                       inputForm.image = ''
                     }" :before-remove="(file, fileList) => {
                       return $confirm(`确定移除 ${file.name}？`)
-                    }" 
+                    }"
                     :on-change="(file, fileList)=>{imageArra = [file]}"
                     :file-list="imageArra">
               <i class="el-icon-plus"></i>
             </el-upload>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="24">
           <el-form-item label="设备描述" prop="describe0" :rules="[
                   {required: true, message:'设备描述不能为空', trigger:'blur'}
@@ -73,7 +73,6 @@
         inputForm: {
           id: '',
           title: '',
-          image: '',
           describe0: ''
         }
       }
@@ -100,14 +99,14 @@
           if (records && records.length > 0) {
             var item = records[0];
             this.inputForm = this.recover(this.inputForm, item)
-            this.inputForm.image.split('|').forEach((item) => {
-              if (item.trim().length > 0) {
-                this.imageArra.push({
-                  name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
-                  url: item
-                })
-              }
-            })
+            // this.inputForm.image.split('|').forEach((item) => {
+            //   if (item.trim().length > 0) {
+            //     this.imageArra.push({
+            //       name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
+            //       url: item
+            //     })
+            //   }
+            // })
           }
         })
       },

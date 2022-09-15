@@ -51,7 +51,7 @@
         customFields: [{
           name: '下载组件',
           el: 'download',
-          icon: 'el-icon-download',
+          icon: 'icon el-icon-download',
           options: {
             type: 'download',
             defaultValue: {},
@@ -66,6 +66,40 @@
             btnText: '下载模板', //按钮文字
             downloadDesc: '', //下载描述
             downloadUrl: '', //下载地址
+          }
+        },{
+          name: '学校',
+          el: 'school-select',
+          icon: 'icon el-icon-s-flag',
+          model: 'school',
+          options: {
+            type: 'school-select',
+            defaultValue: '',
+            customClass: '',
+            labelWidth: 100,
+            isLabelWidth: false,
+            hidden: false,
+            dataBind: true,
+            required: false,
+            dataType: '',
+            pattern: '',
+          }
+        },{
+          name: '地址',
+          el: 'city-select',
+          icon: 'icon el-icon-map-location',
+          model: 'address',
+          options: {
+            type: 'city-select',
+            defaultValue: '',
+            customClass: '',
+            labelWidth: 100,
+            isLabelWidth: false,
+            hidden: false,
+            dataBind: true,
+            required: false,
+            dataType: '',
+            pattern: '',
           }
         }, {
           name: '领队报名',

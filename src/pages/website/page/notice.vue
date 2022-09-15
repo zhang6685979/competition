@@ -2,23 +2,20 @@
   <div>
     <img v-if="banners['announcement']" :src="banners['announcement']" alt="" class="banner">
     <div class="box-card">
-
-      <el-row class="item" :gutter="20" v-for="(item,index) in dataList" :key="index">
-        <el-col :span="24">
-          <div class="item-heading">
-            <div class="text-muted pull-right">
-              <span>
-                <i class="el-icon-view"></i> {{item.times}}</span> &nbsp;
-              <span>
-                <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
-            </div>
-            <router-link :to="{path:'/notice/'+item.id}">{{item.title}}</router-link>
+      <div class="item" :gutter="20" v-for="(item,index) in dataList" :key="index"  @click="$router.push('/notice/'+item.id)">
+        <div class="item-heading">
+          <div class="text-muted pull-right">
+            <span>
+              <i class="el-icon-view"></i> {{item.times}}</span> &nbsp;
+            <span>
+              <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
           </div>
-          <p class="item-content">
-            {{item.describe0}}
-          </p>
-        </el-col>
-      </el-row>
+          <a>{{item.title}}</a>
+        </div>
+        <p class="item-content">
+          {{item.describe0}}
+        </p>
+      </div>
 
       <div class="pager">
         <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
@@ -88,6 +85,7 @@
     .item {
       border-bottom: 1px solid #C0C4CC;
       padding: 20px 0;
+      cursor: pointer;
       &:nth-last-child(2)
       {
         border:none;

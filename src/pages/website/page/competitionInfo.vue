@@ -38,6 +38,14 @@
         },
       }
     },
+    watch:{
+      '$route.params.id':function(newVal,oldVal){
+        if(newVal!=oldVal){
+          this.cid = newVal;
+          this.queryById();
+        }
+      }
+    },
     mounted() {
       this.queryById();
     },

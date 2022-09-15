@@ -125,6 +125,8 @@ Vue.use(Header)
 import FormMaking from '@/components/FormMake/index'
 import Download from '@/components/FormMake/components/Download/index'
 import SignupTable from '@/components/FormMake/components/SignupTable/index'
+import schoolSelect from '@/components/FormMake/components/SignupTable/schoolSelect'
+import citySelect from '@/components/FormMake/components/SignupTable/citySelect'
 Vue.use(FormMaking, {
   components: [{
       name: 'download',
@@ -133,6 +135,14 @@ Vue.use(FormMaking, {
     {
       name: 'signup-table',
       component: SignupTable
+    },
+    {
+      name: 'school-select',
+      component: schoolSelect
+    },
+    {
+      name: 'city-select',
+      component: citySelect
     }]
 })
 
