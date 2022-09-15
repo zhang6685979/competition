@@ -27,6 +27,7 @@
         </el-form-item>
         <el-form-item >
           <a href="#/register">还没有账号？立即申请</a>
+          <a href="#/forgetPass" class="pull-right">找回密码？</a>
         </el-form-item>
         <div class="btn-warp">
           <el-button type="primary" @click="doSubmit">提交</el-button>

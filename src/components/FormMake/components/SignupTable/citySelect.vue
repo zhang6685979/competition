@@ -1,5 +1,7 @@
 <template>
      <div style="display: flex;">
+       
+       {{value}}
           <el-cascader
               v-model="city"
               :options="list"

@@ -79,7 +79,7 @@
           <el-card class="certficate-item">
             <img :src="item.image" />
             <h5>{{item.title}}</h5>
-            <button @click="$router.push('/certificate?type='+item.id)">查看详情</button>
+            <button @click="$router.push('/information?type='+item.id)">查看详情</button>
           </el-card>
         </el-col>
       </el-row>
@@ -235,7 +235,7 @@
           slidesPerView: 3,
           spaceBetween: 20,
           slidesPerGroup: 3,
-          loop: true,
+          loop: false,
           speed: 4000, //匀速时间
           autoplay: {
             delay: 0,

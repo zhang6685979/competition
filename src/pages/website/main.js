@@ -3,6 +3,7 @@ import App from './App.vue'
 import ElementUI,{Message} from 'element-ui';
 import './assets/css/variables.scss'
 import './assets/css/style.css'
+import 'font-awesome/css/font-awesome.min.css'
 import httpRequest from '@/utils/httpRequest'
 import validator from '@/utils/validator'
 import dictUtils from '@/utils/dictUtils'

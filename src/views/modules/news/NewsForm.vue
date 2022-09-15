@@ -48,7 +48,7 @@
                       return $confirm(`确定移除 ${file.name}？`)
                     }" :on-change="(file, fileList)=>{imageArra = [file]}" :file-list="imageArra">
                 <i class="el-icon-plus"></i>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为240*160</div>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为700*400</div>
               </el-upload>
             </el-form-item>
           </el-col>

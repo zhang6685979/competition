@@ -115,6 +115,11 @@ export default new Router({
     	path: '/register',
     	name: 'register',
     	component: () => import('./page/register.vue')
+    },
+    {
+    	path: '/forgetPass',
+    	name: 'forgetPass',
+    	component: () => import('./page/forgetPass.vue')
     }
 	]
 })

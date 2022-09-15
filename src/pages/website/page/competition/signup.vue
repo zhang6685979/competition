@@ -34,7 +34,6 @@
             </tr>
           </table>
         </div>
-
         <fm-generate-form style="margin: 0 auto;" insite="true" :edit="currItem.status!=1" v-if="json" :data="json"
           :value="{}" :remote="{}" ref="generateForm">
         </fm-generate-form>
@@ -114,6 +113,7 @@
         })
       },
       showSignupForm(id, formData) {
+        this.recordId = '';
         if (!this.memberName) {
           this.signFormVisible = true;
           return;
@@ -142,14 +142,10 @@
       save() {
         const $form = this.$refs.generateForm
         $form.getData().then(data => {
-          data.tid = this.signupInfo.id; //模板id
-          data.cid = this.$route.params.id; //大赛id
-          data.id = this.recordId || '';
           var signupName = this.signupInfo.name;
           if(signupName.indexOf('裁判报名')!=-1){
             data.signType = 'referee'
           }
-          debugger;
           this.$http({
             url: '/competition/competitionSignup/forminput',
             method: 'post',
@@ -157,7 +153,12 @@
               isFront: 1, //是否是门户网站调用
               token: this.$cookie.get('user-token')
             },
-            data: data
+            data: {
+              tid:this.signupInfo.id,//模板id
+              cid:this.$route.params.id, //大赛id
+              id:this.recordId || '',
+              content:data
+            }
           }).then(({
             data
           }) => {

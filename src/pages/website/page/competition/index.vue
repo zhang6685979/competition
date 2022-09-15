@@ -165,7 +165,7 @@
   .news-warp {
     width: 80%;
     margin: 30px auto;
-    .carouse{height: 400px;}
+    .carouse{width:700px;height: 400px;margin: 0 auto;}
     .carousel-title {
       position: absolute;
       bottom: 0;
