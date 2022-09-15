@@ -11,9 +11,10 @@
 
      <el-form v-if="active==1" :model="inputForm" size="small" ref="inputForm" v-loading="loading" @keyup.enter.native="" @submit.native.prevent label-width="120px">
        <el-form-item label="邮箱号码" prop="email" :rules="[
-                   {required: true, message:'请输入邮箱', trigger:'blur'}
+                   {required: true, message:'请输入邮箱', trigger:'blur'},
+                   {validator: validator.isEmail, trigger:'blur'}
                   ]">
-         <el-input v-model="inputForm.username" autocomplete="off" placeholder="请输入邮箱" maxlength="250"></el-input>
+         <el-input v-model="inputForm.email" autocomplete="off" placeholder="请输入邮箱" maxlength="250"></el-input>
        </el-form-item>
 
        <el-form-item label="验证码">
@@ -22,7 +23,7 @@
               <el-input placeholder="请输入验证码" v-model="inputForm.code"></el-input>
            </el-col>
            <el-col :span="8">
-             <el-button  class="ml20" @click="open2">获取验证码</el-button>
+             <el-button  class="ml20" @click="getCode">获取验证码</el-button>
            </el-col>
          </el-row>
        </el-form-item>
@@ -63,8 +64,11 @@
       return {
         active:1,
         inputForm:{
+          email:'',
+          code:'',
           password:''
-        }
+        },
+        loading:false
       }
     },
     methods:{
@@ -74,6 +78,21 @@
         } else {
           callback()
         }
+      },
+      getCode(){
+        var $form = this.$refs.form;
+        this.$refs['inputForm'].validate((valid) => {
+          if(valid){
+            this.$http({
+              url:'/member/member/sendcode',
+              method:'get',
+              headers:{token:this.$cookie.get('user-token')},
+              params:{email:this.inputForm.email}
+            }).then(data=>{
+              debugger;
+            })
+          }
+        })
       }
     }
   }

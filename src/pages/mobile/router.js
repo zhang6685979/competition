@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 // 开发环境不使用懒加载
 const _import = require('../../router/import-' + process.env.NODE_ENV)
+
 export default new Router({
   routes: [{
       path: '/project/form/view',
@@ -12,5 +13,6 @@ export default new Router({
     {
       path: '/s/:key',
       component: _import('modules/form/write/index')
-    }]
+    }
+  ]
 })

@@ -18,15 +18,7 @@ const _import = require('./import-' + process.env.NODE_ENV)
 // 全局路由
 const globalRoutes = [
   {path: '/login', component: _import('modules/sys/login/login'), name: 'login', meta: {title: '登录'}},
-  {path: '/casLogin', component: _import('common/CasLogin'), name: 'casLogin', meta: { title: 'CAS登录' }},
-  {
-      path: '/project/form/view',
-      component: _import('modules/form/preview/ProjectForm')
-  },
-  {
-      path: '/s/:key',
-      component: _import('modules/form/write/index')
-  }
+  {path: '/casLogin', component: _import('common/CasLogin'), name: 'casLogin', meta: { title: 'CAS登录' }}
 ]
 
 // 主入口路由

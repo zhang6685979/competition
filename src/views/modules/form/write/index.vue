@@ -76,7 +76,6 @@ export default {
     async created() {
         let key = this.$route.query.key || this.$route.params.key
         this.formConfig.formKey = key
-        debugger;
         // 微信授权重定向到该页 会携带code参数
         // let wxCode = getQueryString('code')
         // if (wxCode) {

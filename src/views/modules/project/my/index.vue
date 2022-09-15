@@ -465,7 +465,7 @@
   }
 
   .jp-card {
-    height: 255px;
+    height: 254px;
     cursor: pointer;
   }
 
