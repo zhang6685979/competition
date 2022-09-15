@@ -53,20 +53,20 @@
               <el-input v-model="inputForm.email" placeholder="请填写电子邮箱"     ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <!-- <el-col :span="12">
             <el-form-item label="职务" prop="jobtitle"
                 :rules="[
                  ]">
               <el-input v-model="inputForm.jobtitle" placeholder="请填写职务"     ></el-input>
            </el-form-item>
-        </el-col>
-        <el-col :span="12">
+        </el-col> -->
+        <!-- <el-col :span="12">
             <el-form-item label="院系" prop="faculty"
                 :rules="[
                  ]">
               <el-input v-model="inputForm.faculty" placeholder="请填写院系"     ></el-input>
            </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="12">
             <el-form-item label="地址" prop="address"
                 :rules="[
@@ -82,10 +82,10 @@
            </el-form-item>
         </el-col>
         <el-col :span="12">
-            <el-form-item label="赛项" prop="items"
+            <el-form-item label="赛项" prop="module"
                 :rules="[
                  ]">
-              <el-input v-model="inputForm.items" placeholder="请填写赛项"     ></el-input>
+              <el-input v-model="inputForm.module" placeholder="请填写赛项"     ></el-input>
            </el-form-item>
         </el-col>
         </el-row>
@@ -119,7 +119,7 @@
           faculty: '',
           address: '',
           school: '',
-          items: ''
+          module: ''
         }
       }
     },
@@ -173,5 +173,3 @@
     }
   }
 </script>
-
-  
