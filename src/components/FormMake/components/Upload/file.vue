@@ -100,12 +100,12 @@ export default {
   },
   data () {
     var fileList = [];
-    this.value.split('|').forEach((item) => {
-      if (item.trim().length > 0) {
-        fileList.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
-        key:(new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
-      }
-    })
+    // this.value.split('|').forEach((item) => {
+    //   if (item.trim().length > 0) {
+    //     fileList.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
+    //     key:(new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
+    //   }
+    // })
     return {
       fileList: fileList,
       viewer: null,

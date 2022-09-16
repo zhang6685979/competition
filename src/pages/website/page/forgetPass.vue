@@ -18,32 +18,27 @@
        </el-form-item>
 
        <el-form-item label="验证码">
-         <el-row>
-           <el-col :span="16">
-              <el-input placeholder="请输入验证码" v-model="inputForm.code"></el-input>
-           </el-col>
-           <el-col :span="8">
-             <el-button  class="ml20" @click="getCode">获取验证码</el-button>
-           </el-col>
-         </el-row>
+         <div class="vertify-code">
+           <el-input placeholder="请输入验证码" v-model="inputForm.code"></el-input>
+           <el-button  class="ml20" @click="getCode" :disabled="isCountdown">{{isCountdown?time+'S':'获取验证码'}}</el-button>
+         </div>
        </el-form-item>
        <el-form-item>
-         <el-button type="primary" @click="active++"><i class="el-icon-success"></i> 确定
+         <el-button type="primary" @click="vertifyCode"><i class="el-icon-success"></i> 确定
          </el-button>
        </el-form-item>
      </el-form>
 
-       <el-form v-if="active==2" :model="inputForm" size="small" ref="inputForm" v-loading="loading"
-         :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
-         <el-form-item label="密码" prop="password" :rules="inputForm.id?[]:[{required: true, message:'密码不能为空', trigger:'blur'}]">
+       <el-form v-if="active==2" :model="inputForm" size="small" ref="inputForm" label-width="120px">
+         <el-form-item label="密码" prop="password" key="password" :rules="[{required: true, message:'密码不能为空', trigger:'blur'}]">
              <el-input v-model="inputForm.password" maxlength="50" placeholder="请输入密码" show-password></el-input>
            </el-form-item>
-         <el-form-item label="确认密码" prop="confirmNewPassword" :rules="inputForm.id?[{validator: validatePass2, trigger: 'blur'}]:[{required: true, message:'确认密码不能为空', trigger:'blur'},{validator: validatePass2, trigger: 'blur'}]">
+         <el-form-item label="确认密码" prop="confirmNewPassword" key="confirmNewPassword" :rules="[{required: true, message:'确认密码不能为空', trigger:'blur'},{validator: validatePass2, trigger: 'blur'}]">
            <el-input v-model="inputForm.confirmNewPassword" maxlength="50" placeholder="再次输入密码" show-password></el-input>
          </el-form-item>
 
            <el-form-item>
-           <el-button type="primary"  @click="active++"><i class="el-icon-success"></i> 确定
+           <el-button type="primary"  @click="updatePass"><i class="el-icon-success"></i> 确定
            </el-button>
            </el-form-item>
 
@@ -66,9 +61,13 @@
         inputForm:{
           email:'',
           code:'',
-          password:''
+          id:'',
+          password:'',
+          confirmNewPassword:''
         },
-        loading:false
+        loading:false,
+        isCountdown:false,
+        time:60
       }
     },
     methods:{
@@ -81,24 +80,85 @@
       },
       getCode(){
         var $form = this.$refs.form;
+
         this.$refs['inputForm'].validate((valid) => {
           if(valid){
             this.$http({
-              url:'/member/member/sendcode',
+              url:'/member/member/public/sendcode',
               method:'get',
-              headers:{token:this.$cookie.get('user-token')},
               params:{email:this.inputForm.email}
-            }).then(data=>{
-              debugger;
+            }).then(({data})=>{
+               if(data.status){
+                 this.isCountdown = true;
+                 this.timer = setInterval(()=>{
+                   this.time = this.time-1;
+                   if(this.time==0){
+                     this.isCountdown = false;
+                     this.time = 60;
+                     clearInterval(this.timer);
+                   }
+                 },1000)
+               }
+               this.$message.success(data.message);
+            })
+          }
+        })
+      },
+      vertifyCode(){
+        var $form = this.$refs.form;
+        var {email,code} = this.inputForm;
+        this.$refs['inputForm'].validate((valid) => {
+          if(valid){
+            if(!code){
+              this.$message.warning('请输入验证码');
+              return false;
+            }
+            this.$http({
+              url:'/member/member/public/verificatincode',
+              method:'post',
+              params:{email,code}
+            }).then(({data})=>{
+               if(data.status){
+                 this.inputForm.id = data.message;
+                 this.active = this.active+1;
+                 this.clearInterval(this.timer);
+               }else{
+                 this.$message.error(data.message);
+               }
+            })
+          }
+        })
+      },
+      updatePass(){
+        var $form = this.$refs.form;
+        var {password,id} = this.inputForm;
+        this.$refs['inputForm'].validate((valid) => {
+          if(valid){
+            this.$http({
+              url:'/member/member/public/updatepassword',
+              method:'post',
+              params:{id,password}
+            }).then(({data})=>{
+               if(data.status){
+                 this.active = this.active+1;
+                 setTimeout(()=>{
+                   this.$router.push('/login')
+                 },3000)
+               }else{
+                 this.$message.error(data.message);
+               }
             })
           }
         })
       }
+    },
+    destroyed(){
+      clearInterval(this.timer);
     }
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .container {
     width: 1000px;
     margin: 20px auto;
@@ -145,6 +205,11 @@
 
   .ml20 {
     margin-left: 20px;
+    width:120px;
+  }
+
+  .vertify-code{
+    display:flex
   }
 
 </style>

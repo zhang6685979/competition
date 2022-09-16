@@ -28,11 +28,12 @@
           </vxe-column>
           <vxe-column field="describe0" sortable title="报名说明">
           </vxe-column>
-          <vxe-column fixed="right" align="center" width="320" title="操作">
+          <vxe-column fixed="right" align="center" width="360" title="操作">
             <template slot-scope="scope">
               <el-button type="text" icon="el-icon-edit" size="small" @click="design(scope.row.id)">表单设计</el-button>
               <el-button type="text" icon="el-icon-view" size="small" @click="view(scope.row.id,scope.row.name)">查看填报信息</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
+              <el-button type="text" icon="el-icon-copy-document" size="small" @click="copy(scope.row.id)">复制</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
           </vxe-column>
@@ -133,6 +134,10 @@
           return item.id
         })[0]
         this.$refs.competitionSignupForm.init('edit', id)
+      },
+      // 修改
+      copy(id) {
+        this.$refs.competitionSignupForm.init('copy', id)
       },
       // 查看报名信息
       view(id,title) {

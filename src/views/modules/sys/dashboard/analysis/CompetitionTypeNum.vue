@@ -6,15 +6,12 @@
 </template>
 
 <script>
-  import ECharts from 'vue-echarts/components/ECharts'
-  import 'echarts/lib/chart/line'
-  import 'echarts/lib/chart/bar'
-  import 'echarts/lib/component/tooltip'
+  import { VeHistogram } from 'v-charts/lib/index.esm'
 
   export default {
     name: 'CellNum',
     components: {
-      'v-chart': ECharts
+      'VeHistogram': VeHistogram
     },
     data() {
       return {

@@ -31,6 +31,20 @@
               <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写报名说明"></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="24" v-if="method=='copy'">
+            <el-form-item label="应用于" prop="cid" :rules="[
+                  {required: true, message:'请选择比赛', trigger:'blur'}
+                 ]">
+             <el-select v-model="inputForm.cid" filterable clearable placeholder="请选择比赛" style="width: 100%;">
+                <el-option
+                  v-for="(item,index) in dataList"
+                  :key="index"
+                  :label="item.title"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
 
         </el-row>
       </el-form>
@@ -44,6 +58,7 @@
 
 <script>
   import CompetitionSignupService from '@/api/competition/CompetitionSignupService'
+  import CompetitionService from '@/api/competition/CompetitionService'
   export default {
     props: {
       cid: String
@@ -62,13 +77,17 @@
           describe0: '',
           time: '',
           cid: '',
-          enabled:false
-        }
+          enabled:false,
+          content:''
+        },
+        dataList:[]
       }
     },
     competitionSignupService: null,
+    competitionService:null,
     created() {
       this.competitionSignupService = new CompetitionSignupService()
+      this.competitionService = new CompetitionService()
     },
     methods: {
       init(method, id) {
@@ -78,12 +97,14 @@
           this.title = `新建信息填报模板`
         } else if (method === 'edit') {
           this.title = '修改信息填报模板'
+        } else if(method === 'copy'){
+          this.title = '复制信息填报模板'
         }
         this.visible = true
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
-          if (method === 'edit' || method === 'view') { // 修改或者查看
+          if (method === 'edit' || method === 'view' || method === 'copy') { // 修改或者查看
             this.loading = true
             this.competitionSignupService.queryById(this.inputForm.id).then(({
               data
@@ -92,6 +113,9 @@
               this.inputForm = this.recover(this.inputForm, data)
               this.loading = false
             })
+          }
+          if(method === 'copy'){
+            this.getCompetitionList()
           }
         })
       },
@@ -103,7 +127,11 @@
             var time = this.inputForm.time;
             this.inputForm.starttime = time[0];
             this.inputForm.endtime = time[1];
-            this.inputForm.cid = this.cid;
+            if(this.method=='copy'){
+              this.inputForm.id = '';
+            }else{
+              this.inputForm.cid = this.cid;
+            }
             this.competitionSignupService.save(this.inputForm).then(({
               data
             }) => {
@@ -115,6 +143,16 @@
               this.loading = false
             })
           }
+        })
+      },
+      getCompetitionList() {
+        this.competitionService.list({
+          'current': 1,
+          'size': 9999,
+        }).then(({
+          data
+        }) => {
+          this.dataList = data.records;
         })
       }
     }

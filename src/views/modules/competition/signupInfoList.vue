@@ -158,6 +158,7 @@
           this.signFormVisible = true;
           this.signupInfo = data;
           this.json = JSON.parse(data.content);
+          this.form.status = item.status==0?'1':item.status;//默认选择审批通过
           this.$nextTick(() => {
             var formData = item.content;
             if (formData) {
