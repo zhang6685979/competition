@@ -65,6 +65,7 @@
         title="操作">
         <template  slot-scope="scope">
           <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
+          <el-button type="text" icon="el-icon-edit" size="small" @click="showDistribution(scope.row.id)">查看执裁分配</el-button>
           <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
       </vxe-column>
@@ -83,12 +84,22 @@
     </div>
         <!-- 弹窗, 新增 / 修改 -->
     <CompetitionExamForm  ref="competitionExamForm" :cid="cid" :crid="crid" @refreshDataList="refreshList"></CompetitionExamForm>
+    <el-dialog title="执裁分配表" :visible.sync="dialogVisible" :append-to-body="true" width="80%">
+      <distributionTable @refreshList="()=>{
+        this.showDistribution(currId)
+      }" :list="list"></distributionTable>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="dialogVisible = false">关闭</el-button>
+        <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import CompetitionExamForm from './CompetitionExamForm'
   import CompetitionExamService from '@/api/exam/CompetitionExamService'
+  import distributionTable from './distributionTable'
   export default {
     props: {
       cid: String,
@@ -103,11 +114,15 @@
           pageSize: 10,
           orders: []
         },
-        loading: false
+        loading: false,
+        dialogVisible:false,
+        list:[],
+        currId:''
       }
     },
     components: {
-      CompetitionExamForm
+      CompetitionExamForm,
+      distributionTable
     },
     competitionExamService: null,
     created () {
@@ -179,9 +194,30 @@
           })
         })
       },
+      showDistribution(id){
+        this.currId = id;
+        this.$http({
+          url:'/exam/competitionExam/preview/distribute',
+          method:'get',
+          params:{id}
+        }).then(({data})=>{
+          data[0].teams = [data[0].teams[0],data[0].teams[0]]
+          this.list = data;
+          this.dialogVisible = true;
+        })
+      },
       resetSearch () {
         this.$refs.searchForm.resetFields()
         this.refreshList()
+      },
+      doSubmit(){
+        this.$http({
+          url:'/exam/competitionExam/preview/distribute',
+          method:'post',
+          params:{list:this.list}
+        }).then(({data})=>{
+          debugger;
+        })
       }
     }
   }
