@@ -133,7 +133,6 @@ export default {
         const key = (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
         reader.readAsDataURL(file)
         reader.onload = () => {
-
           if (this.editIndex >= 0) {
 
             this.$set(this.fileList, this.editIndex, {
@@ -215,7 +214,6 @@ export default {
         }
       }
       xhr.onprogress = (res) => {
-        console.log('progress', res)
         if (res.total && res.loaded) {
           this.$set(this.fileList[this.fileList.findIndex(item => item.key === key)], 'percent', res.loaded/res.total*100)
         }
@@ -257,8 +255,6 @@ export default {
 
             if (_this.ui == 'element') {
               _this.$emit('input', _this.fileList)
-            } else {
-              EventBus.$emit('on-field-change', _this.$attrs.id, _this.fileList)
             }
           }, 200)
         }
@@ -269,16 +265,14 @@ export default {
         this.fileList.splice(this.fileList.findIndex(item => item.key === key), 1)
         this.$nextTick(() => {
           if (this.ui == 'element') {
-            this.$emit('input', this.fileList)
-          } else {
-            EventBus.$emit('on-field-change', this.$attrs.id, this.fileList)
-          }
+            this.$emit('input', this.fileList.map(item =>item.url).join('|'))
+          } 
         })
       }
     },
     handleAdd () {
       if (!this.disabled) {
-        this.editIndex = -1
+        this.editIndex = this.multiple?-1:0
         this.$refs.uploadInput.click()
       }
     },
