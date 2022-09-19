@@ -61,17 +61,23 @@
       handleMerge(){
         var mergeCells = [];
         var list = this.list;
+        var row = 0;
         list.forEach((item,index)=>{
           var rows = item.teams.length;//行数
+         
           for(var i=0;i<5;i++){
             mergeCells.push({
-              row:index,
+              row:row,
               col:i,
               rowspan:rows,
               colspan:1
             })
+            if(i==4){
+              row = row+rows;
+            }
           }
         })
+        console.log(mergeCells)
         this.mergeCells = mergeCells
       },
       refreshList(){

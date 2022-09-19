@@ -201,7 +201,6 @@
           method:'get',
           params:{id}
         }).then(({data})=>{
-          data[0].teams = [data[0].teams[0],data[0].teams[0]]
           this.list = data;
           this.dialogVisible = true;
         })

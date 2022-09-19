@@ -124,7 +124,6 @@
 </template>
 
 <script>
-  import WangEditor from '@/components/editor/WangEditor'
   import TinyMce from '@/components/editor/TinyMce'
   import NewsService from '@/api/news/NewsService'
   export default {
@@ -154,7 +153,6 @@
       }
     },
     components: {
-      WangEditor,
       TinyMce
     },
     newsService: null,

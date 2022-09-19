@@ -365,9 +365,6 @@
           name: file.name
         }
       }
-    },
-    destroyed() {
-      console.log('我被销毁了')
     }
   }
 </script>

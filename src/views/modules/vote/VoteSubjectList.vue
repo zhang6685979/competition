@@ -253,7 +253,9 @@
       },
       // 新增
       add () {
-        this.$refs.voteSubjectForm.init('add', '')
+        //this.$refs.voteSubjectForm.init('add', '')
+
+        this.$router.push('/vote/VoteSubjectForm')
       },
       // 修改
       edit (id) {

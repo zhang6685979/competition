@@ -1,7 +1,7 @@
 {
   "name": "competition",
   "version": "1.0.0",
-  "description": "技能云平台",
+  "description": "爱执教",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
