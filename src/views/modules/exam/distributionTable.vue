@@ -64,7 +64,7 @@
         var row = 0;
         list.forEach((item,index)=>{
           var rows = item.teams.length;//行数
-         
+
           for(var i=0;i<5;i++){
             mergeCells.push({
               row:row,
@@ -77,7 +77,6 @@
             }
           }
         })
-        console.log(mergeCells)
         this.mergeCells = mergeCells
       },
       refreshList(){

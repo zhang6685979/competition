@@ -127,7 +127,6 @@
     </vxe-pager>
    </div>
         <!-- 弹窗, 新增 / 修改 -->
-    <VoteSubjectForm  ref="voteSubjectForm" @refreshDataList="refreshList"></VoteSubjectForm>
     <VoteCategoryForm  ref="voteCategoryForm" @refreshTree="refreshTree"></VoteCategoryForm>
    </div>
    </div>
@@ -135,7 +134,6 @@
 </template>
 
 <script>
-  import VoteSubjectForm from './VoteSubjectForm'
   import VoteCategoryForm from './VoteCategoryForm'
   import VoteSubjectService from '@/api/vote/VoteSubjectService'
   import VoteCategoryService from '@/api/vote/VoteCategoryService'
@@ -163,7 +161,6 @@
     },
     components: {
       SelectTree,
-      VoteSubjectForm,
       VoteCategoryForm
     },
     voteSubjectService: null,
@@ -253,8 +250,6 @@
       },
       // 新增
       add () {
-        //this.$refs.voteSubjectForm.init('add', '')
-
         this.$router.push('/vote/VoteSubjectForm')
       },
       // 修改
@@ -263,10 +258,6 @@
           return item.id
         })[0]
         this.$refs.voteSubjectForm.init('edit', id)
-      },
-      // 查看
-      view (id) {
-        this.$refs.voteSubjectForm.init('view', id)
       },
       // 删除
       del (id) {
