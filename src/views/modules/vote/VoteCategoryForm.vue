@@ -24,24 +24,6 @@
           <el-input-number v-model="inputForm.sort" placeholder="请填写排序"     style="width: 100%;"></el-input-number>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
-            <el-form-item label="上级目录" prop="parent.id"
-                :rules="[
-                 ]">
-          <SelectTree
-                      ref="categoryTree"
-                      :props="{
-                          value: 'id',             // ID字段名
-                          label: 'name',         // 显示名称
-                          children: 'children'    // 子级字段名
-                        }"
-                      url="/vote/voteCategory/treeData"
-                      :value="inputForm.parent.id"
-                      :clearable="true"
-                      :accordion="true"
-                      @getValue="(value) => {inputForm.parent.id=value}"/>
-           </el-form-item>
-        </el-col>
         </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -66,7 +48,7 @@
           id: '',
           name: '',
           sort: '',
-          pparent: {
+          parent: {
             id: ''
           }
         }
@@ -124,5 +106,3 @@
     }
   }
 </script>
-
-  

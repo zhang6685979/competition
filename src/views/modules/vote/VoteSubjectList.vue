@@ -32,7 +32,6 @@
                    <span class="custom-tree-node" slot-scope="{ node, data}">
                     <span>{{ node.label }}</span>
                     <span>
-                        <el-button type="text" class="tree-item-button" icon="el-icon-plus" @click="() => addChildTreeNode(data)"></el-button>
                         <el-button type="text" class="tree-item-button" icon="el-icon-edit-outline" @click="() => editTreeNode(data)"></el-button>
                         <el-button type="text" class="red tree-item-button" icon="el-icon-delete" @click="() => delTreeNode(data)"></el-button>
                     </span>
@@ -67,90 +66,55 @@
       </el-form>
 
      <div class="bg-white top">
-        <vxe-toolbar :refresh="{query: refreshList}" export print custom>
-          <template #buttons>
-            <el-button v-if="hasPermission('vote:voteSubject:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-            <el-button v-if="hasPermission('vote:voteSubject:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.voteSubjectTable && $refs.voteSubjectTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-            <el-button v-if="hasPermission('vote:voteSubject:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.voteSubjectTable && $refs.voteSubjectTable.getCheckboxRecords().length === 0" plain>删除</el-button>
-          </template>
-        </vxe-toolbar>
         <div style="height: calc(100% - 80px);">
-        <vxe-table
-            border="inner"
-            auto-resize
-            resizable
-            height="auto"
-            :loading="loading"
-            size="small"
-            ref="voteSubjectTable"
-            show-header-overflow
-            show-overflow
-            highlight-hover-row
-            :menu-config="{}"
-            :print-config="{}"
-            :import-config="{}"
-            :export-config="{}"
-            @sort-change="sortChangeHandle"
-            :sort-config="{remote:true}"
-            :data="dataList"
-            :checkbox-config="{}">
-            <vxe-column type="seq" width="40"></vxe-column>
-            <vxe-column type="checkbox"  width="40px"></vxe-column>
-    <vxe-column
-        field="title"
-        sortable
-        title="主题">
-            <template slot-scope="scope">
-              <el-link  type="primary" :underline="false" v-if="hasPermission('vote:voteSubject:edit')" @click="edit(scope.row.id)">{{scope.row.title}}</el-link>
-              <el-link  type="primary" :underline="false" v-else-if="hasPermission('vote:voteSubject:view')"  @click="view(scope.row.id)">{{scope.row.title}}</el-link>
-              <span v-else>{{scope.row.title}}</span>
-            </template>
-      </vxe-column>
-    <vxe-column
-        field="image"
-
-        sortable
-        title="图片">
-        <template slot-scope="scope" v-if="scope.row.image">
-          <el-image
-            style="height: 50px;width:50px;margin-right:10px;"
-            :src="src" v-for="(src, index) in scope.row.image.split('|')" :key="index"
-            :preview-src-list="scope.row.image.split('|')">
-          </el-image>
-        </template>
-      </vxe-column>
-    <vxe-column
-        field="starttime"
-        sortable
-        title="开始时间">
-      </vxe-column>
-    <vxe-column
-        field="jabEndtime"
-        sortable
-        title="结束时间">
-      </vxe-column>
-    <vxe-column
-        field="describe0"
-        sortable
-        title="描述信息">
-      </vxe-column>
-    <vxe-column
-        field="views"
-        sortable
-        title="访问量">
-      </vxe-column>
-      <vxe-column
-        fixed="right"
-        align="center"
-        width="200"
-        title="操作">
-        <template  slot-scope="scope">
-          <el-button v-if="hasPermission('vote:voteSubject:view')" type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
-          <el-button v-if="hasPermission('vote:voteSubject:edit')" type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-          <el-button v-if="hasPermission('vote:voteSubject:del')" type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
-        </template>
-      </vxe-column>
-    </vxe-table>
+        <div class="el-scrollbar__wrap" style="height: calc(100% - 110px);">
+          <div class="el-scrollbar__view">
+            <el-row>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+                <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
+                  <div class="jp-card jp-card-bordered">
+                    <div class="add-border">
+                      <a @click="add()">
+                        <i class="el-icon-plus"></i>
+                        <p>新建投票</p>
+                      </a>
+                    </div>
+                  </div>
+                </el-card>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(item, index) in dataList" :key="index">
+                <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
+                  <img class="image" :src="item.image?item.image:require('@/assets/images/99d0.png')">
+                  <div class="jp-card-label">
+                    <p>{{item.name}}</p>
+                    <el-tag size="small" :type="getStatusColorStyle(item.status).type">
+                      {{getStatusColorStyle(item.status).name}}</el-tag>
+                  </div>
+                  <p class="create-time">创建时间：{{ item.createTime | formatDate }}</p>
+                  <ul class="jp-card-actions">
+                    <li>
+                      <el-link :underline="false" @click="toProjectHandle(item.key,'editor')"><i
+                          class="el-icon-edit-outline"></i> 编辑
+                      </el-link>
+                    </li>
+                    <li v-if="item.status!=1">
+                      <el-link :underline="false" @click="toProjectHandle(item.key,'statistics')"><i
+                          class="el-icon-delete"></i> 统计</el-link>
+                    </li>
+                    <li v-if="item.status==2">
+                      <el-link :underline="false" @click="stopProject(item.key)"><i class="el-icon-delete"></i> 停止
+                      </el-link>
+                    </li>
+                    <li v-if="item.status!=2">
+                      <el-link :underline="false" @click="deleteProject(item.key)"><i class="el-icon-delete"></i> 删除
+                      </el-link>
+                    </li>
+                  </ul>
+                </el-card>
+              </el-col>
+            </el-row>
+          </div>`
+        </div>
     <vxe-pager
       background
       size="small"
@@ -329,4 +293,41 @@
     }
   }
 </script>
+<style scoped="">
+  .jp-card {
+    height: 254px;
+    cursor: pointer;
+  }
 
+  .jp-card-actions {
+    display: flex;
+
+    li {
+      flex: 1;
+    }
+  }
+
+  .jp-card-label {
+
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    p{
+      color: #1890FF;
+      font-size: 14px;
+      margin: 8px 0;
+    }
+
+  }
+
+  .create-time {
+    padding: 0 10px;
+    font-weight: 400;
+    color: #707070;
+    line-height: 0px;
+    font-size: 12px;
+  }
+</style>

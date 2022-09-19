@@ -142,6 +142,8 @@
             genList[i].tabs.forEach(item => {
               this.generateModel(item.list)
             })
+          } else if (genList[i].type === 'table') {
+            this.generateModel(genList[i].tableColumns)
           } else if(genList[i].options&&(genList[i].options.type||'').indexOf('signup-table')!=-1){
             this.generateModel(genList[i].columns||[])
           }else {

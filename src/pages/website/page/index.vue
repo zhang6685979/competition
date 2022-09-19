@@ -7,7 +7,7 @@
       </el-carousel-item>
     </el-carousel>
     <div class="news-warp">
-
+      <button class="more" @click="$router.push(activeIndex==0?'/news':'/notice')">查看更多+</button>
       <el-tabs v-model="activeIndex" class="my-tab">
         <el-tab-pane label="新闻资讯" name="0">
           <span slot="label" class="tab-title">新闻资讯</span>
@@ -98,10 +98,10 @@
         <el-col :span="12" v-for="(item, index) in platformList.slice(0,2)" :key="index">
           <div class="platform-item">
             <a :href="item.url" target="_blank"><img :src="item.image" class="platform-image">
-            <div class="desc">
-              <h5>{{item.title}}</h5>
-              <p>{{item.describe0}}</p>
-            </div>
+              <div class="desc">
+                <h5>{{item.title}}</h5>
+                <p>{{item.describe0}}</p>
+              </div>
             </a>
           </div>
         </el-col>
@@ -236,6 +236,20 @@
     .news-warp {
       width: 1400px;
       margin: 80px auto;
+      position: relative;
+
+      .more {
+        float: right;
+        background: none;
+        border: none;
+        color: #DC000C;
+        font-size: 20px;
+        position: absolute;
+        right:0;
+        top:10px;
+        cursor: pointer;
+        z-index:1
+      }
 
       .news-item {
         display: flex;
@@ -280,11 +294,12 @@
             color: #303133;
             line-height: 17px;
           }
-          .tag{
+
+          .tag {
             background-color: #DC000C;
             color: #fff;
             border-radius: 5px;
-            padding:0 5px;
+            padding: 0 5px;
           }
         }
       }
@@ -510,6 +525,7 @@
           padding: 30px 40px;
           text-align: left;
           width: 100%;
+
           h5 {
             white-space: nowrap;
             overflow: hidden;

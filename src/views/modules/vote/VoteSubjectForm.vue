@@ -8,18 +8,30 @@
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" :class="method==='view'?'readonly':''"  :disabled="method==='view'"
              label-width="120px">
       <el-row  :gutter="15">
-        <el-col :span="12">
-            <el-form-item label="主题" prop="title"
+        <el-col :span="24">
+            <el-form-item label="标题" prop="title"
                 :rules="[
-                  {required: true, message:'主题不能为空', trigger:'blur'}
+                  {required: true, message:'标题不能为空', trigger:'blur'}
                  ]">
-          <el-input v-model="inputForm.title" placeholder="请填写主题"     ></el-input>
+          <el-input v-model="inputForm.title" placeholder="简短的标题"></el-input>
            </el-form-item>
         </el-col>
         <el-col :span="24">
-            <el-form-item label="图片" prop="image"
+          <el-form-item label="投票分类" prop="type" :rules="[
+                 {required: true, message:'投票分类不能为空', trigger:'change'}
+               ]">
+            <SelectTree ref="type" :props="{
+                        value: 'id',             // ID字段名
+                        label: 'title',         // 显示名称
+                        children: 'children'    // 子级字段名
+                      }" url="/vote/voteCategory/treeData" :value="inputForm.type" :clearable="true"
+              :accordion="true" :disabled="!!type" @getValue="(value) => {inputForm.type=value}" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+            <el-form-item label="封面图片" prop="image"
                 :rules="[
-                  {required: true, message:'图片不能为空', trigger:'blur'}
+                  {required: true, message:'封面图片不能为空', trigger:'blur'}
                  ]">
               <el-upload ref="image"
               v-if="visible"
@@ -123,7 +135,7 @@
           title: '',
           image: '',
           starttime: '',
-          jabEndtime: '',
+          endtime: '',
           describe0: '',
           views: ''
         }
@@ -184,5 +196,3 @@
     }
   }
 </script>
-
-  

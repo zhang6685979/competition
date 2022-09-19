@@ -161,7 +161,7 @@
           }).then(({
             data
           }) => {
-            this.$message.success('报名成功!');
+            this.$message.success('提交成功!');
             this.recordId = '';
             this.signFormVisible = false;
             this.getMySignupList();

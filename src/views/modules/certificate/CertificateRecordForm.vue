@@ -42,7 +42,7 @@
                       $message.warning(`当前限制选择 ${method=='add'?'100':'1'} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
                     }" :file-list="imageArra">
                 <i class="el-icon-plus"></i>
-                <div slot="tip" class="el-upload__tip">一次做多只能上传100张证书，证书命名格式为：姓名-身份证号-证书编号，如张三-410182199011220123</div>
+                <div slot="tip" class="el-upload__tip">一次做多只能上传100张证书，证书命名格式为：姓名-身份证号-证书编号，如张三-410182199011220123-001</div>
               </el-upload>
             </el-form-item>
           </el-col>
