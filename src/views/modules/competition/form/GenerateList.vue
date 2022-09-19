@@ -34,7 +34,7 @@
                 </el-image>
               </div>
               <div v-else-if="option.type === 'fileupload'">
-                <a  @click="downloadFile(item)" style="cursor: pointer;" target="_blank" :key="index"
+                <a @click="downloadFile(item)" style="cursor: pointer;display: block;" target="_blank" :key="index"
                   v-for="(item, index) in scope.row[`${option.model}`]?scope.row[`${option.model}`].split('|'):[]">
                   {{decodeURIComponent(item.substring(item.lastIndexOf("/")+1))}}
                 </a>
@@ -188,7 +188,9 @@
          var fileFields = this.fileFields
          records.forEach(record=>{
            fileFields.forEach(field=>{
-             this.downloadFile(record[field.model]);
+             record[field.model].split('|').forEach(url=>{
+               this.downloadFile(url);
+             })
            })
          })
       }

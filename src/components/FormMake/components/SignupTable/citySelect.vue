@@ -35,8 +35,8 @@
         var city = [],address = '';
         if(val){
           var datas = val.split('/');
-          city = datas.slice(0,4);
-          address = datas[4];
+          city = datas.slice(0,datas.length-1);
+          address = datas[datas.length-1];
         }
         this.city = city;
         this.address = address

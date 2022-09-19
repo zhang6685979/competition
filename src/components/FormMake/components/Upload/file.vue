@@ -99,7 +99,7 @@ export default {
     }
   },
   data () {
-    var fileList = [];
+    // var fileList = [];
     // this.value.split('|').forEach((item) => {
     //   if (item.trim().length > 0) {
     //     fileList.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
@@ -107,7 +107,7 @@ export default {
     //   }
     // })
     return {
-      fileList: fileList,
+      fileList: [],
       viewer: null,
       uploadId: 'upload_' + new Date().getTime(),
       editIndex: -1,
@@ -125,7 +125,6 @@ export default {
   },
   methods: {
     handleChange () {
-      console.log(this.$refs.uploadInput.files)
       const files = this.$refs.uploadInput.files
 
       for (let i = 0; i < files.length; i++) {
@@ -172,7 +171,7 @@ export default {
       console.log(this.fileList.findIndex(item => item.key === key))
       const xhr = new XMLHttpRequest()
 
-      const url = this.action
+      const url = `${this.$http.BASE_URL}${this.action}`
       xhr.open('POST', url, true)
       // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
       this.headers.map(item => {
@@ -187,7 +186,6 @@ export default {
       xhr.onreadystatechange = () => {
         console.log(xhr)
         if (xhr.readyState === 4) {
-
           let resData = JSON.parse(xhr.response)
           if (resData && resData.url) {
             this.$set(this.fileList, this.fileList.findIndex(item => item.key === key), {
@@ -202,7 +200,7 @@ export default {
                 status: 'success'
               })
               if (this.ui == 'element') {
-                this.$emit('input', this.fileList.map(item =>item.url).join('!'))
+                this.$emit('input', this.fileList.map(item =>item.url).join('|'))
               } else {
                 EventBus.$emit('on-field-change', this.$attrs.id, this.fileList)
               }
@@ -288,7 +286,6 @@ export default {
       this.viewer && this.viewer.destroy()
       this.uploadId = 'upload_' + new Date().getTime()
 
-      console.log(this.viewer)
       this.$nextTick(() => {
         this.viewer = new Viewer(document.getElementById(this.uploadId))
         this.viewer.view(this.fileList.findIndex(item => item.key === key))

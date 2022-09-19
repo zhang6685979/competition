@@ -164,7 +164,7 @@
  }
  .news-info {
    margin: 0 auto 20px;
-
+   width:1000px;
    .btn {
      width: 120px;
      height: 45px;
