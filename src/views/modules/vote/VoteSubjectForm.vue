@@ -1,25 +1,25 @@
 <template>
   <div class="page">
     <div class="bg-white top">
+      <div class="pull-right">
+        <el-button type="primary" size="medium" @click="doSubmit">
+          确定
+        </el-button>
+      </div>
       <el-page-header @back="goBack" content="添加投票" class="page-header"></el-page-header>
       <el-divider></el-divider>
-      <el-row :gutter="20">
-        <el-col :span="12">
+      <el-row :gutter="20" class="scroll-wrapper">
+        <el-col :span="10">
           <div class="preview-layer">
-              <div class="preview-bg" />
-              <div class="preview-phone">
-                 <iframe id="preview-html"
-                          :src="mobilePreviewUrl"
-                          class="preview-html" frameborder="0"
-                          name="preview-html"
-                          scrolling="auto"
-                  />
-              </div>
+            <div class="preview-bg" />
+            <div class="preview-phone">
+              <iframe id="preview-html" :src="mobilePreviewUrl" class="preview-html" frameborder="0" name="preview-html"
+                scrolling="auto" />
+            </div>
           </div>
         </el-col>
-        <el-col :span="12">
-          <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
-            :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
+        <el-col :span="14">
+          <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" label-width="120px">
             <el-form-item label="标题" prop="title" :rules="[
                            {required: true, message:'标题不能为空', trigger:'blur'}
                           ]">
@@ -77,10 +77,10 @@
                 value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择结束时间">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="主题色" prop="color" :rules="[
+            <el-form-item label="主题色" prop="themeColor" :rules="[
                               {required: true, message:'主题色不能为空', trigger:'blur'}
                              ]">
-              <el-color-picker v-model="inputForm.color"></el-color-picker>
+              <el-color-picker v-model="inputForm.themeColor"></el-color-picker>
             </el-form-item>
             <el-form-item label="投票模式" prop="mode" :rules="[
                               {required: true, message:'请选择投票模式', trigger:'change'}
@@ -94,7 +94,13 @@
             <el-form-item label="投票简介" prop="describe0" :rules="[
                               {required: true, message:'投票简介不能为空', trigger:'blur'}
                              ]">
-              <el-input v-model="inputForm.describe0" placeholder="投票简介"></el-input>
+                             
+              <tiny-mce v-model="inputForm.describe0" :config="{
+            width: '100%',
+            height: 300,
+            menubar: false,
+            language: 'zh_CN'
+          }"></tiny-mce>
             </el-form-item>
 
             <el-form-item label="投票选项配置" prop="optionConfig">
@@ -104,7 +110,7 @@
               </el-radio-group>
             </el-form-item>
             <div>
-              <VoteOptionList> </VoteOptionList>
+              <VoteOptionList v-model="inputForm.options"></VoteOptionList>
             </div>
           </el-form>
         </el-col>
@@ -119,6 +125,7 @@
   import VoteSubjectService from '@/api/vote/VoteSubjectService'
   import SelectTree from '@/components/treeSelect/treeSelect'
   import VoteOptionList from './VoteOptionList'
+  import TinyMce from '@/components/editor/TinyMce'
   export default {
     data() {
       return {
@@ -134,46 +141,40 @@
           starttime: '',
           endtime: '',
           describe0: '',
-          views: '',
-          color: '#409EFF',
+          themeColor: '#409EFF',
           type: this.$route.query.type || '',
           mode: '1',
           describe0: '',
-          optionConfig: '1'
+          optionConfig: '1',
+          options: []
         },
-        mobilePreviewUrl:''
+        mobilePreviewUrl: ''
       }
     },
     components: {
       SelectTree,
-      VoteOptionList
+      VoteOptionList,
+      TinyMce
     },
     voteSubjectService: null,
     created() {
       this.voteSubjectService = new VoteSubjectService()
     },
     mounted() {
-        this.id = this.$route.params.id
-        let url = window.location.protocol + '//' + window.location.host
-        this.mobilePreviewUrl = `${url}/mobile.html#/vote/${this.id}`
+      this.id = this.$route.query.id
+      let url = window.location.protocol + '//' + window.location.host
+      this.mobilePreviewUrl = `${url}/mobile.html#/vote/${this.id}`
+      this.queryById(this.id);
     },
     methods: {
-      init(method, id) {
-        this.method = method
+      queryById(id) {
         this.inputForm.id = id
-        if (method === 'add') {
-          this.title = `新建投票主题`
-        } else if (method === 'edit') {
-          this.title = '修改投票主题'
-        } else if (method === 'view') {
-          this.title = '查看投票主题'
-        }
         this.imageArra = []
         this.visible = true
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
-          if (method === 'edit' || method === 'view') { // 修改或者查看
+          if (id) { // 修改或者查看
             this.loading = true
             this.voteSubjectService.queryById(this.inputForm.id).then(({
               data
@@ -226,44 +227,51 @@
     width: 150px;
     margin-left: 20px;
   }
- div.preview-layer {
-   width: 500px;
-   height: 100%;
-   margin: 10px auto;
-   right: 0;
-   text-align: center;
- }
 
- div.preview-layer .preview-bg {
-   width: 500px;
-   height: 100%;
-   margin: 20px auto;
-   z-index: 999;
-   opacity: 0.7;
- }
+  .scroll-wrapper {
+    height: calc(100% - 75px);
+    overflow: auto;
+  }
 
- div.preview-layer .preview-phone {
-   width: 372px;
-   height: 744px;
-   background: url('~@/assets/images/appearset_bgc_big.png');
-   background-size: 372px 744px;
-   z-index: 1000;
- }
+  div.preview-layer {
+    width: 500px;
+    height: 100%;
+    margin: 10px auto;
+    right: 0;
+    text-align: center;
+  }
 
- .preview-html {
-   width: 345px !important;
-   height: 568px !important;
-   margin: 74px 0 0;
-   border-radius: 5px;
-   outline: none;
-   background-color: #fff;
-   border-width: 2px;
-   border-style: inset;
-   border-color: initial;
-   border-image: initial;
-   border-top-width: 0;
-   border-right-width: 0;
-   border-bottom-width: 0;
-   border-left-width: 0;
- }
+  div.preview-layer .preview-bg {
+    width: 500px;
+    height: 100%;
+    margin: 20px auto;
+    z-index: 999;
+    opacity: 0.7;
+  }
+
+  div.preview-layer .preview-phone {
+    width: 372px;
+    height: 744px;
+    margin: 0 auto;
+    background: url('~@/assets/images/appearset_bgc_big.png');
+    background-size: 372px 744px;
+    z-index: 1000;
+  }
+
+  .preview-html {
+    width: 345px !important;
+    height: 568px !important;
+    margin: 74px 0 0;
+    border-radius: 5px;
+    outline: none;
+    background-color: #fff;
+    border-width: 2px;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+  }
 </style>

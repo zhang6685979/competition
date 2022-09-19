@@ -37,18 +37,21 @@
 
 <script>
   import VoteOptionForm from './VoteOptionForm'
-  import VoteOptionService from '@/api/vote/VoteOptionService'
   export default {
+    props:{
+      value:{
+        type:Array,
+        default:()=>{
+          return []
+        }
+      }
+    },
     data() {
       return {
         searchForm: {
           subject: ''
         },
-        dataList: [{
-          name:'选项1',
-          image:'/userfiles/admin/程序附件/vote/voteSubject/2022/9/组 913(1).png',
-          describe0:'这是一个描述'
-        }],
+        dataList: this.value,
         tablePage: {
           total: 0,
           currentPage: 1,
@@ -58,14 +61,20 @@
         loading: false
       }
     },
+    watch: {
+      dataList:{
+        hanler:function(val){
+          this.$emit('input', val)
+        },
+        deep:true
+      },
+      value(val) {
+        this.dataList = val;
+      }
+    },
     components: {
       VoteOptionForm
     },
-    voteOptionService: null,
-    created() {
-      this.voteOptionService = new VoteOptionService()
-    },
-
     methods: {
       // 新增
       add() {
@@ -80,7 +89,7 @@
       },
       // 修改
       edit(item,index) {
-        this.$refs.voteOptionForm.init('edit', item, index)
+        this.$refs.voteOptionForm.init('edit', Object.assign({},item), index)
       },
       // 删除
       del(index) {
@@ -91,10 +100,6 @@
         }).then(() => {
            this.dataList.splice(index,1)
         })
-      },
-      resetSearch() {
-        this.$refs.searchForm.resetFields()
-        this.refreshList()
       }
     }
   }

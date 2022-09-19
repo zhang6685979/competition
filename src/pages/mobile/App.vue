@@ -13,5 +13,6 @@
 <style scoped="">
   #app{
     background-color: #f7f7f7;
+    overflow: auto;
   }
 </style>

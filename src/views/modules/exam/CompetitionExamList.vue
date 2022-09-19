@@ -61,7 +61,7 @@
       <vxe-column
         fixed="right"
         align="center"
-        width="200"
+        width="230"
         title="操作">
         <template  slot-scope="scope">
           <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
@@ -201,8 +201,13 @@
           method:'get',
           params:{id}
         }).then(({data})=>{
-          this.list = data;
-          this.dialogVisible = true;
+          if(data.status){
+            this.list = data.data;
+            this.dialogVisible = true;
+          }else{
+            this.$message.error(data.message)
+          }
+
         })
       },
       resetSearch () {
@@ -213,9 +218,11 @@
         this.$http({
           url:'/exam/competitionExam/preview/distribute',
           method:'post',
-          params:{list:this.list}
+          params:{id:this.currId},
+          data:this.list
         }).then(({data})=>{
-          debugger;
+          this.$message.success(data);
+          this.dialogVisible = false;
         })
       }
     }
