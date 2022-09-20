@@ -34,9 +34,6 @@
         field="name"
         sortable
         title="考试课目">
-            <template slot-scope="scope">
-              <el-link  type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.name}}</el-link>
-            </template>
       </vxe-column>
     <vxe-column
         field="starttime"
@@ -85,9 +82,9 @@
         <!-- 弹窗, 新增 / 修改 -->
     <CompetitionExamForm  ref="competitionExamForm" :cid="cid" :crid="crid" @refreshDataList="refreshList"></CompetitionExamForm>
     <el-dialog title="执裁分配表" :visible.sync="dialogVisible" :append-to-body="true" width="80%">
-      <distributionTable @refreshList="()=>{
-        this.showDistribution(currId)
-      }" :list="list"></distributionTable>
+      <distributionTable @refreshList="(redo)=>{
+        this.showDistribution(currId,redo)
+      }" :list="list" v-if="dialogVisible"></distributionTable>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">关闭</el-button>
         <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>确定</el-button>
@@ -194,12 +191,12 @@
           })
         })
       },
-      showDistribution(id){
+      showDistribution(id,redo=false){
         this.currId = id;
         this.$http({
           url:'/exam/competitionExam/preview/distribute',
           method:'get',
-          params:{id}
+          params:{id,redo}
         }).then(({data})=>{
           if(data.status){
             this.list = data.data;

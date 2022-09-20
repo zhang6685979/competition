@@ -44,7 +44,7 @@
             <el-form-item label="选项详情" prop="describe0" :rules="[
                 {required: true, message:'选项详情不能为空', trigger:'blur'}
                ]">
-              <tiny-mce v-model="inputForm.describe0" v-if="visible"></tiny-mce>
+              <tiny-mce v-model="inputForm.describe0" :config="editorConfig" v-if="visible"></tiny-mce>
             </el-form-item>
           </el-col>
         </el-row>
@@ -73,7 +73,13 @@
           describe0: ''
         },
         imageArra: [],
-        currIndex: ''
+        currIndex: '',
+        editorConfig: {
+          width: '100%',
+          height: 300,
+          menubar: false,
+          language: 'zh_CN'
+        }
       }
     },
     components: {

@@ -51,7 +51,7 @@
         <div class="el-scrollbar__wrap" style="height: calc(100% - 40px);">
           <div class="el-scrollbar__view">
             <el-row>
-              <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
+              <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
                 <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always">
                   <div class="jp-card jp-card-bordered">
                     <div class="add-border">
@@ -63,7 +63,7 @@
                   </div>
                 </el-card>
               </el-col>
-              <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(item, index) in dataList" :key="index">
+              <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item, index) in dataList" :key="index">
                 <el-card style="margin: 8px" :body-style="{ padding: '0px' }" shadow="always" class="vote-item">
                   <img class="image" :src="item.image?item.image:require('@/assets/images/99d0.png')">
                   <div class="jp-card-label">
@@ -82,21 +82,30 @@
 
                   <ul class="jp-card-actions">
                     <li>
-                      <el-link :underline="false" @click="edit(item.id)"><i
-                          class="el-icon-edit-outline"></i> 编辑
-                      </el-link>
+                      <el-link :underline="false" @click="edit(item.id)">编辑</el-link>
                     </li>
-                    <li v-if="item.status!=1">
-                      <el-link :underline="false" @click="toProjectHandle(item.key,'statistics')"><i
-                          class="el-icon-delete"></i> 统计</el-link>
+                    <li>
+                      <el-link :underline="false" @click="">投票数据</el-link>
                     </li>
-                    <li v-if="item.status==2">
-                      <el-link :underline="false" @click="stopProject(item.key)"><i class="el-icon-delete"></i> 停止
-                      </el-link>
+                    <li>
+                      <vxe-button type="text" transfer>
+                        <template #default>状态管理</template>
+                        <template #dropdowns>
+                          <vxe-button type="text">启用</vxe-button>
+                          <vxe-button type="text">停用</vxe-button>
+                          <vxe-button type="text">清空投票数据</vxe-button>
+                        </template>
+                      </vxe-button>
                     </li>
-                    <li v-if="item.status!=2">
-                      <el-link :underline="false" @click="deleteProject(item.key)"><i class="el-icon-delete"></i> 删除
-                      </el-link>
+                    <li>
+                      <vxe-button type="text" transfer>
+                        <template #default>更多...</template>
+                        <template #dropdowns>
+                          <vxe-button type="text">预览</vxe-button>
+                          <vxe-button type="text">生成二维码</vxe-button>
+                          <vxe-button type="text" @click="del(item.id)">删除</vxe-button>
+                        </template>
+                      </vxe-button>
                     </li>
                   </ul>
                 </el-card>
@@ -126,7 +135,7 @@
       return {
         searchForm: {
           type: '',
-          title:''
+          title: ''
         },
         filterText: '',
         voteCategoryTreeData: [],
@@ -288,7 +297,7 @@
       },
       // 修改
       edit(id) {
-        this.$router.push('/vote/VoteSubjectForm?id='+id)
+        this.$router.push('/vote/VoteSubjectForm?id=' + id)
       },
       // 删除
       del(id) {
@@ -321,7 +330,7 @@
 </script>
 <style scoped="" lang="scss">
   .jp-card {
-    height: 366px;
+    height: 350px;
     cursor: pointer;
   }
 
@@ -358,14 +367,16 @@
     font-size: 12px;
   }
 
-  .vote-item{
-    .image{
+  .vote-item {
+    .image {
       width: 100%;
-      height:160px;
+      height: 160px;
     }
-    .vote-info{
-      padding:0 10px;
-      p{
+
+    .vote-info {
+      padding: 0 10px;
+
+      p {
         font-size: 13px;
         font-weight: 400;
         color: #606266;

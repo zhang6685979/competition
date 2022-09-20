@@ -25,8 +25,8 @@
             </vxe-column>
           </vxe-table>
         </div>
-        <el-aside width="200px">
-          <el-tag :key="tag.id" v-for="tag in dataListAllSelections" closable :disable-transitions="false"
+        <el-aside width="300px">
+          <el-tag :key="tag.id" class="el-tag" v-for="tag in dataListAllSelections" closable :disable-transitions="false"
             @close="del(tag)">
             {{tag.school+'-'+tag.module}}
           </el-tag>
@@ -261,6 +261,10 @@
       color: #606266;
       font-size: 14px;
       word-break: break-all;
+    }
+    .el-tag{
+      margin-left: 5px!important;
+      margin-bottom: 5px!important;
     }
 
     .el-main {

@@ -86,27 +86,22 @@
                               {required: true, message:'请选择投票模式', trigger:'change'}
                              ]">
               <el-radio-group v-model="inputForm.mode">
-                <el-radio label="1">全程可投</el-radio>
-                <el-radio label="2">每日可投</el-radio>
+                <el-radio :label="1">全程可投</el-radio>
+                <el-radio :label="2">每日可投</el-radio>
               </el-radio-group>
-              <el-input v-model="inputForm.everydayTimes" class="times-setting" placeholder="填写票数"></el-input>
+              <el-input v-model="inputForm.maxTimes" class="times-setting" placeholder="填写票数"></el-input>
             </el-form-item>
             <el-form-item label="投票简介" prop="describe0" :rules="[
                               {required: true, message:'投票简介不能为空', trigger:'blur'}
                              ]">
-                             
-              <tiny-mce v-model="inputForm.describe0" :config="{
-            width: '100%',
-            height: 300,
-            menubar: false,
-            language: 'zh_CN'
-          }"></tiny-mce>
+
+              <tiny-mce v-model="inputForm.describe0" :config="editorConfig"></tiny-mce>
             </el-form-item>
 
             <el-form-item label="投票选项配置" prop="optionConfig">
               <el-radio-group v-model="inputForm.optionConfig">
-                <el-radio label="1">文字模式</el-radio>
-                <el-radio label="2">图文模式</el-radio>
+                <el-radio :label="1">文字模式</el-radio>
+                <el-radio :label="2">图文模式</el-radio>
               </el-radio-group>
             </el-form-item>
             <div>
@@ -134,6 +129,12 @@
         visible: false,
         loading: false,
         imageArra: [],
+        editorConfig: {
+          width: '100%',
+          height: 300,
+          menubar: false,
+          language: 'zh_CN'
+        },
         inputForm: {
           id: '',
           title: '',
@@ -144,9 +145,10 @@
           themeColor: '#409EFF',
           type: this.$route.query.type || '',
           mode: '1',
-          describe0: '',
+          maxTimes: '',
           optionConfig: '1',
-          options: []
+          options: [],
+          status:1
         },
         mobilePreviewUrl: ''
       }

@@ -31,25 +31,25 @@ module.exports = {
       include: 'initial'
     }])
 
-    // config.plugin('preload-website').tap(() => [
-    //   {
-    //     rel: 'preload',
-    //     // to ignore runtime.js
-    //     // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-    //     fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-    //     include: 'initial'
-    //   }
-    // ])
+    config.plugin('preload-manage').tap(() => [
+      {
+        rel: 'preload',
+        // to ignore runtime.js
+        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
+        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+        include: 'initial'
+      }
+    ])
 
-    // config.plugin('preload-mobile').tap(() => [
-    //   {
-    //     rel: 'preload',
-    //     // to ignore runtime.js
-    //     // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-    //     fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-    //     include: 'initial'
-    //   }
-    // ])
+    config.plugin('preload-mobile').tap(() => [
+      {
+        rel: 'preload',
+        // to ignore runtime.js
+        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
+        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+        include: 'initial'
+      }
+    ])
 
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
@@ -150,18 +150,18 @@ module.exports = {
   // 入口设置
   pages: {
     index: {
-      entry: 'src/main.js',
-      template: 'public/index.html',
-      title: '技能竞赛管理平台',
-      filename: 'index.html',
-      chunks: ['chunk-vendors','chunk-common','chunk-libs','chunk-commons','chunk-elementUI','chunk-vxe','index']
-    },
-    website: {
       entry: 'src/pages/website/main.js',
       template: 'src/pages/website/index.html',
       title: '技能竞赛与认证服务平台',
-      filename: 'website.html',
-      chunks: ['chunk-vendors','chunk-common','chunk-libs','chunk-commons','chunk-elementUI','website']
+      filename: 'index.html',
+      chunks: ['chunk-vendors','chunk-common','chunk-libs','chunk-commons','chunk-elementUI','index']
+    },
+    manage: {
+      entry: 'src/main.js',
+      template: 'src/pages/manage/index.html',
+      title: '技能竞赛管理平台',
+      filename: 'manage.html',
+      chunks: ['chunk-vendors','chunk-common','chunk-libs','chunk-commons','chunk-elementUI','chunk-vxe','manage']
     },
     mobile: {
       entry: 'src/pages/mobile/main.js',
