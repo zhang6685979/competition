@@ -136,7 +136,6 @@
       return {
         title: '',
         method: '',
-        visible: false,
         loading: false,
         imageArra: [],
         editorConfig: {
@@ -224,7 +223,7 @@
           maxTimes: '',
           optionConfig: '1',
           options: [],
-          status: 1
+          status: 0
         },
         mobilePreviewUrl: ''
       }
@@ -238,23 +237,21 @@
     created() {
       this.voteSubjectService = new VoteSubjectService()
     },
-    mounted() {
+    activated(){
       this.id = this.$route.query.id
+      this.queryById(this.id);
       let url = window.location.protocol + '//' + window.location.host
       this.mobilePreviewUrl = `${url}/mobile.html#/vote/${this.id}`
-      this.queryById(this.id);
     },
     methods: {
       queryById(id) {
-        this.inputForm.id = id
         this.imageArra = []
-        this.visible = true
         this.loading = false
         this.$nextTick(() => {
-          this.$refs.inputForm.resetFields()
+          this.clearCache();
           if (id) { // 修改或者查看
             this.loading = true
-            this.voteSubjectService.queryById(this.inputForm.id).then(({
+            this.voteSubjectService.queryById(id).then(({
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
@@ -271,6 +268,23 @@
           }
         })
       },
+      clearCache(){
+        this.$refs.inputForm.resetFields();
+        this.inputForm = {
+          id: '',
+          title: '',
+          image: '',
+          starttime: '',
+          endtime: '',
+          describe0: '',
+          themeColor: 0,
+          mode: 1,
+          maxTimes: '',
+          optionConfig: '1',
+          options: [],
+          status: 0
+        }
+      },
       // 表单提交
       doSubmit() {
         this.$refs['inputForm'].validate((valid) => {
@@ -279,7 +293,6 @@
             this.voteSubjectService.save(this.inputForm).then(({
               data
             }) => {
-              this.visible = false
               this.$message.success(data)
               this.$emit('refreshDataList')
               this.loading = false

@@ -40,8 +40,8 @@
 
         <div class="search">
           <input style="flex:1" v-model="keyword" maxlength="15" class="phc" placeholder="输入标题/名称/编号查询" />
-          <span v-if="keyword" bindtap="bindClearTap" class="close icon-roundclosefill"></span>
-          <div bindtap="bindSearchTap" class="search-btn">搜 索</div>
+          <span v-if="keyword" @click="keyword=''" class="close el-icon-close"></span>
+          <div @click="search" class="search-btn">搜 索</div>
         </div>
 
         <div class="menu">
@@ -54,25 +54,25 @@
 
           <!--最新begin-->
           <div class="order-list" v-if="showView=='vote'">
-          	<div class="no-data" v-if="(vote.options||[]).length==0">暂无匹配数据~</div>
-          	<div class="item" v-for="(item,index) in vote.options||[]" :key="index">
-          		<div class="item-inner">
-          			<div class="order shadow">{{index+1}}号</div>
-                 <img :src="item.image" class="loading" alt="">
-          			<div class="line">
-          				<span class="name content-cut-one">{{item.name}}</span>
-          				<span class="num content-cut-one">{{item.votes}}票</span>
-          			</div>
-          			<template wx:if="isStart && !isEnd">
-          				<div @click="doVote(item.id)" v-if="!item.voted" class="vote-btn">
-          					<div class="vote shadow">立即投票</div>
-          				</div>
-          				<div v-else class="vote-btn bt-grey light">
-          					<div class="vote shadow bg-grey light">{{vote.mode==0?'已投票':'今日已投'}}</div>
-          				</div>
-          			</template>
-          		</div>
-          	</div>
+            <div class="no-data" v-if="options.length==0">暂无匹配数据~</div>
+            <div class="item" v-for="(item,index) in options" :key="index">
+              <div class="item-inner">
+                <div class="order shadow">{{index+1}}号</div>
+                <img :src="item.image" @click="currItem=item;showItem=true;" class="loading" alt="">
+                <div class="line">
+                  <span class="name content-cut-one">{{item.name}}</span>
+                  <span class="num content-cut-one">{{item.votes}}票</span>
+                </div>
+                <template wx:if="isStart && !isEnd">
+                  <div @click="doVote(item.id)" v-if="!item.voted" class="vote-btn">
+                    <div class="vote shadow">立即投票</div>
+                  </div>
+                  <div v-else class="vote-btn bt-grey light">
+                    <div class="vote shadow bg-grey light">{{vote.mode==0?'已投票':'今日已投'}}</div>
+                  </div>
+                </template>
+              </div>
+            </div>
           </div>
           <!--最新END-->
 
@@ -85,11 +85,11 @@
                   {{index+1}}
                 </div>
                 <div class="img">
-                  <img :src="item.image" class="loading" />
+                  <img :src="item.image" @click="currItem=item;showItem=true;" class="loading" />
                 </div>
                 <div class="line">
                   <span class="name content-cut-one">{{item.name}}</span>
-                  <span class="num content-cut-one text-orange">编号：{{item.index+1}}号</span>
+                  <span class="num content-cut-one text-orange">编号：{{item.sid}}号</span>
                 </div>
                 <div class="end"><span class="text-orange">{{item.votes}}</span>票</div>
               </div>
@@ -109,21 +109,27 @@
       </div>
     </div>
 
-
+    <van-popup v-model="showItem" position="right" :style="{ width: '100%' }">
+      <voteItem :voteItem="currItem" :theme="themeList[vote.themeColor]" @close="showItem=false"></voteItem>
+    </van-popup>
 
 
   </div>
 </template>
 
 <script>
+  import voteItem from './voteItem'
   export default {
     data() {
       return {
         id: '',
         vote: {},
+        options: [],
         clock: [],
         keyword: '',
         showView: 'vote',
+        showItem:false,
+        currItem:{},
         orderList: [], //排行榜
         themeList: [{
             color1: '#347DFF',
@@ -192,6 +198,9 @@
         ]
       }
     },
+    components:{
+      voteItem
+    },
     mounted() {
       this.id = this.$route.params.id;
       this.getVoteInfo();
@@ -210,11 +219,20 @@
           data
         }) => {
           this.vote = Object.assign({}, data);
+          this.options = data.options;
           this.countDown(data.endtime);
           setInterval(() => {
             this.countDown(data.endtime);
           }, 1000)
         })
+      },
+      search() {
+        var options = this.vote.options;
+        var keyword = this.keyword;
+        var filterOpts = options.filter(opt => {
+          return opt.sid.indexOf(keyword) != -1 || opt.name.indexOf(keyword) != -1
+        })
+        this.options = filterOpts;
       },
       //获取当前时间
       getNowTime() {
@@ -277,7 +295,7 @@
         }).then(({
           data
         }) => {
-          debugger;
+          this.getVoteInfo();
         })
 
       }
@@ -322,6 +340,10 @@
 
   .text-orange {
     color: #f37b1d !important;
+  }
+
+  .bg-grey {
+    background-color: #aaaaaa !important;
   }
 
   .text-bold {
@@ -409,11 +431,13 @@
 
   .vote-detail .vote-detail-inner .detail .info .line2 .left {
     color: #000;
+    white-space: nowrap;
   }
 
   .vote-detail .vote-detail-inner .detail .info .line2 .time {
     padding: 5px 10px;
     background-color: #FFE4D5;
+    white-space: nowrap;
   }
 
   .vote-detail .vote-detail-inner .detail .info .line2 .time .mark {
@@ -498,91 +522,91 @@
   }
 
   .vote-detail .data-list {
-  	width: 100%;
-  	min-height: 400px;
+    width: 100%;
+    min-height: 400px;
   }
 
   .vote-detail .order-list {
-  	width: 100%;
-  	display: flex;
-  	flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .vote-detail .order-list .item {
-  	width: 50%;
-  	padding: 5px;
+    width: 50%;
+    padding: 5px;
   }
 
   .vote-detail .order-list .no-data {
-  	width: 100%;
-  	font-size: 15px;
-  	color: #fff;
-  	text-align: center;
+    width: 100%;
+    font-size: 15px;
+    color: #fff;
+    text-align: center;
   }
 
   .vote-detail .order-list .item .item-inner {
-  	width: 100%;
-  	background-color: #fff;
-  	border-radius: 5px;
-  	overflow: hidden;
-  	position: relative;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
   }
 
   .vote-detail .order-list .item .item-inner .order {
-  	top: 0;
-  	left: 0;
-  	position: absolute;
-  	z-index: 100;
-  	font-size: 15px;
-  	background-color: $mainColor2;
-  	opacity: .9;
-  	color: #fff;
-  	padding: 1px 5px 4px;
-  	border-bottom-right-radius: 5px;
-  	border-top-left-radius: 5px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 100;
+    font-size: 15px;
+    background-color: $mainColor2;
+    opacity: .9;
+    color: #fff;
+    padding: 1px 5px 4px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
   }
 
   .vote-detail .order-list .item .item-inner img {
-  	width: 100%;
-  	height: 175px;
-  	border-top-left-radius: 5px;
-  	border-top-right-radius: 5px;
+    width: 100%;
+    height: 175px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
 
   .vote-detail .order-list .item .item-inner .line {
-  	width: 100%;
-  	height: 35px;
-  	line-height: 35px;
-  	font-size: 14px;
-  	padding: 0 5px;
-  	display: flex;
-  	justify-content: space-between;
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+    padding: 0 5px;
+    display: flex;
+    justify-content: space-between;
   }
 
   .vote-detail .order-list .item .item-inner .line .name {
-  	flex: 1;
+    flex: 1;
   }
 
   .vote-detail .order-list .item .item-inner .line .num {
-  	color: #777;
-  	max-width: 50px;
+    color: #777;
+    max-width: 50px;
   }
 
   .vote-detail .order-list .item .item-inner .vote-btn {
-  	width: 100%;
-  	display: flex;
-  	justify-content: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .vote-detail .order-list .item .item-inner .vote {
-  	width: 80%;
-  	padding: 5px;
-  	opacity: .8;
-  	margin-bottom: 8px;
-  	text-align: center;
-  	border-radius: 15px;
-  	background-color: $mainColor;
-  	color: #fff;
+    width: 80%;
+    padding: 5px;
+    opacity: .8;
+    margin-bottom: 8px;
+    text-align: center;
+    border-radius: 15px;
+    background-color: $mainColor;
+    color: #fff;
   }
 
 

@@ -51,7 +51,7 @@
         searchForm: {
           subject: ''
         },
-        dataList: this.value,
+        dataList: [],
         tablePage: {
           total: 0,
           currentPage: 1,
@@ -64,7 +64,9 @@
     watch: {
       dataList:{
         hanler:function(val){
-          this.$emit('input', val)
+          if(val){
+            this.$emit('input', val)
+          }
         },
         deep:true
       },

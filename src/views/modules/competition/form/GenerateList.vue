@@ -4,15 +4,14 @@
       <vxe-toolbar :refresh="{query: getList}" export custom>
         <template #buttons>
           <el-button type="primary" size="small" icon="el-icon-download" @click="patchDownload()"
-            :disabled="($refs.table && ($refs.table.getCheckboxRecords().length == 0)) || fileFields.length==0"
-            plain>批量下载</el-button>
+            :disabled="($refs.table && ($refs.table.getCheckboxRecords().length == 0)) || fileFields.length==0" plain>
+            批量下载</el-button>
         </template>
       </vxe-toolbar>
       <div>
-        <vxe-table border="inner" auto-resize resizable height="500" size="small" ref="table"
-          show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
-          :import-config="{}" :export-config="{filename:title}"
-          :data="dataList" :checkbox-config="{}">
+        <vxe-table border="inner" auto-resize resizable height="500" size="small" ref="table" show-header-overflow
+          show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}"
+          :export-config="{filename:title}" :data="dataList" :checkbox-config="{}">
           <vxe-column type="seq" width="40"></vxe-column>
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column v-for="(option, index) in dataBindFields.filter((item)=>{
@@ -93,11 +92,15 @@
   import {
     isURL
   } from '@/utils/validate'
+  import {
+    saveAs
+  } from 'file-saver'
+  import JSZip from 'jszip'
   export default {
     props: {
       tid: String,
-      dataList:Array,
-      title:String
+      dataList: Array,
+      title: String
     }, //模板id
     data() {
       return {
@@ -115,7 +118,7 @@
       this.getList();
     },
     methods: {
-      getList(){
+      getList() {
         this.$http({
           url: '/competition/competitionSignup/queryById',
           method: 'get',
@@ -144,15 +147,15 @@
             })
           } else if (genList[i].type === 'table') {
             this.generateModel(genList[i].tableColumns)
-          } else if(genList[i].options&&(genList[i].options.type||'').indexOf('signup-table')!=-1){
-            this.generateModel(genList[i].columns||[])
-          }else {
+          } else if (genList[i].options && (genList[i].options.type || '').indexOf('signup-table') != -1) {
+            this.generateModel(genList[i].columns || [])
+          } else {
             // 处理老版本没有dataBind值的情况，默认绑定数据
             if (genList[i].options.dataBind) {
-              var index = this.dataBindFields.findIndex(item=>{
+              var index = this.dataBindFields.findIndex(item => {
                 return item.model == genList[i].model;
               })
-              if(index==-1){
+              if (index == -1) {
                 this.dataBindFields.push({
                   'model': genList[i].model,
                   'options': genList[i].options,
@@ -168,35 +171,46 @@
         }
         return this.dataBindFields
       },
-      downloadFile(url) {
-        var fileName = decodeURIComponent(url.substring(url.lastIndexOf("/")+1))
-        this.$http.get(url)
-        .then(res => {
-            const blob = new Blob([res.data], {type: res.headers['content-type']});
-            const a = document.createElement("a");
-            const objectUrl = window.URL.createObjectURL(blob);
-            a.download = fileName;
-            a.href = objectUrl;
-            a.click();
-            window.URL.revokeObjectURL(objectUrl);
-            a.remove();
+      patchDownload() {
+        var records = this.$refs.table.getCheckboxRecords()
+        var fileFields = this.fileFields
+        var files = [];
+        records.forEach(record => {
+          fileFields.forEach(field => {
+            record[field.model].split('|').forEach(url => {
+              var fileName = decodeURIComponent(url.substring(url.lastIndexOf("/") + 1));
+              files.push({name:fileName,url:url})
+            })
+          })
         })
+        if(files.length>0){
+          this.download(files,files.map(file=>file.name).join('、')+'.zip')
+        }
       },
-      patchDownload(){
-         var records = this.$refs.table.getCheckboxRecords();
-         var fileFields = this.fileFields
-         records.forEach(record=>{
-           fileFields.forEach(field=>{
-             record[field.model].split('|').forEach(url=>{
-               this.downloadFile(url);
-             })
-           })
-         })
+      download(files, filename) {
+        let zip = new JSZip();
+        let folder = zip.folder('files');
+        // 异步操作
+        Promise.resolve().then(() => {
+          return files.reduce((accumulator, item) => {
+            return accumulator.then(() => fetch(item.url, {
+                method: 'GET',
+                mode: "cors" //允许跨域  no-cors不允许跨域
+              }).then(resp => resp.blob())
+              .then(blob => folder.file(item.name, blob)))
+          }, Promise.resolve())
+        }).then(() => {
+          folder.generateAsync({
+            type: "blob"
+          }).then(content => saveAs(content, filename));
+        })
       }
     },
-    computed:{
-      fileFields(){
-        return this.dataBindFields.filter(item=>{return item.type=='fileupload'})
+    computed: {
+      fileFields() {
+        return this.dataBindFields.filter(item => {
+          return item.type == 'fileupload'
+        })
       }
     }
   }

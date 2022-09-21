@@ -82,18 +82,18 @@
 
                   <ul class="jp-card-actions">
                     <li>
-                      <el-link :underline="false" @click="edit(item.id)">编辑</el-link>
+                      <vxe-button type="text" content="编辑" @click="edit(item.id)"></vxe-button>
                     </li>
                     <li>
-                      <el-link :underline="false" @click="">投票数据</el-link>
+                      <vxe-button type="text" content="投票数据"></vxe-button>
                     </li>
                     <li>
                       <vxe-button type="text" transfer>
                         <template #default>状态管理</template>
                         <template #dropdowns>
-                          <vxe-button type="text">启用</vxe-button>
-                          <vxe-button type="text">停用</vxe-button>
-                          <vxe-button type="text">清空投票数据</vxe-button>
+                          <vxe-button type="text" @click="setStatus(item.id,1)">启用</vxe-button>
+                          <vxe-button type="text" @click="setStatus(item.id,2)">停用</vxe-button>
+                          <vxe-button type="text" @click="clearData(item.id)">清空投票数据</vxe-button>
                         </template>
                       </vxe-button>
                     </li>
@@ -280,17 +280,6 @@
         this.tablePage.pageSize = pageSize
         this.refreshList()
       },
-      // 排序
-      sortChangeHandle(column) {
-        this.tablePage.orders = []
-        if (column.order != null) {
-          this.tablePage.orders.push({
-            column: this.$utils.toLine(column.property),
-            asc: column.order === 'asc'
-          })
-        }
-        this.refreshList()
-      },
       // 新增
       add() {
         this.$router.push('/vote/VoteSubjectForm')
@@ -301,16 +290,13 @@
       },
       // 删除
       del(id) {
-        let ids = id || this.$refs.voteSubjectTable.getCheckboxRecords().map(item => {
-          return item.id
-        }).join(',')
         this.$confirm(`确定删除所选项吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.loading = true
-          this.voteSubjectService.delete(ids).then(({
+          this.voteSubjectService.delete(id).then(({
             data
           }) => {
             this.$message.success(data)
@@ -324,6 +310,25 @@
         this.filterText = ''
         this.$refs.voteCategoryTree.setCurrentKey(null)
         this.refreshList()
+      },
+      setStatus(id,status){
+        this.$http({
+          url:'/vote/voteSubject/setstatus',
+          method:'patch',
+          params:{id,status}
+        }).then(({data})=>{
+          this.$message.success(data)
+          this.refreshList()
+        })
+      },
+      clearData(id){
+        this.$http({
+          url:'/vote/voteSubject/cleandata',
+          method:'patch',
+          params:{id}
+        }).then(({data})=>{
+          this.$message.success(data)
+        })
       }
     }
   }

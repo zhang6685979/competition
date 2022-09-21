@@ -23,27 +23,27 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    },
-    plugins:[
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          compress: {
-            drop_debugger: true, //生产环境自动删除debugger
-            drop_console: true, //生产环境自动删除console
-          },
-          warnings: false,
-        },
-        sourceMap: false, //关掉sourcemap 会生成对于调试的完整的.map文件，但同时也会减慢打包速度
-        parallel: true, //使用多进程并行运行来提高构建速度。默认并发运行数：os.cpus().length - 1。
-      }),
-      new CompressionWebpackPlugin({
-        filename: '[path].gz[query]',
-        algorithm: 'gzip',
-        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-        threshold: 10240,
-        minRatio: 0.8,
-      })
-    ]
+    }
+    // plugins:[
+    //   new UglifyJsPlugin({
+    //     uglifyOptions: {
+    //       compress: {
+    //         drop_debugger: true, //生产环境自动删除debugger
+    //         drop_console: true, //生产环境自动删除console
+    //       },
+    //       warnings: false,
+    //     },
+    //     sourceMap: false, //关掉sourcemap 会生成对于调试的完整的.map文件，但同时也会减慢打包速度
+    //     parallel: true, //使用多进程并行运行来提高构建速度。默认并发运行数：os.cpus().length - 1。
+    //   }),
+    //   new CompressionWebpackPlugin({
+    //     filename: '[path].gz[query]',
+    //     algorithm: 'gzip',
+    //     test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+    //     threshold: 10240,
+    //     minRatio: 0.8,
+    //   })
+    // ]
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
