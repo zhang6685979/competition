@@ -1,6 +1,5 @@
 <template>
   <div class="index-warp">
-    <el-backtop :bottom="60"></el-backtop>
     <el-carousel :interval="5000" class="carousel">
       <el-carousel-item v-for="(item,index) in carouselList" :key="index">
         <a :href="item.url" target="_blank"><img :src="item.image" class="image" /></a>
@@ -12,12 +11,12 @@
         <el-tab-pane label="新闻资讯" name="0">
           <span slot="label" class="tab-title">新闻资讯</span>
           <div class="news-list">
-            <div class="news-item" v-for="(item,index) in newsList.slice(0,3)">
+            <div class="news-item" v-for="(item,index) in newsList.slice(0,3)"  @click="$router.push('/news/'+item.id)">
               <div class="news-left">
                 <img :src="item.image" alt="">
               </div>
               <div class="news-right">
-                <h5 @click="$router.push('/news/'+item.id)">{{item.title}} <span class="tag"
+                <h5>{{item.title}} <span class="tag"
                     v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
@@ -28,9 +27,9 @@
         <el-tab-pane label="通知公告" name="1">
           <span slot="label" class="tab-title">通知公告</span>
           <div class="news-list">
-            <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)">
+            <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)" @click="$router.push('/notice/'+item.id)">
               <div class="news-right">
-                <h5 @click="$router.push('/notice/'+item.id)">{{item.title}} <span class="tag"
+                <h5 >{{item.title}} <span class="tag"
                     v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
@@ -254,6 +253,7 @@
       .news-item {
         display: flex;
         margin-bottom: 48px;
+        cursor: pointer;
 
         &:last-child {
           margin-bottom: 0;

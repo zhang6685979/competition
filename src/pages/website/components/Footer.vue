@@ -6,20 +6,21 @@
         </h3>
         <p>联系电话：+86371-86589327 转8816
         </p>
-        <p>
-          <span></span>+86371-86589328 转8815
+        <p class="ml-70">
+           +86371-86589328 转8815
         </p>
         <p>
           联系邮箱：
-          <a href="mailto:railvehicle.support@jiean.net" target="_blank">railvehicle.support@jiean.net</a>
+          <a href="mailto:urtskills@163.com" target="_blank">urtskills@163.com</a><br>
+        </p>
+        <p class="ml-70">
+          <a href="mailto:bricsskill@jiean.net" target="_blank">bricsskill@jiean.net</a>
         </p>
       </li>
       <li>
         <h3>网站主办方
         </h3>
         <p>郑州捷安高科股份有限公司
-        </p>
-        <p>中国中车股份有限公司
         </p>
       </li>
     </ul>
@@ -148,4 +149,5 @@
   #foot .copyright a:hover {
     color: #fff;
   }
+  .ml-70{margin-left: 65px!important;}
 </style>

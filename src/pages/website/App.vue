@@ -1,5 +1,6 @@
 <template>
   <div id="#app">
+    <el-backtop :bottom="60"></el-backtop>
     <m-header></m-header>
     <router-view></router-view>
     <m-footer></m-footer>

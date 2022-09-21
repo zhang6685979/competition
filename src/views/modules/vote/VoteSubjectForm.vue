@@ -77,10 +77,20 @@
                 value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择结束时间">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="主题色" prop="themeColor" :rules="[
-                              {required: true, message:'主题色不能为空', trigger:'blur'}
-                             ]">
-              <el-color-picker v-model="inputForm.themeColor"></el-color-picker>
+            <el-form-item label="主题色" prop="themeColor">
+              <div class="theme-setting">
+                <div class="theme-form"
+                  :style="{'background-image': `linear-gradient(${themeList[inputForm.themeColor].color1}, ${themeList[inputForm.themeColor].color2})`}" @click="showThemeSelect=!showThemeSelect">
+                </div>
+                <div class="theme-list" v-show="showThemeSelect">
+                  <div class="item" v-for="(item,index) in themeList" :key="index" @click="inputForm.themeColor=index;showThemeSelect=false">
+                    <div class="item-inner"
+                      :style="{'background-image': `linear-gradient(${item.color1}, ${item.color2})`}"><span
+                        v-if="inputForm.themeColor==index" class="el-icon-check"></span></div>
+                  </div>
+                </div>
+              </div>
+
             </el-form-item>
             <el-form-item label="投票模式" prop="mode" :rules="[
                               {required: true, message:'请选择投票模式', trigger:'change'}
@@ -98,12 +108,12 @@
               <tiny-mce v-model="inputForm.describe0" :config="editorConfig"></tiny-mce>
             </el-form-item>
 
-            <el-form-item label="投票选项配置" prop="optionConfig">
+            <!-- <el-form-item label="投票选项配置" prop="optionConfig">
               <el-radio-group v-model="inputForm.optionConfig">
                 <el-radio :label="1">文字模式</el-radio>
                 <el-radio :label="2">图文模式</el-radio>
               </el-radio-group>
-            </el-form-item>
+            </el-form-item> -->
             <div>
               <VoteOptionList v-model="inputForm.options"></VoteOptionList>
             </div>
@@ -135,6 +145,72 @@
           menubar: false,
           language: 'zh_CN'
         },
+        showThemeSelect:false,
+        themeList: [{
+            color1: '#347DFF',
+            color2: '#A376FB'
+          },
+          {
+            color1: '#c3272b',
+            color2: '#827100'
+          },
+          {
+            color1: '#21a675',
+            color2: '#ffa400'
+          },
+          {
+            color1: '#1685a9',
+            color2: '#16a951'
+          },
+          {
+            color1: '#75664d',
+            color2: '#f2be45'
+          },
+          {
+            color1: '#2e4e7e',
+            color2: '#177cb0'
+          },
+          {
+            color1: '#424c50',
+            color2: '#20CE96'
+          },
+          {
+            color1: '#c93756',
+            color2: '#ffb3a7'
+          },
+          {
+            color1: '#e54d42',
+            color2: '#f37b1d'
+          },
+          {
+            color1: '#0E9489',
+            color2: '#8dc63f'
+          },
+          {
+            color1: '#347DFF',
+            color2: '#50BFFF'
+          },
+          {
+            color1: '#6739b6',
+            color2: '#9B7ACD'
+          },
+          {
+            color1: '#9c26b0',
+            color2: '#CF97D9'
+          },
+          {
+            color1: '#e03997',
+            color2: '#EF94C6'
+          },
+          {
+            color1: '#a5673f',
+            color2: '#CEAD97'
+          },
+          {
+            color1: '#000000',
+            color2: '#999999'
+          }
+        ],
         inputForm: {
           id: '',
           title: '',
@@ -142,13 +218,13 @@
           starttime: '',
           endtime: '',
           describe0: '',
-          themeColor: '#409EFF',
+          themeColor: 0,
           type: this.$route.query.type || '',
-          mode: '1',
+          mode: 1,
           maxTimes: '',
           optionConfig: '1',
           options: [],
-          status:1
+          status: 1
         },
         mobilePreviewUrl: ''
       }
@@ -275,5 +351,55 @@
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
+  }
+
+  .theme-setting {
+    position: relative;
+  }
+
+  .theme-list {
+    width: 300px;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #EBEEF5;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  }
+
+  .theme-list .item {
+    width: 25%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .theme-list .item .item-inner {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .theme-form {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #999;
+    cursor: pointer;
   }
 </style>

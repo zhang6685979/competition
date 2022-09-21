@@ -256,7 +256,7 @@
   }
 
   .header.black .dropdown-menu {
-    background: rgba(255, 255, 255, .7) !important;
+    background: rgba(48,49,51,.6) !important;
   }
 
   .header.black a {
