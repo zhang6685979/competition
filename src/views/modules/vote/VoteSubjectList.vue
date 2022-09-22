@@ -101,8 +101,7 @@
                       <vxe-button type="text" transfer>
                         <template #default>更多...</template>
                         <template #dropdowns>
-                          <vxe-button type="text">预览</vxe-button>
-                          <vxe-button type="text">生成二维码</vxe-button>
+                          <vxe-button type="text" @click="$refs.preview.init(item.id)">预览</vxe-button>
                           <vxe-button type="text" @click="del(item.id)">删除</vxe-button>
                         </template>
                       </vxe-button>
@@ -120,6 +119,7 @@
         </vxe-pager>
         <!-- 弹窗, 新增 / 修改 -->
         <VoteCategoryForm ref="voteCategoryForm" @refreshTree="refreshTree"></VoteCategoryForm>
+        <Preview ref="preview"></Preview>
       </div>
     </div>
   </div>
@@ -130,6 +130,7 @@
   import VoteSubjectService from '@/api/vote/VoteSubjectService'
   import VoteCategoryService from '@/api/vote/VoteCategoryService'
   import SelectTree from '@/components/treeSelect/treeSelect.vue'
+  import Preview from './preview'
   export default {
     data() {
       return {
@@ -168,7 +169,8 @@
     },
     components: {
       SelectTree,
-      VoteCategoryForm
+      VoteCategoryForm,
+      Preview
     },
     voteSubjectService: null,
     VoteCategoryService: null,

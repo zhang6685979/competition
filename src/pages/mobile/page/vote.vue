@@ -57,11 +57,11 @@
             <div class="no-data" v-if="options.length==0">暂无匹配数据~</div>
             <div class="item" v-for="(item,index) in options" :key="index">
               <div class="item-inner">
-                <div class="order shadow">{{index+1}}号</div>
+                <div class="order shadow">{{item.sid}}号</div>
                 <img :src="item.image" @click="currItem=item;showItem=true;" class="loading" alt="">
                 <div class="line">
                   <span class="name content-cut-one">{{item.name}}</span>
-                  <span class="num content-cut-one">{{item.votes}}票</span>
+                  <span class="num content-cut-one">{{item.votes||0}}票</span>
                 </div>
                 <template wx:if="isStart && !isEnd">
                   <div @click="doVote(item.id)" v-if="!item.voted" class="vote-btn">
@@ -128,8 +128,8 @@
         clock: [],
         keyword: '',
         showView: 'vote',
-        showItem:false,
-        currItem:{},
+        showItem: false,
+        currItem: {},
         orderList: [], //排行榜
         themeList: [{
             color1: '#347DFF',
@@ -195,16 +195,25 @@
             color1: '#000000',
             color2: '#999999'
           }
-        ]
+        ],
+        preview: false //预览模式
       }
     },
-    components:{
+    components: {
       voteItem
     },
     mounted() {
+      window.vm = this;
       this.id = this.$route.params.id;
-      this.getVoteInfo();
-      this.showResult();
+
+      this.preview = this.$route.query.preview;
+      var loadData = this.$route.query.loadData;
+      if (this.id) {
+        this.showResult();
+        if(!this.preview||loadData){
+          this.getVoteInfo();
+        }
+      }
     },
     methods: {
       getVoteInfo() {
@@ -218,13 +227,43 @@
         }).then(({
           data
         }) => {
-          this.vote = Object.assign({}, data);
-          this.options = data.options;
-          this.countDown(data.endtime);
-          setInterval(() => {
-            this.countDown(data.endtime);
-          }, 1000)
+          this.initData(Object.assign({}, data));
         })
+      },
+      initData(vote) {
+        this.vote = vote;
+        this.options = vote.options;
+        if (!this.id) {
+          this.orderList = vote.options.map(opt => {
+            opt.votes = 0;
+            return opt;
+          })
+        }
+        var isStart = this.isStart;
+        if (!this.isStart){
+          this.loadStart();
+        }else if(!this.isEnd){
+          this.loadEnd()
+        }
+      },
+      loadStart() {
+        this.timer = setInterval(() => {
+          this.countDown(this.vote.starttime);
+          if (this.isStart) {
+            clearInterval(this.timer);
+            this.loadEnd(end);
+            return;
+          }
+        }, 1000);
+      },
+      loadEnd() {
+        this.timer = setInterval(() => {
+          this.countDown(this.vote.endtime);
+          if (this.isEnd) {
+            clearInterval(this.timer);
+            return;
+          }
+        }, 1000);
       },
       search() {
         var options = this.vote.options;
@@ -274,7 +313,7 @@
       showResult() {
         var id = this.id;
         this.$http({
-          url: '/vote/voteSubject/result',
+          url: '/vote/voteSubject/public/result',
           method: 'get',
           params: {
             id
@@ -286,6 +325,10 @@
         })
       },
       doVote(id) {
+        if (this.preview) {
+          this.$toast('预览模式下不能进行投票!');
+          return false;
+        }
         this.$http({
           url: '/vote/voteSubject/public/vote',
           method: 'POST',
@@ -295,6 +338,7 @@
         }).then(({
           data
         }) => {
+          this.$toast(data);
           this.getVoteInfo();
         })
 
@@ -304,12 +348,10 @@
       isStart: function() {
         let now = this.getNowTime();
         let start = this.vote.starttime;
-        let end = this.vote.endtime;
         return now >= start;
       },
       isEnd: function() {
         let now = this.getNowTime();
-        let start = this.vote.starttime;
         let end = this.vote.endtime;
         return now > end;
       }
@@ -752,6 +794,8 @@
 
       .content {
         padding: 10px;
+        word-break: break-all;
+        word-wrap: break-word;
       }
     }
   }

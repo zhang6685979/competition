@@ -51,7 +51,7 @@
         searchForm: {
           subject: ''
         },
-        dataList: [],
+        dataList: this.value,
         tablePage: {
           total: 0,
           currentPage: 1,
@@ -62,13 +62,8 @@
       }
     },
     watch: {
-      dataList:{
-        hanler:function(val){
-          if(val){
-            this.$emit('input', val)
-          }
-        },
-        deep:true
+      dataList(val){
+        this.$emit('input',val);
       },
       value(val) {
         this.dataList = val;
@@ -88,6 +83,10 @@
         }else{
           this.dataList.push(data)
         }
+        this.$forceUpdate();
+        this.$nextTick(()=>{
+          this.$refs.voteOptionTable.loadData(this.dataList);
+        })
       },
       // 修改
       edit(item,index) {

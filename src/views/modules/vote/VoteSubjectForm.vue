@@ -26,7 +26,7 @@
               <el-input v-model="inputForm.title" placeholder="简短的标题"></el-input>
             </el-form-item>
             <el-form-item label="投票分类" prop="type" :rules="[
-                           {required: true, message:'投票分类不能为空', trigger:'change'}
+                           {required: true, message:'投票分类不能为空', trigger:'change,blur'}
                          ]">
               <SelectTree ref="type" :props="{
                                   value: 'id',             // ID字段名
@@ -80,10 +80,12 @@
             <el-form-item label="主题色" prop="themeColor">
               <div class="theme-setting">
                 <div class="theme-form"
-                  :style="{'background-image': `linear-gradient(${themeList[inputForm.themeColor].color1}, ${themeList[inputForm.themeColor].color2})`}" @click="showThemeSelect=!showThemeSelect">
+                  :style="{'background-image': `linear-gradient(${themeList[inputForm.themeColor].color1}, ${themeList[inputForm.themeColor].color2})`}"
+                  @click="showThemeSelect=!showThemeSelect">
                 </div>
                 <div class="theme-list" v-show="showThemeSelect">
-                  <div class="item" v-for="(item,index) in themeList" :key="index" @click="inputForm.themeColor=index;showThemeSelect=false">
+                  <div class="item" v-for="(item,index) in themeList" :key="index"
+                    @click="inputForm.themeColor=index;showThemeSelect=false">
                     <div class="item-inner"
                       :style="{'background-image': `linear-gradient(${item.color1}, ${item.color2})`}"><span
                         v-if="inputForm.themeColor==index" class="el-icon-check"></span></div>
@@ -96,8 +98,8 @@
                               {required: true, message:'请选择投票模式', trigger:'change'}
                              ]">
               <el-radio-group v-model="inputForm.mode">
-                <el-radio :label="1">全程可投</el-radio>
-                <el-radio :label="2">每日可投</el-radio>
+                <el-radio :label="0">全程可投</el-radio>
+                <el-radio :label="1">每日可投</el-radio>
               </el-radio-group>
               <el-input v-model="inputForm.maxTimes" class="times-setting" placeholder="填写票数"></el-input>
             </el-form-item>
@@ -105,15 +107,8 @@
                               {required: true, message:'投票简介不能为空', trigger:'blur'}
                              ]">
 
-              <tiny-mce v-model="inputForm.describe0" :config="editorConfig"></tiny-mce>
+              <tiny-mce v-if="!editorVisible" v-model="inputForm.describe0" :config="editorConfig"></tiny-mce>
             </el-form-item>
-
-            <!-- <el-form-item label="投票选项配置" prop="optionConfig">
-              <el-radio-group v-model="inputForm.optionConfig">
-                <el-radio :label="1">文字模式</el-radio>
-                <el-radio :label="2">图文模式</el-radio>
-              </el-radio-group>
-            </el-form-item> -->
             <div>
               <VoteOptionList v-model="inputForm.options"></VoteOptionList>
             </div>
@@ -131,6 +126,7 @@
   import SelectTree from '@/components/treeSelect/treeSelect'
   import VoteOptionList from './VoteOptionList'
   import TinyMce from '@/components/editor/TinyMce'
+  import voteSetting from '@/pages/mobile/page/vote'
   export default {
     data() {
       return {
@@ -144,7 +140,7 @@
           menubar: false,
           language: 'zh_CN'
         },
-        showThemeSelect:false,
+        showThemeSelect: false,
         themeList: [{
             color1: '#347DFF',
             color2: '#A376FB'
@@ -218,30 +214,39 @@
           endtime: '',
           describe0: '',
           themeColor: 0,
-          type: this.$route.query.type || '',
-          mode: 1,
+          type: '',
+          mode: 0,
           maxTimes: '',
           optionConfig: '1',
           options: [],
-          status: 0
+          status: 0,
+          votes: 0,
+          peoples: 0,
+          views: 0
         },
-        mobilePreviewUrl: ''
+        mobilePreviewUrl: '',
+        editorVisible: false
       }
     },
     components: {
       SelectTree,
       VoteOptionList,
-      TinyMce
+      TinyMce,
+      voteSetting
     },
     voteSubjectService: null,
     created() {
       this.voteSubjectService = new VoteSubjectService()
     },
-    activated(){
+    activated() {
       this.id = this.$route.query.id
       this.queryById(this.id);
       let url = window.location.protocol + '//' + window.location.host
-      this.mobilePreviewUrl = `${url}/mobile.html#/vote/${this.id}`
+      this.mobilePreviewUrl = `${url}/mobile.html#/vote/${this.id}?preview=true`
+      this.editorVisible = true;
+      this.$nextTick(() => {
+        this.editorVisible = false
+      })
     },
     methods: {
       queryById(id) {
@@ -255,6 +260,7 @@
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
+              this.loaded();
               this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
                   this.imageArra.push({
@@ -268,7 +274,21 @@
           }
         })
       },
-      clearCache(){
+      loaded() {
+        var iframe = document.getElementById('preview-html');
+        // 处理兼容行问题
+        if (iframe.attachEvent) {
+          iframe.attachEvent('onload', () => {
+            iframe.contentWindow.vm.initData(this.inputForm);
+          })
+        } else {
+          iframe.onload = () => {
+            iframe.contentWindow.vm.initData(this.inputForm);
+            console.log('我是在表单页面设置的');
+          }
+        }
+      },
+      clearCache() {
         this.$refs.inputForm.resetFields();
         this.inputForm = {
           id: '',
@@ -278,11 +298,14 @@
           endtime: '',
           describe0: '',
           themeColor: 0,
-          mode: 1,
+          mode: 0,
           maxTimes: '',
           optionConfig: '1',
           options: [],
-          status: 0
+          status: 0,
+          votes: 0,
+          peoples: 0,
+          views: 0
         }
       },
       // 表单提交

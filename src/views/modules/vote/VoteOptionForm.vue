@@ -70,7 +70,8 @@
         inputForm: {
           name: '',
           image: '',
-          describe0: ''
+          describe0: '',
+          sid:1
         },
         imageArra: [],
         currIndex: '',

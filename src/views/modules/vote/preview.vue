@@ -1,55 +1,46 @@
 <template>
-  <div class="preview-container">
-    <div class="preview-layer">
-      <div class="preview-bg">
-        <div class="preview-phone">
-          <iframe id="preview-html" :src="mobilePreviewUrl" class="preview-html" frameborder="0" name="preview-html"
-            scrolling="auto" />
+  <el-dialog title="投票预览" :visible.sync="visible" fullscreen>
+    <div class="preview-container">
+      <div class="preview-layer">
+        <div class="preview-bg">
+          <div class="preview-phone">
+            <iframe id="preview-html" :src="mobilePreviewUrl" class="preview-html" frameborder="0" name="preview-html"
+              scrolling="auto" />
+          </div>
         </div>
       </div>
+      <div v-if="mobilePreviewUrl" class="qrcode-view">
+        <p>手机扫码查看效果</p>
+        <p class="text-danger">
+          * 预览只能查看效果，无法提交数据
+        </p>
+        <vue-qr v-if="mobilePreviewUrl" :size="194" :text="mobilePreviewUrl" />
+      </div>
     </div>
-    <div v-if="mobilePreviewUrl&&previewQrcode" class="qrcode-view">
-      <p>手机扫码查看效果</p>
-      <p class="text-danger">
-        * 预览只能查看效果，无法提交数据
-      </p>
-      <vue-qr v-if="mobilePreviewUrl&&previewQrcode" :size="194" :text="mobilePreviewUrl" />
-    </div>
-  </div>
+  </el-dialog>
+
 </template>
 
 <script>
-  import {
-    BizProjectForm
-  } from 'tduck-form-generator'
   import VueQr from 'vue-qr'
-  import mixin from '../TduckFormMixin'
 
   export default {
     name: 'PreView',
     components: {
-      BizProjectForm,
       VueQr
-    },
-    mixins: [mixin],
-    props: {
-      previewQrcode: null
     },
     data() {
       return {
-        formKey: null,
-        mobilePreviewUrl: '',
-        formConfig: {
-          formKey: '',
-          showBtns: true
-        }
+        visible:false,
+        mobilePreviewUrl: ''
       }
     },
-    mounted() {
-      this.formKey = this.$route.query.key
-      let url = window.location.protocol + '//' + window.location.host
-      this.mobilePreviewUrl = `${url}/mobile.html#/project/form/view?key=${this.formKey}`
-      this.$set(this.formConfig, 'formKey', this.formKey)
+    methods:{
+      init(id){
+        let url = window.location.protocol + '//' + window.location.host
+        this.mobilePreviewUrl = `${url}/mobile.html#/vote/${id}?preview=true&loadData=true`
+        this.visible = true;
+      }
     }
   }
 </script>

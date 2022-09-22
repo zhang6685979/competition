@@ -7,11 +7,13 @@ import ElementUI,{Message} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/styles/index.scss'
 
-import { Popup,NavBar } from 'vant';
+import { Popup,NavBar,Toast } from 'vant';
 import 'vant/lib/popup/style';
 import 'vant/lib/nav-bar/style';
+import 'vant/lib/toast/style';
 Vue.use(Popup);
 Vue.use(NavBar);
+Vue.use(Toast);
 
 //import "amfe-flexible";
 
