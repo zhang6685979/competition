@@ -236,14 +236,14 @@
         <el-input v-model="queryParams.name" placeholder="请输入项目名称" type="text" />
       </el-form-item>
       <el-form-item label="项目状态">
-        <el-radio-group v-model="queryParams.status" size="small" @change="()=>{
-                this.queryParams.current=0
-                this.queryProjectPage()
-            }">
-          <el-radio-button v-for="status in projectStatusList" :key="status.code" :label="status.code">
-            {{ status.name }}
-          </el-radio-button>
-        </el-radio-group>
+        <el-select v-model="queryParams.status" clearable placeholder="请选择">
+            <el-option
+              v-for="status in projectStatusList"
+              :key="status.code"
+              :label="status.name"
+              :value="status.code">
+            </el-option>
+          </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="queryProjectPage()" size="small" icon="el-icon-search">查询</el-button>
@@ -283,10 +283,10 @@
                   </li>
                   <li v-if="item.status!=1">
                     <el-link :underline="false" @click="toProjectHandle(item.key,'statistics')"><i
-                        class="el-icon-delete"></i> 统计</el-link>
+                        class="el-icon-data-analysis"></i> 统计</el-link>
                   </li>
                   <li v-if="item.status==2">
-                    <el-link :underline="false" @click="stopProject(item.key)"><i class="el-icon-delete"></i> 停止
+                    <el-link :underline="false" @click="stopProject(item.key)"><i class="el-icon-close"></i> 停止
                     </el-link>
                   </li>
                   <li v-if="item.status!=2">
