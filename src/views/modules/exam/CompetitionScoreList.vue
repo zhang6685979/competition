@@ -3,9 +3,9 @@
     <div class="bg-white top">
      <el-upload
        class="upload"
-       :action="`${this.$http.BASE_URL}/competition/competitionRounds/score/import`"
+       :action="`${$http.BASE_URL}/competition/competitionRounds/score/import`"
        :show-file-list="false"
-       :data="{cid:cid,crid:crid}"
+       :data="{cid:cid,crid:crid,ceid:ceid}"
        :headers="{token: $cookie.get('token')}"
        :on-success="uploadSuccess"
        >
@@ -46,6 +46,7 @@
     props: {
       cid: String,
       crid: String,
+      ceid:String,
     },
     data() {
       return {

@@ -27,7 +27,6 @@
           </vxe-column>
           <vxe-column fixed="right" align="center" width="280" title="操作">
             <template slot-scope="scope">
-              <el-button type="text" icon="el-icon-view" size="small" @click="importScore(scope.row.id)">查看成绩</el-button>
               <el-button type="text" icon="el-icon-view" size="small" @click="examList(scope.row.id)">考试管理</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
@@ -43,21 +42,12 @@
     </div>
     <!-- 弹窗, 新增 / 修改 -->
     <CompetitionRoundsForm ref="competitionRoundsForm" :id="id" @refreshDataList="refreshList"></CompetitionRoundsForm>
-    <el-dialog
-      title="导入成绩"
-      :close-on-click-modal="false"
-       v-dialogDrag
-      :visible.sync="visible"
-      width="60%"
-    >
-      <CompetitionScoreList :cid="id" :crid="currId" v-if="visible"></CompetitionScoreList>
-    </el-dialog>
 
     <el-dialog
       title="考试管理"
       :visible.sync="examVisible"
       :append-to-body="true"
-      width="60%"
+      width="70%"
     >
       <CompetitionExamList  :cid="id" :crid="currId" v-if="examVisible"></CompetitionExamList>
     </el-dialog>
@@ -66,7 +56,6 @@
 
 <script>
   import CompetitionRoundsForm from './CompetitionRoundsForm'
-  import CompetitionScoreList from './CompetitionScoreList'
   import CompetitionExamList from '../exam/CompetitionExamList'
   import CompetitionRoundsService from '@/api/competition/CompetitionRoundsService'
   export default {
@@ -90,7 +79,6 @@
     },
     components: {
       CompetitionRoundsForm,
-      CompetitionScoreList,
       CompetitionExamList
     },
     competitionRoundsService: null,
@@ -147,11 +135,6 @@
           return item.id
         })[0]
         this.$refs.competitionRoundsForm.init('edit', id)
-      },
-      // 查看
-      importScore(id) {
-         this.currId = id;
-         this.visible = true;
       },
       examList(id){
         this.currId = id;

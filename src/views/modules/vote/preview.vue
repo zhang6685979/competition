@@ -14,7 +14,12 @@
         <p class="text-danger">
           * 预览只能查看效果，无法提交数据
         </p>
-        <vue-qr v-if="mobilePreviewUrl" :size="194" :text="mobilePreviewUrl" />
+        <vue-qr class="qrcode" v-if="mobilePreviewUrl" :size="194" :text="mobilePreviewUrl"
+          :callback="qrCodeGenSuccess" />
+        <a class="download-btn" @click="()=>{
+                                this.downloadFile(`${title}.png`,this.qrCodeUrl)
+                            }">请将此二维码保存并分享</a>
+        <p class="text-center">《{{title}}》二维码</p>
       </div>
     </div>
   </el-dialog>
@@ -31,15 +36,45 @@
     },
     data() {
       return {
-        visible:false,
-        mobilePreviewUrl: ''
+        visible: false,
+        mobilePreviewUrl: '',
+        qrCodeUrl: '',
+        title: ''
       }
     },
-    methods:{
-      init(id){
+    methods: {
+      init(id, title) {
+        this.title = title;
         let url = window.location.protocol + '//' + window.location.host
         this.mobilePreviewUrl = `${url}/mobile.html#/vote/${id}?preview=true&loadData=true`
         this.visible = true;
+      },
+      qrCodeGenSuccess(dataUrl) {
+        this.qrCodeUrl = dataUrl
+      },
+      downloadFile(fileName, content) {
+        let aLink = document.createElement('a')
+        let blob = this.base64ToBlob(content) // new Blob([content]);
+        let evt = document.createEvent('HTMLEvents')
+        evt.initEvent('click', true, true) // initEvent 不加后两个参数在FF下会报错  事件类型，是否冒泡，是否阻止浏览器的默认行为
+        aLink.download = fileName
+        aLink.href = URL.createObjectURL(blob)
+        // aLink.dispatchEvent(evt);
+        aLink.click()
+      },
+      // base64转blob
+      base64ToBlob(code) {
+        let parts = code.split(';base64,')
+        let contentType = parts[0].split(':')[1]
+        let raw = window.atob(parts[1])
+        let rawLength = raw.length
+        let uInt8Array = new Uint8Array(rawLength)
+        for (let i = 0; i < rawLength; ++i) {
+          uInt8Array[i] = raw.charCodeAt(i)
+        }
+        return new Blob([uInt8Array], {
+          type: contentType
+        })
       }
     }
   }
@@ -87,6 +122,17 @@
       text-align: center;
       font-size: 12px;
       color: #303133;
+    }
+
+    .qrcode {
+      box-shadow: 0 0 5px #ccc;
+    }
+
+    .download-btn {
+      display: block;
+      text-align: center;
+      margin: 10px;
+      cursor: pointer;
     }
   }
 

@@ -85,7 +85,7 @@
                       <vxe-button type="text" content="编辑" @click="edit(item.id)"></vxe-button>
                     </li>
                     <li>
-                      <vxe-button type="text" content="投票数据"></vxe-button>
+                      <vxe-button type="text" content="投票数据" @click="$refs.voteResult.init(item.id)"></vxe-button>
                     </li>
                     <li>
                       <vxe-button type="text" transfer>
@@ -101,7 +101,7 @@
                       <vxe-button type="text" transfer>
                         <template #default>更多...</template>
                         <template #dropdowns>
-                          <vxe-button type="text" @click="$refs.preview.init(item.id)">预览</vxe-button>
+                          <vxe-button type="text" @click="$refs.preview.init(item.id,item.title)">预览</vxe-button>
                           <vxe-button type="text" @click="del(item.id)">删除</vxe-button>
                         </template>
                       </vxe-button>
@@ -120,6 +120,7 @@
         <!-- 弹窗, 新增 / 修改 -->
         <VoteCategoryForm ref="voteCategoryForm" @refreshTree="refreshTree"></VoteCategoryForm>
         <Preview ref="preview"></Preview>
+        <VoteResult ref="voteResult"></VoteResult>
       </div>
     </div>
   </div>
@@ -127,6 +128,7 @@
 
 <script>
   import VoteCategoryForm from './VoteCategoryForm'
+  import VoteResult from './VoteResult'
   import VoteSubjectService from '@/api/vote/VoteSubjectService'
   import VoteCategoryService from '@/api/vote/VoteCategoryService'
   import SelectTree from '@/components/treeSelect/treeSelect.vue'
@@ -170,7 +172,8 @@
     components: {
       SelectTree,
       VoteCategoryForm,
-      Preview
+      Preview,
+      VoteResult
     },
     voteSubjectService: null,
     VoteCategoryService: null,

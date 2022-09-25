@@ -3,6 +3,9 @@
     <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm"
       @keyup.enter.native="refreshList()" @submit.native.prevent>
       <!-- 搜索框-->
+      <el-form-item prop="name">
+             <el-input size="small" v-model="searchForm.name" placeholder="姓名" clearable></el-input>
+      </el-form-item>
       <el-form-item prop="participate0">
         <el-select v-model="searchForm.participate0" placeholder="请选择参与方式" size="small" style="width: 100%;" clearable>
           <el-option v-for="item in ['线上参会', '线下参会']" :key="item" :label="item" :value="item">
@@ -19,13 +22,21 @@
       <vxe-toolbar :refresh="{query: refreshList}" export print custom>
         <template #buttons>
           <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-          <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()"
-            :disabled="$refs.refereeTable && $refs.refereeTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+          <el-upload
+            class="upload"
+            :action="`${$http.BASE_URL}/referee/referee/import`"
+            :show-file-list="false"
+            :data="{cid:cid}"
+            :headers="{token: $cookie.get('token')}"
+            :on-success="uploadSuccess"
+            >
+            <el-button slot="trigger" size="small" type="warning" icon="el-icon-upload">导入</el-button>
+          </el-upload>
           <el-button type="danger" size="small" icon="el-icon-delete" @click="del()"
             :disabled="$refs.refereeTable && $refs.refereeTable.getCheckboxRecords().length === 0" plain>删除</el-button>
         </template>
       </vxe-toolbar>
-      <div style="height: 500px;">
+      <div style="height: calc(100% - 80px);">
         <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small" ref="refereeTable"
           show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
           :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}"
@@ -78,6 +89,7 @@
     data() {
       return {
         searchForm: {
+          name:'',
           participate0: '',
         },
         dataList: [],
@@ -176,8 +188,14 @@
       resetSearch() {
         this.$refs.searchForm.resetFields()
         this.refreshList()
+      },
+      uploadSuccess(){
+        this.$message.success('导入成功!');
+        this.refreshList()
       }
     }
   }
 </script>
-
+<style scoped>
+  .upload{margin:0 10px;}
+</style>

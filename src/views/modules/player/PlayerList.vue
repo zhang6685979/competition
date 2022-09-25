@@ -5,8 +5,8 @@
          <el-form-item prop="module">
                 <el-input size="small" v-model="searchForm.module" placeholder="赛项" clearable></el-input>
          </el-form-item>
-         <el-form-item prop="ctid">
-                <el-input size="small" v-model="searchForm.ctid" placeholder="关联赛事" clearable></el-input>
+         <el-form-item prop="name">
+                <el-input size="small" v-model="searchForm.name" placeholder="姓名" clearable></el-input>
          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
@@ -15,10 +15,19 @@
       </el-form>
 
      <div class="bg-white top">
-        <vxe-toolbar :refresh="{query: refreshList}" export print custom>
+        <vxe-toolbar :refresh="{query: refreshList}" export custom>
           <template #buttons>
             <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-            <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.playerTable && $refs.playerTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+            <el-upload
+              class="upload"
+              :action="`${$http.BASE_URL}/player/player/import`"
+              :show-file-list="false"
+              :data="{cid:cid}"
+              :headers="{token: $cookie.get('token')}"
+              :on-success="uploadSuccess"
+              >
+              <el-button slot="trigger" size="small" type="warning" icon="el-icon-upload">导入</el-button>
+            </el-upload>
             <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.playerTable && $refs.playerTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>
         </vxe-toolbar>
@@ -125,8 +134,8 @@
     data () {
       return {
         searchForm: {
-          module: '',
-          ctid: ''
+          name:'',
+          module: ''
         },
         dataList: [],
         tablePage: {
@@ -214,7 +223,14 @@
       resetSearch () {
         this.$refs.searchForm.resetFields()
         this.refreshList()
+      },
+      uploadSuccess(){
+        this.$message.success('导入成功!');
+        this.refreshList()
       }
     }
   }
 </script>
+<style scoped>
+  .upload{margin:0 10px;}
+</style>

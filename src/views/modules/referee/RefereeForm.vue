@@ -9,17 +9,9 @@
              label-width="120px">
       <el-row  :gutter="15">
         <el-col :span="12">
-            <el-form-item label="所属省份" prop="city"
-                :rules="[
-                 ]">
-              <el-input v-model="inputForm.city" placeholder="请填写所属省份"     ></el-input>
-           </el-form-item>
-        </el-col>
-        <el-col :span="12">
             <el-form-item label="所在学院" prop="school"
-                :rules="[
-                 ]">
-              <el-input v-model="inputForm.school" placeholder="请填写所在学院"     ></el-input>
+                :rules='[{ "required": true, "message": "请选择所在院校" }]'>
+              <school-select v-model="inputForm.school"></school-select>
            </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -38,8 +30,7 @@
         </el-col>
         <el-col :span="12">
             <el-form-item label="姓名" prop="name"
-                :rules="[
-                 ]">
+                :rules='[{ "required": true, "message": "请填写姓名" }]'>
               <el-input v-model="inputForm.name" placeholder="请填写姓名"     ></el-input>
            </el-form-item>
         </el-col>
@@ -59,9 +50,7 @@
         </el-col>
         <el-col :span="12">
             <el-form-item label="身份证号" prop="idcardno"
-                :rules="[
-                  {validator: validator.isCardId, trigger:'blur'}
-                 ]">
+                :rules='[{ "required": true, "message": "请填写身份证号" },{validator: validator.isCardId, trigger:["blur","change"]}]'>
               <el-input v-model="inputForm.idcardno" placeholder="请填写身份证号"     ></el-input>
            </el-form-item>
         </el-col>
@@ -74,17 +63,13 @@
         </el-col>
         <el-col :span="12">
             <el-form-item label="手机号码" prop="mobile"
-                :rules="[
-                  {validator: validator.isMobile, trigger:'blur'}
-                 ]">
+                :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isMobile, trigger:["blur","change"]}]'>
               <el-input v-model="inputForm.mobile" placeholder="请填写手机号码"     ></el-input>
            </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="电子邮箱" prop="email"
-                :rules="[
-                  {validator: validator.isEmail, trigger:'blur'}
-                 ]">
+                :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isEmail, trigger:["blur","change"]}]'>
               <el-input v-model="inputForm.email" placeholder="请填写电子邮箱"     ></el-input>
            </el-form-item>
         </el-col>
@@ -128,6 +113,7 @@
 
 <script>
   import RefereeService from '@/api/referee/RefereeService'
+  import schoolSelect from '@/components/FormMake/components/SignupTable/schoolSelect'
   export default {
     props:{cid:String},
     data () {
@@ -155,6 +141,7 @@
       }
     },
     components: {
+      schoolSelect
     },
     refereeService: null,
     created () {

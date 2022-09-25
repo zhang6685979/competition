@@ -1,7 +1,7 @@
 <template>
     <div class="page">
      <div class="bg-white top">
-        <vxe-toolbar :refresh="{query: refreshList}" export print custom>
+        <vxe-toolbar :refresh="{query: refreshList}" export custom>
           <template #buttons>
             <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
             <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.competitionExamTable && $refs.competitionExamTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
@@ -58,11 +58,12 @@
       <vxe-column
         fixed="right"
         align="center"
-        width="230"
+        width="300"
         title="操作">
         <template  slot-scope="scope">
+          <el-button type="text" icon="el-icon-view" size="small" @click="importScore(scope.row.id)">查看成绩</el-button>
+          <el-button type="text" icon="el-icon-user" size="small" @click="showDistribution(scope.row.id)">查看执裁分配</el-button>
           <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-          <el-button type="text" icon="el-icon-edit" size="small" @click="showDistribution(scope.row.id)">查看执裁分配</el-button>
           <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
       </vxe-column>
@@ -90,6 +91,16 @@
         <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>确定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="导入成绩"
+      :close-on-click-modal="false"
+      :append-to-body="true"
+       v-dialogDrag
+      :visible.sync="visible"
+      width="60%"
+    >
+      <CompetitionScoreList :cid="id" :crid="crid" :ceid="currId" v-if="visible"></CompetitionScoreList>
+    </el-dialog>
   </div>
 </template>
 
@@ -97,6 +108,7 @@
   import CompetitionExamForm from './CompetitionExamForm'
   import CompetitionExamService from '@/api/exam/CompetitionExamService'
   import distributionTable from './distributionTable'
+  import CompetitionScoreList from './CompetitionScoreList'
   export default {
     props: {
       cid: String,
@@ -114,12 +126,14 @@
         loading: false,
         dialogVisible:false,
         list:[],
-        currId:''
+        currId:'',
+        visible:false
       }
     },
     components: {
       CompetitionExamForm,
-      distributionTable
+      distributionTable,
+      CompetitionScoreList
     },
     competitionExamService: null,
     created () {
@@ -221,7 +235,12 @@
           this.$message.success(data);
           this.dialogVisible = false;
         })
-      }
+      },
+      // 导入成绩
+      importScore(id) {
+         this.currId = id;
+         this.visible = true;
+      },
     }
   }
 </script>

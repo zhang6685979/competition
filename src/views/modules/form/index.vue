@@ -1,46 +1,4 @@
 <template>
-  <!-- <div class="form-index-container">
-        <el-card class="header-container">
-            <el-row align="middle" type="flex" :gutter="5" style="height: 50px">
-                <i class="el-icon-back" @click="$router.back(-1)" />
-                <img class="header-logo" src="https://demo.tduckapp.com/img/indexLogo.efc52fa3.svg" @click="$router.push({path:'/home'})">
-                <el-col />
-                <el-button type="primary" icon="el-icon-view" @click="previewDialogVisible=true">
-                    预览
-                </el-button>
-                <el-button type="success" icon="el-icon-folder-add" @click="saveProjectAsTemplateHandle">
-                    保存至模板中心
-                </el-button>
-            </el-row>
-        </el-card>
-        <div class="main-container">
-            <div class="left-menu-container">
-                <el-menu :collapse="isCollapse" :default-active="defaultActiveMenu"
-                         class="el-menu-vertical"
-                         @select="menuSelectHandle"
-                >
-                    <el-menu-item v-for="menuItem in menuItemList" :key="menuItem.route" :index="menuItem.route">
-                        <i :class="menuItem.icon" />
-                        <span slot="title">{{ menuItem.title }}</span>
-                    </el-menu-item>
-                </el-menu>
-                <i v-if="!isCollapse" class="el-icon-d-arrow-left" @click="collapseHandle" />
-                <i v-else class="el-icon-d-arrow-right" @click="collapseHandle" />
-            </div>
-            <div class="right-content-container">
-                <router-view />
-            </div>
-        </div>
-        <el-dialog
-            :visible.sync="previewDialogVisible"
-            destroy-on-close
-            fullscreen
-        >
-            <pre-view :key="previewKey" :preview-qrcode="true" />
-        </el-dialog>
-        <template-create ref="templateCreate" :form-key="projectKey" />
-    </div> -->
-
   <div class="page">
     <div class="bg-white top">
       <div class="pull-right">
@@ -48,7 +6,7 @@
             预览
         </el-button>
         <el-button type="success" icon="el-icon-folder-add" @click="saveProjectAsTemplateHandle">
-            保存至模板中心
+            保存至模板
         </el-button>
       </div>
       <el-page-header @back="goBack" content="问卷详情" class="page-header"></el-page-header>
@@ -70,9 +28,10 @@
         </div>
       </div>
       <el-dialog :visible.sync="previewDialogVisible" title="问卷预览" destroy-on-close fullscreen>
-        <pre-view :key="previewKey" :preview-qrcode="true" />
+        {{title}}
+        <pre-view :key="previewKey" :preview-qrcode="true"  :title="title"/>
       </el-dialog>
-      <template-create ref="templateCreate" :form-key="projectKey" />
+      <template-create ref="templateCreate" :form-key="projectKey"/>
     </div>
   </div>
 </template>
@@ -109,6 +68,7 @@
         previewDialogVisible: false,
         defaultActiveMenu: 'editor',
         projectKey: null,
+        title:'',
         isCollapse: false,
         menuItemList: [{
             title: '编辑',
@@ -147,13 +107,9 @@
         ]
       }
     },
-    watch:{
-      '$route.query.type':function(newVal){
-        this.defaultActiveMenu = newVal;
-      }
-    },
-    created() {
+    activated() {
       this.projectKey = this.$route.query.key
+      this.title = this.$route.query.title
       this.defaultActiveMenu = this.$route.query.type||'editor'
     },
     methods: {
