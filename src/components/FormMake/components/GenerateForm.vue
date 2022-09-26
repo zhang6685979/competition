@@ -103,6 +103,10 @@ export default {
         }
       })
     },
+    token: {
+      type: String,
+      default: () => ''
+    },
     remote: {
       type: Object,
       default: () => ({})
@@ -163,6 +167,9 @@ export default {
 
           this.displayFields[genList[i].model] = !genList[i].options.hidden
         } else {
+          if(genList[i].type=='fileupload' || genList[i].type=='imgupload'){
+            genList[i].options.token = this.token
+          }
           if (Object.keys(this.formValue).indexOf(genList[i].model) >= 0) {
             // 处理老版本没有dataBind值的情况，默认绑定数据
             if (Object.keys(genList[i].options).indexOf('dataBind') < 0 || genList[i].options.dataBind) {

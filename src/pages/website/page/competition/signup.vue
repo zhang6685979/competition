@@ -35,7 +35,7 @@
           </table>
         </div>
         <fm-generate-form style="margin: 0 auto;" insite="true" :edit="currItem.status!=1" v-if="json" :data="json"
-          :value="{}" :remote="{}" ref="generateForm">
+          :value="{}" :remote="{}" ref="generateForm" :token="$cookie.get('user-token')">
         </fm-generate-form>
         <div class="btn-warp" v-if="currItem.status!=1">
           <button class="btn btn-save" @click="save">保存</button>

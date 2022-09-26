@@ -197,7 +197,7 @@ export default {
       this.headers.map(item => {
         xhr.setRequestHeader(item.key, item.value)
       })
-      xhr.setRequestHeader('token',this.$cookie.get('user-token')||this.$cookie.get('token'))
+      xhr.setRequestHeader('token',this.token)
       let formData = new FormData()
       formData.append('file', file)
       formData.append('fname', file.name)

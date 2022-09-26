@@ -98,13 +98,6 @@ export default {
     }
   },
   data () {
-    // var fileList = [];
-    // this.value.split('|').forEach((item) => {
-    //   if (item.trim().length > 0) {
-    //     fileList.push({name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)), url: item})
-    //     key:(new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
-    //   }
-    // })
     return {
       fileList: [],
       viewer: null,
@@ -174,7 +167,7 @@ export default {
       this.headers.map(item => {
         xhr.setRequestHeader(item.key, item.value)
       })
-      xhr.setRequestHeader('token',this.$cookie.get('user-token')||this.$cookie.get('token'))
+      xhr.setRequestHeader('token',this.token)
       let formData = new FormData()
       formData.append('file', file)
       formData.append('fname', file.name)

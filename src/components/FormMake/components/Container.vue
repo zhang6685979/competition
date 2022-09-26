@@ -130,7 +130,7 @@
           :title="$t('fm.actions.preview')">
           <generate-form style="margin: 0 auto;" insite="true"
             v-if="previewVisible && (previewForm.config.ui == 'element' || !previewForm.config.ui)" :data="previewForm"
-            :value="widgetModels" :remote="remoteFuncs" ref="generateForm">
+            :value="widgetModels" :remote="remoteFuncs" ref="generateForm" :token="$cookie.get('token')">
 
             <template v-slot:blank="scope">
               Width<el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>
