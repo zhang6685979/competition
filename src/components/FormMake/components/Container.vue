@@ -357,8 +357,8 @@
       }
     },
     created() {
+      advanceComponents[0].options.action = this.uploadPath
       advanceComponents[1].options.action = this.uploadPath
-      advanceComponents[2].options.action = this.uploadPath
       this._loadComponents()
     },
     mounted() {

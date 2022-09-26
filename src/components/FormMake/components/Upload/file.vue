@@ -167,15 +167,15 @@ export default {
     },
     uplaodAction (res, file, key) {
       let changeIndex = this.fileList.findIndex(item => item.key === key)
-      console.log(this.fileList.findIndex(item => item.key === key))
       const xhr = new XMLHttpRequest()
 
-      const url = `${this.$http.BASE_URL}${this.action}`
+      const url = this.action
       xhr.open('POST', url, true)
       // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
       this.headers.map(item => {
         xhr.setRequestHeader(item.key, item.value)
       })
+      xhr.setRequestHeader('token',this.$cookie.get('user-token')||this.$cookie.get('token'))
       let formData = new FormData()
       formData.append('file', file)
       formData.append('fname', file.name)
@@ -183,7 +183,6 @@ export default {
 
       xhr.send(formData)
       xhr.onreadystatechange = () => {
-        console.log(xhr)
         if (xhr.readyState === 4) {
           let resData = JSON.parse(xhr.response)
           if (resData && resData.url) {
@@ -266,7 +265,7 @@ export default {
         this.$nextTick(() => {
           if (this.ui == 'element') {
             this.$emit('input', this.fileList.map(item =>item.url).join('|'))
-          } 
+          }
         })
       }
     },

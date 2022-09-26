@@ -364,38 +364,7 @@ export const basicComponents = [{
   }
 ]
 
-export const advanceComponents = [{
-    type: 'blank',
-    icon: 'icon iconfont icon-zidingyishuju',
-    options: {
-      defaultType: 'String',
-      customClass: '',
-      width: '',
-      labelWidth: 100,
-      isLabelWidth: false,
-      hidden: false,
-      dataBind: true,
-      isShow: true,
-      isSort: false,
-      isSearch: false
-    }
-  },
-  {
-    type: 'component',
-    icon: 'icon iconfont icon-component',
-    options: {
-      customClass: '',
-      labelWidth: 100,
-      isLabelWidth: false,
-      hidden: false,
-      dataBind: true,
-      template: '<p>自定义内容</p>',
-      required: false,
-      isShow: true,
-      isSort: false,
-      isSearch: false
-    }
-  },
+export const advanceComponents = [
   {
     type: 'fileupload',
     icon: 'icon iconfont icon-wenjianshangchuan',
@@ -427,7 +396,7 @@ export const advanceComponents = [{
     type: 'imgupload',
     icon: 'icon iconfont icon-tupian',
     options: {
-      defaultValue: [],
+      defaultValue: '',
       size: {
         width: 100,
         height: 100,
