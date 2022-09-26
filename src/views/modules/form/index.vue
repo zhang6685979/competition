@@ -28,7 +28,6 @@
         </div>
       </div>
       <el-dialog :visible.sync="previewDialogVisible" title="问卷预览" destroy-on-close fullscreen>
-        {{title}}
         <pre-view :key="previewKey" :preview-qrcode="true"  :title="title"/>
       </el-dialog>
       <template-create ref="templateCreate" :form-key="projectKey"/>

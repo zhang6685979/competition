@@ -33,7 +33,7 @@
     <vxe-column
         field="name"
         sortable
-        title="考试课目">
+        title="考试名称">
       </vxe-column>
     <vxe-column
         field="starttime"

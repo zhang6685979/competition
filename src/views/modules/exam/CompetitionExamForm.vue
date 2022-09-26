@@ -10,7 +10,7 @@
              label-width="120px">
       <el-row  :gutter="15">
         <el-col :span="12">
-            <el-form-item label="考试课目" prop="name"
+            <el-form-item label="考试名称" prop="name"
                 :rules="[
                   {required: true, message:'考试课目不能为空', trigger:'blur'}
                  ]">

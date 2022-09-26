@@ -38,9 +38,7 @@
         </vxe-column>
         <vxe-column  title="名称" field="name" align="left" tree-node>
           <template slot-scope="scope">
-              <el-link  type="primary" :underline="false" v-if="hasPermission('sys:menu:edit')" @click="edit(scope.row.id)">{{scope.row.name}}</el-link>
-              <el-link  type="primary" :underline="false" v-else-if="hasPermission('sys:menu:view')"  @click="view(scope.row.id)">{{scope.row.name}}</el-link>
-              <span v-else>{{scope.row.name}}</span>
+              <el-link  type="primary" :underline="false"  @click="view(scope.row.id)">{{scope.row.name}}</el-link>
             </template>
         </vxe-column>
         <vxe-column  title="图标" field="icon" align="center">
@@ -78,19 +76,19 @@
         <vxe-column  title="权限标志" field="permission"></vxe-column>
         <vxe-column title="操作" width="150px" fixed="right" align="center">
           <template slot-scope="scope">
-                  <el-button  type="text" size="small" @click="showRight(scope.row)">数据规则</el-button>
+                  <el-button  type="text" size="small" @click="edit(scope.row.id)">修改</el-button>
                   <el-divider direction="vertical"></el-divider>
                   <el-dropdown size="small"  @command="handleCommand">
                     <span class="el-dropdown-link">
                       更多<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item  v-if="hasPermission('sys:menu:view')" :command="{method:'view', id:scope.row.id}">
+                      <!-- <el-dropdown-item  v-if="hasPermission('sys:menu:view')" :command="{method:'view', id:scope.row.id}">
                       查看
-                      </el-dropdown-item>
-                      <el-dropdown-item v-if="hasPermission('sys:menu:edit')" :command="{method:'edit', id:scope.row.id}">
+                      </el-dropdown-item> -->
+                      <!-- <el-dropdown-item v-if="hasPermission('sys:menu:edit')" :command="{method:'edit', id:scope.row.id}">
                         修改
-                      </el-dropdown-item>
+                      </el-dropdown-item> -->
                       <el-dropdown-item v-if="hasPermission('sys:menu:del')" :command="{method:'del', id:scope.row.id}">
                         删除
                       </el-dropdown-item>
@@ -111,7 +109,7 @@
       direction="rtl">
       <data-rule-list  ref="dataRuleList" @closeRight="closeRight"></data-rule-list>
     </el-drawer>
-  
+
     <!-- 弹窗, 新增 / 修改 -->
     <menu-form ref="menuForm"   @refreshDataList="refreshList"></menu-form>
   </div>

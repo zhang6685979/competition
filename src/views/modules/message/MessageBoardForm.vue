@@ -16,14 +16,7 @@
               <el-input v-model="inputForm.title" placeholder="请填写留言标题"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="12">
-            <el-form-item label="留言内容" prop="content"
-                :rules="[
-                  {required: true, message:'留言内容不能为空', trigger:'blur'}
-                 ]">
-          <el-input type="textarea" v-model="inputForm.content" placeholder="请填写留言内容"     ></el-input>
-           </el-form-item>
-        </el-col>
+        
         <el-col :span="12">
             <el-form-item label="姓名" prop="name"
                 :rules="[
@@ -48,6 +41,14 @@
                   {validator: validator.isEmail, trigger:'blur'}
                  ]">
               <el-input v-model="inputForm.email" placeholder="请填写电子邮箱"     ></el-input>
+           </el-form-item>
+        </el-col>
+        <el-col :span="24">
+            <el-form-item label="留言内容" prop="content"
+                :rules="[
+                  {required: true, message:'留言内容不能为空', trigger:'blur'}
+                 ]">
+          <el-input type="textarea" v-model="inputForm.content" placeholder="请填写留言内容"     ></el-input>
            </el-form-item>
         </el-col>
         </el-row>

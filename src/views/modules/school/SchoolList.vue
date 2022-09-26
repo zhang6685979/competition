@@ -9,14 +9,7 @@
                 <el-input size="small" v-model="searchForm.name" placeholder="学校名称" clearable></el-input>
          </el-form-item>
          <el-form-item prop="city">
-                  <CityPicker
-                    style="width:100%"
-                    size="small"
-                    placeholder="选择所属省份"
-                    :value="searchForm.city"
-                    :clearable="true"
-                    :accordion="true"
-                    @getValue="(value) => {searchForm.city=value}"/>
+            <el-input size="small" v-model="searchForm.city" placeholder="省份" clearable></el-input>
          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
@@ -106,7 +99,6 @@
 <script>
   import SchoolForm from './SchoolForm'
   import SchoolService from '@/api/school/SchoolService'
-  import CityPicker from '@/components/cityPicker'
   export default {
     data () {
       return {
@@ -126,7 +118,6 @@
       }
     },
     components: {
-      CityPicker,
       SchoolForm
     },
     schoolService: null,
