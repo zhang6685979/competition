@@ -191,7 +191,7 @@ export default {
       // console.log(this.fileList.findIndex(item => item.key === key))
       const xhr = new XMLHttpRequest()
 
-      const url = this.action
+      const url = `${this.$http.BASE_URL}${this.action}`
       xhr.open('POST', url, true)
       // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
       this.headers.map(item => {
@@ -287,6 +287,7 @@ export default {
       })
     },
     handleRemove (key) {
+      debugger;
       this.fileList.splice(this.fileList.findIndex(item => item.key === key), 1)
       this.$nextTick(() => {
         if (this.ui == 'element') {
@@ -325,13 +326,15 @@ export default {
   },
   watch: {
     value (val) {
-      this.fileList = this.value.split("|").map(item => {
-        return {
-          name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
-          url: item,
-          key: (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
-        }
-      })
+      if(val){
+        this.fileList = val.split("|").map(item => {
+          return {
+            name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
+            url: item,
+            key: (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
+          }
+        })
+      }
     }
   }
 }

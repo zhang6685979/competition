@@ -14,8 +14,7 @@
     <div class="upload_tip">
       {{tip}}
     </div>
-
-    <ul class="upload-list">
+    <ul class="upload-list" v-if="fileList.length>0">
       <li class="list_item"
         :class="{uploading: item.status=='uploading', 'is-success': item.status=='success', 'is-disabled': disabled}"
         v-for="(item) in fileList" :key="item.key"
@@ -169,7 +168,7 @@ export default {
       let changeIndex = this.fileList.findIndex(item => item.key === key)
       const xhr = new XMLHttpRequest()
 
-      const url = this.action
+      const url = `${this.$http.BASE_URL}${this.action}`
       xhr.open('POST', url, true)
       // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
       this.headers.map(item => {
@@ -287,13 +286,15 @@ export default {
   },
   watch: {
     value (val) {
-      this.fileList = this.value.split("|").map(item => {
-        return {
-          name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
-          url: item,
-          key: (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
-        }
-      })
+      if(val){
+        this.fileList = val.split("|").map(item => {
+          return {
+            name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
+            url: item,
+            key: (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
+          }
+        })
+      }
     }
   }
 }

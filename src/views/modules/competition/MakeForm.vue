@@ -5,7 +5,7 @@
         :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
         <fm-making-form :bindDataTable="inputForm.autoCreate !=='1'" ref="formDesign" style="height:700px"
           :data="options" v-if="visible"
-          :uploadPath="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/formbuilder`" preview
+          uploadPath="/sys/file/webupload/upload?uploadPath=/formbuilder" preview
           :custom-fields="customFields" :ds="inputForm.dataSource" :tableName="inputForm.tableName" tab-list
           generate-json clearable>
 

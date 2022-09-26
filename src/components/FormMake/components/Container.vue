@@ -273,6 +273,7 @@
       }
     },
     data() {
+      var that = this;
       return {
         basicComponents,
         layoutComponents,
@@ -320,9 +321,7 @@
             }, 2000)
           },
           funcGetToken(resolve) {
-            request.get('http://tools-server.making.link/api/uptoken').then(res => {
-              resolve(res.uptoken)
-            })
+             resolve(that.$cookie.get('token'))
           },
           upload_callback(response, file, fileList) {
             // console.log('callback', response, file, fileList)
