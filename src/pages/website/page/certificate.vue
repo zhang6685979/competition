@@ -84,7 +84,7 @@
         this.$refs['searchForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: '/certificate/certificate/pulbic/record/search',
+              url: '/certificate/certificate/public/record/search',
               method: 'get',
               params: {
                 ...this.searchForm

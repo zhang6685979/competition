@@ -4,7 +4,7 @@
       @keyup.enter.native="refreshList()" @submit.native.prevent>
       <!-- 搜索框-->
       <el-form-item prop="name">
-             <el-input size="small" v-model="searchForm.name" placeholder="姓名" clearable></el-input>
+        <el-input size="small" v-model="searchForm.name" placeholder="姓名" clearable></el-input>
       </el-form-item>
       <el-form-item prop="participate0">
         <el-select v-model="searchForm.participate0" placeholder="请选择参与方式" size="small" style="width: 100%;" clearable>
@@ -22,14 +22,8 @@
       <vxe-toolbar :refresh="{query: refreshList}" export print custom>
         <template #buttons>
           <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-          <el-upload
-            class="upload"
-            :action="`${$http.BASE_URL}/referee/referee/import`"
-            :show-file-list="false"
-            :data="{cid:cid}"
-            :headers="{token: $cookie.get('token')}"
-            :on-success="uploadSuccess"
-            >
+          <el-upload class="upload" :action="`${$http.BASE_URL}/referee/referee/import`" :show-file-list="false"
+            :data="{cid:cid}" :headers="{token: $cookie.get('token')}" :on-success="uploadSuccess">
             <el-button slot="trigger" size="small" type="warning" icon="el-icon-upload">导入</el-button>
           </el-upload>
           <el-button type="danger" size="small" icon="el-icon-delete" @click="del()"
@@ -60,8 +54,9 @@
           </vxe-column>
           <vxe-column field="email" sortable title="电子邮箱">
           </vxe-column>
-          <vxe-column fixed="right" align="center" width="200" title="操作">
+          <vxe-column fixed="right" align="center" width="230" title="操作">
             <template slot-scope="scope">
+              <el-button type="text" icon="el-icon-edit" size="small" @click="setting(scope.row)">设置制裁规则</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
             </template>
@@ -76,12 +71,41 @@
     </div>
     <!-- 弹窗, 新增 / 修改 -->
     <RefereeForm ref="refereeForm" :cid="cid" @refreshDataList="refreshList"></RefereeForm>
+    <el-dialog title="设置执裁规则" :visible.sync="visible">
+      <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" label-width="120px">
+        <el-row :gutter="15">
+          <el-col :span="24">
+            <el-form-item label="裁判姓名:" style="margin-bottom:0;">
+              {{currItem.name}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="选择规则:">
+              <el-checkbox label="是否能执裁本人所在院校" true-label="1" false-label="0" v-model="inputForm.selfSchool"></el-checkbox>
+              <el-checkbox label="是否能执裁所在单位省份院校" true-label="1" false-label="0" v-model="inputForm.selfCity"></el-checkbox>
+              <div>
+                <el-checkbox label="指定不能监控院校" true-label="1" false-label="0" v-model="inputForm.specificSchool">
+                </el-checkbox>
+                <school-select :disabled="inputForm.specificSchool==0" v-model="inputForm.specificSchoolList"></school-select>
+              </div>
+
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="visible = false">关闭</el-button>
+        <el-button size="small" type="primary" @click="doSubmit()" v-noMoreClick>确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import RefereeForm from './RefereeForm'
   import RefereeService from '@/api/referee/RefereeService'
+  import schoolSelect from './schoolSelect'
   export default {
     props: {
       cid: String
@@ -89,7 +113,7 @@
     data() {
       return {
         searchForm: {
-          name:'',
+          name: '',
           participate0: '',
         },
         dataList: [],
@@ -99,11 +123,20 @@
           pageSize: 10,
           orders: []
         },
-        loading: false
+        loading: false,
+        visible: false,
+        inputForm: {
+          selfSchool: '0',
+          selfCity: '0',
+          specificSchool: '0',
+          specificSchoolList: ''
+        },
+        currItem: {}
       }
     },
     components: {
-      RefereeForm
+      RefereeForm,
+      schoolSelect
     },
     refereeService: null,
     created() {
@@ -189,13 +222,55 @@
         this.$refs.searchForm.resetFields()
         this.refreshList()
       },
-      uploadSuccess(){
+      uploadSuccess() {
         this.$message.success('导入成功!');
         this.refreshList()
+      },
+      setting(currItem) {
+        this.currItem = Object.assign({}, currItem);
+        this.visible = true;
+        this.$nextTick(()=>{
+          this.loading = true;
+          this.$refs.inputForm.resetFields()
+          this.$http({
+            url: '/referee/referee/setting',
+            method: 'get',
+            params: {
+              id: currItem.id
+            }
+          }).then(({
+            data
+          }) => {
+            this.loading = false;
+            this.inputForm = this.recover(this.inputForm, data)
+          })
+        })
+
+
+      },
+      doSubmit() {
+        this.loading = true
+        this.inputForm.id = this.currItem.id;
+        this.$http({
+          url: '/referee/referee/setting',
+          method: 'POST',
+          params: this.inputForm
+        }).then(({
+          data
+        }) => {
+          this.visible = false
+          this.$message.success(data)
+          this.refreshList()
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
       }
     }
   }
 </script>
 <style scoped>
-  .upload{margin:0 10px;}
+  .upload {
+    margin: 0 10px;
+  }
 </style>

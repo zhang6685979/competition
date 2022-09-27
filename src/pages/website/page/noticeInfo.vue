@@ -10,7 +10,7 @@
         <i class="el-icon-view"></i> {{inputForm.times}}
       </el-tag>
     </div>
-    <div class="html-content" v-html="inputForm.content">
+    <div class="html-content clearfix" v-html="inputForm.content">
 
     </div>
     <div v-if="inputForm.appendix">

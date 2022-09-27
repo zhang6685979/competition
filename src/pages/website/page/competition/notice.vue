@@ -39,7 +39,7 @@
         </el-tag>
       </div>
       <el-divider></el-divider>
-      <div class="html-content" v-html="currNotice.content">
+      <div class="html-content clearfix" v-html="currNotice.content">
 
       </div>
       <div v-if="currNotice.appendix">

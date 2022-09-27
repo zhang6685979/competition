@@ -1,6 +1,6 @@
 <template>
   <div style="padding:10px">
-          <vxe-toolbar :refresh="{query: refreshList}"  custom>
+          <vxe-toolbar :refresh="{query: ()=>{refreshList()}}"  custom>
             <template #buttons>
               <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
               <el-button v-if="hasPermission('sys:dict:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.dictValueTable && $refs.dictValueTable.getCheckboxRecords().length === 0" plain>删除</el-button>

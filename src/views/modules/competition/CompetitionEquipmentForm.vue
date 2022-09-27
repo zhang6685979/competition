@@ -83,7 +83,9 @@
     competitionEquipmentService: null,
     created() {
       this.competitionEquipmentService = new CompetitionEquipmentService();
-      this.getDeviceInfo();
+    },
+    activated(){
+       this.getDeviceInfo();
     },
     methods: {
       getDeviceInfo() {

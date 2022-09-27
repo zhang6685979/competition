@@ -87,7 +87,7 @@ export default {
   .el-form-item__content .el-input-group {
       vertical-align: middle;
   }
- .el-tag + .el-tag {
+ .el-tag {
     margin-left: 5px;
     margin-bottom: 5px;
   }

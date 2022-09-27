@@ -11,13 +11,12 @@
         <el-tab-pane label="新闻资讯" name="0">
           <span slot="label" class="tab-title">新闻资讯</span>
           <div class="news-list">
-            <div class="news-item" v-for="(item,index) in newsList.slice(0,3)"  @click="$router.push('/news/'+item.id)">
+            <div class="news-item" v-for="(item,index) in newsList.slice(0,3)" @click="$router.push('/news/'+item.id)">
               <div class="news-left">
                 <img :src="item.image" alt="">
               </div>
               <div class="news-right">
-                <h5>{{item.title}} <span class="tag"
-                    v-if="item.latest=='1'">new</span></h5>
+                <h5>{{item.title}} <span class="tag" v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
               </div>
@@ -27,10 +26,10 @@
         <el-tab-pane label="通知公告" name="1">
           <span slot="label" class="tab-title">通知公告</span>
           <div class="news-list">
-            <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)" @click="$router.push('/notice/'+item.id)">
+            <div class="news-item" v-for="(item,index) in announcementList.slice(0,3)"
+              @click="$router.push('/notice/'+item.id)">
               <div class="news-right">
-                <h5 >{{item.title}} <span class="tag"
-                    v-if="item.latest=='1'">new</span></h5>
+                <h5>{{item.title}} <span class="tag" v-if="item.latest=='1'">new</span></h5>
                 <p>{{item.describe0}}</p>
                 <span>{{item.updateDate&&item.updateDate.substring(0,10)}}</span>
               </div>
@@ -244,10 +243,10 @@
         color: #DC000C;
         font-size: 20px;
         position: absolute;
-        right:0;
-        top:10px;
+        right: 0;
+        top: 10px;
         cursor: pointer;
-        z-index:1
+        z-index: 1
       }
 
       .news-item {
@@ -285,7 +284,10 @@
             font-weight: 400;
             color: #707070;
             line-height: 28px;
-            margin-bottom: 45px;
+            margin-bottom: 10px;
+            ::empty {
+              display: none;
+            }
           }
 
           span {

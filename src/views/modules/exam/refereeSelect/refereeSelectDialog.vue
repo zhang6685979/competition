@@ -51,7 +51,6 @@
 </template>
 
 <script>
-  import RefereeForm from '@/views/modules/referee/RefereeForm'
   import RefereeService from '@/api/referee/RefereeService'
   export default {
     data() {
@@ -85,7 +84,6 @@
       cid:String
     },
     components: {
-      RefereeForm
     },
     refereeService: null,
     created () {

@@ -43,7 +43,7 @@
         </el-tag>
       </div>
       <el-divider></el-divider>
-      <div class="html-content" v-html="currNews.content">
+      <div class="html-content clearfix" v-html="currNews.content">
 
       </div>
       <div v-if="currNews.appendix">

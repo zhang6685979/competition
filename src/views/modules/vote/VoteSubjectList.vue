@@ -75,9 +75,9 @@
                   <div class="vote-info">
                     <p>分类：{{item.typeName}}</p>
                     <p>起始时间：{{item.starttime}}~{{item.endtime}}</p>
-                    <p>投票模式：{{item.mode}}可投{{item.everydayTimes}}票</p>
+                    <p>投票模式：{{item.mode==1?'今日':'全程'}}可投{{item.maxTimes}}票</p>
                     <p>已投票数：{{item.views}}</p>
-                    <p>创建时间：{{ item.createTime | formatDate }}</p>
+                    <p>创建时间：{{ item.createDate | formatDate }}</p>
                   </div>
 
                   <ul class="jp-card-actions">

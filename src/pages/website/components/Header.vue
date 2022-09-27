@@ -193,8 +193,7 @@
     .dropdown-menu {
       width: 160px;
       position: absolute;
-      left: 50%;
-      margin-left: -80px;
+      left: 0;
       top: 100%;
       background-color: #303133;
       display: none;
@@ -207,7 +206,6 @@
           white-space: nowrap;
           font-size: 13px;
           color: #fff !important;
-          text-align: center;
           overflow: hidden;
           text-overflow: ellipsis;
 
