@@ -10,10 +10,10 @@
         fixed
         width="50">
         <template slot-scope="scope">
-          <div class="scope-index">
+          <div class="scope-index" :class="{'show':options.rows>0}">
             <span>{{scope.$index + 1}}</span>
           </div>
-          <div class="scope-action">
+          <div class="scope-action" v-if="options.rows==0">
             <el-button :disabled="disabled" @click="handleRemove(scope.$index)" type="danger" icon="el-icon-minus" size="mini" circle></el-button>
           </div>
         </template>
@@ -41,7 +41,7 @@
         </el-table-column>
       </template>
     </el-table>
-    <el-button  icon="el-icon-plus" type="text" @click="handleAddRow" v-if="!disabled">{{$t('fm.actions.add')}}</el-button>
+    <el-button  icon="el-icon-plus" type="text" @click="handleAddRow" v-if="(!disabled)&&options.rows==0">{{$t('fm.actions.add')}}</el-button>
   </div>
 </template>
 
@@ -51,11 +51,21 @@ export default {
   components: {
     GenerateElementItem: () => import('../GenerateElementItem.vue')
   },
-  props: ['columns', 'value', 'models', 'remote', 'blanks', 'disabled', 'rules', 'name', 'remoteOption'],
+  props: ['columns', 'value', 'models', 'remote', 'blanks', 'disabled', 'rules', 'name', 'remoteOption','options'],
   data () {
     return {
       tableData: this.value,
       // dataModels: this.models
+    }
+  },
+  created(){
+    var rows = this.options.rows;
+    if(rows>0){
+      for(var i=0;i<rows;i++){
+        if(!this.tableData[i]){
+          this.handleAddRow();
+        }
+      }
     }
   },
   methods: {
@@ -79,6 +89,13 @@ export default {
   watch: {
     value (val) {
       this.tableData = val
+    },
+    'options.rows':function(newVal){
+      if(newVal>0){
+        for(var i=0;i<newVal;i++){
+          this.handleAddRow();
+        }
+      }
     }
   }
 }
@@ -156,6 +173,9 @@ export default {
 
     .scope-index{
       display: none;
+    }
+    .show{
+      display: block;
     }
   }
 }

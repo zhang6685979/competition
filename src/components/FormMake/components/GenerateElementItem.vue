@@ -256,6 +256,7 @@
         :rules="rules"
         :name="widget.model"
         :remote-option="remoteOption"
+        :options="widget.options"
       >
         <template v-slot:[blank.name]="scope" v-for="blank in blanks">
           <slot :name="blank.name" :model="scope.model"></slot>

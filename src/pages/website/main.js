@@ -47,6 +47,9 @@ Vue.use(FormMake, {
 Vue.prototype.$message = Message;
 Vue.prototype.$window = window
 
+import Print from './assets/js/Print'
+Vue.use(Print)
+
 router.beforeEach((to, from, next) => {
   document.body.scrollTop = 0
   // firefox

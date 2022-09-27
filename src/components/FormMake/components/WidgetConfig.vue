@@ -269,6 +269,9 @@
           </el-time-picker>
         </el-form-item>
       </template>
+      <el-form-item label="表格行数" v-if="data.type=='table'">
+        <el-input type="number" v-model.number="data.options.rows"></el-input>
+      </el-form-item>
       <template v-if="data.options.type=='signup-table'">
         <el-form-item label="表格行数">
           <el-input type="number" v-model.number="data.options.rows"></el-input>

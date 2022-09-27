@@ -526,6 +526,7 @@ export const advanceComponents = [
       isShow: true,
       disabled: false,
       required: false,
+      rows:0
     },
     tableColumns: []
   },

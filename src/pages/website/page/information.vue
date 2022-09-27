@@ -55,6 +55,21 @@
       certificate,
       queryScore
     },
+    watch:{
+      '$route.query.type':function(newVal){
+        if(newVal&&['queryScore','certificate'].indexOf(newVal)!=-1){
+          this.showQuery(newVal);
+        }else{
+          this.infoVisible = false;
+        }
+      }
+    },
+    created(){
+      var type = this.$route.query.type;
+      if(type){
+        this.showQuery(type)
+      }
+    },
     methods:{
       showQuery(comp){
         this.comp = comp;

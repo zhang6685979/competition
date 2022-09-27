@@ -40,6 +40,7 @@
           url:'/school/school/list',
           method:'get',
           headers:{
+            isFront:1,
             token:this.$cookie.get('token')||this.$cookie.get('user-token')
           }
         }).then(({data})=>{

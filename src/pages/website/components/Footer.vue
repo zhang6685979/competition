@@ -4,18 +4,22 @@
       <li>
         <h3>联系我们
         </h3>
-        <p>联系电话：+86371-86589327 转8816
-        </p>
-        <p class="ml-70">
-           +86371-86589328 转8815
-        </p>
-        <p>
-          联系邮箱：
-          <a href="mailto:urtskills@163.com" target="_blank">urtskills@163.com</a><br>
-        </p>
-        <p class="ml-70">
-          <a href="mailto:bricsskill@jiean.net" target="_blank">bricsskill@jiean.net</a>
-        </p>
+        <table>
+          <tr>
+            <td>联系电话：</td>
+            <td>
+              <p>+86371-86589327 转8816</p>
+              <p>+86371-86589328 转8815</p>
+            </td>
+          </tr>
+          <tr>
+            <td>联系邮箱：</td>
+            <td>
+              <p><a href="mailto:urtskills@163.com" target="_blank">urtskills@163.com</a></p>
+              <p><a href="mailto:bricsskill@jiean.net" target="_blank">bricsskill@jiean.net</a></p>
+            </td>
+          </tr>
+        </table>
       </li>
       <li>
         <h3>网站主办方
@@ -26,13 +30,16 @@
     </ul>
     <div class="link">
       <span>友情链接：</span>
-      <a target="_blank" href="http://www.mohrss.gov.cn/">中华人民共和国人力资源和社会保障部</a>
-      <a target="_blank" href="http://www.mot.gov.cn/">中华人民共和国交通运输部</a>
-      <a target="_blank" href="http://www.jantech.cn/index.html">郑州捷安高科股份有限公司</a>
-      <a target="_blank" href="https://worldskills.org/">世界技能组织</a>
-      <!--<a target="_blank" href="http://www.worldskillschina.cn/">世界技能大赛中国组委会</a>-->
-      <a target="_blank" href="https://worldskills2022.com/">2022年上海世界技能大赛</a>
-      <a target="_blank" href="http://cvsc.mohrss.gov.cn/#/home">第一届全国技能大赛</a>
+      <div class="links">
+        <a target="_blank" href="http://www.mohrss.gov.cn/">中华人民共和国人力资源和社会保障部</a>
+        <a target="_blank" href="http://www.mot.gov.cn/">中华人民共和国交通运输部</a>
+        <a target="_blank" href="http://www.jantech.cn/index.html">郑州捷安高科股份有限公司</a>
+        <a target="_blank" href="https://worldskills.org/">世界技能组织</a>
+        <!--<a target="_blank" href="http://www.worldskillschina.cn/">世界技能大赛中国组委会</a>-->
+        <a target="_blank" href="https://worldskills2022.com/">2022年上海世界技能大赛</a>
+        <a target="_blank" href="http://cvsc.mohrss.gov.cn/#/home">第一届全国技能大赛</a>
+      </div>
+
     </div>
     <div class="copyright">
       <span>© 2021 Copyright All Rights Reserved 捷安高科 版权所有 </span>
@@ -89,10 +96,10 @@
   #foot ul li img {
     max-width: 100%;
   }
-
+  #foot ul li table td{color: #fff;vertical-align: top;padding-bottom:10px;}
   #foot ul li p {
     color: rgba(255, 255, 255, 0.8);
-    margin: 10px 0 0;
+    margin-bottom:10px;
   }
 
   #foot ul li p span {
@@ -120,11 +127,11 @@
     color: rgba(255, 255, 255, 0.8);
     border-top: solid 1px rgba(255, 255, 255, 0.1);
   }
-
+  #foot .link .links{margin-top: 10px;}
   #foot .link a {
     display: inline-block;
     color: rgba(255, 255, 255, 0.8);
-    margin: 0 10px;
+    margin: 0 15px 15px 0;
   }
 
   #foot .link a:hover {

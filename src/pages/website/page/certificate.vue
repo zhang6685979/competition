@@ -66,7 +66,7 @@
       }
     },
     created() {
-      this.searchForm.type = this.$route.query.type;
+      this.searchForm.type = this.$route.query.certificateType;
       this.getCertificateList();
     },
     methods: {

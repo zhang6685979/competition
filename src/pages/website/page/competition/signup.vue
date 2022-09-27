@@ -14,15 +14,16 @@
         </div>
       </el-col>
     </el-row>
-    <div class="signup-form" v-if="signFormVisible">
-      <button class="btn" @click="signFormVisible=false">返 回</button>
+    <div class="signup-form" v-if="signFormVisible" ref="formView">
+      <button class="btn no-print" @click="signFormVisible=false">返 回</button>
+      <button class="btn no-print pull-right" @click="print">打印表单</button>
       <div v-if="!memberName" class="login-tip">
         <p>您需要登录才能访问此页面！</p>
         <el-button type="primary" @click="toLogin">立即登录</el-button>
       </div>
       <template v-else>
         <h5>{{signupInfo.name}}</h5>
-        <div class="signup-info">
+        <div class="signup-info" style="padding: 30px;margin-bottom: 20px;">
           <table>
             <tr>
               <td>报名时间：</td>
@@ -30,7 +31,9 @@
             </tr>
             <tr>
               <td>报名说明:</td>
-              <td><pre>{{signupInfo.describe0}}</pre></td>
+              <td>
+                <pre>{{signupInfo.describe0}}</pre>
+              </td>
             </tr>
           </table>
         </div>
@@ -38,7 +41,7 @@
           :value="{}" :remote="{}" ref="generateForm" :token="$cookie.get('user-token')">
         </fm-generate-form>
         <div class="btn-warp" v-if="currItem.status!=1">
-          <button class="btn btn-save" @click="save">保存</button>
+          <button class="btn btn-save no-print" @click="save">保存</button>
         </div>
       </template>
 
@@ -142,7 +145,7 @@
         const $form = this.$refs.generateForm
         $form.getData().then(data => {
           var signupName = this.signupInfo.name;
-          if(signupName.indexOf('裁判报名')!=-1){
+          if (signupName.indexOf('裁判报名') != -1) {
             data.signType = 'referee'
           }
           this.$http({
@@ -153,10 +156,10 @@
               token: this.$cookie.get('user-token')
             },
             data: {
-              tid:this.signupInfo.id,//模板id
-              cid:this.$route.params.id, //大赛id
-              id:this.recordId || '',
-              content:data
+              tid: this.signupInfo.id, //模板id
+              cid: this.$route.params.id, //大赛id
+              id: this.recordId || '',
+              content: data
             }
           }).then(({
             data
@@ -207,9 +210,12 @@
         this.recordId = id; //报名记录id
         this.showSignupForm(tid, content)
       },
-      toLogin(){
+      toLogin() {
         var path = this.$route.path;
-        this.$router.push('/login?redirect='+path)
+        this.$router.push('/login?redirect=' + path)
+      },
+      print() {
+        this.$print(this.$refs.formView)
       }
     },
     computed: {
@@ -221,7 +227,56 @@
     }
   }
 </script>
+<style type="text/css">
+  @media print{
+    .signup-form h5 {
+      font-size: 32px;
+      margin: 20px 0;
+      text-align: center;
+    }
 
+    .signup-form .signup-info {
+      background: rgb(230 162 60 / 10%);
+      padding: 30px;
+      font-size: 16px;
+      color: #303133;
+      margin-bottom: 20px;
+    }
+
+    .signup-form .signup-info p {
+      margin: 10px 0;
+    }
+
+    .signup-form .signup-info table {
+      td {
+        vertical-align: top;
+        padding: 5px 0;
+      }
+    }
+
+    .signup-form .btn-warp {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .signup-form .btn {
+      width: 120px;
+      height: 45px;
+      background: #FFFFFF;
+      border: 1px solid #DC000C;
+      font-size: 16px;
+      color: #DC000C;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .signup-form .btn.btn-save {
+      background-color: #DC000C;
+      color: #fff;
+      margin-right: 15px;
+    }
+  }
+</style>
 <style lang="scss" scoped>
   .signup-list {
     width: 80%;
@@ -262,8 +317,12 @@
       p {
         margin: 10px 0;
       }
-      table{
-        td{vertical-align: top;padding:5px 0;}
+
+      table {
+        td {
+          vertical-align: top;
+          padding: 5px 0;
+        }
       }
     }
 
@@ -289,6 +348,7 @@
       }
     }
   }
+
   .login-tip {
     text-align: center;
     padding: 40px;

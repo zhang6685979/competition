@@ -4,10 +4,18 @@
 
       <el-tabs v-model="activeName">
           <el-tab-pane label="填报信息审批" name="first">
+            <vxe-toolbar>
+              <template #buttons>
+                <el-button type="primary" size="small" icon="el-icon-check" @click="patchApproval()"
+                  :disabled="($refs.competitionSignupTable && ($refs.competitionSignupTable.getCheckboxRecords().length == 0))" plain>
+                  批量审批通过</el-button>
+              </template>
+            </vxe-toolbar>
             <vxe-table border="inner" auto-resize resizable height="450" :loading="loading" size="small"
               ref="competitionSignupTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
               :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList" :checkbox-config="{}">
               <vxe-column type="seq" width="40"></vxe-column>
+              <vxe-column type="checkbox" width="40px"></vxe-column>
               <vxe-column field="templateName" title="报名名称">
               </vxe-column>
               <vxe-column field="createTime" title="报名时间">
@@ -56,7 +64,7 @@
         <fm-generate-form style="margin: 0 auto;" insite="true" :edit="false" :data="json" :value="{}" :remote="{}"
           ref="generateForm">
         </fm-generate-form>
-        <el-form ref="form" :model="form" label-width="100px" :disabled="currItem.status!=0">
+        <el-form ref="form" :model="form" label-width="100px" :disabled="currItem.status==1">
           <el-form-item label="报名审批:">
             <el-radio-group v-model="form.status">
               <el-radio label="1">审批通过</el-radio>
@@ -67,7 +75,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="signFormVisible = false">关闭</el-button>
-        <el-button v-if="currItem.status==0" size="small" type="primary" @click="doSubmit()" v-noMoreClick>确定
+        <el-button v-if="currItem.status!=1" size="small" type="primary" @click="doSubmit()" v-noMoreClick>确定
         </el-button>
       </span>
     </el-dialog>
@@ -116,23 +124,26 @@
         this.tid = id;
         this.title = title;
         this.$nextTick(() => {
-          this.loading = true
-          this.$http({
-            url: '/competition/competitionSignup/forminput/list',
-            method: 'GET',
-            params: {
-              cid: this.cid,
-              tid: this.tid,
-              current: this.tablePage.currentPage,
-              size: this.tablePage.pageSize
-            }
-          }).then(({
-            data
-          }) => {
-            this.dataList = data.records
-            this.tablePage.total = data.total
-            this.loading = false
-          })
+          this.getList()
+        })
+      },
+      getList(){
+        this.loading = true
+        this.$http({
+          url: '/competition/competitionSignup/forminput/list',
+          method: 'GET',
+          params: {
+            cid: this.cid,
+            tid: this.tid,
+            current: this.tablePage.currentPage,
+            size: this.tablePage.pageSize
+          }
+        }).then(({
+          data
+        }) => {
+          this.dataList = data.records
+          this.tablePage.total = data.total
+          this.loading = false
         })
       },
       // 当前页
@@ -183,6 +194,28 @@
         }) => {
           this.signFormVisible = false;
           this.init(this.tid); //刷新列表
+        })
+      },
+      patchApproval(){
+        var records = this.$refs.competitionSignupTable.getCheckboxRecords()
+        var ids = '';
+        if(records&&records.length>0){
+          ids = records.map(record=>record.id).join(',')
+        }else{
+          this.$message.warning('请选择要审批的记录')
+          return false;
+        }
+        this.$http({
+          url: '/competition/competitionSignup/forminput/batch/audit',
+          method: 'patch',
+          params: {
+            ids: ids,
+            status: 1
+          }
+        }).then(({
+          data
+        }) => {
+          this.getList();//刷新列表
         })
       }
     },

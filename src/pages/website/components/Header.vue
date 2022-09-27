@@ -14,7 +14,12 @@
             </li>
           </ul>
         </li>
-        <li :class="$route.path=='/information'?'active':''"><a @click="goto('/information')">信息查询</a></li>
+        <li :class="$route.path=='/information'?'active':''"><a @click="goto('/information')">信息查询</a>
+          <ul class="dropdown-menu">
+            <li ><a href="#/information?type=queryScore">成绩查询</a></li>
+            <li ><a href="#/information?type=certificate">证书查询</a></li>
+          </ul>
+        </li>
         <li :class="$route.path=='/examination'?'active':''"><a @click="goto('/examination')">考试专区</a>
           <ul class="dropdown-menu">
             <li v-for="(item,index) in platformList"><a :href="item.url" target="_blank">{{item.title}}</a></li>

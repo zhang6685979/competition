@@ -77,7 +77,7 @@
           <el-card class="certficate-item">
             <img :src="item.image" />
             <h5>{{item.title}}</h5>
-            <button @click="$router.push('/information?type='+item.id)">查看详情</button>
+            <button @click="$router.push('/information?type=certificate&certificateType='+item.id)">查看详情</button>
           </el-card>
         </el-col>
       </el-row>
