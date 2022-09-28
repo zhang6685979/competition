@@ -12,7 +12,7 @@
 </script>
 <style scoped="">
   #app{
-    background-color: #f7f7f7;
+    background-color: #f5f5f5;
     overflow: auto;
   }
 </style>

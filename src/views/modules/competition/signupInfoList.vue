@@ -13,7 +13,7 @@
             </vxe-toolbar>
             <vxe-table border="inner" auto-resize resizable height="450" :loading="loading" size="small"
               ref="competitionSignupTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
-              :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList" :checkbox-config="{}">
+              :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList" :checkbox-config="{checkMethod: checkMethod}">
               <vxe-column type="seq" width="40"></vxe-column>
               <vxe-column type="checkbox" width="40px"></vxe-column>
               <vxe-column field="templateName" title="报名名称">
@@ -217,6 +217,9 @@
         }) => {
           this.getList();//刷新列表
         })
+      },
+      checkMethod({row}){
+        return row.status!=1;
       }
     },
     computed:{
