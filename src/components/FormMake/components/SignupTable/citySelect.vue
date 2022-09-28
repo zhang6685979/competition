@@ -1,14 +1,15 @@
 <template>
-     <div style="display: flex;">
+     <div class="cascader-warp">
           <el-cascader
               v-model="city"
               :options="list"
               filterable
               separator="/"
+              class="el-cascader"
               :props="{ expandTrigger: 'hover',value:'name',label:'name' }"
           >
           </el-cascader>
-         <el-input v-model="address"  placeholder="请输入详细地址"></el-input></el-col>
+         <el-input class="address" v-model="address"  placeholder="请输入详细地址" style="flex:1"></el-input></el-col>
      </div>
 </template>
 
@@ -66,5 +67,10 @@
   }
 </script>
 
-<style>
+<style scoped lang="scss">
+  .cascader-warp{
+    display: flex;
+    .el-cascader{flex:1}
+    .address{flex:1}
+  }
 </style>

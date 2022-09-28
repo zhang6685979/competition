@@ -40,8 +40,9 @@
         <fm-generate-form style="margin: 0 auto;" insite="true" :edit="currItem.status!=1" v-if="json" :data="json"
           :value="{}" :remote="{}" ref="generateForm" :token="$cookie.get('user-token')">
         </fm-generate-form>
-        <div class="btn-warp" v-if="currItem.status!=1">
-          <button class="btn btn-save no-print" @click="save">保存</button>
+        <div class="btn-warp no-print" v-if="currItem.status!=1">
+          <button class="btn " @click="tempSave">暂存</button>
+          <button class="btn btn-save" @click="save">提交</button>
         </div>
       </template>
 
@@ -92,7 +93,8 @@
         status: {
           0: '待审核',
           1: '报名成功',
-          2: '审核不通过'
+          2: '审核不通过',
+          100:'暂存成功'
         },
         signupList: [],
         currItem: {} //当前信息填报信息
@@ -141,6 +143,11 @@
           })
         })
       },
+      tempSave(){
+        const $form = this.$refs.generateForm
+        var data = $form.getDataNoValid();
+        this.doSave(data,100)
+      },
       save() {
         const $form = this.$refs.generateForm
         $form.getData().then(data => {
@@ -148,29 +155,33 @@
           if (signupName.indexOf('裁判报名') != -1) {
             data.signType = 'referee'
           }
-          this.$http({
-            url: '/competition/competitionSignup/forminput',
-            method: 'post',
-            headers: {
-              isFront: 1, //是否是门户网站调用
-              token: this.$cookie.get('user-token')
-            },
-            data: {
-              tid: this.signupInfo.id, //模板id
-              cid: this.$route.params.id, //大赛id
-              id: this.recordId || '',
-              content: data
-            }
-          }).then(({
-            data
-          }) => {
-            this.$message.success('提交成功!');
-            this.recordId = '';
-            this.signFormVisible = false;
-            this.getMySignupList();
-          })
+          this.doSave(data,0)
         }).catch(e => {
           this.$message.error(e)
+        })
+      },
+      doSave(data,status){
+        this.$http({
+          url: '/competition/competitionSignup/forminput',
+          method: 'post',
+          headers: {
+            isFront: 1, //是否是门户网站调用
+            token: this.$cookie.get('user-token')
+          },
+          data: {
+            tid: this.signupInfo.id, //模板id
+            cid: this.$route.params.id, //大赛id
+            id: this.recordId || '',
+            content: data,
+            status:status
+          }
+        }).then(({
+          data
+        }) => {
+          this.$message.success(`${status==100?'暂存':'提交'}成功!`);
+          this.recordId = '';
+          this.signFormVisible = false;
+          this.getMySignupList();
         })
       },
       //获取我的报名列表
@@ -344,7 +355,7 @@
       &.btn-save {
         background-color: #DC000C;
         color: #fff;
-        margin-right: 15px;
+        margin-left: 15px;
       }
     }
   }

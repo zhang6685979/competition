@@ -52,10 +52,12 @@ import Draggable from 'vuedraggable'
 import { EventBus } from '../../util/event-bus.js'
 import * as qiniu from 'qiniu-js'
 require('viewerjs/dist/viewer.css')
+import emitter from 'element-ui/src/mixins/emitter';
 export default {
   components: {
     Draggable
   },
+  mixins:[emitter],
   props: {
     value: {
       type: String,
@@ -327,6 +329,7 @@ export default {
   watch: {
     value (val) {
       if(val){
+        this.dispatch('ElFormItem', 'el.form.change', val);
         this.fileList = val.split("|").map(item => {
           return {
             name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),

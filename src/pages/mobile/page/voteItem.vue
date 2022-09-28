@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import { ImagePreview } from 'vant';
+  import ImagePreview from 'vant/lib/image-preview';
   import 'vant/lib/image-preview/style'
   export default {
     props: {
@@ -39,7 +39,7 @@
     },
     methods:{
       previewImg(url){
-        ImagePreview([url]);
+       // ImagePreview([url]);
       }
     }
   }

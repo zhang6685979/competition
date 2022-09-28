@@ -775,8 +775,10 @@
         if (!this.show) {
           return false
         }
-
         if (val && (this.data.options.dataTypeCheck || !Object.keys(this.data.options).includes('dataTypeCheck'))) {
+          // if(val=='mobile'){
+          //   {validator: validator.isMobile, trigger:'blur'}
+          // }
           this.validator.type = {
             type: val,
             message: this.data.options.dataTypeMessage ? this.data.options.dataTypeMessage : this.$t(

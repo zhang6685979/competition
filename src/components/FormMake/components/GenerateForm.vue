@@ -295,6 +295,15 @@ export default {
         })
       })
     },
+    getDataNoValid () {
+      const resData = {}
+      Object.keys(this.models).forEach(key => {
+        if (this.displayFields[key] && this.dataBindFields.indexOf(key) >= 0) {
+          resData[key] = this.models[key]
+        }
+      })
+      return resData;
+    },
     // jeeplus定制修改
     getDataBindFields () {
       return this.dataBindFields
