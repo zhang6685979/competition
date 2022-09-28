@@ -282,7 +282,7 @@
               <draggable tag="ul" :list="data.options.modules"
                 v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}" handle=".drag-item">
                 <li v-for="(item, index) in data.options.modules" :key="index">
-					{{item.value}}
+                  {{item.value}}
                   <el-radio :label="item.value" style="margin-right: 5px;">
                     <el-input :style="{'width': '180px' }" size="mini" v-model="item.value"></el-input>
                   </el-radio>
@@ -581,6 +581,8 @@
               <el-option value="url" :label="$t('fm.config.widget.url')"></el-option>
               <el-option value="email" :label="$t('fm.config.widget.email')"></el-option>
               <el-option value="hex" :label="$t('fm.config.widget.hex')"></el-option>
+              <el-option value="isMobile" label="手机号"></el-option>
+              <el-option value="isCardId" label="身份证号"></el-option>
             </el-select>
 
             <el-input size="mini" class="message-input" clearable v-model="data.options.dataTypeMessage"
@@ -624,7 +626,8 @@
           pattern: null,
           range: null,
           dictList: [],
-          length: null
+          length: null,
+          validator: null
         }
       }
     },
@@ -656,9 +659,9 @@
           this.data.tabs.splice(index, 1)
         } else if (this.data.type === 'imgupload' || this.data.type === 'fileupload') {
           this.data.options.headers.splice(index, 1)
-        } else if(this.data.options.type=='signup-table'){
-          this.data.options.modules.splice(index,1)
-        }else {
+        } else if (this.data.options.type == 'signup-table') {
+          this.data.options.modules.splice(index, 1)
+        } else {
           if (!this.data.options.remote && this.data.options.options[index].value) {
             this.data.options.defaultValue = typeof this.data.options.defaultValue === 'string' ? '' : []
           }
@@ -776,9 +779,6 @@
           return false
         }
         if (val && (this.data.options.dataTypeCheck || !Object.keys(this.data.options).includes('dataTypeCheck'))) {
-          // if(val=='mobile'){
-          //   {validator: validator.isMobile, trigger:'blur'}
-          // }
           this.validator.type = {
             type: val,
             message: this.data.options.dataTypeMessage ? this.data.options.dataTypeMessage : this.$t(
@@ -788,6 +788,7 @@
           if (val == 'number' || val == "float" || val == "integer") {
             this.validator.type.type = 'number'
           }
+
         } else {
           this.validator.type = null
         }
