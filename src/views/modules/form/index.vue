@@ -1,11 +1,11 @@
 <template>
   <div class="page">
     <div class="bg-white top">
-      <div class="pull-right">
-        <el-button type="primary" icon="el-icon-view" @click="previewDialogVisible=true">
+      <div class="pull-right btn-warp">
+        <el-button type="primary" size="small" icon="el-icon-view" @click="previewDialogVisible=true">
             预览
         </el-button>
-        <el-button type="success" icon="el-icon-folder-add" @click="saveProjectAsTemplateHandle">
+        <el-button type="success" size="small" icon="el-icon-folder-add" @click="saveProjectAsTemplateHandle">
             保存至模板
         </el-button>
       </div>
@@ -143,6 +143,7 @@
     height: 100%;
     width: 100%;
   }
+  .btn-warp{margin-top: -10px;}
 
   ::v-deep .el-card__body {
     padding: 0;

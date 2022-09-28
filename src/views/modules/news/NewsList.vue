@@ -15,13 +15,15 @@
     <div class="bg-white top">
       <vxe-toolbar :refresh="{query: refreshList}">
         <template #buttons>
-          <el-button v-if="hasPermission('news:news:add')" type="primary" size="small" icon="el-icon-plus"
-            @click="add()">新建</el-button>
-          <el-button v-if="hasPermission('news:news:edit')" type="warning" size="small" icon="el-icon-edit-outline"
-            @click="edit()" :disabled="$refs.newsTable && $refs.newsTable.getCheckboxRecords().length !== 1" plain>修改
+          <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
+          <el-button type="success" size="small" icon="el-icon-chat-line-round" @click="publishToWechat()"
+            :disabled="$refs.newsTable && $refs.newsTable.getCheckboxRecords().length === 0" plain>发布到公众号
           </el-button>
-          <el-button v-if="hasPermission('news:news:del')" type="danger" size="small" icon="el-icon-delete"
-            @click="del()" :disabled="$refs.newsTable && $refs.newsTable.getCheckboxRecords().length === 0" plain>删除
+          <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()"
+            :disabled="$refs.newsTable && $refs.newsTable.getCheckboxRecords().length !== 1" plain>修改
+          </el-button>
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="del()"
+            :disabled="$refs.newsTable && $refs.newsTable.getCheckboxRecords().length === 0" plain>删除
           </el-button>
         </template>
       </vxe-toolbar>
@@ -60,11 +62,15 @@
           </vxe-column>
           <vxe-column fixed="right" align="center" width="320" title="操作">
             <template slot-scope="scope">
-              <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small" @click="publishToIndex(scope.row.id,scope.row.index0==1?0:1)">{{scope.row.index0==1?'取消首页显示':'首页显示'}}
+              <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small"
+                @click="publishToIndex(scope.row.id,scope.row.index0==1?0:1)">{{scope.row.index0==1?'取消首页显示':'首页显示'}}
               </el-button>
-              <el-button type="text" icon="el-icon-upload2" size="small" @click="toTop(scope.row.id,scope.row.top==1?0:1)">{{scope.row.top==1?'取消置顶':'置顶'}}</el-button>
+              <el-button type="text" icon="el-icon-upload2" size="small"
+                @click="toTop(scope.row.id,scope.row.top==1?0:1)">{{scope.row.top==1?'取消置顶':'置顶'}}</el-button>
               <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
+              <el-button type="text" icon="el-icon-chat-line-round" size="small" @click="publishToWechat(scope.row.id)">
+                {{scope.row.published==1?'重新发布':'发布到公众号'}}</el-button>
             </template>
           </vxe-column>
         </vxe-table>
@@ -165,7 +171,7 @@
         this.$refs.newsForm.init('edit', id)
       },
       // 发布到首页显示
-      publishToIndex(id,status) {
+      publishToIndex(id, status) {
         this.$http({
           url: '/news/news/setindex',
           method: 'patch',
@@ -180,8 +186,26 @@
           this.refreshList()
         })
       },
+      // 发布到微信公众号
+      publishToWechat(id) {
+        id = id || this.$refs.newsTable.getCheckboxRecords().map(item => {
+          return item.id
+        }).join(',')
+        this.$http({
+          url: '/news/news/sendtomp',
+          method: 'post',
+          params: {
+            ids: id
+          }
+        }).then(({
+          data
+        }) => {
+          this.$message.success(data)
+          this.refreshList()
+        })
+      },
       //置顶
-      toTop(id,status) {
+      toTop(id, status) {
         this.$http({
           url: '/news/news/settop',
           method: 'patch',
@@ -192,8 +216,8 @@
         }).then(({
           data
         }) => {
-           this.$message.success(data);
-           this.refreshList()
+          this.$message.success(data);
+          this.refreshList()
         })
       },
       // 删除
