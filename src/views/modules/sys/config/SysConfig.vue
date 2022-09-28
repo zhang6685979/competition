@@ -38,8 +38,7 @@
               <el-form-item label="产品logo">
                 <el-upload class="avatar-uploader"
                   :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=logo`"
-                  accept="*.jpg,*.png,*.gif,*.jpeg"
-                  :on-success="(res,file)=>{
+                  accept="*.jpg,*.png,*.gif,*.jpeg" :on-success="(res,file)=>{
                     handleAvatarSuccess(res,file,'logo')
                   }" :before-upload="beforeAvatarUpload" :show-file-list="false">
                   <img v-if="themeFormSetting.logo" :src="themeFormSetting.logo" class="avatar">
@@ -50,8 +49,7 @@
               <el-form-item label="网站logo">
                 <el-upload class="avatar-uploader"
                   :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=logo`"
-                  accept="*.jpg,*.png,*.gif,*.jpeg"
-                  :on-success="(res,file)=>{
+                  accept="*.jpg,*.png,*.gif,*.jpeg" :on-success="(res,file)=>{
                     handleAvatarSuccess(res,file,'weblogo')
                   }" :before-upload="beforeAvatarUpload" :show-file-list="false">
                   <img v-if="themeFormSetting.weblogo" :src="themeFormSetting.weblogo" class="avatar">
@@ -152,7 +150,30 @@
 
           </el-card>
         </el-tab-pane>
-        <el-tab-pane label="banner图配置" name="five">
+        <el-tab-pane label="微信" name="five">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <h3>微信公众号配置</h3>
+            </div>
+            <el-form size="small" label-width="150px" :model="wxFormSetting">
+              <el-form-item label="appid" :rules="[
+                  {required: true, message:'必填项不能为空', trigger:'blur'}
+                 ]">
+                <el-input v-model="wxFormSetting.wxappid" placeholder="微信公众号appid"></el-input>
+              </el-form-item>
+              <el-form-item label="appsecret" :rules="[
+                  {required: true, message:'必填项不能为空', trigger:'blur'}
+                 ]">
+                <el-input v-model="wxFormSetting.wxappsecret" placeholder="微信公众号wxappsecret"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button size="small" type="primary" @click="doSubmit(wxFormSetting)">保存</el-button>
+              </el-form-item>
+            </el-form>
+
+          </el-card>
+        </el-tab-pane>
+        <el-tab-pane label="banner图配置" name="six">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <h3>banner图配置</h3>
@@ -162,12 +183,10 @@
                  {required: true, message:'banner图片不能为空', trigger:'blur'}
                 ]" v-for="(item,index) in banners" :key="index">
 
-                <el-upload
-                  :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/banner`"
-                  :headers="{token: $cookie.get('token')}" :on-success="(response, file, fileList)=>{onSuccess(response, file, fileList,item.field)}"
-                  accept="*.jpg,*.png,*.gif,*.jpeg"
-                  :show-file-list="false"
-                  list-type="picture-card">
+                <el-upload :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/banner`"
+                  :headers="{token: $cookie.get('token')}"
+                  :on-success="(response, file, fileList)=>{onSuccess(response, file, fileList,item.field)}"
+                  accept="*.jpg,*.png,*.gif,*.jpeg" :show-file-list="false" list-type="picture-card">
                   <img v-if="bannerSetting[item.field]" :src="bannerSetting[item.field]" class="avatar">
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 
@@ -220,40 +239,45 @@
           mailName: '',
           mailPassword: ''
         },
+        wxFormSetting: {
+          id: '',
+          wxappid: '',
+          wxappsecret: ''
+        },
         bannerSetting: {
           news: '',
-          announcement:'',
-          competition:'',
-          certificate:'',
-          platform:'',
-          complaint:''
+          announcement: '',
+          competition: '',
+          certificate: '',
+          platform: '',
+          complaint: ''
         },
-        banners:[{
-          label:'新闻资讯',
-          field:'news',
-          fileList:[]
-        },{
-          label:'通知公告',
-          field:'announcement',
-          fileList:[]
-        },{
-          label:'大赛专区',
-          field:'competition',
-          fileList:[]
-        },{
-          label:'技能认证',
-          field:'certificate',
-          fileList:[]
-        },{
-          label:'考试专区',
-          field:'platform',
-          fileList:[]
-        },{
-          label:'沟通与建议',
-          field:'complaint',
-          fileList:[]
+        banners: [{
+          label: '新闻资讯',
+          field: 'news',
+          fileList: []
+        }, {
+          label: '通知公告',
+          field: 'announcement',
+          fileList: []
+        }, {
+          label: '大赛专区',
+          field: 'competition',
+          fileList: []
+        }, {
+          label: '技能认证',
+          field: 'certificate',
+          fileList: []
+        }, {
+          label: '考试专区',
+          field: 'platform',
+          fileList: []
+        }, {
+          label: '沟通与建议',
+          field: 'complaint',
+          fileList: []
         }],
-        bannerArra:[],
+        bannerArra: [],
         colorList: [{
             key: '拂晓蓝（默认）',
             color: '#1890FF'
@@ -352,11 +376,12 @@
         this.themeFormSetting = this.recover(this.themeFormSetting, data)
         this.smsFormSetting = this.recover(this.smsFormSetting, data)
         this.emailFormSetting = this.recover(this.emailFormSetting, data)
-        this.bannerSetting = this.recover(this.bannerSetting,data);
+        this.wxFormSetting = this.recover(this.wxFormSetting, data)
+        this.bannerSetting = this.recover(this.bannerSetting, data);
       })
     },
     methods: {
-      handleAvatarSuccess(res, file,type) {
+      handleAvatarSuccess(res, file, type) {
         this.themeFormSetting[type] = res.url
       },
 
@@ -385,7 +410,7 @@
           this.$store.commit('config/updateConfig', data.config)
         })
       },
-      onSuccess(response, file, fileList,type) {
+      onSuccess(response, file, fileList, type) {
         this.bannerSetting[type] = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
       }
     }

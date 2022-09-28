@@ -52,8 +52,8 @@
         loading: false,
         captchaImg: '',
         inputForm: {
-          username: 'admin',
-          password: 'jsglpt@123',
+          username: '',
+          password: '',
           uuid: '',
           code: ''
         },
