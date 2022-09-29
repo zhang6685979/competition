@@ -1,18 +1,19 @@
- 
+// 打印类属性、方法定义
+/* eslint-disable */
 const Print = function (dom, options) {
   if (!(this instanceof Print)) return new Print(dom, options);
- 
+
   this.options = this.extend({
     'noPrint': '.no-print'
   }, options);
- 
+
   if ((typeof dom) === "string") {
     this.dom = document.querySelector(dom);
   } else {
     this.isDOM(dom)
     this.dom = this.isDOM(dom) ? dom : dom.$el;
   }
- 
+
   this.init();
 };
 Print.prototype = {
@@ -26,7 +27,7 @@ Print.prototype = {
     }
     return obj;
   },
- 
+
   getStyle: function () {
     var str = "",
       styles = document.querySelectorAll('style,link');
@@ -34,15 +35,15 @@ Print.prototype = {
       str += styles[i].outerHTML;
     }
     str += "<style>" + (this.options.noPrint ? this.options.noPrint : '.no-print') + "{display:none;}</style>";
- 
+
     return str;
   },
- 
+
   getHtml: function () {
     var inputs = document.querySelectorAll('input');
     var textareas = document.querySelectorAll('textarea');
     var selects = document.querySelectorAll('select');
- 
+
     for (var k = 0; k < inputs.length; k++) {
       if (inputs[k].type == "checkbox" || inputs[k].type == "radio") {
         if (inputs[k].checked == true) {
@@ -56,13 +57,13 @@ Print.prototype = {
         inputs[k].setAttribute('value', inputs[k].value)
       }
     }
- 
+
     for (var k2 = 0; k2 < textareas.length; k2++) {
       if (textareas[k2].type == 'textarea') {
         textareas[k2].innerHTML = textareas[k2].value
       }
     }
- 
+
     for (var k3 = 0; k3 < selects.length; k3++) {
       if (selects[k3].type == 'select-one') {
         var child = selects[k3].children;
@@ -77,10 +78,34 @@ Print.prototype = {
         }
       }
     }
- 
-    return this.dom.outerHTML;
+    // 包裹要打印的元素
+    // fix: https://github.com/xyl66/vuePlugs_printjs/issues/36
+    let outerHTML = this.wrapperRefDom(this.dom).outerHTML
+    return outerHTML;
   },
- 
+  // 向父级元素循环，包裹当前需要打印的元素
+  // 防止根级别开头的 css 选择器不生效
+  wrapperRefDom: function (refDom) {
+    let prevDom = null
+    let currDom = refDom
+    // 判断当前元素是否在 body 中，不在文档中则直接返回该节点
+    if (!this.isInBody(currDom)) return currDom
+
+    while (currDom) {
+      if (prevDom) {
+        let element = currDom.cloneNode(false)
+        element.appendChild(prevDom)
+        prevDom = element
+      } else {
+        prevDom = currDom.cloneNode(true)
+      }
+
+      currDom = currDom.parentElement
+    }
+
+    return prevDom
+  },
+
   writeIframe: function (content) {
     var w, doc, iframe = document.createElement('iframe'),
       f = document.body.appendChild(iframe);
@@ -100,7 +125,7 @@ Print.prototype = {
       }, 100)
     }
   },
- 
+
   toPrint: function (frameWindow) {
     try {
       setTimeout(function () {
@@ -118,6 +143,10 @@ Print.prototype = {
       console.log('err', err);
     }
   },
+  // 检查一个元素是否是 body 元素的后代元素且非 body 元素本身
+  isInBody: function (node) {
+    return (node === document.body) ? false : document.body.contains(node);
+  },
   isDOM: (typeof HTMLElement === 'object') ?
     function (obj) {
       return obj instanceof HTMLElement;
@@ -128,6 +157,7 @@ Print.prototype = {
 };
 const MyPlugin = {}
 MyPlugin.install = function (Vue, options) {
+  // 4. 添加实例方法
   Vue.prototype.$print = Print
 }
 export default MyPlugin

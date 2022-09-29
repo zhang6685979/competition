@@ -85,7 +85,7 @@
     <el-dialog title="执裁分配表" :visible.sync="dialogVisible" :append-to-body="true" width="80%">
       <distributionTable @refreshList="(redo)=>{
         this.showDistribution(currId,redo)
-      }" :list="list" v-if="dialogVisible"></distributionTable>
+      }" :list="distribution.distributed||[]" :surplusTeams="distribution.undistributedTeams||[]" :surplusReferees="distribution.undistributedReferees||[]" v-if="dialogVisible"></distributionTable>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">关闭</el-button>
         <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>确定</el-button>
@@ -125,7 +125,7 @@
         },
         loading: false,
         dialogVisible:false,
-        list:[],
+        distribution:{},
         currId:'',
         visible:false
       }
@@ -213,7 +213,18 @@
           params:{id,redo}
         }).then(({data})=>{
           if(data.status){
-            this.list = data.data.distributed;
+            //不满足匹配条件的赛队和裁判
+            var undistributedReferees = data.data.undistributedReferees||[];
+            var undistributedTeams = data.data.undistributedTeams||[];
+            var distributed = data.data.distributed;
+            // if(undistributedReferees.length>0||undistributedTeams.length>0){
+            //   distributed.push({
+            //     code:'未匹配到考场的裁判和赛队',
+            //     teams:undistributedTeams,
+            //     refereees:undistributedReferees
+            //   })
+            // }
+            this.distribution = data.data;
             this.dialogVisible = true;
           }else{
             this.$message.error(data.message)
@@ -230,7 +241,7 @@
           url:'/exam/competitionExam/preview/distribute',
           method:'post',
           params:{id:this.currId},
-          data:{distributed:this.list}
+          data:this.distribution
         }).then(({data})=>{
           this.$message.success(data);
           this.dialogVisible = false;

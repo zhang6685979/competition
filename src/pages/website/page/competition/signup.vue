@@ -16,7 +16,7 @@
     </el-row>
     <div class="signup-form" v-if="signFormVisible" ref="formView">
       <button class="btn no-print" @click="signFormVisible=false">返 回</button>
-      <button class="btn no-print pull-right" @click="print">打印表单</button>
+      <button class="btn no-print pull-right" v-if="memberName" @click="print">打印表单</button>
       <div v-if="!memberName" class="login-tip">
         <p>您需要登录才能访问此页面！</p>
         <el-button type="primary" @click="toLogin">立即登录</el-button>

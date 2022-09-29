@@ -8,6 +8,29 @@
     </vxe-toolbar>
     <div v-if="editMode">
       <p>提示：点击裁判和赛队标签卡进行拖动可进行字段定义分组</p>
+      <el-row :gutter="15">
+        <el-col :span="12">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>剩余裁判</span>
+            </div>
+            <draggable tag="div" :list="surplusReferees" group="referee">
+                <el-tag v-for="(item,index) in surplusReferees" data-type="referee" :data-index="index" :key="index">{{item.name}}</el-tag>
+            </draggable>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>剩余赛队</span>
+            </div>
+            <draggable tag="div" :list="surplusTeams" group="team">
+                <el-tag v-for="(item,index) in surplusTeams" data-type="team" :data-index="index" :key="index">{{item.school}}</el-tag>
+            </draggable>
+          </el-card>
+        </el-col>
+      </el-row>
+      {{list}}
       <vxe-table border auto-resize resizable height="300" size="small" ref="table" round show-header-overflow
         show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
         :data="list" :checkbox-config="{}">
@@ -30,6 +53,7 @@
 
       </vxe-table>
     </div>
+    {{dataList}}
     <vxe-table border auto-resize resizable height="300" size="small" ref="table" round show-header-overflow
       show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
       :data="dataList" :checkbox-config="{}" :merge-cells="mergeCells">
@@ -38,7 +62,7 @@
       <vxe-column field="refereeName" title="裁判姓名">
          <template slot-scope="scope">
              <div>
-               <span v-for="(item,index) in scope.row.refereeName" :key="index">{{item}}</span>
+               <span v-for="(item,index) in scope.row.refereeName" :key="index">{{item}}&nbsp;&nbsp;</span>
              </div>
          </template>
       </vxe-column>
@@ -74,6 +98,14 @@
       list: {
         type: Array,
         default: []
+      },
+      surplusTeams:{
+        type: Array,
+        default: []
+      },
+      surplusReferees:{
+        type: Array,
+        default: []
       }
     },
     components: {
@@ -105,8 +137,7 @@
         var list = this.list;
         var row = 0;
         list.forEach((item, index) => {
-          var rows = item.teams.length; //行数
-
+          var rows = item.teams?item.teams.length:1; //行数
           for (var i = 0; i < 5; i++) {
             mergeCells.push({
               row: row,
@@ -126,45 +157,6 @@
       },
       refreshList(redo) {
         this.$emit('refreshList',redo||false);
-      },
-      //处理裁判调整
-      handleRefereeAdd(evt){
-        var refereeIndex = evt.item.dataset.index;
-        var roomCode = evt.item.dataset.roomcode;
-        var targetRoomCode = evt.target.dataset.roomcode;
-        //考场
-        var room = this.list.find(item=>{
-          return item.code == roomCode;
-        })
-        var referee = room.refereees[refereeIndex];
-        //从源裁判表删除
-        room.refereees.splice(refereeIndex,1);
-        //目标考场
-        var targetRoom = this.list.find(item=>{
-          return item.code == targetRoomCode;
-        })
-        targetRoom.refereees.push(referee);
-      },
-      //处理赛队调整
-      handleTeamAdd(evt){
-        var schoolCode = evt.item.dataset.code;
-        var roomCode = evt.item.dataset.roomcode;
-        var targetRoomCode = evt.target.dataset.roomcode;
-        //考场
-        var room = this.list.find(item=>{
-          return item.code == roomCode;
-        })
-        var schoolIndex = room.teams.findIndex(team=>{
-          return team.schoolCode == schoolCode;
-        })
-        var team = room.teams[schoolIndex];
-        //从源赛队表删除
-        room.teams.splice(schoolIndex,1);
-        //目标考场
-        var targetRoom = this.list.find(item=>{
-          return item.code == targetRoomCode;
-        })
-        targetRoom.teams.push(team);
       }
     },
     computed: {
@@ -172,28 +164,37 @@
         var list = this.list;
         var dataList = [];
         list.forEach(item => {
-          var teams = item.teams;
-          var refereees = item.refereees;
-          //裁判信息
-          var refereeInfo = {
-            refereeName: [],
-            refereeSchool: [],
-            refereeCode: [],
-            refereeMobile: []
-          }
-          refereees.forEach(referee => {
-            refereeInfo.refereeName.push(referee.name);
-            refereeInfo.refereeSchool.push(referee.school);
-            refereeInfo.refereeCode.push(referee.code);
-            refereeInfo.refereeMobile.push(referee.mobile);
-          })
-          teams.forEach(team => {
+          var teams = item.teams||[];
+          var refereees = item.refereees||[];
+          if(teams.length>0||refereees.length>0){
+            //裁判信息
+            var refereeInfo = {
+              refereeName: [],
+              refereeSchool: [],
+              refereeCode: [],
+              refereeMobile: []
+            }
+            refereees.forEach(referee => {
+              refereeInfo.refereeName.push(referee.name);
+              refereeInfo.refereeSchool.push(referee.school);
+              refereeInfo.refereeCode.push(referee.code);
+              refereeInfo.refereeMobile.push(referee.mobile);
+            })
+            teams.forEach(team => {
+              dataList.push({
+                roomCode: item.code,
+                ...team,
+                ...refereeInfo
+              })
+            })
+          }else{
+            item.teams = [];
+            item.refereees = [];
             dataList.push({
               roomCode: item.code,
-              ...team,
-              ...refereeInfo
             })
-          })
+          }
+
         })
         return dataList
       }
