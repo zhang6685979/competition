@@ -49,11 +49,9 @@ export default {
       handler (newVal) {
         this.selectData = []
         if (newVal) {
-          newVal.split(',').forEach((id) => {
-            this.schoolService.queryById(id).then(({data}) => {
-              if (data && data.id !== '') {
-                this.selectData.push(data)
-              }
+          newVal.split(',').forEach((school) => {
+            this.selectData.push({
+              school:school
             })
           })
         }
@@ -63,7 +61,7 @@ export default {
     },
     selectData: {
       handler (newVal) {
-       this.name = newVal.map(school => { return school.name }).join(',')
+       this.name = newVal.map(school => { return school.school }).join(',')
       },
       immediate: false,
       deep: true
@@ -72,12 +70,11 @@ export default {
   methods: {
     selectSchoolToInput (schools) {
       this.selectData = schools
-      this.labelValue = schools.map(school => { return school.id }).join(',')
-      this.name = schools.map(school => { return school.name }).join(',')
-      this.$emit('input', this.labelValue, this.name)
+      var name = schools.map(school => { return school.school }).join(',')
+      this.$emit('input', name)
     },
     showSchoolSelect () {
-      this.$refs.schoolSelect.init()
+      this.$refs.schoolSelect.init(this.cid)
     }
   }
 }

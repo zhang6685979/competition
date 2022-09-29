@@ -86,7 +86,7 @@
               <div>
                 <el-checkbox label="指定不能监控院校" true-label="1" false-label="0" v-model="inputForm.specificSchool">
                 </el-checkbox>
-                <school-select :disabled="inputForm.specificSchool==0" v-model="inputForm.specificSchoolList"></school-select>
+                <school-select :disabled="inputForm.specificSchool==0" :cid="cid" v-model="inputForm.specificSchoolList"></school-select>
               </div>
 
             </el-form-item>
@@ -244,6 +244,13 @@
             this.loading = false;
             if(data){
               this.inputForm = this.recover(this.inputForm, data)
+            }else{
+              this.inputForm = {
+                selfSchool: '0',
+                selfCity: '0',
+                specificSchool: '0',
+                specificSchoolList: ''
+              }
             }
           })
         })

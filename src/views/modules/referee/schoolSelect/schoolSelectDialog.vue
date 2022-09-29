@@ -4,38 +4,28 @@
       class="userDialog" :visible.sync="visible">
       <el-row>
         <el-col :span="18">
-          <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
-             <el-form-item prop="name">
-                    <el-input size="small" v-model="searchForm.name" placeholder="学校名称" clearable></el-input>
-             </el-form-item>
-             <el-form-item prop="city">
-                <el-input size="small" v-model="searchForm.city" placeholder="省份" clearable></el-input>
-             </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
-                <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
-              </el-form-item>
+          <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm"
+            @keyup.enter.native="refreshList()" @submit.native.prevent>
+            <el-form-item prop="name">
+              <el-input size="small" v-model="searchForm.name" placeholder="学校名称" clearable></el-input>
+            </el-form-item>
+            <el-form-item prop="city">
+              <el-input size="small" v-model="searchForm.city" placeholder="省份" clearable></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
+              <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
+            </el-form-item>
           </el-form>
-          <vxe-table  border="inner" height="400" :loading="loading" size="small" ref="schoolTable"
-            show-header-overflow show-overflow highlight-hover-row  @sort-change="sortChangeHandle" :sort-config="{remote:true}"
-            :data="dataList" @checkbox-change="checkboxChange">
+          <vxe-table border="inner" height="400" :loading="loading" size="small" ref="schoolTable" show-header-overflow
+            show-overflow highlight-hover-row @sort-change="sortChangeHandle" :sort-config="{remote:true}"
+            :data="dataList" @checkbox-change="checkboxChange"  @checkbox-all="checkboxChange">
             <vxe-column type="seq" width="40"></vxe-column>
             <vxe-column type="checkbox" width="50px"></vxe-column>
-            <vxe-column
-                field="code"
-                sortable
-                title="学校编码">
-              </vxe-column>
-            <vxe-column
-                field="name"
-                sortable
-                title="学校名称">
-              </vxe-column>
-            <vxe-column
-                field="city"
-                sortable
-                title="所属省份">
-              </vxe-column>
+            <vxe-column field="school" sortable title="学校名称">
+            </vxe-column>
+            <vxe-column field="city" sortable title="所属省份">
+            </vxe-column>
           </vxe-table>
           <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
             :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
@@ -44,9 +34,9 @@
           </vxe-pager>
         </el-col>
         <el-col :span="6">
-          <el-tag :key="tag.id" v-for="tag in dataListAllSelections" closable :disable-transitions="false"
+          <el-tag :key="index" v-for="(tag,index) in dataListAllSelections" closable :disable-transitions="false"
             @close="del(tag)">
-            {{tag.name}}
+            {{tag.school}}
           </el-tag>
         </el-col>
       </el-row>
@@ -64,9 +54,10 @@
   export default {
     data() {
       return {
+        cid:'',
         dataListAllSelections: [], // 所有选中的数据包含跨页数据
         dataListSelections: [],
-        idKey: 'id', // 标识列表数据中每一行的唯一键的名称(需要按自己的数据改一下)
+        idKey: 'school', // 标识列表数据中每一行的唯一键的名称(需要按自己的数据改一下)
         dataList: [],
         tablePage: {
           total: 0,
@@ -95,14 +86,14 @@
         default: 999999
       }
     },
-    components: {
-    },
+    components: {},
     schoolService: null,
-    created () {
+    created() {
       this.schoolService = new SchoolService()
     },
     methods: {
-      init() {
+      init(cid) {
+        this.cid = cid;
         this.visible = true
         this.$nextTick(() => {
           this.dataListAllSelections = JSON.parse(JSON.stringify(this.selectData))
@@ -183,11 +174,16 @@
       // 获取数据列表
       refreshList() {
         this.loading = true
-        this.schoolService.page({
-          'current': this.tablePage.currentPage,
-          'size': this.tablePage.pageSize,
-          'orders': this.tablePage.orders,
-          ...this.searchForm
+        this.$http({
+          url: '/team/team/list',
+          method: 'get',
+          params: {
+            cid:this.cid,
+            'current': this.tablePage.currentPage,
+            'size': this.tablePage.pageSize,
+            'orders': this.tablePage.orders,
+            ...this.searchForm
+          }
         }).then(({
           data
         }) => {
@@ -198,6 +194,21 @@
             this.setSelectRow()
           })
         })
+        // this.schoolService.page({
+        //   'current': this.tablePage.currentPage,
+        //   'size': this.tablePage.pageSize,
+        //   'orders': this.tablePage.orders,
+        //   ...this.searchForm
+        // }).then(({
+        //   data
+        // }) => {
+        //   this.dataList = data.records
+        //   this.tablePage.total = data.total
+        //   this.loading = false
+        //   this.$nextTick(() => {
+        //     this.setSelectRow()
+        //   })
+        // })
       },
       // 当前页
       currentChangeHandle({
@@ -233,7 +244,7 @@
         this.visible = false
         this.$emit('doSubmit', this.dataListAllSelections)
       },
-      checkboxChange(){
+      checkboxChange() {
         const selectRecords = this.$refs.schoolTable.getCheckboxRecords()
         this.selectionChangeHandle(selectRecords);
       }
@@ -241,7 +252,10 @@
   }
 </script>
 <style lang="scss" scoped>
-  .school-table{flex:1;}
+  .school-table {
+    flex: 1;
+  }
+
   .org {
     height: 100%;
 
