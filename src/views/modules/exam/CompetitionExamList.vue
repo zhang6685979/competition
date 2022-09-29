@@ -213,7 +213,7 @@
           params:{id,redo}
         }).then(({data})=>{
           if(data.status){
-            this.list = data.data;
+            this.list = data.data.distributed;
             this.dialogVisible = true;
           }else{
             this.$message.error(data.message)
@@ -230,7 +230,7 @@
           url:'/exam/competitionExam/preview/distribute',
           method:'post',
           params:{id:this.currId},
-          data:this.list
+          data:{distributed:this.list}
         }).then(({data})=>{
           this.$message.success(data);
           this.dialogVisible = false;

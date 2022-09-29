@@ -50,10 +50,7 @@ export default {
             })
         },
         async getMap() {
-            const {data} = await axios({
-                url: 'https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/json/china.json',
-                method: 'get'
-            })
+            var data = require('@/assets/map/china.json')
             TChart.registerMap('china', data)
             this.option = {
                 title: {

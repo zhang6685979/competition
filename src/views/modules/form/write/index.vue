@@ -143,13 +143,13 @@
 </script>
 
 <style lang="scss" scoped>
-  .write-container {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-  }
+  // .write-container {
+  //   margin: 0;
+  //   padding: 0;
+  //   height: 100%;
+  //   width: 100%;
+  //   overflow-x: hidden;
+  // }
 
   .title-icon-view {
     display: flex;

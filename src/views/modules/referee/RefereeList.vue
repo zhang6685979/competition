@@ -242,11 +242,11 @@
             data
           }) => {
             this.loading = false;
-            this.inputForm = this.recover(this.inputForm, data)
+            if(data){
+              this.inputForm = this.recover(this.inputForm, data)
+            }
           })
         })
-
-
       },
       doSubmit() {
         this.loading = true

@@ -271,6 +271,8 @@
               })
               this.loading = false
             })
+          }else{
+            this.loaded();
           }
         })
       },
@@ -284,7 +286,6 @@
         } else {
           iframe.onload = () => {
             iframe.contentWindow.vm.initData(this.inputForm);
-            console.log('我是在表单页面设置的');
           }
         }
       },

@@ -6,29 +6,23 @@
                 基础信息
             </template>
             <el-row class="count-card-content">
-                <el-col :span="6">
+                <el-col :span="8">
                     <p>有效回收量</p>
                     <h1>
                         <count-to :end-val="projectStats.completeCount" />
                     </h1>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="8">
                     <p>总浏览量</p>
                     <h1>
                         <count-to :end-val="projectStats.viewCount" />
                     </h1>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="8">
                     <p>回收率</p>
                     <h1>
                         <count-to :end-val="projectStats.completeRate" />
                         %
-                    </h1>
-                </el-col>
-                <el-col :span="6">
-                    <p>平均完成时间</p>
-                    <h1>
-                        {{ projectStats.avgCompleteFormatStr }}
                     </h1>
                 </el-col>
             </el-row>

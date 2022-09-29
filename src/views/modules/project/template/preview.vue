@@ -1,5 +1,6 @@
 <template>
-    <div v-loading="createProjectLoading" class="template-preview-container">
+      <div class="page">
+        <div class="bg-white top">
         <div class="header">
             <el-page-header content="模板详情" @back="$router.back(-1)" />
             <el-divider></el-divider>
@@ -19,6 +20,7 @@
             </div>
         </div>
     </div>
+   </div>
 </template>
 
 <script>
@@ -75,10 +77,6 @@ export default {
     height: 100%;
 }
 
-.header {
-    padding: 20px;
-}
-
 .template-scrollbar {
     height: calc(100% - 64px);
 }
@@ -90,5 +88,8 @@ export default {
         top: 50px;
         right: 180px;
     }
+}
+::v-deep .support-text{
+  display: none;
 }
 </style>
