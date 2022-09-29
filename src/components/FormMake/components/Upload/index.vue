@@ -337,6 +337,8 @@ export default {
             key: (new Date().getTime()) + '_' + Math.ceil(Math.random() * 99999)
           }
         })
+      }else{
+        this.fileList = [];
       }
     }
   }
