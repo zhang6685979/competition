@@ -82,6 +82,8 @@
               </div>
             </template>
           </vxe-column>
+          <vxe-column field="createTime" sortable title="填写日期">
+          </vxe-column>
 
         </vxe-table>
       </div>
@@ -169,6 +171,7 @@
             }
           }
         }
+
         return this.dataBindFields
       },
       //单个附件下载

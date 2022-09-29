@@ -30,7 +30,6 @@
           </el-card>
         </el-col>
       </el-row>
-      {{list}}
       <vxe-table border auto-resize resizable height="300" size="small" ref="table" round show-header-overflow
         show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
         :data="list" :checkbox-config="{}">
@@ -53,7 +52,6 @@
 
       </vxe-table>
     </div>
-    {{dataList}}
     <vxe-table border auto-resize resizable height="300" size="small" ref="table" round show-header-overflow
       show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
       :data="dataList" :checkbox-config="{}" :merge-cells="mergeCells">
@@ -117,7 +115,19 @@
           this.handleMerge()
         },
         deep: true
-      }
+      },
+      surplusTeams: {
+        handler: function() {
+          this.handleMerge()
+        },
+        deep: true
+      },
+      surplusReferees: {
+        handler: function() {
+          this.handleMerge()
+        },
+        deep: true
+      },
     },
     data() {
       return {
@@ -162,6 +172,8 @@
     computed: {
       dataList() {
         var list = this.list;
+        var surplusTeams = this.surplusTeams;
+        var surplusReferees = this.surplusReferees;
         var dataList = [];
         list.forEach(item => {
           var teams = item.teams||[];

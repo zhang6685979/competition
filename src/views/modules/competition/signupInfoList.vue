@@ -3,47 +3,50 @@
     <el-dialog :title="title||'报名信息'" fullscreen :close-on-click-modal="false" v-dialogDrag :visible.sync="visible">
 
       <el-tabs v-model="activeName">
-          <el-tab-pane label="填报信息审批" name="first">
-            <vxe-toolbar>
-              <template #buttons>
-                <el-button type="primary" size="small" icon="el-icon-check" @click="patchApproval()"
-                  :disabled="($refs.competitionSignupTable && ($refs.competitionSignupTable.getCheckboxRecords().length == 0))" plain>
-                  批量审批通过</el-button>
+        <el-tab-pane label="填报信息审批" name="first">
+          <vxe-toolbar>
+            <template #buttons>
+              <el-button type="primary" size="small" icon="el-icon-check" @click="patchApproval()"
+                :disabled="($refs.competitionSignupTable && ($refs.competitionSignupTable.getCheckboxRecords().length == 0))"
+                plain>
+                批量审批通过</el-button>
+            </template>
+          </vxe-toolbar>
+          <vxe-table border="inner" auto-resize resizable height="450" :loading="loading" size="small"
+            ref="competitionSignupTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
+            :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList"
+            :checkbox-config="{checkMethod: checkMethod}">
+            <vxe-column type="seq" width="40"></vxe-column>
+            <vxe-column type="checkbox" width="40px"></vxe-column>
+            <vxe-column field="templateName" title="报名名称">
+            </vxe-column>
+            <vxe-column field="createTime" title="报名时间">
+            </vxe-column>
+            <vxe-column field="status" title="报名状态">
+              <template slot-scope="scope">
+                <el-tag type="success" v-if="scope.row.status==1">{{status[scope.row.status]}}</el-tag>
+                <el-tag type="danger" v-if="scope.row.status==2">{{status[scope.row.status]}}</el-tag>
+                <el-tag type="primary" v-if="scope.row.status==0">{{status[scope.row.status]}}</el-tag>
               </template>
-            </vxe-toolbar>
-            <vxe-table border="inner" auto-resize resizable height="450" :loading="loading" size="small"
-              ref="competitionSignupTable" show-header-overflow show-overflow highlight-hover-row :menu-config="{}"
-              :print-config="{}" :import-config="{}" :export-config="{}" :data="dataList" :checkbox-config="{checkMethod: checkMethod}">
-              <vxe-column type="seq" width="40"></vxe-column>
-              <vxe-column type="checkbox" width="40px"></vxe-column>
-              <vxe-column field="templateName" title="报名名称">
-              </vxe-column>
-              <vxe-column field="createTime" title="报名时间">
-              </vxe-column>
-              <vxe-column field="status" title="报名状态">
-                <template slot-scope="scope">
-                  <el-tag type="success" v-if="scope.row.status==1">{{status[scope.row.status]}}</el-tag>
-                  <el-tag type="danger" v-if="scope.row.status==2">{{status[scope.row.status]}}</el-tag>
-                  <el-tag type="primary" v-if="scope.row.status==0">{{status[scope.row.status]}}</el-tag>
-                </template>
-              </vxe-column>
-              <vxe-column fixed="right" align="center" width="300" title="操作">
-                <template slot-scope="scope">
-                  <el-button type="text" icon="el-icon-view" size="small" @click="approval(scope.row)">
-                    {{scope.row.status==0?'审核':'查看填报详情'}}</el-button>
-                </template>
-              </vxe-column>
-            </vxe-table>
-            <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
-              :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
-              :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-              @page-change="currentChangeHandle">
-            </vxe-pager>
-          </el-tab-pane>
-          <el-tab-pane label="填报信息列表" name="second">
-            <GenerateList :tid="tid" v-if="visible" :dataList="signupDataList" :title="title"></GenerateList>
-          </el-tab-pane>
-        </el-tabs>
+            </vxe-column>
+            <vxe-column fixed="right" align="center" width="300" title="操作">
+              <template slot-scope="scope">
+                <el-button type="text" icon="el-icon-view" size="small" @click="approval(scope.row)">
+                  {{scope.row.status==0?'审核':'查看填报详情'}}
+                </el-button>
+              </template>
+            </vxe-column>
+          </vxe-table>
+          <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
+            :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+            :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+            @page-change="currentChangeHandle">
+          </vxe-pager>
+        </el-tab-pane>
+        <el-tab-pane label="填报信息列表" name="second">
+          <GenerateList :tid="tid" v-if="visible" :dataList="signupDataList" :title="title"></GenerateList>
+        </el-tab-pane>
+      </el-tabs>
 
 
     </el-dialog>
@@ -57,7 +60,9 @@
             </tr>
             <tr>
               <td>报名说明:</td>
-              <td><pre>{{signupInfo.describe0}}</pre></td>
+              <td>
+                <pre>{{signupInfo.describe0}}</pre>
+              </td>
             </tr>
           </table>
         </div>
@@ -89,15 +94,15 @@
     props: {
       cid: String
     },
-    components:{
+    components: {
       GenerateList
     },
     data() {
       return {
         visible: false,
-        activeName:'first',
+        activeName: 'first',
         tid: '', //报名模板id
-        title:'',//报名表名称
+        title: '', //报名表名称
         dataList: [],
         tablePage: {
           total: 0,
@@ -114,11 +119,13 @@
         signupInfo: {},
         json: {},
         currItem: {},
-        form:{status:'1'}
+        form: {
+          status: '1'
+        }
       }
     },
     methods: {
-      init(id,title) {
+      init(id, title) {
         this.visible = true
         this.loading = false
         this.tid = id;
@@ -127,7 +134,7 @@
           this.getList()
         })
       },
-      getList(){
+      getList() {
         this.loading = true
         this.$http({
           url: '/competition/competitionSignup/forminput/list',
@@ -169,7 +176,7 @@
           this.signFormVisible = true;
           this.signupInfo = data;
           this.json = JSON.parse(data.content);
-          this.form.status = item.status==0?'1':item.status;//默认选择审批通过
+          this.form.status = item.status == 0 ? '1' : item.status; //默认选择审批通过
           this.$nextTick(() => {
             var formData = item.content;
             if (formData) {
@@ -196,12 +203,12 @@
           this.init(this.tid); //刷新列表
         })
       },
-      patchApproval(){
+      patchApproval() {
         var records = this.$refs.competitionSignupTable.getCheckboxRecords()
         var ids = '';
-        if(records&&records.length>0){
-          ids = records.map(record=>record.id).join(',')
-        }else{
+        if (records && records.length > 0) {
+          ids = records.map(record => record.id).join(',')
+        } else {
           this.$message.warning('请选择要审批的记录')
           return false;
         }
@@ -215,47 +222,52 @@
         }).then(({
           data
         }) => {
-          this.getList();//刷新列表
+          this.getList(); //刷新列表
         })
       },
-      checkMethod({row}){
-        return row.status!=1;
+      checkMethod({
+        row
+      }) {
+        return row.status != 1;
       }
     },
-    computed:{
-      signupDataList:function(){
+    computed: {
+      signupDataList: function() {
         var dataList = [];
-        this.dataList.map(item=>{
+        this.dataList.map(item => {
           var content = item.content;
-          if(content){
+          if (content) {
             content = JSON.parse(content);
-            var obj = {},isSubForm=false;
-            for(var key in content){
-              if(content.hasOwnProperty(key)){
+            var obj = {},
+              isSubForm = false;
+            for (var key in content) {
+              if (content.hasOwnProperty(key)) {
                 var value = content[key]
                 var type = typeof value
-                if(type=='string'||type=='number'){
+                if (type == 'string' || type == 'number') {
                   obj[key] = value
-                }else if(value instanceof Array){
-                  if(typeof value[0] == 'object'){
+                } else if (value instanceof Array) {
+                  if (typeof value[0] == 'object') {
                     dataList = dataList.concat(value)
-                      isSubForm = true;//如果包含子表单以子表单数据为准
-                    }
-                  }else{
-                    obj[key] = value
+                    isSubForm = true; //如果包含子表单以子表单数据为准
                   }
+                } else {
+                  obj[key] = value
+                }
               }
             }
-            if(isSubForm){
-              dataList.forEach(item=>{
-                Object.assign(item,obj);
+            obj.createTime = item.createTime;
+            if (isSubForm) {
+              dataList.forEach(item => {
+                Object.assign(item, obj);
               })
-            }else{
+            } else {
               dataList.push(obj);
             }
           }
 
         });
+        console.log(dataList);
         return dataList
       }
     }
@@ -275,13 +287,18 @@
       font-size: 16px;
       color: #303133;
       margin-bottom: 20px;
-      table{
-        td{
+
+      table {
+        td {
           vertical-align: top;
-          padding:5px 0;
-          pre{margin:0}
+          padding: 5px 0;
+
+          pre {
+            margin: 0
+          }
         }
       }
+
       p {
         margin: 10px 0;
       }

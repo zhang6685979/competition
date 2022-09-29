@@ -7,7 +7,7 @@
           <vxe-table  border="inner" auto-resize resizable height="400" :loading="loading" size="small" ref="refereeTable"
             show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
             :import-config="{}" :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}"
-            :data="dataList" :checkbox-config="{}" @checkbox-change="checkboxChange">
+            :data="dataList" :checkbox-config="{}" @checkbox-change="checkboxChange" @checkbox-all="checkboxChange">
             <vxe-column type="seq" width="40"></vxe-column>
             <vxe-column type="checkbox" width="40px"></vxe-column>
 

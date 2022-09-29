@@ -6,7 +6,7 @@
           <img :src="require('../../assets/images/file-icon.png')" :alt="item.title">
           <div class="other-info">
             <h5 :title="item.title">{{item.title}}</h5>
-            <p>文件大小：{{(item.size/1024/1024).toFixed(2)}}M | {{item.times}}次下载</p>
+            <p>文件大小：{{(item.size/1024/1024).toFixed(2)}}M <!-- | {{item.times}}次下载 --></p>
             <el-button type="primary" size="small" @click="downloadFile(item.file)">下载</el-button>
           </div>
         </div>
