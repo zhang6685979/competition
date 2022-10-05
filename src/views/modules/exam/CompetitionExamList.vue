@@ -58,13 +58,32 @@
       <vxe-column
         fixed="right"
         align="center"
-        width="300"
+        width="200"
         title="操作">
         <template  slot-scope="scope">
-          <el-button type="text" icon="el-icon-view" size="small" @click="importScore(scope.row.id)">查看成绩</el-button>
+          <!-- <el-button type="text" icon="el-icon-view" size="small" @click="importScore(scope.row.id)">查看成绩</el-button>
           <el-button type="text" icon="el-icon-user" size="small" @click="showDistribution(scope.row.id)">查看执裁分配</el-button>
+          <el-button type="text" icon="el-icon-s-promotion" size="small" @click="send(scope.row.id)">发送通知</el-button> -->
           <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
           <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
+          <el-divider direction="vertical"></el-divider>
+          <el-dropdown size="small"  @command="handleCommand">
+            <span class="el-dropdown-link">
+              更多<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+
+              <el-dropdown-item :command="{method:'importScore', id:scope.row.id}">
+                查看成绩
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'showDistribution', id:scope.row.id}">
+                查看执裁分配
+              </el-dropdown-item>
+              <el-dropdown-item :command="{method:'send', row:scope.row}">
+                发送通知
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </vxe-column>
     </vxe-table>
@@ -88,7 +107,7 @@
       }" :list="distribution.distributed||[]" :surplusTeams="distribution.undistributedTeams||[]" :surplusReferees="distribution.undistributedReferees||[]" v-if="dialogVisible"></distributionTable>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">关闭</el-button>
-        <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>确定</el-button>
+        <el-button size="small" type="primary"  @click="doSubmit()" v-noMoreClick>保存分配表</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -252,6 +271,18 @@
          this.currId = id;
          this.visible = true;
       },
+      send(id){
+        this.$http({
+          url:'/exam/competitionExam/sendNotification',
+          method:'post',
+          params:{id:id}
+        }).then(({data})=>{
+          this.$message.success(data);
+        })
+      },
+      handleCommand (command) {
+        this[command.method](command.id)
+      }
     }
   }
 </script>

@@ -4,6 +4,7 @@
       :data="tableData"
       border
       size="small"
+      style="width:100%"
     >
       <el-table-column
         label="#"
@@ -24,7 +25,8 @@
           v-for="column in columns"
           :key="column.key"
           :label="column.name"
-          :width="column.options.width"
+          :width="column.options.width.indexOf('px')!=-1?column.options.width:''"
+          :min-width="column.options.width.indexOf('%')!=-1?column.options.width:''"
           :label-class-name="column.options.required ? 'required' : ''"
         >
           <template slot-scope="scope">
