@@ -79,7 +79,7 @@
               <el-dropdown-item :command="{method:'showDistribution', id:scope.row.id}">
                 查看执裁分配
               </el-dropdown-item>
-              <el-dropdown-item :command="{method:'send', row:scope.row}">
+              <el-dropdown-item :command="{method:'send', id:scope.row.id}">
                 发送通知
               </el-dropdown-item>
             </el-dropdown-menu>
