@@ -9,7 +9,7 @@
                 <el-form-item label="模板设置说明：">
                   <p class="no-margin">
                     消息通知内容中存在动态替换的内容，在模板配置时需要通过占位符的形式进行占位，系统提供的占位符如下：<br>
-                    比赛名称：$competition$ 用户列表：$userlist$ 考试名称：$eaxm$ 裁判分配列表：$examlist$<br>
+                    比赛名称：$competition$ 用户列表：$userlist$ 考试名称：$exam$ 裁判分配列表：$examlist$<br>
                     <font style="color: red;">注意：占位符为固定标识，不能进行修改，否则在邮件里将作为为本进行发送。</font>
                   </p>
                 </el-form-item>
