@@ -157,13 +157,16 @@
               var index = this.dataBindFields.findIndex(item => {
                 return item.model == genList[i].model;
               })
+              if(genList[i].type=='html'){
+                continue;
+              }
               if (index == -1) {
                 this.dataBindFields.push({
                   'model': genList[i].model,
                   'options': genList[i].options,
                   'name': genList[i].name,
                   'type': genList[i].type,
-                  'isShow': genList[i].options.isShow,
+                  'isShow': genList[i].type='custom'?true:genList[i].options.isShow,
                   'isSort': genList[i].options.isSort,
                   'isSearch': genList[i].options.isSearch
                 })

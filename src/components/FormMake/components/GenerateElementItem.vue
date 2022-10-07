@@ -27,6 +27,7 @@
           :clearable="widget.options.clearable"
           :options="widget.options"
           :model="widget.model"
+          :models="dataModels"
         ></component>
       </div>
     </template>

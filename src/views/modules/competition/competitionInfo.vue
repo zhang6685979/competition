@@ -34,6 +34,9 @@
         <el-tab-pane label="裁判信息" name="10">
           <RefereeList :cid="$route.query.cid"></RefereeList>
         </el-tab-pane>
+        <el-tab-pane label="通知模板设置" name="11">
+          <EmailTemplate :cid="$route.query.cid"></EmailTemplate>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -50,6 +53,7 @@
   import CompetitionSignupList from './CompetitionSignupList'
   import PlayerList from '../player/PlayerList'
   import RefereeList from '../referee/RefereeList'
+  import EmailTemplate from './EmailTemplate'
 
   export default {
     data() {
@@ -67,7 +71,8 @@
       CompetitionStyleList,
       CompetitionSignupList,
       PlayerList,
-      RefereeList
+      RefereeList,
+      EmailTemplate
     },
     methods: {
       goBack() {

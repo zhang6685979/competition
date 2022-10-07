@@ -30,11 +30,11 @@
               <span>{{(scope.row.size/1024/1024).toFixed(2)}}M</span>
             </template>
           </vxe-column>
-          <vxe-column field="times" sortable title="下载次数">
+          <!-- <vxe-column field="times" sortable title="下载次数">
             <template slot-scope="scope">
               <span>{{scope.row.times||0}}</span>
             </template>
-          </vxe-column>
+          </vxe-column> -->
           <vxe-column field="createDate" sortable title="上传时间">
           </vxe-column>
           <vxe-column fixed="right" align="center" width="200" title="操作">

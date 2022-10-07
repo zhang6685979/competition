@@ -55,9 +55,10 @@
         <el-col :span="24">
             <el-form-item label="直播地址" prop="url"
                 :rules="[
-                  {required: true, message:'直播地址不能为空', trigger:'blur'}
+                  {required: true, message:'直播地址不能为空', trigger:'blur'},
+                  {validator: validator.isURL, trigger:['blur','change']}
                  ]">
-              <el-input v-model="inputForm.url" placeholder="请填写直播地址"     ></el-input>
+              <el-input v-model="inputForm.url" placeholder="请填写直播地址,地址必须是http或https开头"     ></el-input>
            </el-form-item>
         </el-col>
         <el-col :span="24">

@@ -287,6 +287,20 @@
               isShow: true
             }
           },{
+            model: 'teamName',
+            name: '赛队',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
+            model: 'instructor',
+            name: '指导老师',
+            options: {
+              dataBind: true,
+              isShow: true
+            }
+          },{
             model: 'idcardno',
             name: '身份证号',
             options: {
@@ -326,7 +340,9 @@
               sex: '男',
               mobile: '',
               email:'',
-              idcardno: ''
+              idcardno: '',
+              instructor:'',
+              teamName:''
             }],
             customClass: '',
             labelWidth: 100,
@@ -338,7 +354,9 @@
             pattern: '',
             rows: 1,
             modules: [],
-            defaultModule:''
+            defaultModule:'',
+            teams:[],
+            defaultTeam:''
           }
         }]
       }

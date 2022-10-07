@@ -199,6 +199,7 @@
         }).then(({
           data
         }) => {
+          this.$message.info(data)
           this.signFormVisible = false;
           this.init(this.tid); //刷新列表
         })

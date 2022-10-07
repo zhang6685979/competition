@@ -145,7 +145,7 @@ export default {
             return new Blob([uInt8Array], {type: contentType})
         },
         toFeedbackPageHandle() {
-            this.$router.replace({path: '/project/form/statistics', query: {key: this.formKey}})
+            this.$router.replace({path: '/form/index', query: {key: this.formKey,type:'statistics',title:this.$route.query.title}})
         }
     }
 

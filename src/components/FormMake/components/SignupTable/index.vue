@@ -7,7 +7,10 @@
           <font style="color:#f00">*</font> 姓名
         </th>
         <th v-if="rowInfo.role=='领队'">院系</th>
-        <th v-if="rowInfo.role!='领队'">赛项</th>
+        <th v-if="rowInfo.role!='领队'">
+          <font style="color:#f00">*</font>赛项</th>
+          <th v-if="rowInfo.role=='参赛选手'"><font style="color:#f00">*</font>赛队</th>
+        <th v-if="rowInfo.role=='参赛选手'">指导老师</th>
         <th v-if="rowInfo.role!='参赛选手'">职务/职称</th>
         <th v-if="rowInfo.role=='参赛选手'">
           <font style="color:#f00">*</font> 身份证号
@@ -33,8 +36,20 @@
           <el-input v-model="item.caculty"></el-input>
         </td>
         <td v-if="rowInfo.role!='领队'">
-          <el-select v-model="item.module">
+          <el-select v-model="item.module" :rules='[{ "required": true, "message": "请选择赛项" }]'>
             <el-option v-for="(option,index) in options.modules" :label="option.value" :value="option.value"
+              :key="index"></el-option>
+          </el-select>
+        </td>
+        <td v-if="rowInfo.role=='参赛选手'">
+          <el-select v-model="item.teamName" :rules='[{ "required": true, "message": "请选择赛队" }]'>
+            <el-option v-for="(option,index) in options.teams" :label="option.value" :value="option.value"
+              :key="index"></el-option>
+          </el-select>
+        </td>
+        <td v-if="rowInfo.role=='参赛选手'">
+          <el-select v-model="item.instructor">
+            <el-option v-for="(option,index) in models['instructor-signup']?models['instructor-signup'].filter(item=>item.name):[]" :label="option.name" :value="option.name"
               :key="index"></el-option>
           </el-select>
         </td>
@@ -88,6 +103,12 @@
       model: {
         type: String,
         default: ''
+      },
+      models:{
+        type:Object,
+        default: () => {
+          return {}
+        }
       }
     },
     data() {
@@ -101,7 +122,6 @@
         if (newVal && (newVal != oldVal)) {
           this.dataModel = [];
           for (var i = 0; i < newVal; i++) {
-            //this.rowInfo.module = this.options.modules[0].value;
             this.dataModel.push(Object.assign({}, this.rowInfo))
           }
         }
@@ -111,6 +131,14 @@
          if(this.dataModel&&this.dataModel.length>0){
            this.dataModel.forEach(item=>{
              item.module = newVal;
+           })
+         }
+      },
+      'options.defaultTeam': function(newVal) {
+         this.rowInfo.teamName = newVal;
+         if(this.dataModel&&this.dataModel.length>0){
+           this.dataModel.forEach(item=>{
+             item.teamName = newVal;
            })
          }
       },

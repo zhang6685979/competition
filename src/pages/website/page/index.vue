@@ -43,7 +43,7 @@
         大赛专区
       </h5>
       <ul>
-        <li v-for="item in $dictUtils.getDictList('jab_new_type')" :class="{active:item.value==type}" :key="item.value"
+        <li v-for="item in $dictUtils.getDictList('jab_competition_type')" :class="{active:item.value==type}" :key="item.value"
           :label="item.label" @click="getCompetitionList(item.value)">{{item.label}}</li>
       </ul>
       <img class="line" :src="require('../assets/images/line.png')" alt="">
@@ -145,6 +145,7 @@
       SwiperSlide,
     },
     created() {
+      this.$dictUtils.refreshDictList();
       this.getNewsList(); //新闻列表
       this.getCarouselList(); //轮播图列表
       this.getAnnouncementList(); //公告列表

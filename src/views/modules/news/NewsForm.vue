@@ -84,7 +84,7 @@
           <el-col :span="24">
             <el-form-item label="附件" prop="appendix">
               <el-upload ref="file" v-if="visible"
-                :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/announcement`"
+                :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/news`"
                 :headers="{token: $cookie.get('token')}" accept=".pdf,.doc,.docx"
                 :on-preview="(file, fileList) => {$window.location.href = (file.response && file.response.url) || file.url}"
                 :on-success="(response, file, fileList) => {
@@ -170,7 +170,7 @@
         } else if (method === 'view') {
           this.title = '查看新闻'
         }
-        this.imageArra = []
+        this.fileArra = [], this.imageArra = [];
         this.visible = true
         this.loading = false
         this.$nextTick(() => {
@@ -180,7 +180,6 @@
             this.newsService.queryById(this.inputForm.id).then(({
               data
             }) => {
-              this.fileArra = [], this.imageArra = [];
               this.inputForm = this.recover(this.inputForm, data)
               this.inputForm.image.split('|').forEach((item) => {
                 if (item.trim().length > 0) {

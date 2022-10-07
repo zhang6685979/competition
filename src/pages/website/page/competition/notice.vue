@@ -27,7 +27,7 @@
 
 
     <div class="notice-info" v-if="infoVisible">
-      <button class="btn" @click="infoVisible=false">返 回</button>
+      <button class="btn" @click="back()">返 回</button>
       <h1>{{currNotice.title}}</h1>
       <div class="other-info">
         <span><i class="el-icon-time"></i> {{currNotice.updateDate.substring(0,10)}}</span>&nbsp;&nbsp;
@@ -93,7 +93,19 @@
       },
       showInfo(notice){
          this.currNotice = notice;
+         //用来记录访问次数
+         this.$http({
+           url: '/announcement/announcement/public/queryById',
+           method: 'get',
+           params: {
+             id: notice.id
+           }
+         })
          this.infoVisible = true
+      },
+      back(){
+        this.getList();
+        this.infoVisible=false
       }
     }
   }

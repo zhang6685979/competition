@@ -64,6 +64,16 @@
               <el-input v-model="inputForm.module" placeholder="请填写赛项"></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="赛队" prop="teamName" :rules='[{ "required": true, "message": "请填写赛队" }]'>
+              <el-input v-model="inputForm.teamName" placeholder="请填写赛队"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="指导老师" prop="instructor">
+              <el-input v-model="inputForm.instructor" placeholder="请填写指导老师"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -98,7 +108,9 @@
           faculty: '',
           address: '',
           school: '',
-          module: ''
+          module: '',
+          teamName:'',
+          instructor:''
         }
       }
     },

@@ -118,7 +118,7 @@
       :visible.sync="visible"
       width="60%"
     >
-      <CompetitionScoreList :cid="id" :crid="crid" :ceid="currId" v-if="visible"></CompetitionScoreList>
+      <CompetitionScoreList :cid="cid" :crid="crid" :ceid="currId" v-if="visible"></CompetitionScoreList>
     </el-dialog>
   </div>
 </template>

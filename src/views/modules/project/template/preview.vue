@@ -2,6 +2,11 @@
       <div class="page">
         <div class="bg-white top">
         <div class="header">
+          <div class="use-btn pull-right">
+              <el-button type="primary" @click="createProjectByTemplate">
+                  使用该模板
+              </el-button>
+          </div>
             <el-page-header content="模板详情" @back="$router.back(-1)" />
             <el-divider></el-divider>
         </div>
@@ -13,11 +18,7 @@
                     @submit="submitForm"
                 />
             </el-scrollbar>
-            <div class="use-btn">
-                <el-button type="primary" @click="createProjectByTemplate">
-                    使用该模板
-                </el-button>
-            </div>
+
         </div>
     </div>
    </div>
@@ -82,7 +83,7 @@ export default {
 }
 .template-preview-content {
     position: relative;
-
+    height:100%;
     .use-btn {
         position: absolute;
         top: 50px;

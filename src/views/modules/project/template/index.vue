@@ -29,12 +29,7 @@
           </el-menu-item>
         </el-menu>
         <div class="project-grid-view">
-          <div class="project-template-view" style="display: flex; align-items: center" @click="createBlankTemplate">
-            <div style="flex: 1">
-              <i class="el-icon-plus" style="font-size: 40px; align-items: center" />
-              <p style="font-size: 14px">创建一个空白模板</p>
-            </div>
-          </div>
+         
           <div v-for="template in templateList" :key="template.id" class="project-template-view">
             <img :src="template.coverImg
                                     ? template.coverImg
@@ -132,19 +127,6 @@
           this.total = total
           this.queryParams.size = size
           this.projectListLoading = false
-        })
-      },
-      createBlankTemplate() {
-        createFormRequest({
-          description: '表单模板',
-          name: '表单模板'
-        }).then(res => {
-          this.$router.push({
-            path: '/project/form',
-            query: {
-              key: res.data
-            }
-          })
         })
       }
     }

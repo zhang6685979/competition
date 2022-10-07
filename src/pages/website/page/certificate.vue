@@ -18,9 +18,7 @@
              ]">
           <el-input size="small" v-model="searchForm.name" placeholder="学员名称" clearable></el-input>
         </el-form-item>
-        <el-form-item label="身份证号" prop="idcardno" :rules="[
-              {required: true, message:'身份证号不能为空', trigger:'blur'}
-             ]">
+        <el-form-item label="身份证号" prop="idcardno">
           <el-input size="small" v-model="searchForm.idcardno" placeholder="身份证号" clearable></el-input>
         </el-form-item>
 
