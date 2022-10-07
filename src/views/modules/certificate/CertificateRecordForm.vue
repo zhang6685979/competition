@@ -128,6 +128,18 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
+            var images = this.inputForm.image.split('|');
+            var isValid = true;
+            images.forEach(image=>{
+              var fileName = decodeURIComponent(image.substring(image.lastIndexOf("/") + 1))
+              if(fileName.split('-').length!=3){
+                isValid = false;
+              }
+            })
+            if(!isValid){
+              this.$message.warning('证书命名格式不正确，请重新上传');
+              return false;
+            }
             this.certificateRecordService[this.method == 'add' ? 'importFile' : 'save'](this.inputForm).then(({
               data
             }) => {

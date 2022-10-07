@@ -44,7 +44,7 @@
               {{ $dictUtils.getDictLabel("yes_no", scope.row.latest, '-') }}
             </template>
           </vxe-column>
-          
+
           <vxe-column field="createDate" width="170" sortable title="发布时间">
           </vxe-column>
           <vxe-column fixed="right" align="center" width="320" title="操作">
@@ -56,6 +56,8 @@
                 size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button type="text" icon="el-icon-delete"
                 size="small" @click="del(scope.row.id)">删除</el-button>
+                <el-button type="text" icon="el-icon-chat-line-round" size="small" @click="publishToWechat(scope.row.id)">
+                  {{scope.row.published==1?'重新发布':'发布到公众号'}}</el-button>
             </template>
           </vxe-column>
         </vxe-table>
@@ -158,6 +160,24 @@
           params: {
             id: id,
             status: status
+          }
+        }).then(({
+          data
+        }) => {
+          this.$message.success(data)
+          this.refreshList()
+        })
+      },
+      // 发布到微信公众号
+      publishToWechat(id) {
+        id = id || this.$refs.newsTable.getCheckboxRecords().map(item => {
+          return item.id
+        }).join(',')
+        this.$http({
+          url: '/announcement/announcement/sendtomp',
+          method: 'post',
+          params: {
+            ids: id
           }
         }).then(({
           data

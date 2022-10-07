@@ -12,6 +12,34 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
+            <el-form-item label="公告图片" prop="image" :rules="[
+                  {required: true, message:'公告图片不能为空', trigger:'blur'}
+                 ]">
+              <el-upload ref="image" v-if="visible" list-type="picture-card" accept="image/png,image/jpeg"
+                :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/announcement/announcement`"
+                :headers="{token: $cookie.get('token')}" :on-preview="(file, fileList) => {
+                        $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
+                          dangerouslyUseHTMLString: true,
+                          showConfirmButton: false,
+                          closeOnClickModal: true,
+                          customClass: 'showPic'
+                        });
+                    }" :on-success="(response, file, fileList) => {
+                       inputForm.image = file.response.url
+                    }" :on-remove="(file, fileList) => {
+                      $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
+                        $message.success(data)
+                      })
+                      inputForm.image = ''
+                    }" :before-remove="(file, fileList) => {
+                      return $confirm(`确定移除 ${file.name}？`)
+                    }" :on-change="(file, fileList)=>{imageArra = [file]}" :file-list="imageArra">
+                <i class="el-icon-plus"></i>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为700*400</div>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
             <el-form-item label="公告内容" prop="content" :rules="[
                   {required: true, message:'公告内容不能为空', trigger:'blur'}
                  ]">
@@ -105,8 +133,10 @@
           index0: '',
           describe0: '',
           appendix: '',
-          cid: this.id
+          cid: this.id,
+          image:''
         },
+        imageArra:[],
         fileArra: []
       }
     },
@@ -130,7 +160,7 @@
         }
         this.visible = true
         this.loading = false
-        this.fileArra = [];
+        this.fileArra = [], this.imageArra = [];
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
           if (method === 'edit' || method === 'view') { // 修改或者查看
@@ -139,6 +169,15 @@
               data
             }) => {
               this.inputForm = this.recover(this.inputForm, data)
+              this.inputForm.image.split('|').forEach((item) => {
+                if (item.trim().length > 0) {
+                  this.imageArra.push({
+                    name: decodeURIComponent(item.substring(item
+                      .lastIndexOf('/') + 1)),
+                    url: item
+                  })
+                }
+              })
               this.inputForm.appendix.split('|').forEach((item) => {
                 if (item.trim().length > 0) {
                   this.fileArra.push({

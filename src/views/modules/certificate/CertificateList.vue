@@ -46,7 +46,7 @@
         <el-form-item prop="idcardno">
                <el-input size="small" v-model="searchForm.idcardno" placeholder="身份证号" clearable></el-input>
         </el-form-item>
-      
+
          <el-form-item>
            <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
            <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
@@ -89,7 +89,7 @@
             </vxe-column>
             <vxe-column field="idcardno" sortable title="身份证号">
             </vxe-column>
-            <vxe-column field="created" sortable title="更新时间">
+            <vxe-column field="updateDate" sortable title="更新时间">
             </vxe-column>
             <vxe-column fixed="right" align="center" width="200" title="操作">
               <template slot-scope="scope">
@@ -164,7 +164,7 @@
     methods: {
       filterNode(value, data) {
         if (!value) return true
-        return data.name.indexOf(value) !== -1
+        return data.title.indexOf(value) !== -1
       },
       refreshTree() {
         this.certificateService.treeData().then(({

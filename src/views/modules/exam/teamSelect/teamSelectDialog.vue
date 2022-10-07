@@ -6,7 +6,7 @@
         <div class="team-table">
           <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()" @submit.native.prevent>
                 <!-- 搜索框-->
-             <el-form-item prop="code" label="赛队名称">
+             <el-form-item prop="module" label="赛队名称">
                     <el-input size="small" v-model="searchForm.module" placeholder="请输入赛队名称" clearable></el-input>
              </el-form-item>
               <el-form-item>
@@ -28,7 +28,7 @@
         <el-aside width="300px">
           <el-tag :key="tag.id" class="el-tag" v-for="tag in dataListAllSelections" closable :disable-transitions="false"
             @close="del(tag)">
-            {{tag.school+'-'+tag.module}}
+            {{tag.school+'-'+tag.module+'-'+tag.teamName}}
           </el-tag>
         </el-aside>
       </el-container>
@@ -220,6 +220,7 @@
         this.refreshList()
       },
       resetSearch() {
+        this.$refs.searchForm.resetFields()
         this.refreshList()
       },
       doSubmit() {
