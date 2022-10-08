@@ -276,7 +276,7 @@
         <el-form-item label="表格行数">
           <el-input type="number" v-model.number="data.options.rows"></el-input>
         </el-form-item>
-        <el-form-item label="模块配置">
+        <el-form-item label="赛项配置">
           <template>
             <el-radio-group v-model="data.options.defaultModule">
               <draggable tag="ul" :list="data.options.modules"
@@ -299,7 +299,7 @@
           </template>
         </el-form-item>
       </template>
-      <el-form-item label="赛队配置" v-if="data.model=='player-signup'">
+      <!-- <el-form-item label="赛队配置" v-if="data.model=='player-signup'">
         <template>
           <el-radio-group v-model="data.options.defaultTeam">
             <draggable tag="ul" :list="data.options.teams"
@@ -320,7 +320,7 @@
             <el-button type="text" @click="handleAddOption('team')">{{$t('fm.actions.addOption')}}</el-button>
           </div>
         </template>
-      </el-form-item>
+      </el-form-item> -->
       <template v-if="data.options.type=='download'">
         <el-form-item label="按钮文字">
           <el-input v-model="data.options.btnText"></el-input>
@@ -684,7 +684,7 @@
           }else if(type=='team'){
             this.data.options.teams.splice(index, 1)
           }
-          
+
         } else {
           if (!this.data.options.remote && this.data.options.options[index].value) {
             this.data.options.defaultValue = typeof this.data.options.defaultValue === 'string' ? '' : []

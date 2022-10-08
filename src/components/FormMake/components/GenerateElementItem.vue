@@ -23,7 +23,7 @@
           :placeholder="widget.options.placeholder"
           :readonly="widget.options.readonly"
           :disabled="!edit || widget.options.disabled"
-          :editable="widget.options.editable"
+          :editable="true"
           :clearable="widget.options.clearable"
           :options="widget.options"
           :model="widget.model"
