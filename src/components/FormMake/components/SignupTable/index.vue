@@ -2,7 +2,7 @@
   <div>
     <template v-for="(table,index) in tables">
       <div class="title" v-if="editable&&(rowInfo.role=='参赛选手')">
-        <h5>{{'队伍'+(index+1)}} <el-button v-if="!disabled" class="pull-right" type="primary" :icon="'el-icon-'+(index>0?'minus':'plus')" @click="addTeam(index)">{{index>0?'删除队伍':'添加队伍'}}</el-button>
+        <h5>{{'队伍'+(index+1)}} <el-button v-if="!disabled" class="pull-right no-print" type="primary" :icon="'el-icon-'+(index>0?'minus':'plus')" @click="addTeam(index)">{{index>0?'删除队伍':'添加队伍'}}</el-button>
         </h5>
       </div>
       <table class="table">
