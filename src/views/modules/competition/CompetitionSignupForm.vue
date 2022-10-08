@@ -154,6 +154,20 @@
         }) => {
           this.dataList = data.records;
         })
+      },
+      beforeImageUpload(file) {
+        return new Promise((resolve, reject) => {
+           const isJPG = file.type === 'image/jpeg' ||
+             file.type === 'image/jpg' ||
+             file.type === 'image/png'
+           //图片上传之前的校验
+           if (!isJPG) {              // 限制文件类型校验
+             this.$message.error("图片格式只能是 JPG/JPEG/PNG 格式!");
+             return reject(false);
+           }else {
+            resolve(true);
+          }
+        });
       }
     }
   }

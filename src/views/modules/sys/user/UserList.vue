@@ -3,7 +3,7 @@
       <div class="jp-common-layout-left">
         <div class="jp-common-title"> 
           <el-input
-          placeholder="组织机构:请输入关键字过滤"
+          placeholder="请输入关键字过滤"
           size="small"
           clearable
           v-model="filterText">

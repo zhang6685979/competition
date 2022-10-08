@@ -34,7 +34,7 @@
           :export-config="{}" @sort-change="sortChangeHandle" :sort-config="{remote:true}" :data="dataList"
           :checkbox-config="{}">
           <vxe-column type="seq" width="40"></vxe-column>
-          <vxe-column type="checkbox" width="40px"  v-if="!readonly"></vxe-column>
+          <vxe-column type="checkbox" width="50px"  v-if="!readonly"></vxe-column>
           <vxe-column field="name" sortable title="您的姓名">
             <template slot-scope="scope">
               <el-link type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.name}}</el-link>

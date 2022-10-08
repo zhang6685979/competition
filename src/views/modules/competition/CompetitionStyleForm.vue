@@ -39,16 +39,19 @@
                        inputForm.image = file.response.url
                     }"
                     :on-remove="(file, fileList) => {
-                      $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
-                        $message.success(data)
-                      })
-                      inputForm.image = ''
-                    }"
-                    :before-remove="(file, fileList) => {
-                      return $confirm(`确定移除 ${file.name}？`)
+                      if(file&&file.status=='success'){
+                        $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
+                          $message.success(data)
+                        })
+                        inputForm.image = ''
+                      }
+                    }" :before-remove="(file, fileList) => {
+                      if(file&&file.status=='success'){
+                        return $confirm(`确定移除 ${file.name}？`)
+                      }
                     }"
                     :on-change="(file, fileList)=>{imageArra = [file]}"
-                    :file-list="imageArra">
+                    :file-list="imageArra" :before-upload="beforeImageUpload">
                     <i class="el-icon-plus"></i>
                     <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为450*280</div>
                   </el-upload>
@@ -150,6 +153,20 @@
             })
           }
         })
+      },
+      beforeImageUpload(file) {
+        return new Promise((resolve, reject) => {
+           const isJPG = file.type === 'image/jpeg' ||
+             file.type === 'image/jpg' ||
+             file.type === 'image/png'
+           //图片上传之前的校验
+           if (!isJPG) {              // 限制文件类型校验
+             this.$message.error("图片格式只能是 JPG/JPEG/PNG 格式!");
+             return reject(false);
+           }else {
+            resolve(true);
+          }
+        });
       }
     }
   }

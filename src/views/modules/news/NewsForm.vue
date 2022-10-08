@@ -40,13 +40,17 @@
                     }" :on-success="(response, file, fileList) => {
                        inputForm.image = file.response.url
                     }" :on-remove="(file, fileList) => {
-                      $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
-                        $message.success(data)
-                      })
-                      inputForm.image = ''
+                      if(file&&file.status=='success'){
+                        $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
+                          $message.success(data)
+                        })
+                        inputForm.image = ''
+                      }
                     }" :before-remove="(file, fileList) => {
-                      return $confirm(`确定移除 ${file.name}？`)
-                    }" :on-change="(file, fileList)=>{imageArra = [file]}" :file-list="imageArra">
+                      if(file&&file.status=='success'){
+                        return $confirm(`确定移除 ${file.name}？`)
+                      }
+                    }" :on-change="(file, fileList)=>{imageArra = [file]}" :file-list="imageArra"  :before-upload="beforeImageUpload">
                 <i class="el-icon-plus"></i>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为700*400</div>
               </el-upload>
@@ -90,15 +94,19 @@
                 :on-success="(response, file, fileList) => {
                        inputForm.appendix = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
                      }" :on-remove="(file, fileList) => {
-                       $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
-                         $message.success(data)
-                       })
-                       inputForm.appendix = fileList.map(item => item.url).join('|')
+                       if(file&&file.status=='success'){
+                         $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
+                           $message.success(data)
+                         })
+                         inputForm.appendix = fileList.map(item => item.url).join('|')
+                       }
                      }" :before-remove="(file, fileList) => {
-                       return $confirm(`确定移除 ${file.name}？`)
+                       if(file&&file.status=='success'){
+                         return $confirm(`确定移除 ${file.name}？`)
+                       }
                      }" multiple :limit="5" :on-exceed="(files, fileList) =>{
                        $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-                     }" :file-list="fileArra">
+                     }" :file-list="fileArra" :before-upload="beforeFileUpload">
                 <el-button size="small" type="primary">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传word/pdf文件</div>
               </el-upload>
@@ -222,6 +230,31 @@
             })
           }
         })
+      },
+      beforeFileUpload(file) {
+        return new Promise((resolve, reject) => {
+           if (file.type != "application/msword" &&file.type != "application/pdf" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
+             // 限制文件类型校验
+             this.$message.error("附件格式不正确，请重新上传!");
+             return reject(false);
+           } else {
+            resolve(true);
+          }
+        });
+      },
+      beforeImageUpload(file) {
+        return new Promise((resolve, reject) => {
+           const isJPG = file.type === 'image/jpeg' ||
+             file.type === 'image/jpg' ||
+             file.type === 'image/png'
+           //图片上传之前的校验
+           if (!isJPG) {              // 限制文件类型校验
+             this.$message.error("图片格式只能是 JPG/JPEG/PNG 格式!");
+             return reject(false);
+           }else {
+            resolve(true);
+          }
+        });
       }
     }
   }

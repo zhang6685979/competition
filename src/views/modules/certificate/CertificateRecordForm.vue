@@ -21,6 +21,7 @@
             <el-form-item label="证书图片" prop="image" :rules="[
                  ]">
               <el-upload ref="image" v-if="visible" list-type="picture-card"
+                accept="image/png,image/jpeg,image/jpg"
                 :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/certificate/certificateRecord`"
                 :headers="{token: $cookie.get('token')}" :on-preview="(file, fileList) => {
                         $alert(`<img style='width:100%' src=' ${(file.response && file.response.url) || file.url}'/>`,  {
@@ -32,17 +33,23 @@
                     }" :on-success="(response, file, fileList) => {
                        inputForm.image = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
                     }" :on-remove="(file, fileList) => {
-                      $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
-                        $message.success(data)
-                      })
-                      inputForm.image = fileList.map(item => item.url).join('|')
-                    }" :before-remove="(file, fileList) => {
-                      return $confirm(`确定移除 ${file.name}？`)
-                    }" multiple :limit="method=='add'?100:1" :on-exceed="(files, fileList) =>{
+                      if(file&&file.status=='success'){
+                        $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
+                          $message.success(data)
+                        })
+                        inputForm.image = fileList.map(item => item.url).join('|')
+                      }
+                    }"
+                    :before-remove="(file, fileList) => {
+                       if(file&&file.status=='success'){
+                         return $confirm(`确定移除 ${file.name}？`)
+                       }
+                     }" multiple :limit="method=='add'?100:1" :on-exceed="(files, fileList) =>{
                       $message.warning(`当前限制选择 ${method=='add'?'100':'1'} 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-                    }" :file-list="imageArra">
+                    }" :before-upload="beforeFileUpload" :file-list="imageArra">
                 <i class="el-icon-plus"></i>
-                <div slot="tip" class="el-upload__tip">一次做多只能上传100张证书，证书命名格式为：姓名-身份证号-证书编号，如张三-410182199011220123-001</div>
+                <div slot="tip" class="el-upload__tip">一次最多只能上传100张证书，证书命名格式为：姓名-身份证号-证书编号，如张三-410182199011220123-001
+                </div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -79,11 +86,6 @@
     components: {
       SelectTree
     },
-    watch: {
-      type: function(newVal) {
-        this.inputForm.type = newVal;
-      }
-    },
     certificateRecordService: null,
     created() {
       this.certificateRecordService = new CertificateRecordService()
@@ -104,6 +106,7 @@
         this.loading = false
         this.$nextTick(() => {
           this.$refs.inputForm.resetFields()
+          this.inputForm.type = this.type
           if (method === 'edit' || method === 'view') { // 修改或者查看
             this.loading = true
             this.certificateRecordService.queryById(this.inputForm.id).then(({
@@ -128,18 +131,6 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
-            var images = this.inputForm.image.split('|');
-            var isValid = true;
-            images.forEach(image=>{
-              var fileName = decodeURIComponent(image.substring(image.lastIndexOf("/") + 1))
-              if(fileName.split('-').length!=3){
-                isValid = false;
-              }
-            })
-            if(!isValid){
-              this.$message.warning('证书命名格式不正确，请重新上传');
-              return false;
-            }
             this.certificateRecordService[this.method == 'add' ? 'importFile' : 'save'](this.inputForm).then(({
               data
             }) => {
@@ -152,6 +143,19 @@
             })
           }
         })
+      },
+      beforeFileUpload(file) {
+        return new Promise((resolve, reject) => {
+           const isJPG = file.type === 'image/jpeg' ||             file.type === 'image/jpg' ||             file.type === 'image/png'
+           //图片上传之前的校验
+           if (!isJPG) {              // 限制文件类型校验             this.$message.error("证书格式只能是 JPG/JPEG/PNG 格式!");             return reject(false);
+           } else if (file.name.split('-').length!=3) {
+             this.$message.error("证书命名格式不正确!");
+             return reject(false);
+          } else {
+            resolve(true);
+          }
+        });
       }
     }
   }

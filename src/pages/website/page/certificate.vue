@@ -104,8 +104,11 @@
       },
       downloadFile(url) {
         var fileName = decodeURIComponent(url.substring(url.lastIndexOf("/") + 1))
-        this.$http.get(url)
-          .then(res => {
+        this.$http({
+          url:url,
+          method:'get',
+          responseType: 'arraybuffer'
+        }).then(res => {
             const blob = new Blob([res.data], {
               type: res.headers['content-type']
             });

@@ -239,7 +239,7 @@
           var content = item.content;
           if (content) {
             content = JSON.parse(content);
-            var obj = {},
+            var obj = {id:item.id},
               isSubForm = false;
             for (var key in content) {
               if (content.hasOwnProperty(key)) {
@@ -249,6 +249,9 @@
                   obj[key] = value
                 } else if (value instanceof Array) {
                   if (typeof value[0] == 'object') {
+                    value.forEach(data=>{;
+                      data.groupId = item.id;
+                    })
                     dataList = dataList.concat(value)
                     isSubForm = true; //如果包含子表单以子表单数据为准
                   }
@@ -259,7 +262,7 @@
             }
             obj.createTime = item.createTime;
             if (isSubForm) {
-              dataList.forEach(item => {
+              dataList.filter(data=>{return data.groupId==obj.id}).forEach(item => {
                 Object.assign(item, obj);
               })
             } else {

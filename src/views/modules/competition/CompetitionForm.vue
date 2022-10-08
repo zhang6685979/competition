@@ -16,7 +16,7 @@
               <el-input v-model="inputForm.title" placeholder="请填写比赛标题"  maxlength="250"    ></el-input>
            </el-form-item>
         </el-col>
-        <el-col :span="24">
+        <el-col :span="12">
             <el-form-item label="比赛类别" prop="type"
                 :rules="[
                   {required: true, message:'比赛类别不能为空', trigger:'blur'}
@@ -27,6 +27,18 @@
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
+                          </el-option>
+                      </el-select>
+           </el-form-item>
+        </el-col>
+        <el-col :span="12">
+            <el-form-item label="所属租户" prop="tenantId">
+                <el-select v-model="inputForm.tenantId" placeholder="请选择" filterable clearable style="width: 100%;">
+                          <el-option
+                            v-for="item in tenants"
+                            :key="item.tenantId"
+                            :label="item.deptName"
+                            :value="item.tenantId">
                           </el-option>
                       </el-select>
            </el-form-item>
@@ -141,8 +153,10 @@
           type: '',
           image: '',
           banner: '',
-          describe0: ''
-        }
+          describe0: '',
+          tenantId:''
+        },
+        tenants:[]//比赛用户要同步的租户信息
       }
     },
     components: {
@@ -150,6 +164,7 @@
     competitionService: null,
     created () {
       this.competitionService = new CompetitionService()
+      this.getTenants()
     },
     methods: {
       init (method, id) {
@@ -201,6 +216,14 @@
               this.loading = false
             })
           }
+        })
+      },
+      getTenants(){
+        this.$http({
+          url:'/competition/competition/tenants',
+          method:'get'
+        }).then(({data})=>{
+          this.tenants = data
         })
       }
     }

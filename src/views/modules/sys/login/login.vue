@@ -100,13 +100,15 @@
                 localStorage.setItem('dictList', JSON.stringify(data.dictList || '[]'))
                 this.$router.push({name: 'home'})
               })
-              this.$notify({
-                title: '登录成功',
-                message: `欢迎回来！<br/>你上次的登录IP是 ${data.oldLoginIp}，登录时间是 ${data.oldLoginDate}。`,
-                dangerouslyUseHTMLString: true,
-                duration: 10000,
-                type: 'success'
-              })
+              if(data.oldLoginIp&&data.oldLoginDate){
+                this.$notify({
+                  title: '登录成功',
+                  message: `欢迎回来！<br/>你上次的登录IP是 ${data.oldLoginIp}，登录时间是 ${data.oldLoginDate}。`,
+                  dangerouslyUseHTMLString: true,
+                  duration: 10000,
+                  type: 'success'
+                })
+              }
             }).catch(e => {
               this.loading = false
               this.getCaptcha()

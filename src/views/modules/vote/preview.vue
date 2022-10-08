@@ -11,10 +11,7 @@
       </div>
       <div v-if="mobilePreviewUrl" class="qrcode-view">
         <p>手机扫码查看效果</p>
-        <p class="text-danger">
-          * 预览只能查看效果，无法提交数据
-        </p>
-        <vue-qr class="qrcode" v-if="mobilePreviewUrl" :size="194" :text="mobilePreviewUrl"
+        <vue-qr class="qrcode" v-if="mobileWriteUrl" :size="194" :text="mobilePreviewUrl"
           :callback="qrCodeGenSuccess" />
         <a class="download-btn" @click="()=>{
                                 this.downloadFile(`${title}.png`,this.qrCodeUrl)
@@ -38,6 +35,7 @@
       return {
         visible: false,
         mobilePreviewUrl: '',
+        mobileWriteUrl:'',
         qrCodeUrl: '',
         title: ''
       }
@@ -47,6 +45,7 @@
         this.title = title;
         let url = window.location.protocol + '//' + window.location.host
         this.mobilePreviewUrl = `${url}/mobile.html#/vote/${id}?preview=true&loadData=true`
+        this.mobileWriteUrl = `${url}/mobile.html#/vote/${id}`
         this.visible = true;
       },
       qrCodeGenSuccess(dataUrl) {
