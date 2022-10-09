@@ -1,7 +1,7 @@
 <template>
     <div class="jp-common-layout page">
       <div class="jp-common-layout-left">
-        <div class="jp-common-title"> 
+        <div class="jp-common-title">
           <el-input
           placeholder="请输入关键字过滤"
           size="small"
@@ -53,7 +53,7 @@
                 <el-button v-if="hasPermission('sys:user:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.userTable && $refs.userTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
                 <el-button v-if="hasPermission('sys:user:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.userTable && $refs.userTable.getCheckboxRecords().length === 0" plain>删除</el-button>
                 <el-button v-if="hasPermission('sys:user:import')"  type="default" @click="downloadTpl()" size="small">下载模板</el-button>
-      
+
               </template>
           </vxe-toolbar>
           <div style="height: calc(100% - 80px);">
@@ -72,6 +72,7 @@
                   :import-config="{
                     importMethod: importMethod,
                     types: ['csv', 'xls', 'xlsx'],
+                     modes: ['insert'],
                     remote: true}"
                   :export-config="{
                     remote: true,
@@ -99,7 +100,7 @@
                     <span v-else>{{scope.row.loginName}}</span>
                   </template>
                 </vxe-column>
-              
+
                 <vxe-column  title="姓名" field="name" sortable></vxe-column>
                 <vxe-column  title="公司" field="companyDTO.name" sortable>
                   <template slot-scope="scope">

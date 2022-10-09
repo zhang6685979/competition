@@ -4,18 +4,10 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const productionGzipExtensions = ['js', 'css']
-
 module.exports = {
   runtimeCompiler: true,
   publicPath: "./",
   productionSourceMap: false,
-  // chainWebpack: (config) => {
-  //   config.resolve.alias.set('@/', resolve('src'))
-  //   // config.plugins.delete('prefetch')
-  // },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
@@ -24,53 +16,20 @@ module.exports = {
         '@': resolve('src')
       }
     }
-    // plugins:[
-    //   new UglifyJsPlugin({
-    //     uglifyOptions: {
-    //       compress: {
-    //         drop_debugger: true, //生产环境自动删除debugger
-    //         drop_console: true, //生产环境自动删除console
-    //       },
-    //       warnings: false,
-    //     },
-    //     sourceMap: false, //关掉sourcemap 会生成对于调试的完整的.map文件，但同时也会减慢打包速度
-    //     parallel: true, //使用多进程并行运行来提高构建速度。默认并发运行数：os.cpus().length - 1。
-    //   }),
-    //   new CompressionWebpackPlugin({
-    //     filename: '[path].gz[query]',
-    //     algorithm: 'gzip',
-    //     test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-    //     threshold: 10240,
-    //     minRatio: 0.8,
-    //   })
-    // ]
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
-    config.plugin('preload-index').tap(() => [{
-      rel: 'preload',
-      // to ignore runtime.js
-      // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-      fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-      include: 'initial'
-    }])
-
     config.plugin('preload-manage').tap(() => [{
       rel: 'preload',
       // to ignore runtime.js
       // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
       fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-      include: 'initial'
+      include: {
+        type: 'initial',
+        entries: ['manage']
+      },
+      includeHtmlNames: ['manage.html']
     }])
-
-    config.plugin('preload-mobile').tap(() => [{
-      rel: 'preload',
-      // to ignore runtime.js
-      // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-      fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-      include: 'initial'
-    }])
-
     // // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch-index')
     config.plugins.delete('prefetch-mobile')
@@ -160,14 +119,14 @@ module.exports = {
       template: 'src/pages/website/index.html',
       title: '技能竞赛与认证服务平台',
       filename: 'index.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI', 'index']
+      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI','index']
     },
     manage: {
       entry: 'src/main.js',
       template: 'src/pages/manage/index.html',
       title: '技能竞赛管理平台',
       filename: 'manage.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI', 'chunk-vxe',
+      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI','chunk-vxe',
         'manage'
       ]
     },
