@@ -23,9 +23,9 @@
               </div>
               <div class="card-panel-description">
                 <div class="card-panel-text">
-                  报名人数
+                  会员数量
                 </div>
-                <count-to :start-val="0" :end-val="basicInfo.news" :duration="2000" class="card-panel-num" />
+                <count-to :start-val="0" :end-val="basicInfo.player" :duration="2000" class="card-panel-num" />
               </div>
             </div>
           </el-col>
@@ -72,7 +72,7 @@
               </div>
               <div class="user-info">
                 <div class="left">
-                  <el-image :src="userInfo.photo"></el-image>
+                  <el-image :src="userInfo.photo?userInfo.photo:'/static/img/avatar.png'"></el-image>
                 </div>
                 <div class="right">
                   <p class="title">{{userInfo.name}}</p>

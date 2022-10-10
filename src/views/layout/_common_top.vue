@@ -65,6 +65,7 @@
               <img class="hide-sm" :src="photo === ''?'/static/img/avatar.png':photo">{{ userName }}
             </span>
             <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="$router.push('/sys/user/UserInfo')">个人中心</el-dropdown-item>
               <el-dropdown-item @click.native="updatePasswordHandle()">修改密码</el-dropdown-item>
               <el-dropdown-item @click.native="logoutHandle()">退出</el-dropdown-item>
             </el-dropdown-menu>

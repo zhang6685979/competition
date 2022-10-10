@@ -45,6 +45,7 @@ axios.interceptors.request.use(config => {
     config.url = BASE_URL + config.url
   }
 
+
   const type = config.method
   const arrayFormat = config.headers.arrayFormat || 'indices'
   if (type === 'post' && config.headers['Content-Type'] === 'application/x-www-form-urlencoded; charset=utf-8') {
@@ -57,6 +58,13 @@ axios.interceptors.request.use(config => {
         allowDots: true, arrayFormat: arrayFormat
       })
     }
+  }else if(type === 'delete'){
+     //批量删除参数超出浏览器限制统一处理
+     if(/delete$/.test(config.url)){
+       config.method = 'post'
+       config.data = config.params
+       delete config.params
+     }
   }
   return config
 }, error => {

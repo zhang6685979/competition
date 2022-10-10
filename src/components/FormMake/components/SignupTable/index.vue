@@ -15,7 +15,7 @@
           <th v-if="rowInfo.role!='领队'">
             <font style="color:#f00">*</font>赛项
           </th>
-          <th v-if="rowInfo.role=='参赛选手'">指导老师</th>
+          <th v-if="rowInfo.role=='参赛选手'"><font style="color:#f00">*</font>指导老师</th>
           <th v-if="rowInfo.role!='参赛选手'">职务/职称</th>
           <th v-if="rowInfo.role=='参赛选手'">
             <font style="color:#f00">*</font> 身份证号
@@ -47,7 +47,7 @@
             </el-select>
           </td>
           <td v-if="rowInfo.role=='参赛选手'">
-            <el-select v-model="item.instructor">
+            <el-select v-model="item.instructor" :rules='[{ "required": true, "message": "请选择指导老师" }]'>
               <el-option
                 v-for="(option,index) in models['instructor-signup']?models['instructor-signup'].filter(item=>item.name):[]"
                 :label="option.name" :value="option.name" :key="index"></el-option>

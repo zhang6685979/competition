@@ -109,7 +109,7 @@
               <el-input v-model="inputForm.no" maxlength="50" placeholder=""></el-input>
             </el-form-item>
         </el-col>
-        <el-col :span="12">
+       <!-- <el-col :span="12">
           <el-form-item label="岗位" prop="postIdList">
                <el-select v-model="inputForm.postIdList" style="width:100%" multiple placeholder="请选择">
                   <el-option
@@ -120,7 +120,7 @@
                   </el-option>
               </el-select>
           </el-form-item>
-        </el-col>
+        </el-col> -->
         <el-col :span="12">
           <el-form-item label="角色" prop="roleIdList" :rules="[{required: true, message: '角色不能为空', trigger: 'blur'}]">
               <el-select v-model="inputForm.roleIdList" style="width:100%" multiple placeholder="请选择">

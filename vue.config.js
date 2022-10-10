@@ -3,10 +3,13 @@ const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
+<<<<<<< HEAD
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['js', 'css']
+=======
+>>>>>>> 76f26616d43eac500cab0d61f6208d317bd3b8d4
 
 module.exports = {
   runtimeCompiler: true,
@@ -20,76 +23,26 @@ module.exports = {
         '@': resolve('src')
       }
     }
-    // plugins:[
-    //   new UglifyJsPlugin({
-    //     uglifyOptions: {
-    //       compress: {
-    //         drop_debugger: true, //生产环境自动删除debugger
-    //         drop_console: true, //生产环境自动删除console
-    //       },
-    //       warnings: false,
-    //     },
-    //     sourceMap: false, //关掉sourcemap 会生成对于调试的完整的.map文件，但同时也会减慢打包速度
-    //     parallel: true, //使用多进程并行运行来提高构建速度。默认并发运行数：os.cpus().length - 1。
-    //   }),
-    //   new CompressionWebpackPlugin({
-    //     filename: '[path].gz[query]',
-    //     algorithm: 'gzip',
-    //     test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-    //     threshold: 10240,
-    //     minRatio: 0.8,
-    //   })
-    // ]
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
-    // config.plugin('preload-index').tap(() => [{
-    //   rel: 'preload',
-    //   // to ignore runtime.js
-    //   // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-    //   fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-    //   include: 'initial'
-    // }])
-
-    // config.plugin('preload-manage').tap(() => [{
-    //   rel: 'preload',
-    //   // to ignore runtime.js
-    //   // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-    //   fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-    //   include: 'initial'
-    // }])
-
-    // config.plugin('preload-mobile').tap(() => [{
-    //   rel: 'preload',
-    //   // to ignore runtime.js
-    //   // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-    //   fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-    //   include: 'initial'
-    // }])
-
+    config.plugin('preload-manage').tap(() => [{
+      rel: 'preload',
+      // to ignore runtime.js
+      // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
+      fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+      include: {
+        type: 'initial',
+        entries: ['manage']
+      },
+      includeHtmlNames: ['manage.html']
+    }])
     // // when there are many pages, it will cause too many meaningless requests
-    // config.plugins.delete('prefetch-index')
-    // config.plugins.delete('prefetch-mobile')
-    // config.plugins.delete('preload-index')
-    // config.plugins.delete('preload-mobile')
 
-
-    // // set svg-sprite-loader
-    // config.module
-    //   .rule('svg')
-    //   .exclude.add(resolve('src/icons'))
-    //   .end()
-    // config.module
-    //   .rule('icons')
-    //   .test(/\.svg$/)
-    //   .include.add(resolve('src/icons'))
-    //   .end()
-    //   .use('svg-sprite-loader')
-    //   .loader('svg-sprite-loader')
-    //   .options({
-    //     symbolId: 'icon-[name]'
-    //   })
-    //   .end()
+    config.plugins.delete('prefetch-index')
+    config.plugins.delete('prefetch-mobile')
+    config.plugins.delete('preload-index')
+    config.plugins.delete('preload-mobile')
 
     if (process.env.NODE_ENV === "production") {
       // 删除系统默认的splitChunk

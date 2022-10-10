@@ -202,6 +202,24 @@
     components: {
       voteItem
     },
+    watch:{
+      'vote.starttime':function(){
+        var isStart = this.isStart;
+        if (!this.isStart){
+          this.loadStart();
+        }else if(!this.isEnd){
+          this.loadEnd()
+        }
+      },
+      'vote.endtime':function(){
+        var isStart = this.isStart;
+        if (!this.isStart){
+          this.loadStart();
+        }else if(!this.isEnd){
+          this.loadEnd()
+        }
+      }
+    },
     mounted() {
       window.vm = this;
       this.id = this.$route.params.id;
@@ -298,7 +316,7 @@
       },
       countDown(time) {
         var nowTime = +new Date();
-        var inputTime = +new Date(time);
+        var inputTime = +new Date(time.replace(/-/g, "/"));
         var times = (inputTime - nowTime) / 1000;
         var d = parseInt(times / 60 / 60 / 24); // 计算天数
         d = d < 10 ? 0 + d : d;
