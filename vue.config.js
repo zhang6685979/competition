@@ -12,10 +12,6 @@ module.exports = {
   runtimeCompiler: true,
   publicPath: "./",
   productionSourceMap: false,
-  // chainWebpack: (config) => {
-  //   config.resolve.alias.set('@/', resolve('src'))
-  //   // config.plugins.delete('prefetch')
-  // },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
@@ -77,6 +73,7 @@ module.exports = {
     // config.plugins.delete('preload-index')
     // config.plugins.delete('preload-mobile')
 
+
     // // set svg-sprite-loader
     // config.module
     //   .rule('svg')
@@ -93,6 +90,11 @@ module.exports = {
     //     symbolId: 'icon-[name]'
     //   })
     //   .end()
+
+    if (process.env.NODE_ENV === "production") {
+      // 删除系统默认的splitChunk
+      config.optimization.delete("splitChunks");
+    }
 
     config
       .when(process.env.NODE_ENV !== 'development',
@@ -177,14 +179,14 @@ module.exports = {
       template: 'src/pages/website/index.html',
       title: '技能竞赛与认证服务平台',
       filename: 'index.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI', 'index']
+      chunks: ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'index']
     },
     manage: {
       entry: 'src/main.js',
       template: 'src/pages/manage/index.html',
       title: '技能竞赛管理平台',
       filename: 'manage.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI', 'chunk-vxe',
+      chunks: ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'chunk-vxe',
         'manage'
       ]
     },
@@ -193,7 +195,7 @@ module.exports = {
       template: 'src/pages/mobile/index.html',
       title: '问卷调查',
       filename: 'mobile.html',
-      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-elementUI', 'mobile']
+      chunks: ['mobile']
     }
   },
   devServer: {
