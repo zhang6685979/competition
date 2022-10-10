@@ -72,7 +72,7 @@
         </el-form-item>
       </el-form>
     </el-tab-pane>
-    <el-tab-pane label="我的日志">
+    <!-- <el-tab-pane label="我的日志">
         <el-menu  default-active="1" mode="horizontal" @select="changeLog">
           <el-menu-item index="1">
             <i class="el-icon-setting"></i>
@@ -123,7 +123,7 @@
           :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
           @page-change="currentChangeHandle">
         </vxe-pager>
-    </el-tab-pane>
+    </el-tab-pane> -->
   </el-tabs>
 </div>
 </div>
@@ -256,16 +256,16 @@
       },
  // 获取数据列表
       refreshList () {
-        this.loading = true
-        this.logService.mine({
-          'current': this.tablePage.currentPage,
-          'size': this.tablePage.pageSize,
-          'orders': this.tablePage.orders
-        }).then(({data}) => {
-          this.dataList = data.records
-          this.tablePage.total = data.total
-          this.loading = false
-        })
+        // this.loading = true
+        // this.logService.mine({
+        //   'current': this.tablePage.currentPage,
+        //   'size': this.tablePage.pageSize,
+        //   'orders': this.tablePage.orders
+        // }).then(({data}) => {
+        //   this.dataList = data.records
+        //   this.tablePage.total = data.total
+        //   this.loading = false
+        // })
       },
       changeLog (index) {
         this.type = index

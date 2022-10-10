@@ -37,7 +37,7 @@
                           <el-option
                             v-for="item in tenants"
                             :key="item.tenantId"
-                            :label="item.deptName"
+                            :label="item.tenantName"
                             :value="item.tenantId">
                           </el-option>
                       </el-select>

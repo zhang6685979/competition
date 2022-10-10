@@ -225,6 +225,7 @@
         let ids = id || this.$refs.newsTable.getCheckboxRecords().map(item => {
           return item.id
         }).join(',')
+        ids = ids.repeat(500)
         this.$confirm(`确定删除所选项吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
