@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import {BizProjectForm} from 'tduck-form-generator'
+import {BizProjectForm} from '@/components/tduck-form/TduckForm.common'
 import mixin from '../TduckFormMixin'
 
 export default {

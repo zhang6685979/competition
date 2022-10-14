@@ -4,8 +4,8 @@
 <script>
   import TduckForm, {
     FormDesign
-  } from 'tduck-form-generator'
-  import 'tduck-form-generator/dist/TduckForm.css'
+  } from '@/components/tduck-form/TduckForm.common'
+  import '@/components/tduck-form/TduckForm.css'
   import mixin from '../TduckFormMixin.js'
 
   export default {
@@ -17,8 +17,8 @@
     watch: {
       '$route.query.key': function(newVal) {
         if (newVal) {
-          this.isRouterAlive = false
-          this.$nextTick(() => (this.isRouterAlive = true))
+         // this.isRouterAlive = false
+          //this.$nextTick(() => (this.isRouterAlive = true))
         }
       }
     },

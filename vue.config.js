@@ -155,6 +155,13 @@ module.exports = {
         pathRewrite: {
           '^/userfiles': '/userfiles'
         }
+      },
+      '/profile': {
+        target: process.env.VUE_APP_SERVER_URL,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/profile': '/profile'
+        }
       }
     }
   },

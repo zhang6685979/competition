@@ -9,9 +9,6 @@
                 <el-button v-if="checkBtnPerms('add')" icon="el-icon-plus" type="primary" @click="handleAdd">
                     添加
                 </el-button>
-                <el-button v-if="checkBtnPerms('import')" icon="el-icon-upload2" type="primary" @click="handleImport">
-                    导入
-                </el-button>
                 <el-button v-if="checkBtnPerms('download')" icon="el-icon-download" type="primary" @click="handleDownload">
                     下载附件
                 </el-button>
@@ -77,18 +74,12 @@
                 </el-button>
             </div>
         </el-dialog>
-        <import ref="dataImport" :form-key="formKey" @success="handleReloadTable" />
     </div>
 </template>
 
 <script>
 
-import Vue from 'vue'
-import XEUtils from 'xe-utils'
-import VXETablePluginExportXLSX from 'vxe-table-plugin-export-xlsx'
-
-
-import {BizProjectForm} from 'tduck-form-generator'
+import {BizProjectForm} from '@/components/tduck-form/TduckForm.common'
 import ViewOrUpdate from './ViewOrUpdate'
 import {
     createFormResultRequest,
@@ -98,12 +89,10 @@ import {
 } from '@/api/project/data'
 import {listFormFieldsRequest} from '@/api/project/form'
 import _ from 'lodash'
-import Import from './import'
 import {formatTableColumn} from './formatTableColumn'
 export default {
     name: 'FormData',
     components: {
-        Import,
         BizProjectForm,
         ViewOrUpdate
     },

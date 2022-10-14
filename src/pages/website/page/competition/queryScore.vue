@@ -28,6 +28,9 @@
         <p>
           <span>姓名:{{inputForm.name}}</span> <span>身份证号：{{inputForm.cardNo}}</span>
         </p>
+        <div class="score-desc">
+          您本次的成绩为：
+        </div>
         <table>
           <tr>
             <td v-for="(item,index) in scoreList" :key="index">{{item.round}}</td>
@@ -141,7 +144,7 @@
         font-size: 18px;
       }
     }
-
+    .score-desc{text-align: left;padding:10px 0; font-size:14px;}
     table {
       width: 100%;
       margin: 0 auto;

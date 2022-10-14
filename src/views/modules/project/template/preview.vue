@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { BizProjectForm } from 'tduck-form-generator'
+import { BizProjectForm } from '@/components/tduck-form/TduckForm.common'
 import { useTemplateCreateFormRequest } from '@/api/project/template'
 import mixin from '../../form/TduckFormMixin'
 

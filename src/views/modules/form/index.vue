@@ -24,7 +24,9 @@
           <i v-else class="el-icon-d-arrow-right" @click="collapseHandle" />
         </div>
         <div class="right-content-container">
-          <component :is="defaultActiveMenu" :key="projectKey"></component>
+           <keep-alive include="editor">
+             <component :is="defaultActiveMenu" :key="projectKey"></component>
+           </keep-alive>
         </div>
       </div>
       <el-dialog :visible.sync="previewDialogVisible" title="问卷预览" destroy-on-close fullscreen>

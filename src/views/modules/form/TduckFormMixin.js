@@ -1,4 +1,4 @@
-import TduckForm from 'tduck-form-generator'
+import TduckForm from '@/components/tduck-form/TduckForm.common'
 import store from '@/store/index'
 import {getCurrentDomain} from '@/utils'
 import Vue from 'vue'

@@ -21,7 +21,7 @@
 <script>
   import {
     BizProjectForm
-  } from 'tduck-form-generator'
+  } from '@/components/tduck-form/TduckForm.common'
   import {
     getQueryString
   } from '@/utils'

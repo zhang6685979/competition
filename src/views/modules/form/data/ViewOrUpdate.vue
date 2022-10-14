@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { GenerateForm } from 'tduck-form-generator'
+import { GenerateForm } from '@/components/tduck-form/TduckForm.common'
 import { updateFormDataRequest } from '@/api/project/data'
 import _ from 'lodash'
 import { jsonSimpleClone } from '@/utils'
