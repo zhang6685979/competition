@@ -63,7 +63,7 @@ export default {
             }
         }
     },
-    mounted() {
+    activated() {
         getFormTemplateTypeListRequest().then(res => {
             this.templateTypeList = res.data
         })

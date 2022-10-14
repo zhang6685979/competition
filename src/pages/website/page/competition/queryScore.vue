@@ -85,8 +85,7 @@
         })
       },
       resetSearch() {
-        this.$refs.searchForm.resetFields()
-        this.query()
+        this.$refs.inputForm.resetFields()
       }
     }
   }

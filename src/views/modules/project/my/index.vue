@@ -109,7 +109,7 @@
           current: 1,
           size: 10,
           name: '',
-          status: null
+          status: ''
         },
         formData: {
           description: '',
@@ -209,6 +209,11 @@
           this.queryParams.size = size
           this.projectListLoading = false
         })
+      },
+      resetSearch() {
+        this.$refs.searchForm.resetFields()
+        this.queryParams.status=''
+        this.queryProjectPage()
       }
     }
   }

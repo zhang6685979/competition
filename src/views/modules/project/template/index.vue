@@ -6,7 +6,7 @@
           <el-form ref="form" :inline="true">
             <el-form-item label="">
               <el-input v-model="queryParams.name" class="width80" placeholder="请输入模板名称"
-                @keyup.enter="queryTemplatePage" />
+                @keyup.enter="queryTemplatePage" clearable/>
             </el-form-item>
             <el-form-item>
               <el-button class="search-template-btn" type="primary" @click="queryTemplatePage">
@@ -29,7 +29,7 @@
           </el-menu-item>
         </el-menu>
         <div class="project-grid-view">
-         
+
           <div v-for="template in templateList" :key="template.id" class="project-template-view">
             <img :src="template.coverImg
                                     ? template.coverImg

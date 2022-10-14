@@ -23,6 +23,8 @@ import VXETablePluginExportXLSX from 'vxe-table-plugin-export-xlsx'
 import JeeplusGencode from 'jeeplus-gencode'
 Vue.use(JeeplusGencode)
 
+import Process from '@/components/HandleProcess/process'
+
 import FontIcon from '@/components/FontIcon/index'
 Vue.component('font-icon',FontIcon);
 
@@ -171,6 +173,7 @@ Vue.prototype.moment = moment
 Vue.prototype.deepClone = utils.deepClone
 Vue.prototype.validatenull = utils.validatenull
 Vue.prototype.$events = new Vue()
+Vue.prototype.$process = Process
 Vue.prototype.msgSuccess = function(msg) {
     this.$message({showClose: true, message: msg, type: 'success'})
 }

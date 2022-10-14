@@ -20,14 +20,14 @@
           <el-button type="primary" size="small" icon="el-icon-plus" @click="handleAdd()">新建</el-button>
           <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="handleUpdate()" :disabled="single"
             plain>修改</el-button>
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="del()" :disabled="multiple" plain>删除
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete()" :disabled="multiple" plain>删除
           </el-button>
         </template>
       </vxe-toolbar>
       <div style="height: 500px;">
-        <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small" ref="refereeTable"
+        <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small" ref="categoryTable"
           show-header-overflow show-overflow highlight-hover-row :menu-config="{}" :print-config="{}"
-          :import-config="{}" :export-config="{}" :data="categoryList" :checkbox-config="{}">
+          :import-config="{}" :export-config="{}" :data="categoryList" :checkbox-config="{}" @checkbox-change="handleSelectionChange"  @checkbox-all="handleSelectionChange">
           <vxe-column type="seq" width="40"></vxe-column>
           <vxe-column type="checkbox" width="40px"></vxe-column>
           <vxe-column field="name" align="center" title="分类名称">
@@ -163,11 +163,12 @@
       },
       /** 重置按钮操作 */
       resetQuery() {
-        this.resetForm('queryForm')
+        this.resetForm('searchForm')
         this.handleQuery()
       },
       // 多选框选中数据
-      handleSelectionChange(selection) {
+      handleSelectionChange() {
+        const selection = this.$refs.categoryTable.getCheckboxRecords();
         this.ids = selection.map(item => item.id)
         this.single = selection.length !== 1
         this.multiple = !selection.length
@@ -182,7 +183,7 @@
       },
       /** 修改按钮操作 */
       handleUpdate(row) {
-        const id = row.id || this.ids
+        const id = row?row.id:this.ids
         getCategory(id).then(response => {
           this.open = true;
           this.$nextTick(() => {
@@ -215,9 +216,9 @@
       },
       /** 删除按钮操作 */
       handleDelete(row) {
-        const ids = row.id || this.ids
+        const id = row?row.id:this.ids
         this.$confirm('是否确认删除该数据项？').then(function() {
-          return delCategory(ids)
+          return delCategory(id)
         }).then(() => {
           this.getList()
           this.msgSuccess('删除成功')

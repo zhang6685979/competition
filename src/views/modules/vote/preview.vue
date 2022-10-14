@@ -11,7 +11,7 @@
       </div>
       <div v-if="mobilePreviewUrl" class="qrcode-view">
         <p>手机扫码查看效果</p>
-        <vue-qr class="qrcode" v-if="mobileWriteUrl" :size="194" :text="mobilePreviewUrl"
+        <vue-qr class="qrcode" v-if="mobileWriteUrl" :size="194" :text="mobileWriteUrl"
           :callback="qrCodeGenSuccess" />
         <a class="download-btn" @click="()=>{
                                 this.downloadFile(`${title}.png`,this.qrCodeUrl)

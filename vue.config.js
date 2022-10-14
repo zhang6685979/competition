@@ -3,13 +3,6 @@ const path = require('path')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
-<<<<<<< HEAD
-
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const productionGzipExtensions = ['js', 'css']
-=======
->>>>>>> 76f26616d43eac500cab0d61f6208d317bd3b8d4
 
 module.exports = {
   runtimeCompiler: true,
@@ -38,16 +31,10 @@ module.exports = {
       includeHtmlNames: ['manage.html']
     }])
     // // when there are many pages, it will cause too many meaningless requests
-
     config.plugins.delete('prefetch-index')
     config.plugins.delete('prefetch-mobile')
     config.plugins.delete('preload-index')
     config.plugins.delete('preload-mobile')
-
-    if (process.env.NODE_ENV === "production") {
-      // 删除系统默认的splitChunk
-      config.optimization.delete("splitChunks");
-    }
 
     config
       .when(process.env.NODE_ENV !== 'development',
@@ -132,14 +119,14 @@ module.exports = {
       template: 'src/pages/website/index.html',
       title: '技能竞赛与认证服务平台',
       filename: 'index.html',
-      chunks: ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'index']
+      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI','index']
     },
     manage: {
       entry: 'src/main.js',
       template: 'src/pages/manage/index.html',
       title: '技能竞赛管理平台',
       filename: 'manage.html',
-      chunks: ['chunk-libs', 'chunk-commons', 'chunk-elementUI', 'chunk-vxe',
+      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-commons', 'chunk-elementUI','chunk-vxe',
         'manage'
       ]
     },
@@ -148,7 +135,7 @@ module.exports = {
       template: 'src/pages/mobile/index.html',
       title: '问卷调查',
       filename: 'mobile.html',
-      chunks: ['mobile']
+      chunks: ['chunk-vendors', 'chunk-common', 'chunk-libs', 'chunk-elementUI', 'mobile']
     }
   },
   devServer: {
