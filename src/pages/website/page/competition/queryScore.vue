@@ -34,11 +34,13 @@
         <table>
           <tr>
             <td>考试名称</td>
+            <td>考试时间</td>
             <td>总成绩</td>
             <td>成绩详情</td>
           </tr>
           <tr  v-for="(item,index) in scoreList">
             <td>{{item.round}}</td>
+            <td>{{item.starttime}}</td>
             <td class="score">{{item.score}}</td>
             <td>{{item.detail}}</td>
           </tr>
