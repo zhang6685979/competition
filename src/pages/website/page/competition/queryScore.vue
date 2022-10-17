@@ -33,10 +33,10 @@
         </div>
         <table>
           <tr>
-            <td>考试名称</td>
-            <td>考试时间</td>
-            <td>总成绩</td>
-            <td>成绩详情</td>
+            <td nowrap>考试名称</td>
+            <td nowrap>考试时间</td>
+            <td nowrap>总成绩</td>
+            <td nowrap>成绩详情</td>
           </tr>
           <tr  v-for="(item,index) in scoreList">
             <td>{{item.round}}</td>
@@ -166,6 +166,7 @@
         td {
           height: 60px;
           border: 1px solid #DDDDDD;
+          padding:10px
         }
         .score{color: #DC000C;}
       }
