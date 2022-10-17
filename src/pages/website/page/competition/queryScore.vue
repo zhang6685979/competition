@@ -33,10 +33,14 @@
         </div>
         <table>
           <tr>
-            <td v-for="(item,index) in scoreList" :key="index">{{item.round}}</td>
+            <td>考试名称</td>
+            <td>总成绩</td>
+            <td>成绩详情</td>
           </tr>
-          <tr>
-            <td v-for="(item,index) in scoreList" :key="index">{{item.score}}</td>
+          <tr  v-for="(item,index) in scoreList">
+            <td>{{item.round}}</td>
+            <td class="score">{{item.score}}</td>
+            <td>{{item.detail}}</td>
           </tr>
         </table>
       </div>
@@ -144,27 +148,24 @@
         font-size: 18px;
       }
     }
-    .score-desc{text-align: left;padding:10px 0; font-size:14px;}
+    .score-desc{text-align: left;padding:10px 0; font-size:14Px;}
     table {
       width: 100%;
       margin: 0 auto;
       border-spacing: 0;
 
       tr {
+        font-size: 18px;
         &:first-child {
           background-color: #F5F5F5;
           font-size: 18px;
-        }
-
-        &:last-child {
-          color: #DC000C;
-          font-size: 32px;
         }
 
         td {
           height: 60px;
           border: 1px solid #DDDDDD;
         }
+        .score{color: #DC000C;}
       }
     }
   }
