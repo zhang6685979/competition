@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-    {{inputForm}}
       <el-tabs v-model="activeName" class="tabs" tab-position="left" type="border-card">
         <el-tab-pane :label="type==1?'用户通知模板':'裁判通知模板'" :name="type" :key="type" v-for="type in types">
           <el-form :model="inputForm" size="small" ref="inputForm" label-width="120px">
