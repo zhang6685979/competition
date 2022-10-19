@@ -57,8 +57,8 @@
     <el-divider content-position="left"><i class="el-icon-postcard"></i> 岗位信息</el-divider>
         <el-row :gutter="15">
         <el-col :span="12">
-          <el-form-item prop="companyDTO.id" :rules=" [{required: true, message: '公司不能为空', trigger: 'blur'}]" label="公司"> 
-            <SelectTree 
+          <el-form-item prop="companyDTO.id" :rules=" [{required: true, message: '公司不能为空', trigger: 'blur'}]" label="公司">
+            <SelectTree
               ref="companyTree"
               :props="{
                   value: 'id',             // ID字段名
@@ -67,29 +67,29 @@
                 }"
               :url="`/sys/office/treeData?type=1`"
               :value="inputForm.companyDTO.id"
-              :clearable="true" 
+              :clearable="true"
               :accordion="true"
               @getValue="(value) => {inputForm.companyDTO.id=value}"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <el-form-item prop="officeDTO.id" :rules="[{required: true, message: '部门不能为空', trigger: 'blur'}]" label="部门">
-            <SelectTree 
+            <SelectTree
               ref="officeTree"
               :props="{
                   value: 'id',             // ID字段名
                   label: 'name',         // 显示名称
                   children: 'children'    // 子级字段名
                 }"
-               
+
               :url="`/sys/office/treeData?type=2`"
               :value="inputForm.officeDTO.id"
-              :clearable="true" 
+              :clearable="true"
               :accordion="true"
               @getValue="(value) => {inputForm.officeDTO.id=value}"/>
           </el-form-item>
         </el-col>
-        
+
         <el-col :span="12">
             <el-form-item label="工号" prop="no" :rules="[{required: true, message:'工号不能为空', trigger:'blur'}]">
               <el-input v-model="inputForm.no" maxlength="50" placeholder=""></el-input>
@@ -205,7 +205,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.inputForm.resetFields()
         this.inputForm.oldLoinName = ''
-        this.roleService.list({current: 1, size: -1}).then(({data}) => {
+        this.roleService.list({current: 1, size: -1, useable: 1}).then(({data}) => {
           this.roleList = data.records
         })
         this.postService.list({current: 1, size: -1}).then(({data}) => {
