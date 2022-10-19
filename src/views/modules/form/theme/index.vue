@@ -5,7 +5,7 @@
             <p class="right-title">
                 外观设置
             </p>
-            <el-row align="middle" class="option-line-view" type="flex">
+            <!-- <el-row align="middle" class="option-line-view" type="flex">
                 <el-col :span="8">
                     <span class="option-line-title">背景设置</span>
                 </el-col>
@@ -78,7 +78,7 @@
                         </el-upload>
                     </el-col>
                 </el-row>
-            </el-row>
+            </el-row> -->
             <el-row align="middle" class="option-line-view" type="flex">
                 <el-col :span="8">
                     <span class="option-line-title">按钮设置</span>

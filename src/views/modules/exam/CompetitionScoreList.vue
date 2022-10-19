@@ -107,8 +107,13 @@
         }
         this.refreshList()
       },
-      uploadSuccess(){
-         this.refreshList();
+      uploadSuccess(message){
+        if(message.indexOf('成功')!=-1){
+          this.refreshList();
+          this.$message.success(message)
+        }else{
+          this.$message.warning(message)
+        }
       },
       downloadFile(url) {
         var fileName = decodeURIComponent(url.substring(url.lastIndexOf("/") + 1))

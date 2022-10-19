@@ -18,7 +18,7 @@
             <el-form-item label="参与方式" prop="participate"
                 :rules="[
                  ]">
-                <el-select v-model="inputForm.participate0" placeholder="请选择"  style="width: 100%;">
+                <el-select v-model="inputForm.participate" placeholder="请选择"  style="width: 100%;">
                           <el-option
                             v-for="item in $dictUtils.getDictList('jab_participate')"
                             :key="item.value"
@@ -126,7 +126,7 @@
           id: '',
           city: '',
           school: '',
-          participate0: '',
+          participate: '',
           name: '',
           sex: '',
           idcardno: '',

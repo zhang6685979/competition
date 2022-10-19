@@ -33,20 +33,6 @@
     </el-row>
      <el-divider content-position="left"><i class="el-icon-user"></i> 身份信息</el-divider>
          <el-row :gutter="15">
-        <!-- <el-col :span="24"> -->
-          <!-- <el-form-item prop="photo" label="头像"> 
-            <el-upload
-              class="avatar-uploader"
-              :action="`${this.$http.BASE_URL}/sys/file/webupload/upload?uploadPath=photo`"
-              :headers="{token: $cookie.get('token')}"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-               :show-file-list="false">
-              <img v-if="inputForm.photo" :src="inputForm.photo" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-          </el-form-item>
-        </el-col> -->
         <el-col :span="12">
             <el-form-item label="姓名" :rules="[{required: true, message: '姓名不能为空', trigger: 'blur'}]" prop="name">
               <el-input v-model="inputForm.name" maxlength="50" placeholder=""></el-input>

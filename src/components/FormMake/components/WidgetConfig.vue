@@ -639,12 +639,12 @@
     props: ['data'],
     data() {
       return {
+        dictList: [],
         validator: {
           type: null,
           required: null,
           pattern: null,
           range: null,
-          dictList: [],
           length: null,
           validator: null
         }
@@ -671,7 +671,7 @@
         })
         return fileArra;
       },
-      handleOptionsRemove(index,type) {
+      handleOptionsRemove(index, type) {
         if (this.data.type === 'grid') {
           this.data.columns.splice(index, 1)
         } else if (this.data.type === 'tabs') {
@@ -679,12 +679,11 @@
         } else if (this.data.type === 'imgupload' || this.data.type === 'fileupload') {
           this.data.options.headers.splice(index, 1)
         } else if (this.data.options.type == 'signup-table') {
-          if(type=='module'){
+          if (type == 'module') {
             this.data.options.modules.splice(index, 1)
-          }else if(type=='team'){
+          } else if (type == 'team') {
             this.data.options.teams.splice(index, 1)
           }
-
         } else {
           if (!this.data.options.remote && this.data.options.options[index].value) {
             this.data.options.defaultValue = typeof this.data.options.defaultValue === 'string' ? '' : []
@@ -702,13 +701,13 @@
           })
         } else {
           //报名赛项配置
-          if (type=='module') {
+          if (type == 'module') {
             this.data.options.modules.push({
               value: this.$t('fm.config.widget.newOption')
             })
             return;
           }
-          if (type=='team') {
+          if (type == 'team') {
             this.data.options.teams.push({
               value: this.$t('fm.config.widget.newOption')
             })
@@ -742,7 +741,6 @@
             value: ''
           })
         } else {
-
           this.$set(this.data.options, 'headers', [{
             key: '',
             value: ''
@@ -877,7 +875,20 @@
       },
       'data.options.patternMessage': function(val) {
         this.valiatePattern(this.data && this.data.options ? this.data.options.pattern : '')
-      }
+      },
+      'data.options.options': {
+        handler: function(val) {
+          if (this.data.type == 'radio' || (this.data.type == 'select' && !this.data.options.multiple)) {
+            var index = val.findIndex(item=>{
+              return item.value == this.data.options.defaultValue;
+            })
+            if(index==-1){
+              this.data.options.defaultValue = '';
+            }
+          }
+        },
+        deep:true
+      },
     }
   }
 </script>

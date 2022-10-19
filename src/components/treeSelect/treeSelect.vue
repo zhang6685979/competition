@@ -8,7 +8,7 @@
         :show-checkbox="showCheckbox"
         :props="props"
         highlight-current
-        :node-key="props.value"    
+        :node-key="props.value"
         :default-expanded-keys="defaultExpandedKey"
         @check-change="handleCheckChange"
         @node-click="handleNodeClick">

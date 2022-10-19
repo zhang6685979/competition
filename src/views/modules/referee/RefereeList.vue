@@ -6,11 +6,15 @@
       <el-form-item prop="name">
         <el-input size="small" v-model="searchForm.name" placeholder="姓名" clearable></el-input>
       </el-form-item>
-      <el-form-item prop="participate0">
-        <el-select v-model="searchForm.participate0" placeholder="请选择参与方式" size="small" style="width: 100%;" clearable>
-          <el-option v-for="item in ['线上参会', '线下参会']" :key="item" :label="item" :value="item">
-          </el-option>
-        </el-select>
+      <el-form-item prop="participate">
+        <el-select v-model="searchForm.participate" clearable placeholder="请选择"  style="width: 100%;">
+                  <el-option
+                    v-for="item in $dictUtils.getDictList('jab_participate')"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.label">
+                  </el-option>
+              </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="refreshList()" size="small" icon="el-icon-search">查询</el-button>
@@ -49,7 +53,7 @@
           </vxe-column>
           <vxe-column field="school" sortable title="所在学院">
           </vxe-column>
-          <vxe-column field="participate0" sortable title="参与方式">
+          <vxe-column field="participate" sortable title="参与方式">
           </vxe-column>
           <vxe-column field="mobile" sortable title="手机号码">
           </vxe-column>
@@ -115,7 +119,7 @@
       return {
         searchForm: {
           name: '',
-          participate0: '',
+          participate: '',
         },
         dataList: [],
         tablePage: {
@@ -223,9 +227,13 @@
         this.$refs.searchForm.resetFields()
         this.refreshList()
       },
-      uploadSuccess() {
-        this.$message.success('导入成功!');
-        this.refreshList()
+      uploadSuccess(message){
+        if(message.indexOf('成功')!=-1){
+          this.refreshList();
+          this.$message.success(message)
+        }else{
+          this.$message.warning(message)
+        }
       },
       setting(currItem) {
         this.currItem = Object.assign({}, currItem);
