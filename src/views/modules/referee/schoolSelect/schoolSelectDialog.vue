@@ -6,8 +6,8 @@
         <el-col :span="18">
           <el-form size="small" :inline="true" class="query-form" ref="searchForm" :model="searchForm"
             @keyup.enter.native="refreshList()" @submit.native.prevent>
-            <el-form-item prop="name">
-              <el-input size="small" v-model="searchForm.name" placeholder="学校名称" clearable></el-input>
+            <el-form-item prop="school">
+              <el-input size="small" v-model="searchForm.school" placeholder="学校名称" clearable></el-input>
             </el-form-item>
             <el-form-item prop="city">
               <el-input size="small" v-model="searchForm.city" placeholder="省份" clearable></el-input>
@@ -69,7 +69,7 @@
         loading: false,
         visible: false,
         searchForm: {
-          name: '',
+          school: '',
           city: ''
         }
       }
