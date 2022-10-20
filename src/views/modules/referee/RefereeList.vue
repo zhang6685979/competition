@@ -86,8 +86,8 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="选择规则:">
-              <el-checkbox label="是否能执裁本人所在院校" true-label="1" false-label="0" v-model="inputForm.selfSchool"></el-checkbox>
-              <el-checkbox label="是否能执裁所在单位省份院校" true-label="1" false-label="0" v-model="inputForm.selfCity"></el-checkbox>
+              <el-checkbox label="不能执裁本人所在院校" true-label="1" false-label="0" v-model="inputForm.selfSchool"></el-checkbox>
+              <el-checkbox label="不能执裁所在单位省份院校" true-label="1" false-label="0" v-model="inputForm.selfCity"></el-checkbox>
               <div>
                 <el-checkbox label="指定不能监控院校" true-label="1" false-label="0" v-model="inputForm.specificSchool">
                 </el-checkbox>
