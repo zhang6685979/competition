@@ -30,7 +30,7 @@
         </div>
       </div>
       <el-dialog :visible.sync="previewDialogVisible" title="问卷预览" destroy-on-close fullscreen>
-        <pre-view :key="previewKey" :preview-qrcode="true"  :title="title"/>
+        <pre-view :key="previewKey" v-if="previewDialogVisible" :preview-qrcode="true"  :title="title"/>
       </el-dialog>
       <template-create ref="templateCreate" :form-key="projectKey"/>
     </div>
@@ -145,7 +145,6 @@
     height: 100%;
     width: 100%;
   }
-  .btn-warp{margin-top: -10px;}
 
   ::v-deep .el-card__body {
     padding: 0;
