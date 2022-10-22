@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-center">成绩查询</h1>
     <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading" class="el-form" label-width="150px"
-      v-if="!resultVisible">
+      v-show="!resultVisible">
       <el-form-item label="请输入您的姓名" prop="name" :rules="[
                {required: true, message:'请输入姓名', trigger:'blur'}
               ]">

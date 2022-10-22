@@ -131,6 +131,16 @@
         }).then(({
           data
         }) => {
+          var now = new Date().valueOf();
+          var starttime = new Date(data.starttime.replace(/-/g,'/')).valueOf();
+          var endtime = new Date(data.endtime.replace(/-/g,'/')).valueOf();
+          if(now<starttime){
+             this.$message.warning('您好，活动还未开始，开始时间:'+data.starttime);
+             return false;
+          }else if(now>endtime){
+            this.$message.warning('对不起，报名已截止!');
+            return false;
+          }
           this.signFormVisible = true;
           this.signupInfo = data;
           this.json = JSON.parse(data.content);
@@ -161,6 +171,16 @@
         })
       },
       doSave(data,status){
+        var now = new Date().valueOf();
+        var starttime = new Date(this.signupInfo.starttime.replace(/-/g,'/')).valueOf();
+        var endtime = new Date(this.signupInfo.endtime.replace(/-/g,'/')).valueOf();
+        if(now<starttime){
+           this.$message.warning('您好，活动还未开始，开始时间:'+data.starttime);
+           return false;
+        }else if(now>endtime){
+          this.$message.warning('对不起，报名已截止!');
+          return false;
+        }
         this.$http({
           url: '/competition/competitionSignup/forminput',
           method: 'post',

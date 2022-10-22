@@ -238,6 +238,7 @@
         this.refreshList()
       },
       resetSearch() {
+        this.$refs.searchForm.resetFields()
         this.refreshList()
       },
       doSubmit() {
