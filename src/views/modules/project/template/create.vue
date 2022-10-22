@@ -91,7 +91,6 @@ export default {
                 updateTime: null,
                 createTime: null
             }
-            this.resetForm('form')
         },
         submitForm() {
             this.$refs['form'].validate(valid => {
@@ -99,7 +98,10 @@ export default {
                     this.form.key = this.formKey
                     createTemplateRequest(this.form).then(res => {
                         this.msgSuccess('保存成功')
-                        this.$router.push('/project/template/index')
+                        this.cancel()
+                        this.$nextTick(()=>{
+                          this.$router.push('/project/template/index')
+                        })
                     })
                 }
             })
@@ -107,7 +109,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>
