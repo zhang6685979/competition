@@ -36,6 +36,34 @@
               </el-col>
 
               <el-col :span="24">
+                <el-form-item label="附件" prop="appendix">
+                  <el-upload ref="file"
+                    :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=/emailTemplate`"
+                    :headers="{token: $cookie.get('token')}"
+                    :on-preview="(file, fileList) => {$window.location.href = (file.response && file.response.url) || file.url}"
+                    :on-success="(response, file, fileList) => {
+                           inputForm.appendix = fileList.map(item => (item.response && item.response.url) || item.url).join('|')
+                         }" :on-remove="(file, fileList) => {
+                           if(file&&file.status=='success'){
+                             $http.delete(`/sys/file/webupload/deleteByUrl?url=${(file.response && file.response.url) || file.url}`).then(({data}) => {
+                               $message.success(data)
+                             })
+                             inputForm.appendix = fileList.map(item => item.url).join('|')
+                           }
+                         }" :before-remove="(file, fileList) => {
+                           if(file&&file.status=='success'){
+                             return $confirm(`确定移除 ${file.name}？`)
+                           }
+                         }" multiple :limit="5" :on-exceed="(files, fileList) =>{
+                           $message.warning(`当前限制选择 5 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+                         }" :file-list="fileArra" :before-upload="beforeFileUpload">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">附件格式不限,文件大小不能超过50M</div>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="24">
                 <el-form-item>
                   <el-button size="small" type="primary" @click="doSubmit()" v-noMoreClick>保存
                   </el-button>
@@ -60,11 +88,13 @@
           id: '',
           title: '',
           content: '',
-          type: '1' //用户通知为1，裁判通知为2
+          type: '1', //用户通知为1，裁判通知为2
+          appendix:''
         },
         activeName: '1',
         types: ['1', '2'], //用户通知为1，裁判通知为2
-        templateList: []
+        templateList: [],
+        fileArra:[]
       }
     },
     components: {
@@ -76,14 +106,24 @@
           var template = this.templateList.find(item => {
             return item.type == newVal
           })
+          this.fileArra = []
           if (template) {
             this.inputForm = this.recover(this.inputForm, template)
+            this.inputForm.appendix.split('|').forEach((item) => {
+              if (item.trim().length > 0) {
+                this.fileArra.push({
+                  name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
+                  url: item
+                })
+              }
+            })
           } else {
             this.inputForm = {
               id: '',
               title: '',
               content: '',
-              type: newVal
+              type: newVal,
+              appendix:''
             }
           }
 
@@ -106,14 +146,24 @@
             return item.type == this.activeName
           })
           this.templateList = data;
+          this.fileArra = [];
           if (template) {
             this.inputForm = this.recover(this.inputForm, template)
+            this.inputForm.appendix.split('|').forEach((item) => {
+              if (item.trim().length > 0) {
+                this.fileArra.push({
+                  name: decodeURIComponent(item.substring(item.lastIndexOf('/') + 1)),
+                  url: item
+                })
+              }
+            })
           }else{
             this.inputForm = this.recover(this.inputForm, {
               id: '',
               title: '',
               content: '',
-              type: this.activeName
+              type: this.activeName,
+              appendix:''
             })
           }
         })
@@ -130,6 +180,20 @@
           this.$message.success(data);
           this.getTemplateList()
         })
+      },
+      beforeFileUpload(file) {
+        return new Promise((resolve, reject) => {
+          if (file.size >= 1024*1024*50) {
+            // 限制文件大小
+            this.$message({
+              type: "error",
+              message: "文件大小不能超出50M，请重新上传！",
+            });
+            return reject(false);
+          } else {
+            resolve(true);
+          }
+        });
       }
     }
   }
