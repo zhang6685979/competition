@@ -2,7 +2,7 @@
   <div>
     <template v-for="(table,index) in tables">
       <div class="title" v-if="editable&&(rowInfo.role=='参赛选手')">
-        <h5>{{'队伍'+(index+1)}} <el-button v-if="!disabled" class="pull-right no-print" type="primary" :icon="'el-icon-'+(index>0?'minus':'plus')" @click="addTeam(index)">{{index>0?'删除队伍':'添加队伍'}}</el-button>
+        <h5>{{'队伍'+(index+1)}} <el-button v-if="!disabled&&!options.teamNum" class="pull-right no-print" type="primary" :icon="'el-icon-'+(index>0?'minus':'plus')" @click="addTeam(index)">{{index>0?'删除队伍':'添加队伍'}}</el-button>
         </h5>
       </div>
       <table class="table">
@@ -152,6 +152,12 @@
     created() {
       if (this.value && this.value.length > 0) {
         this.rowInfo = Object.assign({}, this.value[0]);
+      }
+      if(this.editable){
+        var teamNum = this.options.teamNum;
+        for(var i=0;i<Number(teamNum)-1;i++){
+          this.addTeam(0);
+        }
       }
     },
     methods: {

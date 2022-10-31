@@ -299,28 +299,9 @@
           </template>
         </el-form-item>
       </template>
-      <!-- <el-form-item label="赛队配置" v-if="data.model=='player-signup'">
-        <template>
-          <el-radio-group v-model="data.options.defaultTeam">
-            <draggable tag="ul" :list="data.options.teams"
-              v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}" handle=".drag-item">
-              <li v-for="(item, index) in data.options.teams" :key="index">
-                {{item.value}}
-                <el-radio :label="item.value" style="margin-right: 5px;">
-                  <el-input :style="{'width': '180px' }" size="mini" v-model="item.value"></el-input>
-                </el-radio>
-                <i class="drag-item" style="font-size: 16px;margin: 0 5px;cursor: move;"><i
-                    class="iconfont icon-icon_bars"></i></i>
-                <el-button @click="handleOptionsRemove(index,'team')" circle plain type="danger" size="mini"
-                  icon="el-icon-minus" style="padding: 4px;"></el-button>
-              </li>
-            </draggable>
-          </el-radio-group>
-          <div style="margin-left: 22px;">
-            <el-button type="text" @click="handleAddOption('team')">{{$t('fm.actions.addOption')}}</el-button>
-          </div>
-        </template>
-      </el-form-item> -->
+      <el-form-item label="队伍数量" v-if="data.model=='player-signup'">
+        <el-input type="number" v-model.number="data.options.teamNum"></el-input>
+      </el-form-item>
       <template v-if="data.options.type=='download'">
         <el-form-item label="按钮文字">
           <el-input v-model="data.options.btnText"></el-input>

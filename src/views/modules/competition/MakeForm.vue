@@ -356,7 +356,8 @@
             modules: [],
             defaultModule:'',
             teams:[],
-            defaultTeam:''
+            defaultTeam:'',
+            teamNum:''
           }
         }]
       }
