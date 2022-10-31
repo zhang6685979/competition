@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog :title="title" :close-on-click-modal="false" v-dialogDrag :visible.sync="visible">
+      {{inputForm}}
       <el-form :model="inputForm" size="small" ref="inputForm" v-loading="loading"
         :class="method==='view'?'readonly':''" :disabled="method==='view'" label-width="120px">
         <el-row :gutter="15">
@@ -121,6 +122,7 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
+            this.inputForm.cid = this.id;
             this.competitionDownloadService.save(this.inputForm).then(({
               data
             }) => {

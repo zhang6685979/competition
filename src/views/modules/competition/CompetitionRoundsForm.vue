@@ -101,6 +101,7 @@
         this.$refs['inputForm'].validate((valid) => {
           if (valid) {
             this.loading = true
+            this.inputForm.cid = this.id;
             this.competitionRoundsService.save(this.inputForm).then(({data}) => {
               this.visible = false
               this.$message.success(data)
