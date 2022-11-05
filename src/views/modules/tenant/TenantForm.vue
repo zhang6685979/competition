@@ -60,7 +60,7 @@
                     <el-input v-model="inputForm.newPassword" maxlength="50" placeholder="若不修改，请留空" show-password></el-input>
                   </el-form-item>
               </el-col>
-              <el-col :span="24">
+              <el-col :span="24" v-if="!inputForm.id">
                 <el-form-item label="确认密码" prop="confirmNewPassword" :rules="inputForm.id?[{validator: validatePass2, trigger: 'blur'}]:[{required: true, message:'确认密码不能为空', trigger:'blur'},{validator: validatePass2, trigger: 'blur'}]">
                   <el-input v-model="inputForm.confirmNewPassword" maxlength="50" placeholder="" show-password></el-input>
                 </el-form-item>
@@ -89,6 +89,7 @@
               node-key="id"
               ref="tree"
               :default-expanded-keys="['1']"
+              :default-checked-keys="inputForm.authorities"
               highlight-current
               :props="{
                 children: 'children',
@@ -149,7 +150,7 @@
     },
     methods: {
       init(method, id) {
-        this.activeIndex==0
+        this.activeIndex=0
         this.getMenuList()
         this.method = method
         this.inputForm.id = id

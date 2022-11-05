@@ -20,9 +20,9 @@
      <div class="bg-white top">
         <vxe-toolbar :refresh="{query: refreshList}" export print custom>
           <template #buttons>
-            <el-button v-if="hasPermission('school:school:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-            <el-button v-if="hasPermission('school:school:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.schoolTable && $refs.schoolTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-            <el-button v-if="hasPermission('school:school:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.schoolTable && $refs.schoolTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+            <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
+            <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.schoolTable && $refs.schoolTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+            <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.schoolTable && $refs.schoolTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>
         </vxe-toolbar>
         <div style="height: calc(100% - 80px);">
@@ -52,9 +52,7 @@
         sortable
         title="学校编码">
             <template slot-scope="scope">
-              <el-link  type="primary" :underline="false" v-if="hasPermission('school:school:edit')" @click="edit(scope.row.id)">{{scope.row.code}}</el-link>
-              <el-link  type="primary" :underline="false" v-else-if="hasPermission('school:school:view')"  @click="view(scope.row.id)">{{scope.row.code}}</el-link>
-              <span v-else>{{scope.row.code}}</span>
+              <el-link  type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.code}}</el-link>
             </template>
       </vxe-column>
     <vxe-column
@@ -73,9 +71,8 @@
         width="200"
         title="操作">
         <template  slot-scope="scope">
-          <el-button v-if="hasPermission('school:school:view')" type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
-          <el-button v-if="hasPermission('school:school:edit')" type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-          <el-button v-if="hasPermission('school:school:del')" type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
+          <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
+          <el-button type="text"  icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
       </vxe-column>
     </vxe-table>

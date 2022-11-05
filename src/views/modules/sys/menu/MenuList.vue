@@ -12,8 +12,8 @@
     <div class="bg-white top">
     <vxe-toolbar :refresh="{query: refreshList}" export print custom>
       <template #buttons>
-        <el-button v-if="hasPermission('sys:menu:add')" type="primary" icon="el-icon-plus" size="small" @click="add()">新增</el-button>
-        <el-button v-if="hasPermission('sys:menu:del')" :disabled="$refs.xTree && $refs.xTree.getCheckboxRecords().length === 0" type="danger" size="small" icon="el-icon-delete" @click="del()" plain>删除</el-button>
+        <el-button type="primary" icon="el-icon-plus" size="small" @click="add()">新增</el-button>
+        <el-button :disabled="$refs.xTree && $refs.xTree.getCheckboxRecords().length === 0" type="danger" size="small" icon="el-icon-delete" @click="del()" plain>删除</el-button>
       </template>
     </vxe-toolbar>
     <div style="height: calc(100% - 50px);">
@@ -83,16 +83,10 @@
                       更多<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                      <!-- <el-dropdown-item  v-if="hasPermission('sys:menu:view')" :command="{method:'view', id:scope.row.id}">
-                      查看
-                      </el-dropdown-item> -->
-                      <!-- <el-dropdown-item v-if="hasPermission('sys:menu:edit')" :command="{method:'edit', id:scope.row.id}">
-                        修改
-                      </el-dropdown-item> -->
-                      <el-dropdown-item v-if="hasPermission('sys:menu:del')" :command="{method:'del', id:scope.row.id}">
+                      <el-dropdown-item :command="{method:'del', id:scope.row.id}">
                         删除
                       </el-dropdown-item>
-                      <el-dropdown-item v-if="hasPermission('sys:menu:add')" :command="{method:'addChild', row:scope.row}">
+                      <el-dropdown-item :command="{method:'addChild', row:scope.row}">
                         添加下级菜单
                       </el-dropdown-item>
                     </el-dropdown-menu>

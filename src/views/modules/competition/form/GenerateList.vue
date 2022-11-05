@@ -70,13 +70,7 @@
               <div v-else>
                 <div v-if="index === 0">
                   <el-link type="primary" :underline="false"
-                    v-if="$route.query.previewMode || hasPermission(`form:${tableName}:edit`)"
-                    @click="edit(scope.row.id)">{{scope.row[`${option.model}`] || ''}} </el-link>
-                  <el-link type="primary" :underline="false"
-                    v-else-if="$route.query.previewMode || hasPermission(`form:${tableName}:view`)"
                     @click="view(scope.row.id)">{{scope.row[`${option.model}`] || ''}} </el-link>
-                  <span v-else>{{scope.row[`${option.model}`] === undefined ? '' : scope.row[`${option.model}`]}}
-                  </span>
                 </div>
                 <span v-else>{{scope.row[`${option.model}`] === undefined ? '' : scope.row[`${option.model}`]}} </span>
               </div>

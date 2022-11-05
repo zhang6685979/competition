@@ -56,8 +56,8 @@
 
       <vxe-toolbar :refresh="{query: refreshList}" export print custom>
         <template #buttons>
-          <el-button v-if="hasPermission('sys:log:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.logTable && $refs.logTable.getCheckboxRecords().length === 0" plain>删除</el-button>
-          <el-button v-if="hasPermission('sys:log:del')" type="danger"   size="small" icon="el-icon-delete" @click="empty()"  plain>清空</el-button>
+          <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.logTable && $refs.logTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+          <el-button type="danger"   size="small" icon="el-icon-delete" @click="empty()"  plain>清空</el-button>
         </template>
       </vxe-toolbar>
      <div style="height: calc(100% - 80px);">

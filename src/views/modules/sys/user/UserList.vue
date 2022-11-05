@@ -49,10 +49,10 @@
       <div class="bg-white top">
           <vxe-toolbar  :refresh="{query: refreshList}" import export  print resizable custom>
               <template #buttons>
-                <el-button v-if="hasPermission('sys:user:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-                <el-button v-if="hasPermission('sys:user:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.userTable && $refs.userTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-                <el-button v-if="hasPermission('sys:user:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.userTable && $refs.userTable.getCheckboxRecords().length === 0" plain>删除</el-button>
-                <el-button v-if="hasPermission('sys:user:import')"  type="default" @click="downloadTpl()" size="small">下载模板</el-button>
+                <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
+                <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.userTable && $refs.userTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+                <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.userTable && $refs.userTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+                <el-button type="default" @click="downloadTpl()" size="small">下载模板</el-button>
 
               </template>
           </vxe-toolbar>
@@ -95,9 +95,7 @@
                 </vxe-column>
                 <vxe-column  title="登录名" field="loginName" sortable>
                   <template slot-scope="scope">
-                    <el-link  type="primary" :underline="false" v-if="hasPermission('sys:user:edit')" @click="edit(scope.row.id)">{{scope.row.loginName}}</el-link>
-                    <el-link  type="primary" :underline="false" v-else-if="hasPermission('sys:user:view')"  @click="view(scope.row.id,)">{{scope.row.loginName}}</el-link>
-                    <span v-else>{{scope.row.loginName}}</span>
+                    <el-link  type="primary" :underline="false" @click="view(scope.row.id,)">{{scope.row.loginName}}</el-link>
                   </template>
                 </vxe-column>
 
@@ -120,9 +118,8 @@
                 </vxe-column>
                 <vxe-column title="操作" width="200px" fixed="right" align="center">
                   <template slot-scope="scope">
-                    <el-button v-if="hasPermission('sys:user:view')" type="text" size="small" icon="el-icon-view" @click="view(scope.row.id)">查看</el-button>
-                    <el-button v-if="hasPermission('sys:user:edit')" type="text" size="small" icon="el-icon-edit" @click="edit(scope.row.id)">修改</el-button>
-                    <el-button v-if="hasPermission('sys:user:del')" type="text" size="small" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+                    <el-button type="text" size="small" icon="el-icon-edit" @click="edit(scope.row.id)">修改</el-button>
+                    <el-button type="text" size="small" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
                   </template>
                 </vxe-column>
               </vxe-table>

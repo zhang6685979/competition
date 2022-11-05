@@ -15,7 +15,7 @@
         <div class="bg-white top">
         <vxe-toolbar :refresh="{query: refreshList}"  custom>
           <template #buttons>
-            <el-button v-if="hasPermission('sys:role:assign')" type="primary" size="small" icon="el-icon-plus" @click="add()">添加用户</el-button>
+            <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">添加用户</el-button>
           </template>
         </vxe-toolbar>
         <div style="height: calc(100% - 100px);">
@@ -51,7 +51,7 @@
             <vxe-column  title="所属部门" field="officeDTO.name" sortable></vxe-column>
             <vxe-column title="操作" width="80px" fixed="right" align="center">
                 <template slot-scope="scope">
-                  <el-button v-if="hasPermission('sys:role:assign')" type="text" size="small" @click="del(scope.row.id)">
+                  <el-button type="text" size="small" @click="del(scope.row.id)">
                     移除
                   </el-button>
                 </template>

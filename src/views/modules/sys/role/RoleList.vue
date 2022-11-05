@@ -12,9 +12,9 @@
     <div class="top bg-white">
           <vxe-toolbar :refresh="{query: refreshList}" export print custom>
             <template #buttons>
-              <el-button v-if="hasPermission('sys:role:add')" type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
-              <el-button v-if="hasPermission('sys:role:edit')" type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.roleTable && $refs.roleTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
-              <el-button v-if="hasPermission('sys:role:del')" type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.roleTable && $refs.roleTable.getCheckboxRecords().length === 0" plain>删除</el-button>
+              <el-button type="primary" size="small" icon="el-icon-plus" @click="add()">新建</el-button>
+              <el-button type="warning" size="small" icon="el-icon-edit-outline" @click="edit()" :disabled="$refs.roleTable && $refs.roleTable.getCheckboxRecords().length !== 1" plain>修改</el-button>
+              <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.roleTable && $refs.roleTable.getCheckboxRecords().length === 0" plain>删除</el-button>
             </template>
           </vxe-toolbar>
      <div style="height: calc(100% - 80px);">
@@ -41,9 +41,7 @@
           <vxe-column type="checkbox"  width="40px"></vxe-column>
           <vxe-column  title="角色名称" field="name" sortable>
               <template slot-scope="scope">
-                <el-link  type="primary" :underline="false" v-if="hasPermission('sys:role:edit')" @click="edit(scope.row.id)">{{scope.row.name}}</el-link>
-                <el-link  type="primary" :underline="false" v-else-if="hasPermission('sys:role:view')"  @click="view(scope.row.id)">{{scope.row.name}}</el-link>
-                <span v-else>{{scope.row.name}}</span>
+                <el-link  type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.name}}</el-link>
               </template>
           </vxe-column>
           <vxe-column  title="英文名称" field="enName" sortable></vxe-column>
@@ -57,10 +55,10 @@
           </vxe-column>
           <vxe-column title="操作" width="280px" fixed="right" align="center">
               <template slot-scope="scope">
-                <el-button v-if="hasPermission('sys:role:edit')" icon="el-icon-edit" type="text" size="mini" @click="edit(scope.row.id)">修改</el-button>
-                <el-button v-if="hasPermission('sys:role:del')" icon="el-icon-delete" type="text" size="mini" @click="del(scope.row.id)">删除</el-button>
-                <el-button v-if="hasPermission('sys:role:assign')" icon="el-icon-setting" type="text" size="mini" @click="showAuth(scope.row)">角色授权</el-button>
-                <el-button v-if="hasPermission('sys:role:assign')" icon="el-icon-user-solid" type="text" size="mini" @click="showRight(scope.row)">分配用户</el-button>
+                <el-button icon="el-icon-edit" type="text" size="mini" @click="edit(scope.row.id)">修改</el-button>
+                <el-button icon="el-icon-delete" type="text" size="mini" @click="del(scope.row.id)">删除</el-button>
+                <el-button icon="el-icon-setting" type="text" size="mini" @click="showAuth(scope.row)">角色授权</el-button>
+                <el-button icon="el-icon-user-solid" type="text" size="mini" @click="showRight(scope.row)">分配用户</el-button>
               </template>
           </vxe-column>
         </vxe-table>

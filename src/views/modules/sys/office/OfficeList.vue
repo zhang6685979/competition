@@ -13,8 +13,8 @@
     <vxe-toolbar :refresh="{query: refreshList}" export print custom>
       <template #buttons>
         <el-row>
-          <el-button v-if="hasPermission('sys:office:add')" type="primary" icon="el-icon-plus" size="small" @click="add()">新增</el-button>
-          <el-button v-if="hasPermission('sys:office:del')" :disabled="$refs.xTree && $refs.xTree.getCheckboxRecords().length === 0" type="danger" size="small" icon="el-icon-delete" @click="del()" plain>删除</el-button>
+          <el-button type="primary" icon="el-icon-plus" size="small" @click="add()">新增</el-button>
+          <el-button :disabled="$refs.xTree && $refs.xTree.getCheckboxRecords().length === 0" type="danger" size="small" icon="el-icon-delete" @click="del()" plain>删除</el-button>
         </el-row>
       </template>
     </vxe-toolbar>
@@ -39,9 +39,7 @@
         <vxe-column type="checkbox" width="40px"> </vxe-column>
         <vxe-column  title="机构名称"  field="name"  align="left" tree-node >
           <template slot-scope="scope">
-            <el-link  type="primary" :underline="false" v-if="hasPermission('sys:office:edit')" @click="edit(scope.row.id)">{{scope.row.name}}</el-link>
-            <el-link  type="primary" :underline="false" v-else-if="hasPermission('sys:office:view')"  @click="view(scope.row.id)">{{scope.row.name}}</el-link>
-            <span v-else>{{scope.row.name}}</span>
+            <el-link  type="primary" :underline="false" @click="view(scope.row.id)">{{scope.row.name}}</el-link>
           </template>
         </vxe-column>
         <vxe-column  title="机构编码" field="code" align="center"></vxe-column>
@@ -59,10 +57,9 @@
         </vxe-column>
         <vxe-column title="操作" width="300px" fixed="right" align="center">
           <template slot-scope="scope">
-            <el-button v-if="hasPermission('sys:office:view')" type="text" icon="el-icon-view" size="small" @click="view(scope.row.id)">查看</el-button>
-            <el-button v-if="hasPermission('sys:office:edit')" type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
-            <el-button v-if="hasPermission('sys:office:del')" type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
-            <el-button v-if="hasPermission('sys:office:add')" type="text" icon="el-icon-circle-plus-outline" size="small" @click="addChild(scope.row.id, scope.row.name)">添加下级机构</el-button>
+            <el-button type="text" icon="el-icon-edit" size="small" @click="edit(scope.row.id)">修改</el-button>
+            <el-button type="text" icon="el-icon-delete" size="small" @click="del(scope.row.id)">删除</el-button>
+            <el-button type="text" icon="el-icon-circle-plus-outline" size="small" @click="addChild(scope.row.id, scope.row.name)">添加下级机构</el-button>
           </template>
         </vxe-column>
       </vxe-table>
