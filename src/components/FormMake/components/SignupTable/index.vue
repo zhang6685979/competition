@@ -27,6 +27,9 @@
           <th>
             <font style="color:#f00">*</font> 邮箱
           </th>
+          <th v-if="!disabled&&(rowInfo.role=='指导老师')&&(options.rows==0)" width="75px">
+            操作
+          </th>
 
         </tr>
         <tr v-for="(item,index) in table.list" :key="index">
@@ -47,7 +50,7 @@
             </el-select>
           </td>
           <td v-if="rowInfo.role=='参赛选手'">
-            <el-select v-model="item.instructor" :rules='[{ "required": true, "message": "请选择指导老师" }]'>
+            <el-select v-model="item.instructor" clearable multiple :rules='[{ "required": true, "message": "请选择指导老师" }]'>
               <el-option
                 v-for="(option,index) in models['instructor-signup']?models['instructor-signup'].filter(item=>item.name):[]"
                 :label="option.name" :value="option.name" :key="index"></el-option>
@@ -79,6 +82,9 @@
               :rules='[{ "required": true, "message": "必须填写" },{validator: validator.isEmail, trigger:["blur","change"]}]'>
               <el-input v-model="item.email"></el-input>
             </el-form-item>
+          </td>
+          <td align="center" v-if="!disabled&&(rowInfo.role=='指导老师')&&(options.rows==0)">
+            <el-button type="primary" :icon="'el-icon-'+(index>0?'minus':'plus')" @click="addRow(index)">{{index==0?'添加':'删除'}}</el-button>
           </td>
 
         </tr>
@@ -123,6 +129,9 @@
     },
     watch: {
       'options.rows': function(newVal, oldVal) {
+        if(!newVal){
+          newVal = 1
+        }
         if (newVal && (newVal != oldVal)) {
           this.dataModel = [];
           for (var i = 0; i < newVal; i++) {
@@ -201,6 +210,14 @@
               })
             }
           })
+        }
+      },
+      addRow(index){
+        if(index==0){
+          this.dataModel.push(Object.assign({}, this.rowInfo))
+        }else{
+          //删除指导老师数据
+          this.dataModel.splice(index,1)
         }
       }
     },

@@ -76,7 +76,15 @@
               <el-radio label="2">审批不通过</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="审批意见:" v-if="form.status==2">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入审批意见"
+              v-model="form.objection"></el-input>
+          </el-form-item>
         </el-form>
+
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="signFormVisible = false">关闭</el-button>
@@ -120,7 +128,8 @@
         json: {},
         currItem: {},
         form: {
-          status: '1'
+          status: '1',
+          objection:''
         }
       }
     },
@@ -194,12 +203,13 @@
           method: 'patch',
           params: {
             id: this.currItem.id,
-            status: this.form.status
+            status: this.form.status,
+            objection: this.form.objection
           }
         }).then(({
           data
         }) => {
-          this.$message.info(data)
+          this.$message.success(data)
           this.signFormVisible = false;
           this.init(this.tid); //刷新列表
         })

@@ -1,7 +1,7 @@
 <template>
   <div class="box-card">
     <el-row :gutter="15" class="mt-20">
-      <el-col :span="8" v-for="(item, index) in dataList" :key="index" class="el-col">
+      <el-col :span="24" v-for="(item, index) in dataList" :key="index" class="el-col">
         <div class="file-item">
           <img :src="require('../../assets/images/file-icon.png')" :alt="item.title">
           <div class="other-info">
@@ -13,11 +13,13 @@
             <p>文件大小：{{(item.size/1024/1024).toFixed(2)}}M <span>上传日期：{{item.updateDate.substring(0,10)}}</span>
               <!-- | {{item.times}}次下载 -->
             </p>
-            <el-button type="primary" size="small" @click="downloadFile(item.file)">下载</el-button>
+
           </div>
+          <el-button type="primary" size="small" @click="downloadFile(item.file)">下载</el-button>
         </div>
       </el-col>
     </el-row>
+
     <div class="pager">
       <el-pagination background layout="prev, pager, next" :page-size="tablePage.pageSize"
         :current-page="tablePage.currentPage" :total="tablePage.total" @current-change="getList">
@@ -93,13 +95,9 @@
     height: 156px;
   }
 
-  .el-col {
-    margin-bottom: 15px;
-  }
-
   .file-item {
-    background-color: #F5F5F5;
-    padding: 30px;
+    border-bottom: 1px dashed #C0C4CC;
+    padding: 20px;
     display: flex;
 
     img {
@@ -111,9 +109,7 @@
 
     .other-info {
       flex: 1;
-
       h5 {
-        width: 400px;
         font-size: 16px;
         color: #000;
         white-space: nowrap;
@@ -124,7 +120,7 @@
       p {
         font-size: 14px;
         color: #707070;
-        margin: 10px 0;
+        margin-top: 10px;
 
         span {
           margin-left: 10px;

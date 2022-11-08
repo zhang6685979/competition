@@ -66,7 +66,11 @@
           <td align="center">{{index+1}}</td>
           <td>{{item.templateName}}</td>
           <td>{{item.createTime}}</td>
-          <td class="status" :class="{'status-error':item.status==2}">{{status[item.status]}}</td>
+          <td class="status" :class="{'status-error':item.status==2}">{{status[item.status]}}
+             <el-tooltip v-if="item.status==2" class="item" effect="dark" :content="item.objection" placement="top">
+               <i class="el-icon-warning-outline"></i>
+             </el-tooltip>
+          </td>
           <td><a @click="reWrite(item)" :class="{disabled:item.status==1}">重新提报</a></td>
         </tr>
       </table>
