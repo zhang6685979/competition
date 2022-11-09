@@ -26,12 +26,14 @@
             <el-form-item label="所属省份" prop="city"
                 :rules="[
                  ]">
-                      <CityPicker
-                         style="width:100%"
-                        :value="inputForm.city"
-                        :clearable="true"
-                        :accordion="true"
-                        @getValue="(value) => {inputForm.city=value}"/>
+                 <el-select v-model="inputForm.city" style="width:100%" clearable filterable placeholder="请选择">
+                     <el-option
+                       v-for="(item,index) in valueData"
+                       :key="index"
+                       :label="item.name"
+                       :value="item.name">
+                     </el-option>
+                   </el-select>
            </el-form-item>
         </el-col>
         </el-row>
@@ -45,7 +47,6 @@
 </template>
 
 <script>
-  import CityPicker from '@/components/cityPicker'
   import SchoolService from '@/api/school/SchoolService'
   export default {
     data () {
@@ -59,11 +60,9 @@
           code: '',
           name: '',
           city: ''
-        }
+        },
+        valueData:[]
       }
-    },
-    components: {
-      CityPicker
     },
     schoolService: null,
     created () {
@@ -73,6 +72,12 @@
       init (method, id) {
         this.method = method
         this.inputForm.id = id
+        this.$http({
+          url: '/sys/area/treeData',
+          method: 'get'
+        }).then(({data}) => {
+          this.valueData = data
+        })
         if (method === 'add') {
           this.title = `新建学校信息`
         } else if (method === 'edit') {
@@ -112,5 +117,3 @@
     }
   }
 </script>
-
-  
