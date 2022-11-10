@@ -31,7 +31,7 @@
           height: 300,
           menubar: false,
           language: 'zh_CN'
-        }"></tiny-mce>
+        }" v-if="visible"></tiny-mce>
                 </el-form-item>
               </el-col>
 
@@ -94,7 +94,8 @@
         activeName: '1',
         types: ['1', '2'], //用户通知为1，裁判通知为2
         templateList: [],
-        fileArra:[]
+        fileArra:[],
+        visible:false
       }
     },
     components: {
@@ -132,6 +133,10 @@
     },
     activated() {
       this.getTemplateList();
+      this.visible = true
+    },
+    deactivated(){
+      this.visible = false
     },
     methods: {
       getTemplateList() {
