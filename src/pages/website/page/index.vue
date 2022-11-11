@@ -229,7 +229,7 @@
     background-color: #fff;
 
     .carousel {
-      height: 760px;
+      height: 500Px;
     }
 
     .news-warp {

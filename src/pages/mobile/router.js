@@ -13,9 +13,14 @@ export default new Router({
     {
       path: '/s/:key',
       component: _import('modules/form/write/index')
-    },{
+    },
+    {
       path: '/vote/:id',
       component: () => import('./page/vote.vue')
+    },
+    {
+      path: '/voteItem/:id',
+      component: () => import('./page/voteItem.vue')
     }
   ]
 })

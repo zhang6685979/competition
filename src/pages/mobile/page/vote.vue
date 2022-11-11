@@ -58,12 +58,12 @@
             <div class="item" v-for="(item,index) in options" :key="index">
               <div class="item-inner">
                 <div class="order shadow">{{item.sid}}号</div>
-                <img :src="item.image" @click="currItem=item;showItem=true;" class="loading" alt="">
+                <img :src="item.image" @click="showVoteInfo(item)" class="loading" alt="">
                 <div class="line">
                   <span class="name content-cut-one">{{item.name}}</span>
                   <span class="num content-cut-one">{{item.votes||0}}票</span>
                 </div>
-                <template wx:if="isStart && !isEnd">
+                <template v-if="isStart && !isEnd">
                   <div @click="doVote(item.id)" v-if="!item.voted" class="vote-btn">
                     <div class="vote shadow">立即投票</div>
                   </div>
@@ -108,17 +108,10 @@
         </div>
       </div>
     </div>
-
-    <van-popup v-model="showItem" position="right" :style="{ width: '100%' }">
-      <voteItem :voteItem="currItem" :theme="themeList[vote.themeColor]" @close="showItem=false"></voteItem>
-    </van-popup>
-
-
   </div>
 </template>
 
 <script>
-  import voteItem from './voteItem'
   export default {
     data() {
       return {
@@ -199,9 +192,6 @@
         preview: false //预览模式
       }
     },
-    components: {
-      voteItem
-    },
     watch:{
       'vote.starttime':function(){
         var isStart = this.isStart;
@@ -245,6 +235,7 @@
         }).then(({
           data
         }) => {
+          document.title = data.title
           this.initData(Object.assign({}, data));
         })
       },
@@ -360,6 +351,9 @@
           this.getVoteInfo();
         })
 
+      },
+      showVoteInfo(item){
+        this.$router.push('/voteItem/'+item.id)
       }
     },
     computed: {
