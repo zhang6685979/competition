@@ -6,12 +6,12 @@
           <el-tab-pane label="投票统计" name="first">
             <vxe-toolbar :refresh="{query: getResult}">
               <template #buttons>
-                <el-button type="primary" size="small" icon="el-icon-download" @click="exportExcel('result','投票统计')">导出</el-button>
+                <el-button type="primary" size="small" icon="el-icon-download" @click="exportExcel('result','投票统计.xls')">导出</el-button>
               </template>
             </vxe-toolbar>
             <div style="height: 400px;">
               <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small"
-                ref="voteOptionTable" show-header-overflow show-overflow highlight-hover-row :export-config="{filename: '投票统计',
+                ref="voteOptionTable" show-header-overflow show-overflow highlight-hover-row :export-config="{filename: '投票统计.xls',
                 type: 'xls'}" :data="dataList">
                 <vxe-column field="sid" sortable title="编号">
                   <template slot-scope="scope">
