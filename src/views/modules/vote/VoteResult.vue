@@ -4,12 +4,15 @@
       <div class="bg-white top">
         <el-tabs v-model="activeName">
           <el-tab-pane label="投票统计" name="first">
-            <vxe-toolbar :refresh="{query: getResult}" export>
+            <vxe-toolbar :refresh="{query: getResult}">
+              <template #buttons>
+                <el-button type="primary" size="small" icon="el-icon-download" @click="exportExcel('result','投票统计')">导出</el-button>
+              </template>
             </vxe-toolbar>
             <div style="height: 400px;">
               <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small"
                 ref="voteOptionTable" show-header-overflow show-overflow highlight-hover-row :export-config="{filename: '投票统计',
-                type: 'xls'}" :data="dataList" >
+                type: 'xls'}" :data="dataList">
                 <vxe-column field="sid" sortable title="编号">
                   <template slot-scope="scope">
                     {{scope.row.sid}}号
@@ -35,12 +38,15 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="投票明细" name="second">
-            <vxe-toolbar :refresh="{query: getRecords}" export>
+            <vxe-toolbar :refresh="{query: getRecords}">
+              <template #buttons>
+                <el-button type="primary" size="small" icon="el-icon-download" @click="exportExcel('details','投票明细')">导出</el-button>
+              </template>
             </vxe-toolbar>
             <div style="height: 400px;">
               <vxe-table border="inner" auto-resize resizable height="auto" :loading="loading" size="small"
                 ref="voteOptionTable" show-header-overflow show-overflow highlight-hover-row :export-config="{filename: '投票明细',
-                type: 'xls'}" :data="recordList" >
+                type: 'xls'}" :data="recordList">
                 <vxe-column field="optionName" title="选项名称">
                 </vxe-column>
                 <vxe-column field="image" title="选项图片">
@@ -58,13 +64,8 @@
                 </vxe-column>
               </vxe-table>
             </div>
-            <vxe-pager
-              background
-              size="small"
-              :current-page="tablePage.currentPage"
-              :page-size="tablePage.pageSize"
-              :total="tablePage.total"
-              :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
+            <vxe-pager background size="small" :current-page="tablePage.currentPage" :page-size="tablePage.pageSize"
+              :total="tablePage.total" :page-sizes="[10, 20, 100, 1000, {label: '全量数据', value: 1000000}]"
               :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
               @page-change="currentChangeHandle">
             </vxe-pager>
@@ -81,30 +82,30 @@
   export default {
     data() {
       return {
-        id:'',
+        id: '',
         searchForm: {
           subject: ''
         },
         dataList: [],
         loading: false,
-        visible:false,
-        activeName:'first',
+        visible: false,
+        activeName: 'first',
         tablePage: {
           total: 0,
           currentPage: 1,
           pageSize: 10,
           orders: []
         },
-        recordList:[]
+        recordList: []
       }
     },
     methods: {
-      init(id){
+      init(id) {
         this.id = id;
         this.getResult();
         this.getRecords();
       },
-      getResult(){
+      getResult() {
         var id = this.id;
         this.loading = true;
         this.sumVotes = 0;
@@ -123,13 +124,16 @@
         })
       },
       // 当前页
-      currentChangeHandle ({ currentPage, pageSize }) {
+      currentChangeHandle({
+        currentPage,
+        pageSize
+      }) {
         this.tablePage.currentPage = currentPage
         this.tablePage.pageSize = pageSize
         this.getRecords()
       },
       //获取明细数据
-      getRecords(){
+      getRecords() {
         var id = this.id;
         this.loading = true;
         this.$http({
@@ -138,7 +142,7 @@
           params: {
             'current': this.tablePage.currentPage,
             'size': this.tablePage.pageSize,
-            'id':id
+            'id': id
           }
         }).then(({
           data
@@ -147,10 +151,27 @@
           this.recordList = data.records
           this.tablePage.total = data.total
         })
+      },
+      exportExcel(type,fileName) {
+        this.$http({
+          url: `/vote/voteSubject/export-${type}`,
+          method: 'get',
+          params: {id:this.id},
+          responseType: 'blob'
+        }).then(({data}) => {
+             // 将二进制流文件写入excel表，以下为重要步骤
+          this.$utils.downloadExcel(data, fileName)
+        }).catch(function (err) {
+          if (err.response) {
+            console.log(err.response)
+          }
+        })
       }
     }
   }
 </script>
 <style lang="scss">
-  .my-dialog .el-dialog__body{padding:0;}
+  .my-dialog .el-dialog__body {
+    padding: 0;
+  }
 </style>
