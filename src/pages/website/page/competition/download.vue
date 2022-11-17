@@ -5,11 +5,7 @@
         <div class="file-item">
           <img :src="require('../../assets/images/file-icon.png')" :alt="item.title">
           <div class="other-info">
-
-            <el-tooltip class="item" effect="dark" :content="item.title" placement="top-start">
-              <h5>{{item.title}}</h5>
-            </el-tooltip>
-
+            <h5 class="item">{{item.title}}</h5>
             <p>文件大小：{{(item.size/1024/1024).toFixed(2)}}M <span>上传日期：{{item.updateDate.substring(0,10)}}</span>
               <!-- | {{item.times}}次下载 -->
             </p>

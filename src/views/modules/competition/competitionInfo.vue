@@ -1,7 +1,8 @@
 <template>
   <div class="page">
     <div class="bg-white top">
-      <el-page-header @back="goBack" content="比赛详情" class="page-header"></el-page-header>
+      <el-page-header @back="goBack" :content="$route.query.name||'比赛详情'" class="page-header">
+      </el-page-header>
       <el-divider></el-divider>
       <el-tabs v-model="activeName" style="height: calc(100% - 84px);">
         <el-tab-pane label="信息填报" name="1">

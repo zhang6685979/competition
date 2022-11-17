@@ -53,7 +53,7 @@
                     <el-link :underline="false" @click="del(item.id)"><i class="el-icon-delete"></i> 删除</el-link>
                   </li>
                   <li style="width: 33.333%">
-                    <el-link :underline="false" @click="view(item.id)"><i class="el-icon-view"></i> 比赛详情</el-link>
+                    <el-link :underline="false" @click="view(item.id,item.title)"><i class="el-icon-view"></i> 比赛详情</el-link>
                   </li>
                 </ul>
               </el-card>
@@ -150,8 +150,8 @@
         this.$refs.competitionForm.init('edit', id)
       },
       // 查看
-      view(id) {
-        this.$router.push('/competition/competitionInfo?cid=' + id)
+      view(id,name) {
+        this.$router.push('/competition/competitionInfo?cid=' + id+'&name='+name)
       },
       // 删除
       del(id) {

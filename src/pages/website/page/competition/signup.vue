@@ -127,8 +127,12 @@
           return;
         }
         this.$http({
-          url: '/competition/competitionSignup/public/queryById',
+          url: '/competition/competitionSignup/queryById',
           method: 'get',
+          headers: {
+            isFront: 1, //是否是门户网站调用
+            token: this.$cookie.get('user-token')
+          },
           params: {
             id: id
           }

@@ -117,7 +117,7 @@
     margin: 20px auto;
   }
  .item {
-   border-bottom: 1px solid #C0C4CC;
+   border-bottom: 1px dashed #C0C4CC;
    padding: 10px 0;
    &:nth-last-child(2)
    {
@@ -140,8 +140,7 @@
      margin-top: 10px;
 
      a {
-       font-size: 20px;
-       font-weight: bold;
+       font-size: 16px;
        color: #303133;
        line-height: 30px;
      }
@@ -154,7 +153,7 @@
    }
 
    .item-content {
-     font-size: 16px;
+     font-size: 14px;
      color: #707070;
      line-height: 30px;
      ;
