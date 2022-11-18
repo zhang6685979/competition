@@ -67,9 +67,9 @@
           <td>{{item.templateName}}</td>
           <td>{{item.createTime}}</td>
           <td class="status" :class="{'status-error':item.status==2}">{{status[item.status]}}
-             <el-tooltip v-if="item.status==2" class="item" effect="dark" :content="item.objection" placement="top">
-               <i class="el-icon-warning-outline"></i>
-             </el-tooltip>
+            <el-tooltip v-if="item.status==2" class="item" effect="dark" :content="item.objection" placement="top">
+              <i class="el-icon-warning-outline"></i>
+            </el-tooltip>
           </td>
           <td><a @click="reWrite(item)" :class="{disabled:item.status==1}">重新提报</a></td>
         </tr>
@@ -98,7 +98,7 @@
           0: '待审核',
           1: '报名成功',
           2: '审核不通过',
-          100:'暂存成功'
+          100: '暂存成功'
         },
         signupList: [],
         currItem: {} //当前信息填报信息
@@ -140,12 +140,12 @@
           data
         }) => {
           var now = new Date().valueOf();
-          var starttime = new Date(data.starttime.replace(/-/g,'/')).valueOf();
-          var endtime = new Date(data.endtime.replace(/-/g,'/')).valueOf();
-          if(now<starttime){
-             this.$message.warning('您好，活动还未开始，开始时间:'+data.starttime);
-             return false;
-          }else if(now>endtime){
+          var starttime = new Date(data.starttime.replace(/-/g, '/')).valueOf();
+          var endtime = new Date(data.endtime.replace(/-/g, '/')).valueOf();
+          if (now < starttime) {
+            this.$message.warning('您好，活动还未开始，开始时间:' + data.starttime);
+            return false;
+          } else if (now > endtime) {
             this.$message.warning('对不起，报名已截止!');
             return false;
           }
@@ -161,10 +161,10 @@
           })
         })
       },
-      tempSave(){
+      tempSave() {
         const $form = this.$refs.generateForm
         var data = $form.getDataNoValid();
-        this.doSave(data,100)
+        this.doSave(data, 100)
       },
       save() {
         const $form = this.$refs.generateForm
@@ -173,19 +173,19 @@
           if (signupName.indexOf('裁判报名') != -1) {
             data.signType = 'referee'
           }
-          this.doSave(data,0)
+          this.doSave(data, 0)
         }).catch(e => {
           this.$message.error(e)
         })
       },
-      doSave(data,status){
+      doSave(data, status) {
         var now = new Date().valueOf();
-        var starttime = new Date(this.signupInfo.starttime.replace(/-/g,'/')).valueOf();
-        var endtime = new Date(this.signupInfo.endtime.replace(/-/g,'/')).valueOf();
-        if(now<starttime){
-           this.$message.warning('您好，活动还未开始，开始时间:'+data.starttime);
-           return false;
-        }else if(now>endtime){
+        var starttime = new Date(this.signupInfo.starttime.replace(/-/g, '/')).valueOf();
+        var endtime = new Date(this.signupInfo.endtime.replace(/-/g, '/')).valueOf();
+        if (now < starttime) {
+          this.$message.warning('您好，活动还未开始，开始时间:' + data.starttime);
+          return false;
+        } else if (now > endtime) {
           this.$message.warning('对不起，报名已截止!');
           return false;
         }
@@ -201,7 +201,7 @@
             cid: this.$route.params.id, //大赛id
             id: this.recordId || '',
             content: data,
-            status:status
+            status: status
           }
         }).then(({
           data
@@ -267,7 +267,7 @@
   }
 </script>
 <style type="text/css">
-  @media print{
+  @media print {
     .signup-form h5 {
       font-size: 32px;
       margin: 20px 0;
@@ -336,6 +336,9 @@
     p {
       margin-top: 10px;
       color: #fff;
+      padding: 0 20px;
+      text-align: center;
+      line-height: 15Px;
     }
   }
 

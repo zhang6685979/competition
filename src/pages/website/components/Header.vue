@@ -8,11 +8,11 @@
         <li :class="$route.path.indexOf('/notice')==0?'active':''"><a @click="goto('/notice')">通知公告</a></li>
         <li :class="$route.path.indexOf('/competition')!=-1?'active':''">
           <a @click="goto('/competitions')">大赛专区</a>
-          <ul class="dropdown-menu">
+          <!-- <ul class="dropdown-menu">
             <li v-for="(item,index) in competitionList" :class="$route.params.id==item.id?'active':''">
               <router-link :to="'/competitions/'+item.id">{{item.title}}</router-link>
             </li>
-          </ul>
+          </ul> -->
         </li>
         <li :class="$route.path=='/information'?'active':''"><a @click="goto('/information')">信息查询</a>
           <ul class="dropdown-menu">
@@ -67,7 +67,7 @@
     },
     mounted() {
       this.keyword = this.$route.query.keyword;
-      this.getCompetitionList();
+     // this.getCompetitionList();
       this.getPlatformList();
       if (this.$route.path == '/') {
         window.addEventListener('scroll', this.handleScroll) // 监听页面滚动

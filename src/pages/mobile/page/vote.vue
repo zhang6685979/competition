@@ -349,6 +349,7 @@
         }) => {
           this.$toast(data);
           this.getVoteInfo();
+          this.showResult();
         })
 
       },

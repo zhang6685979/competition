@@ -115,6 +115,7 @@
         handler(newVal, oldVal) {
           this.cid = newVal;
           this.getNewsList();
+          this.getStyles();
         },
         deep: true,
       }

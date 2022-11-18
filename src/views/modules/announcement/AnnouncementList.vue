@@ -47,6 +47,8 @@
 
           <vxe-column field="createDate" width="170" sortable title="发布时间">
           </vxe-column>
+          <vxe-column field="times" title="浏览次数">
+          </vxe-column>
           <vxe-column fixed="right" align="center" width="370" title="操作">
             <template slot-scope="scope">
               <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small" @click="publishToIndex(scope.row.id,scope.row.index0==1?0:1)">{{scope.row.index0==1?'取消首页显示':'首页显示'}}
@@ -154,19 +156,28 @@
       },
       // 发布到首页显示
       publishToIndex(id,status) {
-        this.$http({
-          url: '/announcement/announcement/setindex',
-          method: 'patch',
-          params: {
-            id: id,
-            status: status
-          }
-        }).then(({
-          data
-        }) => {
-          this.$message.success(data)
-          this.refreshList()
+        this.$confirm(`确定发布?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.loading = true
+          this.$http({
+            url: '/announcement/announcement/setindex',
+            method: 'patch',
+            params: {
+              id: id,
+              status: status
+            }
+          }).then(({
+            data
+          }) => {
+            this.$message.success(data)
+            this.refreshList()
+            this.loading = false
+          })
         })
+        
       },
       // 发布到微信公众号
       publishToWechat(id) {

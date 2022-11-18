@@ -7,9 +7,6 @@
       <el-tag v-if="inputForm.top==1" type="success" size="small" effect="dark">
         置顶
       </el-tag>
-      <el-tag type="warning" size="small" effect="dark" class="pull-right">
-        <i class="el-icon-view"></i> {{inputForm.times}}
-      </el-tag>
     </div>
     <div class="html-content clearfix" v-html="inputForm.content">
 

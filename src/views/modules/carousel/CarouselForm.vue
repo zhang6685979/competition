@@ -42,7 +42,7 @@
                     }"
                     :file-list="imageArra">
                     <i class="el-icon-plus"></i>
-                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为1920*760</div>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，建议图片尺寸为1920*500</div>
                   </el-upload>
            </el-form-item>
         </el-col>

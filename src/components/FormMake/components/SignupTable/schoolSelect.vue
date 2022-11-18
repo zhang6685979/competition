@@ -25,7 +25,11 @@
     },
     watch: {
       dataModel(val) {
+        var school = this.list.find(item=>{
+          return item.name == val
+        })
         this.$emit('input', val)
+        this.$emit('getSchool',school)
       },
       value(val) {
         this.dataModel = val;

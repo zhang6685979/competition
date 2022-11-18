@@ -114,6 +114,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="新闻描述" prop="describe0" :rules="[
+                  {required: true, message:'新闻描述不能为空', trigger:'blur'}
                  ]">
               <el-input type="textarea" v-model="inputForm.describe0" placeholder="请填写新闻描述"></el-input>
             </el-form-item>

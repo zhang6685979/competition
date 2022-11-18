@@ -60,6 +60,8 @@
           </vxe-column>
           <vxe-column field="describe0" sortable title="新闻描述">
           </vxe-column>
+          <vxe-column field="times" title="浏览次数">
+          </vxe-column>
           <vxe-column fixed="right" align="center" width="370" title="操作">
             <template slot-scope="scope">
               <el-button v-if="id" type="text" icon="el-icon-s-promotion" size="small"
@@ -191,18 +193,27 @@
         id = id || this.$refs.newsTable.getCheckboxRecords().map(item => {
           return item.id
         }).join(',')
-        this.$http({
-          url: '/news/news/sendtomp',
-          method: 'post',
-          params: {
-            ids: id
-          }
-        }).then(({
-          data
-        }) => {
-          this.$message.success(data)
-          this.refreshList()
+        this.$confirm(`确定发布?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.loading = true
+          this.$http({
+            url: '/news/news/sendtomp',
+            method: 'post',
+            params: {
+              ids: id
+            }
+          }).then(({
+            data
+          }) => {
+            this.$message.success(data)
+            this.refreshList()
+            this.loading = false
+          })
         })
+        
       },
       //置顶
       toTop(id, status) {

@@ -1,13 +1,13 @@
 <template>
   <div class="box-card">
     <el-row :gutter="15" class="mt-20">
-      <el-col :span="6" v-for="(item, index) in dataList" :key="index" class="el-col">
-        <el-card :body-style="{ padding: '0px'}" shadow="never">
+      <el-col :span="8" v-for="(item, index) in dataList" :key="index" class="el-col">
+        <div class="style-card">
           <img :src="item.image" class="competition-image">
           <div class="desc">
             {{item.describe0}}
           </div>
-        </el-card>
+        </div>
       </el-col>
     </el-row>
     <div class="pager">
@@ -27,7 +27,7 @@
         tablePage: {
           total: 0,
           currentPage: 1,
-          pageSize: 10
+          pageSize: 9
         }
       }
     },
@@ -69,24 +69,36 @@
     width: 80%;
     margin: 0 auto;
   }
-  .competition-image {
-    width: 100%;
-    height: 156px;
+
+  .style-card {
+    position: relative;
+    width: 445px;
+    height: 282px;
+    margin: 0 auto 20px;
+
+    .competition-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .desc {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: rgb(220 0 12 / 40%);
+      font-size: 20px;
+      height: 60px;
+      line-height: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #fff;
+      text-align: center;
+    }
   }
   .el-col{
     margin-bottom: 15px;
-  }
-  .desc {
-    padding: 14px;
-    background-color: #EBEBEB;
-    position: relative;
-    font-size: 14px;
-    height: 50px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
   }
   .pager {
     text-align: center;

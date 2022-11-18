@@ -10,8 +10,6 @@
           <div class="item-heading">
             <div class="text-muted pull-right">
               <span>
-                <i class="el-icon-view"></i> {{item.times}}</span> &nbsp;
-              <span>
                 <i class="el-icon-time"></i> {{item.updateDate.substring(0,10)}}</span>
             </div>
             <a>{{item.title}}</a>

@@ -147,7 +147,7 @@
     created() {
       this.refereeService = new RefereeService()
     },
-    mounted() {
+    activated() {
       this.refreshList()
     },
     methods: {

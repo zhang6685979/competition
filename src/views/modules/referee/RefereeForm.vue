@@ -11,7 +11,7 @@
         <el-col :span="12">
             <el-form-item label="所在学院" prop="school"
                 :rules='[{ "required": true, "message": "请选择所在院校" }]'>
-              <school-select v-model="inputForm.school"></school-select>
+              <school-select v-model="inputForm.school" @getSchool="getSchool"></school-select>
            </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -187,6 +187,9 @@
             })
           }
         })
+      },
+      getSchool(school){
+        this.inputForm.city = school?school.city:''
       }
     }
   }

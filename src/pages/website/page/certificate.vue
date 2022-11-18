@@ -4,6 +4,17 @@
       <h1 class="text-center">证书查询</h1>
       <el-form size="small" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()"
         @submit.native.prevent label-width="150px">
+        
+        <el-form-item label="姓名" prop="name" :rules="[
+              {required: true, message:'姓名不能为空', trigger:'blur'}
+             ]">
+          <el-input size="small" v-model="searchForm.name" placeholder="学员名称" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="身份证号" prop="idcardno"  :rules="[
+              {required: true, message:'身份证号不能为空', trigger:'blur'}
+             ]">
+          <el-input size="small" v-model="searchForm.idcardno" placeholder="身份证号" clearable></el-input>
+        </el-form-item>
         <el-form-item label="证书类别" prop="type">
           <el-select v-model="searchForm.type" placeholder="请选择" style="width: 100%;">
             <el-option v-for="(item,index) in certificateList" :key="item.id" :label="item.title" :value="item.id">
@@ -12,14 +23,6 @@
         </el-form-item>
         <el-form-item label="证书编号" prop="no">
           <el-input size="small" v-model="searchForm.no" placeholder="证书编号" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="姓名" prop="name" :rules="[
-              {required: true, message:'姓名不能为空', trigger:'blur'}
-             ]">
-          <el-input size="small" v-model="searchForm.name" placeholder="学员名称" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="身份证号" prop="idcardno">
-          <el-input size="small" v-model="searchForm.idcardno" placeholder="身份证号" clearable></el-input>
         </el-form-item>
 
         <el-form-item>

@@ -31,7 +31,7 @@
         </el-col>
       </el-row>
       <vxe-table border auto-resize resizable height="300" size="small" ref="table" round show-header-overflow
-        show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
+        highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
         :data="list" :checkbox-config="{}">
         <vxe-column field="code" title="考场编号">
         </vxe-column>
@@ -53,8 +53,8 @@
       </vxe-table>
     </div>
     <vxe-table border auto-resize resizable height="300" size="small" ref="table" round show-header-overflow
-      show-overflow highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
-      :data="dataList" :checkbox-config="{}" :merge-cells="mergeCells">
+      highlight-hover-row :menu-config="{}" :print-config="{}" :import-config="{}" :export-config="{}"
+      :data="dataList" :checkbox-config="{}" :scroll-y="{enabled: false}" :merge-cells="mergeCells">
       <vxe-column field="roomCode" title="考场编号">
       </vxe-column>
       <vxe-column field="refereeName" title="裁判姓名">
@@ -70,13 +70,24 @@
       </vxe-column>
       <vxe-column field="refereeMobile" title="裁判电话">
       </vxe-column>
-      <vxe-column field="school" title="参赛院校名称">
+      <vxe-column field="schoolCode" title="院校代号">
+      </vxe-column>
+      <vxe-column field="school" title="院校名称">
+        <template slot-scope="scope">
+              <span>{{scope.row.school.split('-')[0]}}</span>
+        </template>
+      </vxe-column>
+      <vxe-column field="code" title="赛队编号">
+        <template slot-scope="scope">
+              <span>{{scope.row.code}}</span>
+        </template>
+      </vxe-column>
+      <vxe-column field="school" title="赛队名称">
         <template slot-scope="scope">
               <span>{{scope.row.school}}</span>
         </template>
       </vxe-column>
-      <vxe-column field="schoolCode" title="院校代号">
-      </vxe-column>
+      
       <vxe-column field="leader" title="领队姓名">
       </vxe-column>
       <vxe-column field="leaderMobile" title="领队电话">
