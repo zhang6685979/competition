@@ -27,16 +27,17 @@
 
         <el-col :span="22">
           <el-form-item label="通知对象" prop="type">
-              <el-radio-group v-model="inputForm.type" @change="changeHandle">
-                  <el-radio :label="1">裁判</el-radio>
-                  <el-radio :label="2">领队</el-radio>
-                  <el-radio :label="3">指导老师</el-radio>
-                  <el-radio :label="4">选手</el-radio>
-                  <el-radio :label="5">自定义</el-radio>
-                </el-radio-group>
+                <el-checkbox-group v-model="inputForm.type"  @change="changeHandle">
+                    <el-checkbox :label="1" :disabled="inputForm.type.indexOf(5)!=-1">裁判</el-checkbox>
+                    <el-checkbox :label="2" :disabled="inputForm.type.indexOf(5)!=-1">领队</el-checkbox>
+                    <el-checkbox :label="3" :disabled="inputForm.type.indexOf(5)!=-1">指导老师</el-checkbox>
+                    <el-checkbox :label="4" :disabled="inputForm.type.indexOf(5)!=-1">选手</el-checkbox>
+                    <el-checkbox :label="5">自定义</el-checkbox>
+                  </el-checkbox-group>
+
           </el-form-item>
         </el-col>
-        <el-col :span="22" v-if="inputForm.type==5">
+        <el-col :span="22" v-if="inputForm.type.indexOf(5)!=-1">
             <el-form-item  label="收件地址"  prop="emailAddress"
                 :rules="[
                   {required: true, message:'收件地址不能为空', trigger:'blur'}
@@ -127,7 +128,7 @@
           title: '',
           content: '',
           cid:'',
-          type:1,
+          type:[],
           people:[],
           appendix:''
         },
@@ -190,15 +191,34 @@
         })
       },
       changeHandle(){
-        this.$http({
-          url:'/competition/competitionPlayer/people',
-          params:{
-            type:this.inputForm.type,
-            cid:this.inputForm.cid
-          }
-        }).then(({data})=>{
-          this.peopleList = data
-        })
+        if(this.inputForm.type.indexOf(5)!=-1){
+          this.inputForm.type = [5];
+          return;
+        }
+        if(this.inputForm.type&&this.inputForm.type.length>0){
+          var promises = [];
+          this.inputForm.type.forEach(type=>{
+            var req = this.$http({
+              url:'/competition/competitionPlayer/people',
+              params:{
+                type:type,
+                cid:this.inputForm.cid
+              }
+            }).then(({data})=>{
+               return data
+            })
+            promises.push(req)
+          })
+          Promise.all(promises).then(result=>{
+            var peopleList = [];
+            result.forEach(data=>{
+              peopleList = peopleList.concat(data)
+            })
+            this.peopleList = peopleList
+          })
+        }else{
+          this.peopleList = []
+        }
       },
       beforeFileUpload(file) {
         return new Promise((resolve, reject) => {

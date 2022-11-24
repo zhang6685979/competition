@@ -26,11 +26,11 @@
         <div class="signup-info" style="padding: 30px;margin-bottom: 20px;">
           <table>
             <tr>
-              <td>报名时间：</td>
+              <td nowrap>报名时间：</td>
               <td>{{signupInfo.starttime}}--{{signupInfo.endtime}}</td>
             </tr>
             <tr>
-              <td>报名说明:</td>
+              <td>报名说明：</td>
               <td>
                 <pre>{{signupInfo.describe0}}</pre>
               </td>
