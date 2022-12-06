@@ -135,7 +135,7 @@
               </vxe-pager>
           </div>
       <!-- 弹窗, 新增 / 修改 -->
-      <user-form  ref="userForm" @refreshDataList="refreshList"></user-form>
+      <user-form  ref="userForm" v-if="dialogVisible" @close="()=>{dialogVisible=false}" @refreshDataList="refreshList"></user-form>
       </div>
     </div>
     </div>
@@ -171,7 +171,8 @@
           pageSize: 10,
           orders: []
         },
-        loading: false
+        loading: false,
+        dialogVisible: false
       }
     },
     components: {
@@ -251,18 +252,27 @@
       },
       // 新增
       add () {
-        this.$refs.userForm.init('add', '')
+        this.dialogVisible = true
+        this.$nextTick(()=>{
+          this.$refs.userForm.init('add', '')
+        })
       },
       // 修改
       edit (id) {
         id = id || this.$refs.userTable.getCheckboxRecords().map(item => {
           return item.id
         })[0]
-        this.$refs.userForm.init('edit', id)
+        this.dialogVisible = true
+        this.$nextTick(()=>{
+          this.$refs.userForm.init('edit', id)
+        })
       },
       // 查看
       view (id) {
-        this.$refs.userForm.init('view', id)
+        this.dialogVisible = true
+        this.$nextTick(()=>{
+          this.$refs.userForm.init('view', id)
+        })
       },
       // 删除
       del (id) {

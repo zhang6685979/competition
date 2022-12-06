@@ -3,7 +3,7 @@
     :title="title"
     :close-on-click-modal="false"
      v-dialogDrag
-    :visible.sync="visible">
+    :visible.sync="visible" @close="$emit('close')">
     <el-form size="small" :model="inputForm" ref="inputForm" @keyup.enter.native="doSubmit()"
              label-width="120px" v-loading="loading" :class="method==='view'?'readonly':''" :disabled="method==='view'" @submit.native.prevent>
     <el-divider content-position="left"><i class="el-icon-lock"></i> 登录信息</el-divider>
