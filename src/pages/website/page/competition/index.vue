@@ -3,7 +3,7 @@
     <div class="news-warp">
       <el-row :gutter="30">
         <el-col :span="12">
-          <el-carousel class="carouse" indicator-position="none">
+          <el-carousel class="carouse" indicator-position="none" height="100%">
             <el-carousel-item v-for="(item,index) in newsList.slice(0,5)" :key="index">
               <router-link :to="{path:'/news/'+item.id}"><img :src="item.image" class="image" /></router-link>
               <p class="carousel-title">{{item.title}}</p>
@@ -132,7 +132,7 @@
           method: 'get',
           params: {
             'current': 1,
-            'size': 3,
+            'size': 8,
             'cid': cid
           }
         }).then(({

@@ -4,10 +4,11 @@
       <h1 class="text-center">证书查询</h1>
       <el-form size="small" class="query-form" ref="searchForm" :model="searchForm" @keyup.enter.native="refreshList()"
         @submit.native.prevent label-width="150px">
-        
+
         <el-form-item label="姓名" prop="name" :rules="[
               {required: true, message:'姓名不能为空', trigger:'blur'}
              ]">
+              <label slot="label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label>
           <el-input size="small" v-model="searchForm.name" placeholder="学员名称" clearable></el-input>
         </el-form-item>
         <el-form-item label="身份证号" prop="idcardno"  :rules="[

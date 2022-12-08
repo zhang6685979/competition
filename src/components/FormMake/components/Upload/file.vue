@@ -177,8 +177,13 @@ export default {
 
       xhr.send(formData)
       xhr.onreadystatechange = () => {
+        let resData = xhr.response
         if (xhr.readyState === 4) {
-          let resData = JSON.parse(xhr.response)
+          try{
+            resData = JSON.parse(xhr.response)
+          }catch(e){
+            this.$message.error(xhr.response)
+          }
           if (resData && resData.url) {
             this.$set(this.fileList, this.fileList.findIndex(item => item.key === key), {
               ...this.fileList[this.fileList.findIndex(item => item.key === key)],
@@ -192,10 +197,7 @@ export default {
                 status: 'success'
               })
               if (this.ui == 'element') {
-
                 this.$emit('input', this.fileList.map(item =>item.url).join('|'))
-                
-                
               } else {
                 EventBus.$emit('on-field-change', this.$attrs.id, this.fileList)
               }

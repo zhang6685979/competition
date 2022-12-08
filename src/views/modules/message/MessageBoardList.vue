@@ -12,7 +12,7 @@
       </el-form>
 
      <div class="bg-white top">
-        <vxe-toolbar :refresh="{query: refreshList}">
+        <vxe-toolbar :refresh="{query: refreshList}" export>
           <template #buttons>
             <el-button type="danger"   size="small" icon="el-icon-delete" @click="del()" :disabled="$refs.messageBoardTable && $refs.messageBoardTable.getCheckboxRecords().length === 0" plain>删除</el-button>
           </template>

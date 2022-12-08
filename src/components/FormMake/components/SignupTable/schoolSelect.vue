@@ -45,7 +45,7 @@
           method:'get',
           headers:{
             isFront:1,
-            token:this.$cookie.get('token')||this.$cookie.get('user-token')
+            token:this.$cookie.get('user-token')||this.$cookie.get('token')
           }
         }).then(({data})=>{
           this.list = data;

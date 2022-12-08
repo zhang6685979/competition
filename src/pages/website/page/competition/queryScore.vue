@@ -26,7 +26,7 @@
       </div>
       <div v-else class="result-list">
         <p>
-          <span>姓名:{{inputForm.name}}</span> <span>身份证号：{{inputForm.cardNo}}</span>
+          <span>姓  名:{{inputForm.name}}</span> <span>身份证号：{{inputForm.cardNo}}</span>
         </p>
         <div class="score-desc">
           您本次的成绩为：

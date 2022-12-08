@@ -32,10 +32,10 @@
               <h3>外观配置</h3>
             </div>
             <el-form size="small" label-width="150px" :model="themeFormSetting">
-              <el-form-item label="产品标题">
+              <el-form-item label="后台系统标题">
                 <el-input v-model="themeFormSetting.productName"></el-input>
               </el-form-item>
-              <el-form-item label="产品logo">
+              <el-form-item label="后台logo">
                 <el-upload class="avatar-uploader"
                   :action="`${$http.BASE_URL}/sys/file/webupload/upload?uploadPath=logo`"
                   accept="*.jpg,*.png,*.gif,*.jpeg" :on-success="(res,file)=>{

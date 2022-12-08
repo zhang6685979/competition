@@ -339,6 +339,7 @@
       padding: 0 20px;
       text-align: center;
       line-height: 15Px;
+      font-size: 16px;
     }
   }
 

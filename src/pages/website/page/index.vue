@@ -1,6 +1,7 @@
 <template>
   <div class="index-warp">
-    <el-carousel :interval="5000" class="carousel">
+    {{autoHeight}}
+    <el-carousel :interval="5000" class="carousel" :height="autoHeight+'px'">
       <el-carousel-item v-for="(item,index) in carouselList" :key="index">
         <a :href="item.url" target="_blank"><img :src="item.image" class="image" /></a>
       </el-carousel-item>
@@ -66,7 +67,7 @@
         技能认证
       </h5>
       <ul>
-        <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/information?type='+item.id)">
+        <li v-for="(item, index) in certificateList" :key="index" @click="$router.push('/information?type=certificate&certificateType='+item.id)">
           {{item.title}}
         </li>
       </ul>
@@ -74,7 +75,7 @@
 
       <el-row :gutter="20">
         <el-col :span="8" v-for="(item, index) in certificateList" :key="index">
-          <el-card class="certficate-item">
+          <el-card class="certficate-item" :body-style="{padding:0}">
             <img :src="item.image" />
             <h5>{{item.title}}</h5>
             <button @click="$router.push('/information?type=certificate&certificateType='+item.id)">查看详情</button>
@@ -137,7 +138,8 @@
             stopOnLastSlide: false,
             disableOnInteraction: false,
           }
-        }
+        },
+        autoHeight:500
       }
     },
     components: {
@@ -152,6 +154,10 @@
       this.getCompetitionList();
       this.getCertificateList();
       this.getPlatformList();
+      this.autoHeight = window.innerWidth/1920*500;
+      window.onresize = ()=>{
+        this.autoHeight = window.innerWidth/1920*500;
+      }
     },
     methods: {
       getCarouselList() {
@@ -229,7 +235,7 @@
     background-color: #fff;
 
     .carousel {
-      height: 500Px;
+      //height: 500Px;
     }
 
     .news-warp {
