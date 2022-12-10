@@ -81,7 +81,8 @@
       // 获取页面滚动距离
       handleScroll() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        if (scrollTop > 500) {
+        var topHeight = window.innerWidth/1920*500;
+        if (scrollTop > topHeight) {
           this.transparent = false;
         } else {
           this.transparent = true;

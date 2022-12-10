@@ -23,16 +23,12 @@
 </template>
 
 <script>
-  import {
-    BizProjectForm
-  } from '@/components/tduck-form/TduckForm.common'
   import VueQr from 'vue-qr'
   import mixin from '../TduckFormMixin'
 
   export default {
     name: 'PreView',
     components: {
-      BizProjectForm,
       VueQr
     },
     mixins: [mixin],

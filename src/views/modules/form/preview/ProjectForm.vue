@@ -1,41 +1,40 @@
 <template>
-    <biz-project-form
-        v-if="formConfig.formKey"
-        :form-config="formConfig"
-        @submit="submitForm"
-    />
+  <biz-project-form v-if="formConfig.formKey" :form-config="formConfig" @submit="submitForm" />
 </template>
 
 <script>
-import {BizProjectForm} from '@/components/tduck-form/TduckForm.common'
-import mixin from '../TduckFormMixin'
+  import {
+    BizProjectForm
+  } from '@/components/tduck-form/TduckForm.common'
+  import '@/components/tduck-form/TduckForm.css'
+  import mixin from '../TduckFormMixin'
 
-export default {
+  export default {
     components: {
-        BizProjectForm
+      BizProjectForm
     },
     mixins: [mixin],
     data() {
-        return {
-            formConfig: {
-                formKey: '',
-                preview: true,
-                showBtns: true
-            }
+      return {
+        formConfig: {
+          formKey: '',
+          preview: true,
+          showBtns: true
         }
+      }
     },
     created() {
-        this.formConfig.formKey = this.$route.query.key
+      this.formConfig.formKey = this.$route.query.key
     },
     methods: {
-        submitForm() {
+      submitForm() {
 
-        }
+      }
     }
-}
+  }
 </script>
 <style scoped lang="scss">
-::v-deep .project-form{
-  overflow-x: hidden!important;
-}
+  ::v-deep .project-form {
+    overflow-x: hidden !important;
+  }
 </style>

@@ -22,6 +22,7 @@
   import {
     BizProjectForm
   } from '@/components/tduck-form/TduckForm.common'
+  import '@/components/tduck-form/TduckForm.css'
   import {
     getQueryString
   } from '@/utils'
