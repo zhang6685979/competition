@@ -60592,8 +60592,6 @@ let seqNo = 0;
           return false;
         } // 触发submit事件
 
-
-        console.log(JSON.stringify(this.formModel));
         this.$emit('submit', {
           formModel: this.formModel
         });
@@ -109246,7 +109244,7 @@ var FormDesign_component = Object(componentNormalizer["a" /* default */])(
 
 /* harmony default export */ var FormDesign = (FormDesign_component.exports);
 // CONCATENATED MODULE: /Volumes/tzmaxData/data/users/bin/tduck-front/node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"e42b4e02-vue-loader-template"}!/Volumes/tzmaxData/data/users/bin/tduck-front/node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!/Volumes/tzmaxData/data/users/bin/tduck-front/node_modules/cache-loader/dist/cjs.js??ref--1-0!/Volumes/tzmaxData/data/users/bin/tduck-front/node_modules/vue-loader/lib??vue-loader-options!./src/components/BizProjectForm/index.vue?vue&type=template&id=359d4adf&
-var BizProjectFormvue_type_template_id_359d4adf_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.startParser)?_c('GenerateForm',{attrs:{"question-mode":false,"form-conf":_vm.formConf},on:{"submit":_vm.submitForm}}):_vm._e()}
+var BizProjectFormvue_type_template_id_359d4adf_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.startParser)?_c('GenerateForm',{ref:'generateForm',attrs:{"question-mode":false,"form-conf":_vm.formConf},on:{"submit":_vm.submitForm}}):_vm._e()}
 var BizProjectFormvue_type_template_id_359d4adf_staticRenderFns = []
 
 
@@ -109668,6 +109666,9 @@ var GenerateForm_component = Object(componentNormalizer["a" /* default */])(
 
         this.formConf.logicShowRule = this.logicShowTriggerRule;
         this.startParser = true;
+        this.$nextTick(()=>{
+          this.$refs.generateForm.$children[0].$refs.elForm.clearValidate();
+        })
       }
     });
   },

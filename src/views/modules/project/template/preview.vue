@@ -48,6 +48,14 @@ export default {
             }
         }
     },
+    watch:{
+      '$route.query.key':function(newVal){
+        this.formConfig.formKey = '';
+        this.$nextTick(()=>{
+          this.formConfig.formKey = newVal
+        })
+      }
+    },
     mounted() {
         this.formConfig.formKey = this.$route.query.key
     },
