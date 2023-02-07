@@ -27,10 +27,11 @@
                 <p v-html="$utils.unescapeHTML(scope.row[`${option.model}`] || '')"></p>
               </div>
               <div v-else-if="option.type === 'imgupload'">
-                <el-image style="height: 50px;width:50px;margin-right:10px;" :src="item.url"
-                  v-for="(item, index) in JSON.parse(scope.row[`${option.model}`] || '[]')" :key="index"
-                  :preview-src-list="JSON.parse(scope.row[`${option.model}`]).map((item)=>{return item.url})">
+                <el-image style="height: 50px;width:50px;margin-right:10px;" :src="item"
+                  v-for="(item, index) in scope.row[`${option.model}`]?scope.row[`${option.model}`].split('|'):[]" :key="index"
+                  :preview-src-list="scope.row[`${option.model}`]?scope.row[`${option.model}`].split('|'):[]">
                 </el-image>
+                {{scope.row[`${option.model}`]}}
               </div>
               <div v-else-if="option.type === 'fileupload'">
                 <a @click="downloadFile(item)" style="cursor: pointer;display: block;" target="_blank" :key="index"
@@ -68,11 +69,7 @@
                 {{$dictUtils.getDictLabel(`${option.options.dictType}`, scope.row[`${option.model}`])}}
               </div>
               <div v-else>
-                <div v-if="index === 0">
-                  <el-link type="primary" :underline="false"
-                    @click="view(scope.row.id)">{{scope.row[`${option.model}`] || ''}} </el-link>
-                </div>
-                <span v-else>{{scope.row[`${option.model}`] === undefined ? '' : scope.row[`${option.model}`]}} </span>
+                <span>{{scope.row[`${option.model}`] === undefined ? '' : scope.row[`${option.model}`]}} </span>
               </div>
             </template>
           </vxe-column>
