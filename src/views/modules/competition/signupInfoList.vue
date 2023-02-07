@@ -69,7 +69,7 @@
         <fm-generate-form style="margin: 0 auto;" insite="true" :edit="false" :data="json" :value="{}" :remote="{}"
           ref="generateForm">
         </fm-generate-form>
-        <el-form ref="form" :model="form" label-width="100px" :disabled="currItem.status==1">
+        <el-form ref="form" :model="form" label-width="100px">
           <el-form-item label="报名审批:">
             <el-radio-group v-model="form.status">
               <el-radio label="1">审批通过</el-radio>
@@ -88,7 +88,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="signFormVisible = false">关闭</el-button>
-        <el-button v-if="currItem.status!=1" size="small" type="primary" @click="doSubmit()" v-noMoreClick>确定
+        <el-button size="small" type="primary" @click="doSubmit()" v-noMoreClick>确定
         </el-button>
       </span>
     </el-dialog>
