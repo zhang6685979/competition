@@ -21,7 +21,7 @@
                     }" default-expand-all highlight-current node-key="id" :filter-node-method="filterNode"
               :expand-on-click-node="false" @node-click="handleNodeClick" ref="certificateTree">
               <span class="custom-tree-node" slot-scope="{ node, data}">
-                <span>{{ node.label }}</span>
+                <span class="node-label" :title="node.label">{{ node.label }}</span>
                 <span>
                   <el-button type="text" class="tree-item-button" icon="el-icon-edit-outline"
                     @click="() => editTreeNode(data)"></el-button>
@@ -303,3 +303,10 @@
     }
   }
 </script>
+<style scoped>
+  .node-label{
+    display:inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>

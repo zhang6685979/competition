@@ -20,6 +20,8 @@
             <vxe-column type="checkbox" width="40px"></vxe-column>
             <vxe-column field="templateName" title="报名名称">
             </vxe-column>
+            <vxe-column field="school" title="报名单位">
+            </vxe-column>
             <vxe-column field="createTime" title="报名时间">
             </vxe-column>
             <vxe-column field="status" title="报名状态">
@@ -157,6 +159,9 @@
         }).then(({
           data
         }) => {
+          data.records.forEach(item=>{
+            item.school = JSON.parse(item.content).school||''
+          })
           this.dataList = data.records
           this.tablePage.total = data.total
           this.loading = false

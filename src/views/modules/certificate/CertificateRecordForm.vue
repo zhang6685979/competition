@@ -16,6 +16,23 @@
                 :accordion="true" :disabled="!!type" @getValue="(value) => {inputForm.type=value}" />
             </el-form-item>
           </el-col>
+          <el-col :span="12" v-if="method === 'edit' || method === 'view'">
+              <el-form-item label="姓名" prop="name"
+                  :rules="[
+                    {required: true, message:'姓名不能为空', trigger:'blur'}
+                   ]">
+            <el-input v-model="inputForm.name" placeholder="请填写姓名"  maxlength="250"    ></el-input>
+             </el-form-item>
+          </el-col>
+          <el-col :span="24" v-if="method === 'edit' || method === 'view'">
+              <el-form-item label="身份证号" prop="idcardno"
+                  :rules="[
+                    {required: true, message:'身份证号不能为空', trigger:'blur'},
+                    {validator: validator.isCardId, trigger:['blur','change']}
+                   ]">
+            <el-input v-model="inputForm.idcardno" placeholder="请填写身份证号"  maxlength="250"    ></el-input>
+             </el-form-item>
+          </el-col>
 
           <el-col :span="24">
             <el-form-item label="证书图片" prop="image" :rules="[
@@ -80,6 +97,8 @@
         inputForm: {
           type: '',
           image: '',
+          name:'',
+          idcardno:''
         }
       }
     },

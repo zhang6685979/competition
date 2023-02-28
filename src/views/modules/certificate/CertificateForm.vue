@@ -17,6 +17,14 @@
            </el-form-item>
         </el-col>
         <el-col :span="24">
+            <el-form-item label="证书分类名称" prop="title"
+                :rules="[
+                  {required: true, message:'证书分类名称不能为空', trigger:'blur'}
+                 ]">
+          <el-input v-model="inputForm.title" placeholder="请填写证书名称"  maxlength="250"    ></el-input>
+           </el-form-item>
+        </el-col>
+        <el-col :span="24">
             <el-form-item label="证书分类图片" prop="image"
                 :rules="[
                   {required: true, message:'证书分类图片不能为空', trigger:'blur'}

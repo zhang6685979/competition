@@ -16,7 +16,7 @@
              ]">
           <el-input size="small" v-model="searchForm.idcardno" placeholder="身份证号" clearable></el-input>
         </el-form-item>
-        <el-form-item label="证书类别" prop="type">
+       <!-- <el-form-item label="证书类别" prop="type">
           <el-select v-model="searchForm.type" placeholder="请选择" style="width: 100%;">
             <el-option v-for="(item,index) in certificateList" :key="item.id" :label="item.title" :value="item.id">
             </el-option>
@@ -25,7 +25,7 @@
         <el-form-item label="证书编号" prop="no">
           <el-input size="small" v-model="searchForm.no" placeholder="证书编号" clearable></el-input>
         </el-form-item>
-
+ -->
         <el-form-item>
           <el-button type="primary" @click="getList()" size="small" icon="el-icon-search">查询</el-button>
           <el-button @click="resetSearch()" size="small" icon="el-icon-refresh-right">重置</el-button>
@@ -39,8 +39,8 @@
             <el-image class="certificate-image" :src="item.image" :preview-src-list="[item.image]">
             </el-image>
             <div class="other-info">
-              <p>证书分类：{{item.title}}</p>
-              <p>证书编号：{{item.no}}</p>
+             <!-- <p>证书分类：{{item.title}}</p>
+              <p>证书编号：{{item.no}}</p> -->
               <p>姓名：{{item.name}}</p>
               <p>身份证号：{{item.idcardno}}</p>
               <el-button size="small" type="primary" @click="downloadFile(item.image)">下载证书</el-button>
@@ -96,7 +96,7 @@
             }) => {
               this.dataList = data;
               if (data && data.length == 0) {
-                this.$message.warning('未查询到您的证书信息，请合适查询条件是否正确!')
+                this.$message.warning('未查询到您的证书信息，请确认查询条件是否正确!')
               }
             })
           }
@@ -132,7 +132,7 @@
 <style lang="scss" scoped>
   .box-card {
     width: 60%;
-    margin: 20px auto;
+    margin: 20px auto 50px;
 
     .text-center {
       text-align: center;
